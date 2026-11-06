@@ -166,8 +166,134 @@ async function startSchoolWebsite() {
         action.appendChild(remove); tr.appendChild(action); table.appendChild(tr);
       });
       studentList.appendChild(table);
-    }
+    
+function renderStudents() {
+  if (!studentList) return;
 
+  studentList.innerHTML = "";
+  const selected = studentFilter.value;
+
+  const rows = allStudents.filter(
+    (s) => selected === "all" || s.className === selected
+  );
+
+  if (!rows.length) {
+    studentList.textContent = "इस कक्षा में अभी कोई विद्यार्थी दर्ज नहीं है।";
+    return;
+  }
+
+  const table = document.createElement("table");
+  table.style.width = "100%";
+  table.style.borderCollapse = "collapse";
+
+  const head = document.createElement("tr");
+
+  ["कक्षा", "रोल नं.", "विद्यार्थी का नाम", "अभिभावक", "जन्मतिथि", "मोबाइल", "कार्यवाही"].forEach(label => {
+    const th = document.createElement("th");
+    th.textContent = label;
+    th.style.padding = "8px 4px";
+    head.appendChild(th);
+  });
+
+  table.appendChild(head);
+
+  rows.forEach((s) => {
+    const tr = document.createElement("tr");
+
+    [s.className, s.rollNo, s.name, s.guardianName || "—", s.dob || "—", s.mobile || "—"].forEach(value => {
+      const td = document.createElement("td");
+      td.textContent = value;
+      td.style.padding = "8px 4px";
+      td.style.borderTop = "1px solid #ddd";
+      tr.appendChild(td);
+    });
+
+    const action = document.createElement("td");
+    action.style.padding = "8px 4px";
+
+    // EDIT BUTTON
+    const edit = document.createElement("button");
+    edit.textContent = "Edit";
+    edit.type = "button";
+
+    edit.addEventListener("click", async () => {
+      const name = prompt("विद्यार्थी का नाम:", s.name);
+      if (name === null) return;
+
+      const className = prompt("कक्षा (6, 7 या 8):", s.className);
+      if (className === null) return;
+
+      const rollNo = prompt("रोल नंबर:", s.rollNo);
+      if (rollNo === null) return;
+
+      const guardianName = prompt("अभिभावक का नाम:", s.guardianName || "");
+      if (guardianName === null) return;
+
+      const dob = prompt("जन्मतिथि (YYYY-MM-DD):", s.dob || "");
+      if (dob === null) return;
+
+      const address = prompt("पूरा पता:", s.address || "");
+      if (address === null) return;
+
+      const mobile = prompt("मोबाइल नंबर:", s.mobile || "");
+      if (mobile === null) return;
+
+      if (!name.trim() || !rollNo.trim()) {
+        alert("नाम और रोल नंबर आवश्यक हैं।");
+        return;
+      }
+
+      if (!["6", "7", "8"].includes(className.trim())) {
+        alert("कक्षा केवल 6, 7 या 8 हो सकती है।");
+        return;
+      }
+
+      if (mobile.trim() && !/^[0-9+() -]{8,15}$/.test(mobile.trim())) {
+        alert("सही मोबाइल नंबर दर्ज करें।");
+        return;
+      }
+
+      try {
+        await db.collection("students").doc(s.id).update({
+          name: name.trim(),
+          className: className.trim(),
+          rollNo: rollNo.trim(),
+          guardianName: guardianName.trim(),
+          dob: dob.trim(),
+          address: address.trim(),
+          mobile: mobile.trim()
+        });
+
+        alert("विद्यार्थी की जानकारी सफलतापूर्वक अपडेट हो गई।");
+      } catch (error) {
+        alert("अपडेट नहीं हुआ: " + error.message);
+      }
+    });
+
+    // DELETE BUTTON
+    const remove = document.createElement("button");
+    remove.textContent = "हटाएँ";
+    remove.type = "button";
+
+    remove.addEventListener("click", async () => {
+      if (!confirm(`क्या ${s.name} का रिकॉर्ड हटाना चाहते हैं?`)) return;
+
+      try {
+        await db.collection("students").doc(s.id).delete();
+        show(studentMessage, "विद्यार्थी रिकॉर्ड हटा दिया गया।");
+      } catch (error) {
+        show(studentMessage, "रिकॉर्ड नहीं हट सका: " + error.message);
+      }
+    });
+
+    action.appendChild(edit);
+    action.appendChild(remove);
+    tr.appendChild(action);
+    table.appendChild(tr);
+  });
+
+  studentList.appendChild(table);
+}
     function beginStudentFeed() {
       if (unsubscribeStudents) unsubscribeStudents();
       unsubscribeStudents = db.collection("students").orderBy("className").onSnapshot((snapshot) => {
