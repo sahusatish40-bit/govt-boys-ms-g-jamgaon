@@ -19,15 +19,11 @@ function setLang(next) {
   currentLang = next;
   document.documentElement.lang = currentLang;
   document.querySelectorAll("[data-hi]").forEach((el) => {
-    if (el.dataset[currentLang] !== undefined)
-      el.textContent = el.dataset[currentLang];
+    if (el.dataset[currentLang] !== undefined) el.textContent = el.dataset[currentLang];
   });
   if (langBtn) langBtn.textContent = currentLang === "hi" ? "English" : "हिंदी";
 }
-if (langBtn)
-  langBtn.addEventListener("click", () =>
-    setLang(currentLang === "hi" ? "en" : "hi")
-  );
+if (langBtn) langBtn.addEventListener("click", () => setLang(currentLang === "hi" ? "en" : "hi"));
 
 function loadFirebase(url) {
   return new Promise((resolve, reject) => {
@@ -42,25 +38,17 @@ function loadFirebase(url) {
 async function startSchoolWebsite() {
   const adminBox = document.querySelector(".adminbox");
   const noticeList = document.getElementById("noticeList");
-
   try {
     if (adminBox) adminBox.innerHTML = "<p>Firebase लोड हो रहा है…</p>";
-    await loadFirebase(
-      "https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"
-    );
-    await loadFirebase(
-      "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"
-    );
-    await loadFirebase(
-      "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"
-    );
+    await loadFirebase("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+    await loadFirebase("https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js");
+    await loadFirebase("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    if (adminBox)
-      adminBox.innerHTML = `
+    if (adminBox) adminBox.innerHTML = `
       <p><strong>विद्यालय एडमिन लॉगिन</strong></p>
       <div id="loginBox">
         <label for="adminEmail">Admin Email</label>
@@ -73,88 +61,67 @@ async function startSchoolWebsite() {
       <div id="adminTools" hidden>
         <h3>Admin Dashboard</h3>
         <button id="logoutBtn" type="button">Logout</button>
-
         <hr>
         <h3>नई विद्यालयीन सूचना</h3>
         <input id="noticeInput" maxlength="180" placeholder="सूचना लिखें">
         <button id="addNotice" type="button">Publish Notice</button>
         <p id="adminMessage" role="status"></p>
-
         <hr>
         <h3>विद्यार्थी प्रबंधन (केवल एडमिन)</h3>
         <label for="studentName">विद्यार्थी का नाम *</label>
         <input id="studentName" maxlength="80" placeholder="पूरा नाम">
         <label for="studentClass">कक्षा *</label>
         <select id="studentClass">
-          <option value="6">कक्षा 6वीं</option>
-          <option value="7">कक्षा 7वीं</option>
-          <option value="8">कक्षा 8वीं</option>
+          <option value="6">कक्षा 6वीं</option><option value="7">कक्षा 7वीं</option><option value="8">कक्षा 8वीं</option>
         </select>
         <label for="studentRoll">रोल नंबर *</label>
         <input id="studentRoll" maxlength="20" placeholder="रोल नंबर">
         <label for="guardianName">अभिभावक का नाम (वैकल्पिक)</label>
         <input id="guardianName" maxlength="80" placeholder="अभिभावक का नाम">
+        <label for="studentDob">जन्मतिथि</label>
+        <input id="studentDob" type="date">
+        <label for="studentAddress">पूरा पता</label>
+        <textarea id="studentAddress" maxlength="300" rows="2" placeholder="ग्राम, पोस्ट, तहसील, जिला"></textarea>
+        <label for="studentMobile">मोबाइल नंबर</label>
+        <input id="studentMobile" type="tel" inputmode="numeric" maxlength="15" placeholder="अभिभावक का मोबाइल नंबर">
         <button id="saveStudent" type="button">विद्यार्थी जोड़ें</button>
         <p id="studentMessage" role="status"></p>
         <label for="studentFilter">कक्षा के अनुसार सूची</label>
         <select id="studentFilter">
-          <option value="all">सभी कक्षाएँ</option>
-          <option value="6">कक्षा 6वीं</option>
-          <option value="7">कक्षा 7वीं</option>
-          <option value="8">कक्षा 8वीं</option>
+          <option value="all">सभी कक्षाएँ</option><option value="6">कक्षा 6वीं</option><option value="7">कक्षा 7वीं</option><option value="8">कक्षा 8वीं</option>
         </select>
         <div id="studentList" aria-live="polite">विद्यार्थी सूची लोड हो रही है…</div>
       </div>
       <small>विद्यार्थियों का निजी डेटा केवल अधिकृत एडमिन को दिखाई देता है। सार्वजनिक वेबसाइट पर विद्यार्थी सूची नहीं दिखाई जाएगी।</small>`;
 
-    const loginBox = document.getElementById("loginBox");
-    const adminTools = document.getElementById("adminTools");
-    const loginMessage = document.getElementById("loginMessage");
-    const adminMessage = document.getElementById("adminMessage");
-    const studentMessage = document.getElementById("studentMessage");
-    const loginBtn = document.getElementById("loginBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const addNoticeBtn = document.getElementById("addNotice");
-    const saveStudentBtn = document.getElementById("saveStudent");
-    const studentList = document.getElementById("studentList");
-    const studentFilter = document.getElementById("studentFilter");
-    let allStudents = [];
-
-    const show = (el, msg) => {
-      if (el) el.textContent = msg;
-    };
+    const el = (id) => document.getElementById(id);
+    const show = (node, msg) => { if (node) node.textContent = msg; };
+    const loginBox = el("loginBox"), adminTools = el("adminTools");
+    const loginMessage = el("loginMessage"), adminMessage = el("adminMessage");
+    const studentMessage = el("studentMessage"), studentList = el("studentList");
+    const studentFilter = el("studentFilter");
+    const loginBtn = el("loginBtn"), saveStudentBtn = el("saveStudent");
+    let allStudents = [], unsubscribeStudents = null;
 
     function renderNotices(snapshot) {
       if (!noticeList) return;
       noticeList.innerHTML = "";
-      if (snapshot.empty) {
-        noticeList.textContent = "अभी कोई नई सूचना उपलब्ध नहीं है।";
-        return;
-      }
+      if (snapshot.empty) { noticeList.textContent = "अभी कोई नई सूचना उपलब्ध नहीं है।"; return; }
       snapshot.forEach((doc) => {
-        const data = doc.data();
-        const article = document.createElement("article");
+        const data = doc.data(), article = document.createElement("article");
         article.className = "notice";
         const date = document.createElement("time");
-        date.textContent = data.createdAt
-          ? data.createdAt.toDate().toLocaleDateString("hi-IN")
-          : "नई सूचना";
-        const content = document.createElement("div");
-        const title = document.createElement("b");
+        date.textContent = data.createdAt ? data.createdAt.toDate().toLocaleDateString("hi-IN") : "नई सूचना";
+        const content = document.createElement("div"), title = document.createElement("b");
         title.textContent = data.text || "";
-        content.appendChild(title);
-        article.append(date, content);
+        content.appendChild(title); article.append(date, content);
         if (auth.currentUser && auth.currentUser.uid === ADMIN_UID) {
           const del = document.createElement("button");
-          del.type = "button";
-          del.textContent = "हटाएँ";
+          del.type = "button"; del.textContent = "हटाएँ";
           del.addEventListener("click", async () => {
             if (!confirm("क्या आप यह सूचना हटाना चाहते हैं?")) return;
-            try {
-              await db.collection("notices").doc(doc.id).delete();
-            } catch (e) {
-              alert("सूचना हटाई नहीं जा सकी: " + e.message);
-            }
+            try { await db.collection("notices").doc(doc.id).delete(); }
+            catch (e) { alert("सूचना हटाई नहीं जा सकी: " + e.message); }
           });
           article.appendChild(del);
         }
@@ -162,9 +129,7 @@ async function startSchoolWebsite() {
       });
     }
 
-    db.collection("notices")
-      .orderBy("createdAt", "desc")
-      .limit(30)
+    db.collection("notices").orderBy("createdAt", "desc").limit(30)
       .onSnapshot(renderNotices, (e) => {
         console.error(e);
         if (noticeList) noticeList.textContent = "सूचनाएँ लोड नहीं हो सकीं।";
@@ -174,182 +139,114 @@ async function startSchoolWebsite() {
       if (!studentList) return;
       studentList.innerHTML = "";
       const selected = studentFilter.value;
-      const rows = allStudents.filter(
-        (s) => selected === "all" || s.className === selected
-      );
-      if (!rows.length) {
-        studentList.textContent =
-          "इस कक्षा में अभी कोई विद्यार्थी दर्ज नहीं है।";
-        return;
-      }
+      const rows = allStudents.filter((s) => selected === "all" || s.className === selected);
+      if (!rows.length) { studentList.textContent = "इस कक्षा में अभी कोई विद्यार्थी दर्ज नहीं है।"; return; }
       const table = document.createElement("table");
-      table.style.width = "100%";
-      table.style.borderCollapse = "collapse";
+      table.style.width = "100%"; table.style.borderCollapse = "collapse";
       const head = document.createElement("tr");
-      ["कक्षा", "रोल नं.", "विद्यार्थी का नाम", "अभिभावक", "कार्यवाही"].forEach(
-        (label) => {
-          const th = document.createElement("th");
-          th.textContent = label;
-          th.style.textAlign = "left";
-          th.style.padding = "8px 4px";
-          head.appendChild(th);
-        }
-      );
+      ["कक्षा", "रोल नं.", "विद्यार्थी का नाम", "अभिभावक", "जन्मतिथि", "मोबाइल", "कार्यवाही"].forEach((label) => {
+        const th = document.createElement("th"); th.textContent = label;
+        th.style.textAlign = "left"; th.style.padding = "8px 4px"; head.appendChild(th);
+      });
       table.appendChild(head);
       rows.forEach((s) => {
         const tr = document.createElement("tr");
-        [s.className, s.rollNo, s.name, s.guardianName || "—"].forEach(
-          (value) => {
-            const td = document.createElement("td");
-            td.textContent = value;
-            td.style.padding = "8px 4px";
-            td.style.borderTop = "1px solid #ddd";
-            tr.appendChild(td);
-          }
-        );
-        const action = document.createElement("td");
-        action.style.padding = "8px 4px";
+        [s.className, s.rollNo, s.name, s.guardianName || "—", s.dob || "—", s.mobile || "—"].forEach((value) => {
+          const td = document.createElement("td"); td.textContent = value;
+          td.style.padding = "8px 4px"; td.style.borderTop = "1px solid #ddd"; tr.appendChild(td);
+        });
+        const action = document.createElement("td"); action.style.padding = "8px 4px";
         action.style.borderTop = "1px solid #ddd";
-        const remove = document.createElement("button");
-        remove.type = "button";
-        remove.textContent = "हटाएँ";
+        const remove = document.createElement("button"); remove.type = "button"; remove.textContent = "हटाएँ";
         remove.addEventListener("click", async () => {
           if (!confirm(`क्या ${s.name} का रिकॉर्ड हटाना चाहते हैं?`)) return;
-          try {
-            await db.collection("students").doc(s.id).delete();
-            show(studentMessage, "विद्यार्थी रिकॉर्ड हटा दिया गया।");
-          } catch (e) {
-            show(studentMessage, "रिकॉर्ड नहीं हट सका: " + e.message);
-          }
+          try { await db.collection("students").doc(s.id).delete(); show(studentMessage, "विद्यार्थी रिकॉर्ड हटा दिया गया।"); }
+          catch (e) { show(studentMessage, "रिकॉर्ड नहीं हट सका: " + e.message); }
         });
-        action.appendChild(remove);
-        tr.appendChild(action);
-        table.appendChild(tr);
+        action.appendChild(remove); tr.appendChild(action); table.appendChild(tr);
       });
       studentList.appendChild(table);
     }
 
-    let unsubscribeStudents = null;
     function beginStudentFeed() {
       if (unsubscribeStudents) unsubscribeStudents();
-      unsubscribeStudents = db
-        .collection("students")
-        .orderBy("className")
-        .onSnapshot(
-          (snapshot) => {
-            allStudents = snapshot.docs.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            }));
-            allStudents.sort(
-              (a, b) =>
-                a.className.localeCompare(b.className) ||
-                a.rollNo.localeCompare(b.rollNo, undefined, { numeric: true })
-            );
-            renderStudents();
-          },
-          (error) => {
-            console.error(error);
-            show(
-              studentMessage,
-              "विद्यार्थी सूची लोड नहीं हुई: " + error.message
-            );
-          }
-        );
+      unsubscribeStudents = db.collection("students").orderBy("className").onSnapshot((snapshot) => {
+        allStudents = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        allStudents.sort((a, b) => a.className.localeCompare(b.className) ||
+          String(a.rollNo).localeCompare(String(b.rollNo), undefined, { numeric: true }));
+        renderStudents();
+      }, (error) => {
+        console.error(error); show(studentMessage, "विद्यार्थी सूची लोड नहीं हुई: " + error.message);
+      });
     }
 
     loginBtn.addEventListener("click", async () => {
-      const email = document.getElementById("adminEmail").value.trim();
-      const password = document.getElementById("adminPassword").value;
-      if (!email || !password)
-        return show(loginMessage, "ईमेल और पासवर्ड भरें।");
-      loginBtn.disabled = true;
-      show(loginMessage, "लॉगिन हो रहा है…");
+      const email = el("adminEmail").value.trim(), password = el("adminPassword").value;
+      if (!email || !password) return show(loginMessage, "ईमेल और पासवर्ड भरें।");
+      loginBtn.disabled = true; show(loginMessage, "लॉगिन हो रहा है…");
       try {
         const result = await auth.signInWithEmailAndPassword(email, password);
         if (result.user.uid !== ADMIN_UID) {
-          await auth.signOut();
-          show(loginMessage, "यह अकाउंट अधिकृत स्कूल एडमिन नहीं है।");
+          await auth.signOut(); show(loginMessage, "यह अकाउंट अधिकृत स्कूल एडमिन नहीं है।");
         }
-      } catch (e) {
-        show(loginMessage, "लॉगिन असफल: " + e.message);
-      } finally {
-        loginBtn.disabled = false;
-      }
+      } catch (e) { show(loginMessage, "लॉगिन असफल: " + e.message); }
+      finally { loginBtn.disabled = false; }
     });
 
-    logoutBtn.addEventListener("click", () => auth.signOut());
-
-    addNoticeBtn.addEventListener("click", async () => {
-      const input = document.getElementById("noticeInput");
-      const text = input.value.trim();
+    el("logoutBtn").addEventListener("click", () => auth.signOut());
+    el("addNotice").addEventListener("click", async () => {
+      const input = el("noticeInput"), text = input.value.trim();
       if (!text) return show(adminMessage, "पहले सूचना लिखें।");
-      if (!auth.currentUser || auth.currentUser.uid !== ADMIN_UID)
-        return show(adminMessage, "पहले अधिकृत एडमिन लॉगिन करें।");
-      addNoticeBtn.disabled = true;
+      if (!auth.currentUser || auth.currentUser.uid !== ADMIN_UID) return show(adminMessage, "पहले अधिकृत एडमिन लॉगिन करें।");
+      const button = el("addNotice"); button.disabled = true;
       try {
         await db.collection("notices").add({
-          text,
-          createdBy: auth.currentUser.uid,
+          text, createdBy: auth.currentUser.uid,
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         });
-        input.value = "";
-        show(adminMessage, "सूचना सफलतापूर्वक प्रकाशित हो गई।");
-      } catch (e) {
-        show(adminMessage, "सूचना प्रकाशित नहीं हुई: " + e.message);
-      } finally {
-        addNoticeBtn.disabled = false;
-      }
+        input.value = ""; show(adminMessage, "सूचना सफलतापूर्वक प्रकाशित हो गई।");
+      } catch (e) { show(adminMessage, "सूचना प्रकाशित नहीं हुई: " + e.message); }
+      finally { button.disabled = false; }
     });
 
     saveStudentBtn.addEventListener("click", async () => {
-      const name = document.getElementById("studentName").value.trim();
-      const className = document.getElementById("studentClass").value;
-      const rollNo = document.getElementById("studentRoll").value.trim();
-      const guardianName = document.getElementById("guardianName").value.trim();
-      if (!name || !rollNo)
-        return show(studentMessage, "विद्यार्थी का नाम और रोल नंबर भरें।");
-      if (!auth.currentUser || auth.currentUser.uid !== ADMIN_UID)
-        return show(studentMessage, "पहले अधिकृत एडमिन लॉगिन करें।");
+      const name = el("studentName").value.trim();
+      const className = el("studentClass").value;
+      const rollNo = el("studentRoll").value.trim();
+      const guardianName = el("guardianName").value.trim();
+      const dob = el("studentDob").value;
+      const address = el("studentAddress").value.trim();
+      const mobile = el("studentMobile").value.trim();
+      if (!name || !rollNo) return show(studentMessage, "विद्यार्थी का नाम और रोल नंबर भरें।");
+      if (mobile && !/^[0-9+() -]{8,15}$/.test(mobile)) return show(studentMessage, "कृपया सही मोबाइल नंबर लिखें।");
+      if (!auth.currentUser || auth.currentUser.uid !== ADMIN_UID) return show(studentMessage, "पहले अधिकृत एडमिन लॉगिन करें।");
       saveStudentBtn.disabled = true;
       try {
         await db.collection("students").add({
-          name,
-          className,
-          rollNo,
-          guardianName,
+          name, className, rollNo, guardianName, dob, address, mobile,
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           createdBy: auth.currentUser.uid,
         });
-        document.getElementById("studentName").value = "";
-        document.getElementById("studentRoll").value = "";
-        document.getElementById("guardianName").value = "";
+        ["studentName", "studentRoll", "guardianName", "studentDob", "studentAddress", "studentMobile"]
+          .forEach((id) => { el(id).value = ""; });
         show(studentMessage, "विद्यार्थी सफलतापूर्वक जोड़ दिया गया।");
-      } catch (e) {
-        show(studentMessage, "विद्यार्थी सेव नहीं हुआ: " + e.message);
-      } finally {
-        saveStudentBtn.disabled = false;
-      }
+      } catch (e) { show(studentMessage, "विद्यार्थी सेव नहीं हुआ: " + e.message); }
+      finally { saveStudentBtn.disabled = false; }
     });
 
     studentFilter.addEventListener("change", renderStudents);
-
     auth.onAuthStateChanged((user) => {
       const isAdmin = !!user && user.uid === ADMIN_UID;
-      loginBox.hidden = isAdmin;
-      adminTools.hidden = !isAdmin;
+      loginBox.hidden = isAdmin; adminTools.hidden = !isAdmin;
       if (isAdmin) beginStudentFeed();
       else if (unsubscribeStudents) {
-        unsubscribeStudents();
-        unsubscribeStudents = null;
-        allStudents = [];
+        unsubscribeStudents(); unsubscribeStudents = null; allStudents = [];
+        if (studentList) studentList.innerHTML = "";
       }
     });
   } catch (e) {
     console.error("Website initialization error:", e);
-    if (adminBox)
-      adminBox.innerHTML =
-        "<p>Firebase लोड नहीं हो पाया। इंटरनेट कनेक्शन जाँचकर पेज फिर खोलें।</p>";
+    if (adminBox) adminBox.innerHTML = "<p>Firebase लोड नहीं हो पाया। इंटरनेट कनेक्शन जाँचकर पेज फिर खोलें।</p>";
   }
 }
 startSchoolWebsite();
