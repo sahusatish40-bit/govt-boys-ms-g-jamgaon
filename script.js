@@ -917,6 +917,21 @@ results.forEach(r => {
   r.rank = rank;
   last = r.percent;
 });
+          const presentCount = results.filter(r => r.attendance === "P").length;
+const absentCount = results.filter(r => r.attendance === "A").length;
+
+const passedCount = results.filter(
+  r => r.attendance === "P" && r.percent >= 33
+).length;
+
+const failedCount = presentCount - passedCount;
+
+const averagePercent = presentCount
+  ? results.filter(r => r.attendance === "P")
+      .reduce((sum, r) => sum + r.percent, 0) / presentCount
+  : 0;
+
+const topper = results.find(r => r.attendance === "P");
 
           const w = window.open("", "_blank");
           if (!w) {
