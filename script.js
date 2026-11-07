@@ -590,7 +590,16 @@ el("createExam").onclick = async () => {
         const roll = document.createElement("td");
         roll.textContent = student.rollNo;
         tr.appendChild(roll);
+const attendance = document.createElement("select");
+attendance.innerHTML =
+  '<option value="P">उपस्थित (P)</option>' +
+  '<option value="A">अनुपस्थित (A)</option>';
 
+attendance.value = savedMarks[student.id]?.attendance || "P";
+
+const attendanceTd = document.createElement("td");
+attendanceTd.appendChild(attendance);
+tr.appendChild(attendanceTd);
         exam.subjects.forEach((subject, index) => {
           const td = document.createElement("td");
 
