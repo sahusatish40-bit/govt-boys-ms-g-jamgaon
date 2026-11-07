@@ -932,7 +932,8 @@ results.forEach(r => {
           const body = results.map(r =>
             "<tr><td>" + r.rank + "</td><td>" +
             r.student.rollNo + "</td><td>" +
-            r.student.name + "</td>" +
+            r.student.name + "</td><td>" +
+(r.attendance === "P" ? "उपस्थित" : "अनुपस्थित") + "</td>" +
             r.subjects.map(x =>
   "<td>" + x.obtained + "</td>" +
   "<td>" + x.maximum + "</td>"
