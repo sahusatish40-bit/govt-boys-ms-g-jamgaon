@@ -849,7 +849,103 @@ el("createExam").onclick = async () => {
           alert("रिजल्ट त्रुटि: " + e.message);
         }
       };
+      // पूरी कक्षा की A4 रिजल्ट शीट
+      const classSheetBtn = document.createElement("button");
+      classSheetBtn.textContent = "पूरी कक्षा की रिजल्ट शीट (A4)";
 
+      classSheetBtn.onclick = async () => {
+        try {
+          const snap = await db.collection("exams")
+            .doc(examId).collection("marks").get();
+
+          const saved = {};
+          snap.forEach(d => saved[d.id] = d.data());
+
+          const results = classStudents.map(student => {
+            let obtained = 0, maximum = 0;
+
+            const subjects = exam.subjects.map((sub, i) => {
+              const m = saved[student.id]?.marks?.[i] || {};
+              const total = Number(m.theory || 0) +
+                Number(m.practical || 0);
+              const max = sub.theoryMax + sub.practicalMax;
+              obtained += total;
+              maximum += max;
+              return total + "/" + max;
+            });
+
+            const percent = maximum ? obtained / maximum * 100 : 0;
+            const grade = percent >= 91 ? "A+" :
+              percent >= 81 ? "A" :
+              percent >= 71 ? "B+" :
+              percent >= 61 ? "B" :
+              percent >= 51 ? "C+" :
+              percent >= 41 ? "C" :
+              percent >= 33 ? "D" : "E";
+
+            return { student, subjects, obtained, maximum, percent, grade };
+          });
+
+          results.sort((a, b) => b.percent - a.percent);
+
+          let rank = 0, last = -1;
+          results.forEach((r, i) => {
+            if (r.percent !== last) rank = i + 1;
+            r.rank = rank;
+            last = r.percent;
+          });
+
+          const w = window.open("", "_blank");
+          if (!w) {
+            alert("Pop-up की अनुमति दें।");
+            return;
+          }
+
+          const headers = exam.subjects.map(s =>
+            "<th>" + s.name + "</th>"
+          ).join("");
+
+          const body = results.map(r =>
+            "<tr><td>" + r.rank + "</td><td>" +
+            r.student.rollNo + "</td><td>" +
+            r.student.name + "</td>" +
+            r.subjects.map(x => "<td>" + x + "</td>").join("") +
+            "<td>" + r.obtained + "/" + r.maximum +
+            "</td><td>" + r.percent.toFixed(2) +
+            "%</td><td>" + r.grade + "</td></tr>"
+          ).join("");
+
+          w.document.write(
+            "<html><head><meta charset='UTF-8'>" +
+            "<title>कक्षा रिजल्ट</title>" +
+            "<style>@page{size:A4 landscape;margin:10mm}" +
+            "body{font-family:Arial}h2,p{text-align:center}" +
+            "table{width:100%;border-collapse:collapse;font-size:10px}" +
+            "th,td{border:1px solid;padding:5px;text-align:center}" +
+            ".sign{display:flex;justify-content:space-between;margin-top:50px}" +
+            "</style></head><body>" +
+            "<h2>शासकीय उच्चतर माध्यमिक विद्यालय जी- जामगाँव (बालक माध्य.)</h2>" +
+            "<p>वि.ख. कुरुद, जिला धमतरी (छ.ग.)</p>" +
+            "<h2>सामूहिक परीक्षा परिणाम 2026-27</h2>" +
+            "<p>परीक्षा: " + exam.title + " | कक्षा: " +
+            exam.className + "</p>" +
+            "<table><tr><th>रैंक</th><th>रोल नं.</th>" +
+            "<th>विद्यार्थी</th>" + headers +
+            "<th>प्राप्तांक</th><th>प्रतिशत</th><th>ग्रेड</th></tr>" +
+            body + "</table>" +
+            "<div class='sign'><span>कक्षा शिक्षक</span>" +
+            "<span>प्रधानपाठक</span></div>" +
+            "<script>window.onload=function(){window.print()}<\\/script>" +
+            "</body></html>"
+          );
+
+          w.document.close();
+        } catch (e) {
+          alert("रिजल्ट त्रुटि: " + e.message);
+        }
+      };
+
+      area.appendChild(classSheetBtn);
       area.appendChild(resultBtn);});
 
     el("loginBtn").onclick = async () => {
