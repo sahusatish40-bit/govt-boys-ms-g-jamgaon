@@ -898,7 +898,24 @@ tr.appendChild(attendanceTd);
 return { student, subjects, obtained, maximum, percent, grade, attendance };
           });
 
-          results.sort((a, b) => b.percent - a.percent);
+          results.sort((a, b) =>
+  (a.attendance === "A") - (b.attendance === "A") ||
+  b.percent - a.percent
+);
+
+let rank = 0;
+let last = -1;
+
+results.forEach(r => {
+  if (r.attendance === "A") {
+    r.rank = "—";
+    return;
+  }
+
+  if (r.percent !== last) rank++;
+  r.rank = rank;
+  last = r.percent;
+});
 
           let rank = 0, last = -1;
           results.forEach((r, i) => {
