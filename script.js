@@ -973,6 +973,21 @@ const topper = results.find(r => r.attendance === "P");
             "<h2>सामूहिक परीक्षा परिणाम 2026-27</h2>" +
             "<p>परीक्षा: " + exam.title + " | कक्षा: " +
             exam.className + "</p>" +
+            const presentCount = results.filter(r => r.attendance === "P").length;
+const absentCount = results.filter(r => r.attendance === "A").length;
+
+const passedCount = results.filter(
+  r => r.attendance === "P" && r.percent >= 33
+).length;
+
+const failedCount = presentCount - passedCount;
+
+const averagePercent = presentCount
+  ? results.filter(r => r.attendance === "P")
+      .reduce((sum, r) => sum + r.percent, 0) / presentCount
+  : 0;
+
+const topper = results.find(r => r.attendance === "P");
             "<table><tr><th>रैंक</th><th>रोल नं.</th>" +
             "<th>विद्यार्थी</th><th>उपस्थिति</th>" + headers +
             "<th>कुल प्राप्तांक</th><th>कुल पूर्णांक</th>" +
