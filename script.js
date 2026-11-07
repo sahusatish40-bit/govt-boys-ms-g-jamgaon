@@ -554,7 +554,7 @@ el("createExam").onclick = async () => {
 
       const head = document.createElement("tr");
 
-      ["विद्यार्थी", "रोल नंबर", ...exam.subjects.map(s =>
+      ["विद्यार्थी", "रोल नंबर", "उपस्थिति", ...exam.subjects.map(s =>
         s.name + " (" + (s.theoryMax + s.practicalMax) + ")"
       )].forEach(x => {
         const th = document.createElement("th");
