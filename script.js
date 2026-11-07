@@ -433,8 +433,97 @@ async function startSchoolWebsite() {
           if (
             !p[0] ||
             p.length < 2 ||
-            !Number
-               // चुनी गई परीक्षा के अंक भरना
+            .isFinite(theoryMax) ||
+!Number.isFinite(practicalMax) ||
+theoryMax < 0 ||
+practicalMax < 0 ||
+theoryMax + practicalMax <= 0
+) {
+  throw Error("विषय की पंक्ति ऐसे लिखें: हिंदी,20,5");
+}
+
+return {
+  name: p[0],
+  theoryMax,
+  practicalMax
+};
+});
+}
+
+// परीक्षा सूची लोड करना
+async function loadExams() {
+  if (auth.currentUser?.uid !== ADMIN_UID) return;
+
+  try {
+    const snap = await db.collection("exams")
+      .orderBy("createdAt", "desc")
+      .get();
+
+    exams = snap.docs.map(d => ({
+      id: d.id,
+      ...d.data()
+    }));
+
+    el("examSelect").innerHTML =
+      '<option value="">परीक्षा चुनें</option>';
+
+    exams.forEach(x => {
+      const o = document.createElement("option");
+      o.value = x.id;
+      o.textContent = x.title + " — कक्षा " + x.className;
+      el("examSelect").appendChild(o);
+    });
+
+  } catch (e) {
+    show(el("examMessage"), "परीक्षा सूची नहीं खुली: " + e.message);
+  }
+}
+
+// नई परीक्षा बनाना
+el("createExam").onclick = async () => {
+  const title = el("examTitle").value.trim();
+
+  if (!title) {
+    return show(el("examMessage"), "परीक्षा का नाम लिखें।");
+  }
+
+  let subjects;
+
+  try {
+    subjects = parseSubjects();
+  } catch (e) {
+    return show(el("examMessage"), e.message);
+  }
+
+  if (!subjects.length) {
+    return show(el("examMessage"), "कम से कम एक विषय जोड़ें।");
+  }
+
+  const b = el("createExam");
+  b.disabled = true;
+
+  try {
+    await db.collection("exams").add({
+      title,
+      className: el("examClass").value,
+      session: "2026-27",
+      subjects,
+      createdBy: auth.currentUser.uid,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    el("examTitle").value = "";
+    el("examSubjects").value = "";
+
+    show(el("examMessage"), "परीक्षा बन गई।");
+    await loadExams();
+
+  } catch (e) {
+    show(el("examMessage"), "परीक्षा सेव नहीं हुई: " + e.message);
+  } finally {
+    b.disabled = false;
+  }
+};
     el("examSelect").addEventListener("change", async () => {
       const examId = el("examSelect").value;
       const area = el("examMarksArea");
