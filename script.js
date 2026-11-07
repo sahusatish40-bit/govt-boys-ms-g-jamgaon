@@ -654,6 +654,7 @@ tr.appendChild(attendanceTd);
 
           for (const row of table.querySelectorAll("tr[data-student-id]")) {
             const studentId = row.dataset.studentId;
+            const attendance = row.querySelector("select").value;
             const marks = [];
 
             for (const td of row.querySelectorAll("td[data-subject-index]")) {
