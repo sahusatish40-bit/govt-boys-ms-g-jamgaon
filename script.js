@@ -958,7 +958,7 @@ results.forEach(r => {
             "<p>परीक्षा: " + exam.title + " | कक्षा: " +
             exam.className + "</p>" +
             "<table><tr><th>रैंक</th><th>रोल नं.</th>" +
-            "<th>विद्यार्थी</th>" + headers +
+            "<th>विद्यार्थी</th><th>उपस्थिति</th>" + headers +
             "<th>कुल प्राप्तांक</th><th>कुल पूर्णांक</th>" +
 "<th>प्रतिशत</th><th>ग्रेड</th></tr>" +
             body + "</table>" +
