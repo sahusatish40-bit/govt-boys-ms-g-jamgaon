@@ -973,7 +973,17 @@ const topper = results.find(r => r.attendance === "P");
             "<h2>सामूहिक परीक्षा परिणाम 2026-27</h2>" +
             "<p>परीक्षा: " + exam.title + " | कक्षा: " +
             exam.className + "</p>" +
-            
+            "<p>कुल विद्यार्थी: " + results.length +
+" | उपस्थित: " + presentCount +
+" | अनुपस्थित: " + absentCount +
+" | उत्तीर्ण: " + passedCount +
+" | अनुत्तीर्ण: " + failedCount +
+" | औसत प्रतिशत: " + averagePercent.toFixed(2) +
+"%</p>" +
+(topper
+  ? "<p>कक्षा टॉपर: " + topper.student.name +
+    " (" + topper.percent.toFixed(2) + "%)</p>"
+  : "") +
             "<table><tr><th>रैंक</th><th>रोल नं.</th>" +
             "<th>विद्यार्थी</th><th>उपस्थिति</th>" + headers +
             "<th>कुल प्राप्तांक</th><th>कुल पूर्णांक</th>" +
