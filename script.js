@@ -705,3 +705,23 @@ async function startSchoolWebsite() {
         adminTools.hidden = true;
 
         if (stopStudents)
+{
+  stopStudents();
+  stopStudents = null;
+}
+      }
+    });
+
+  } catch (e) {
+    console.error("School Website Error:", e);
+
+    if (adminBox) {
+      adminBox.innerHTML =
+        "<p style='color:red'>लोडिंग में त्रुटि: " +
+        e.message +
+        "</p>";
+    }
+  }
+}
+
+startSchoolWebsite();
