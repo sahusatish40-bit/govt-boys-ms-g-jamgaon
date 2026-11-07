@@ -433,7 +433,7 @@ async function startSchoolWebsite() {
           if (
             !p[0] ||
             p.length < 2 ||
-            .isFinite(theoryMax) ||
+            !Number.isFinite(theoryMax) ||
 !Number.isFinite(practicalMax) ||
 theoryMax < 0 ||
 practicalMax < 0 ||
