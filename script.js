@@ -698,8 +698,7 @@ el("createExam").onclick = async () => {
       };
 
       area.appendChild(saveButton);
-         // रिजल्ट और मार्कशीट
-      const area = el("examMarksArea");
+         // रिजल्ट और मार्कशीट 
       const resultBtn = document.createElement("button");
       resultBtn.textContent = "रिजल्ट / मार्कशीट देखें";
 
