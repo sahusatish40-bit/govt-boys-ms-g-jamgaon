@@ -698,7 +698,159 @@ el("createExam").onclick = async () => {
       };
 
       area.appendChild(saveButton);
-    });
+    });      // रिजल्ट और मार्कशीट
+      const resultBtn = document.createElement("button");
+      resultBtn.textContent = "रिजल्ट / मार्कशीट देखें";
+
+      resultBtn.onclick = async () => {
+        try {
+          const snap = await db.collection("exams")
+            .doc(examId).collection("marks").get();
+
+          const data = {};
+          snap.forEach(d => data[d.id] = d.data());
+
+          const results = classStudents.map(student => {
+            const saved = data[student.id] || {};
+            let obtained = 0;
+            let maximum = 0;
+
+            const rows = exam.subjects.map((sub, i) => {
+              const m = saved.marks?.[i] || {};
+              const theory = Number(m.theory || 0);
+              const practical = Number(m.practical || 0);
+              const total = theory + practical;
+              const max = sub.theoryMax + sub.practicalMax;
+
+              obtained += total;
+              maximum += max;
+
+              return {
+                name: sub.name,
+                theory,
+                practical,
+                total,
+                max,
+                theoryMax: sub.theoryMax,
+                practicalMax: sub.practicalMax
+              };
+            });
+
+            const percent = maximum ? obtained / maximum * 100 : 0;
+
+            const grade = percent >= 91 ? "A+" :
+              percent >= 81 ? "A" :
+              percent >= 71 ? "B+" :
+              percent >= 61 ? "B" :
+              percent >= 51 ? "C+" :
+              percent >= 41 ? "C" :
+              percent >= 33 ? "D" : "E";
+
+            return {
+              student, rows, obtained, maximum, percent, grade
+            };
+          });
+
+          const box = document.createElement("div");
+          box.innerHTML = "<h3>कक्षा " + exam.className +
+            " — " + exam.title + " का रिजल्ट</h3>";
+
+          const table = document.createElement("table");
+          table.style.cssText =
+            "width:100%;border-collapse:collapse;min-width:600px";
+
+          table.innerHTML =
+            "<tr><th>रोल नं.</th><th>विद्यार्थी</th>" +
+            "<th>प्राप्तांक</th><th>पूर्णांक</th>" +
+            "<th>प्रतिशत</th><th>ग्रेड</th><th>मार्कशीट</th></tr>";
+
+          results.forEach(r => {
+            const tr = document.createElement("tr");
+
+            [
+              r.student.rollNo,
+              r.student.name,
+              r.obtained,
+              r.maximum,
+              r.percent.toFixed(2) + "%",
+              r.grade
+            ].forEach(v => {
+              const td = document.createElement("td");
+              td.textContent = v;
+              tr.appendChild(td);
+            });
+
+            const td = document.createElement("td");
+            const btn = document.createElement("button");
+            btn.textContent = "PDF / Print";
+
+            btn.onclick = () => {
+              const w = window.open("", "_blank");
+              if (!w) {
+                alert("Pop-up अनुमति दें।");
+                return;
+              }
+
+              const subjectRows = r.rows.map(m =>
+                "<tr><td>" + m.name + "</td><td>" +
+                m.theory + "/" + m.theoryMax +
+                "</td><td>" + m.practical + "/" +
+                m.practicalMax + "</td><td>" +
+                m.total + "/" + m.max + "</td></tr>"
+              ).join("");
+
+              w.document.write(
+                "<html><head><meta charset='UTF-8'>" +
+                "<title>अंकसूची</title>" +
+                "<style>body{font-family:Arial;padding:20px}" +
+                "h2,p{text-align:center}" +
+                "table{width:100%;border-collapse:collapse;margin-top:20px}" +
+                "td,th{border:1px solid;padding:8px;text-align:center}" +
+                ".sign{margin-top:70px;display:flex;" +
+                "justify-content:space-between}</style></head><body>" +
+
+                "<h2>शासकीय उच्चतर माध्यमिक विद्यालय जी- जामगाँव (बालक माध्य.)</h2>" +
+                "<p>वि.ख. कुरुद, जिला धमतरी (छ.ग.)</p>" +
+                "<h2>अंकसूची सत्र 2026-27</h2>" +
+                "<p>परीक्षा: " + exam.title + "</p>" +
+                "<p>कक्षा: " + exam.className +
+                " | रोल नंबर: " + r.student.rollNo + "</p>" +
+                "<p>विद्यार्थी: " + r.student.name + "</p>" +
+
+                "<table><tr><th>विषय</th><th>थ्योरी</th>" +
+                "<th>प्रायोगिक</th><th>कुल</th></tr>" +
+                subjectRows + "</table>" +
+
+                "<h3>कुल अंक: " + r.obtained + "/" + r.maximum + "</h3>" +
+                "<h3>प्रतिशत: " + r.percent.toFixed(2) +
+                "% | ग्रेड: " + r.grade + "</h3>" +
+
+                "<div class='sign'><span>कक्षा शिक्षक</span>" +
+                "<span>प्रधानपाठक</span></div>" +
+                "<script>window.onload=function(){window.print()}<\/script>" +
+                "</body></html>"
+              );
+
+              w.document.close();
+            };
+
+            td.appendChild(btn);
+            tr.appendChild(td);
+            table.appendChild(tr);
+          });
+
+          box.appendChild(table);
+          const old = area.querySelector(".resultBox");
+          if (old) old.remove();
+          box.className = "resultBox";
+          area.appendChild(box);
+
+        } catch (e) {
+          alert("रिजल्ट त्रुटि: " + e.message);
+        }
+      };
+
+      area.appendChild(resultBtn);
 
     el("loginBtn").onclick = async () => {
       const email = el("adminEmail").value.trim();
