@@ -690,6 +690,7 @@ tr.appendChild(attendanceTd);
 
             batch.set(ref, {
               studentId,
+              attendance,
               marks,
               updatedBy: auth.currentUser.uid,
               updatedAt: firebase.firestore.FieldValue.serverTimestamp()
