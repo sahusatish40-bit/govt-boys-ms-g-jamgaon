@@ -521,3 +521,187 @@ async function startSchoolWebsite() {
           practical.max = subject.practicalMax;
           practical.placeholder = "प्रैक्टिकल";
           practical.value = old.practical ??
+            "";
+          practical.style.width = "75px";
+
+          td.appendChild(theory);
+
+          if (subject.practicalMax > 0) {
+            td.appendChild(practical);
+          }
+
+          td.dataset.subjectIndex = index;
+          td.appendChild(document.createElement("br"));
+
+          tr.appendChild(td);
+        });
+
+        tr.dataset.studentId = student.id;
+        table.appendChild(tr);
+      });
+
+      const wrapper = document.createElement("div");
+      wrapper.style.overflowX = "auto";
+      wrapper.appendChild(table);
+      area.appendChild(wrapper);
+
+      const saveButton = document.createElement("button");
+      saveButton.textContent = "सभी अंक सेव करें";
+
+      saveButton.onclick = async () => {
+        saveButton.disabled = true;
+
+        try {
+          const batch = db.batch();
+
+          for (const row of table.querySelectorAll("tr[data-student-id]")) {
+            const studentId = row.dataset.studentId;
+            const marks = [];
+
+            for (const td of row.querySelectorAll("td[data-subject-index]")) {
+              const index = Number(td.dataset.subjectIndex);
+              const subject = exam.subjects[index];
+              const inputs = td.querySelectorAll("input");
+
+              const theory = Number(inputs[0].value || 0);
+              const practical = subject.practicalMax > 0
+                ? Number(inputs[1].value || 0)
+                : 0;
+
+              if (
+                theory < 0 ||
+                theory > subject.theoryMax ||
+                practical < 0 ||
+                practical > subject.practicalMax
+              ) {
+                throw Error("अंक पूर्णांक से अधिक नहीं हो सकते।");
+              }
+
+              marks.push({
+                theory,
+                practical,
+                total: theory + practical
+              });
+            }
+
+            const ref = db.collection("exams")
+              .doc(examId)
+              .collection("marks")
+              .doc(studentId);
+
+            batch.set(ref, {
+              studentId,
+              marks,
+              updatedBy: auth.currentUser.uid,
+              updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+          }
+
+          await batch.commit();
+          show(el("examMessage"), "सभी अंक सफलतापूर्वक सेव हो गए।");
+          alert("अंक सेव हो गए।");
+
+        } catch (e) {
+          alert("अंक सेव नहीं हुए: " + e.message);
+        } finally {
+          saveButton.disabled = false;
+        }
+      };
+
+      area.appendChild(saveButton);
+    });
+
+    el("loginBtn").onclick = async () => {
+      const email = el("adminEmail").value.trim();
+      const password = el("adminPassword").value;
+
+      if (!email || !password) {
+        return show(loginMessage, "ईमेल और पासवर्ड भरें।");
+      }
+
+      try {
+        await auth.signInWithEmailAndPassword(email, password);
+      } catch (e) {
+        show(loginMessage, "Login Error: " + e.message);
+      }
+    };
+
+    el("logoutBtn").onclick = () => auth.signOut();
+
+    el("addNotice").onclick = async () => {
+      const text = el("noticeInput").value.trim();
+
+      if (!text) {
+        return show(adminMessage, "सूचना लिखें।");
+      }
+
+      try {
+        await db.collection("notices").add({
+          text,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          createdBy: auth.currentUser.uid
+        });
+
+        el("noticeInput").value = "";
+        show(adminMessage, "सूचना प्रकाशित हो गई।");
+
+      } catch (e) {
+        show(adminMessage, "Error: " + e.message);
+      }
+    };
+
+    el("saveStudent").onclick = async () => {
+      const name = el("studentName").value.trim();
+      const className = el("studentClass").value;
+      const rollNo = el("studentRoll").value.trim();
+
+      if (!name || !rollNo) {
+        return show(studentMessage, "नाम और रोल नंबर आवश्यक हैं।");
+      }
+
+      try {
+        await db.collection("students").add({
+          name,
+          className,
+          rollNo,
+          guardianName: el("guardianName").value.trim(),
+          dob: el("studentDob").value,
+          address: el("studentAddress").value.trim(),
+          mobile: el("studentMobile").value.trim(),
+          createdBy: auth.currentUser.uid,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        [
+          "studentName",
+          "studentRoll",
+          "guardianName",
+          "studentDob",
+          "studentAddress",
+          "studentMobile"
+        ].forEach(id => el(id).value = "");
+
+        show(studentMessage, "विद्यार्थी जोड़ दिया गया।");
+
+      } catch (e) {
+        show(studentMessage, "Error: " + e.message);
+      }
+    };
+
+    auth.onAuthStateChanged(async user => {
+      if (user && user.uid === ADMIN_UID) {
+        loginBox.hidden = true;
+        adminTools.hidden = false;
+        beginStudentFeed();
+        await loadExams();
+
+      } else {
+        if (user) {
+          await auth.signOut();
+          show(loginMessage, "आपको एडमिन की अनुमति नहीं है।");
+        }
+
+        loginBox.hidden = false;
+        adminTools.hidden = true;
+
+        if (stopStudents)
