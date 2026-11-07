@@ -894,7 +894,8 @@ tr.appendChild(attendanceTd);
               percent >= 41 ? "C" :
               percent >= 33 ? "D" : "E";
 
-            return { student, subjects, obtained, maximum, percent, grade };
+            const attendance = saved[student.id]?.attendance || "P";
+return { student, subjects, obtained, maximum, percent, grade, attendance };
           });
 
           results.sort((a, b) => b.percent - a.percent);
