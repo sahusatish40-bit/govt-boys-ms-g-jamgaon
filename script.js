@@ -698,7 +698,7 @@ el("createExam").onclick = async () => {
       };
 
       area.appendChild(saveButton);
-    });      // रिजल्ट और मार्कशीट
+         // रिजल्ट और मार्कशीट
       const resultBtn = document.createElement("button");
       resultBtn.textContent = "रिजल्ट / मार्कशीट देखें";
 
@@ -850,7 +850,7 @@ el("createExam").onclick = async () => {
         }
       };
 
-      area.appendChild(resultBtn);
+      area.appendChild(resultBtn);});
 
     el("loginBtn").onclick = async () => {
       const email = el("adminEmail").value.trim();
