@@ -1257,6 +1257,7 @@ const topper = results.find(r => r.attendance === "P");
         loginBox.hidden = true;
         adminTools.hidden = false;
         beginStudentFeed();
+beginTeacherFeed();
         await loadExams();
 
       } else {
