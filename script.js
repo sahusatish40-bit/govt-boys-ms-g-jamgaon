@@ -1273,6 +1273,10 @@ const topper = results.find(r => r.attendance === "P");
   stopStudents();
   stopStudents = null;
 }
+if (stopTeachers) {
+  stopTeachers();
+  stopTeachers = null;
+}
       }
     });
 
