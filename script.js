@@ -536,16 +536,27 @@ function renderTeachers() {
   });
 }
 
-db.collection("teachers").orderBy("name").onSnapshot(
-  snap => {
-    teachers = snap.docs.map(d => ({
-      id: d.id,
-      ...d.data()
-    }));
-    renderTeachers();
-  },
-  e => show(teacherMessage, "सूची लोड नहीं हुई: " + e.message)
-);
+let stopTeachers = null;
+
+function beginTeacherFeed() {
+  if (stopTeachers) stopTeachers();
+
+  stopTeachers = db.collection("teachers")
+    .orderBy("name")
+    .onSnapshot(
+      snap => {
+        teachers = snap.docs.map(d => ({
+          id: d.id,
+          ...d.data()
+        }));
+        renderTeachers();
+      },
+      e => show(
+        teacherMessage,
+        "शिक्षक सूची लोड नहीं हुई: " + e.message
+      )
+    );
+}
 
 el("saveTeacher").onclick = async () => {
   const name = el("teacherName").value.trim();
