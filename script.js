@@ -145,6 +145,40 @@ async function startSchoolWebsite() {
 
           <div id="studentList"></div>
 
+<hr>
+
+<section id="teacherManagement">
+  <h3>👨‍🏫 शिक्षक प्रबंधन</h3>
+
+  <label>शिक्षक का नाम *</label>
+  <input id="teacherName" maxlength="80"
+    placeholder="शिक्षक का पूरा नाम">
+
+  <label>पद</label>
+  <input id="teacherPost" maxlength="80"
+    placeholder="जैसे व्याख्याता / शिक्षक">
+
+  <label>विषय</label>
+  <input id="teacherSubject" maxlength="80"
+    placeholder="जैसे हिंदी / अंग्रेजी / गणित">
+
+  <label>मोबाइल नंबर</label>
+  <input id="teacherMobile" type="tel"
+    maxlength="15" placeholder="मोबाइल नंबर">
+
+  <label>फोटो लिंक (वैकल्पिक)</label>
+  <input id="teacherPhoto" type="url"
+    placeholder="फोटो का URL">
+
+  <button id="saveTeacher" type="button">
+    शिक्षक जोड़ें
+  </button>
+
+  <p id="teacherMessage"></p>
+
+  <h3>शिक्षकों की सूची</h3>
+  <div id="teacherList"></div>
+</section>
           <hr>
 
           <section>
