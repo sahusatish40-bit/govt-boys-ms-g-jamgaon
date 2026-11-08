@@ -452,6 +452,132 @@ async function startSchoolWebsite() {
 
     studentFilter.addEventListener("change", renderStudents);
 
+// शिक्षक प्रबंधन: सूची, जोड़ना, एडिट और डिलीट
+
+const teacherList = el("teacherList");
+const teacherMessage = el("teacherMessage");
+
+let teachers = [];
+
+function renderTeachers() {
+  teacherList.innerHTML = "";
+
+  if (!teachers.length) {
+    teacherList.textContent = "अभी कोई शिक्षक दर्ज नहीं है।";
+    return;
+  }
+
+  teachers.forEach(t => {
+    const box = document.createElement("div");
+    box.style.cssText =
+      "border:1px solid #ccc;padding:10px;margin:8px 0;border-radius:8px";
+
+    const info = document.createElement("p");
+    info.textContent =
+      t.name + " | " + (t.post || "—") +
+      " | " + (t.subject || "—") +
+      " | " + (t.mobile || "—");
+
+    const edit = document.createElement("button");
+    edit.textContent = "Edit";
+
+    edit.onclick = async () => {
+      const name = prompt("शिक्षक का नाम", t.name);
+      if (name === null) return;
+
+      const post = prompt("पद", t.post || "");
+      if (post === null) return;
+
+      const subject = prompt("विषय", t.subject || "");
+      if (subject === null) return;
+
+      const mobile = prompt("मोबाइल नंबर", t.mobile || "");
+      if (mobile === null) return;
+
+      const photo = prompt("फोटो लिंक", t.photo || "");
+      if (photo === null) return;
+
+      if (!name.trim()) {
+        alert("शिक्षक का नाम आवश्यक है।");
+        return;
+      }
+
+      try {
+        await db.collection("teachers").doc(t.id).update({
+          name: name.trim(),
+          post: post.trim(),
+          subject: subject.trim(),
+          mobile: mobile.trim(),
+          photo: photo.trim()
+        });
+
+        show(teacherMessage, "शिक्षक की जानकारी अपडेट हो गई।");
+      } catch (e) {
+        show(teacherMessage, "त्रुटि: " + e.message);
+      }
+    };
+
+    const del = document.createElement("button");
+    del.textContent = "हटाएँ";
+
+    del.onclick = async () => {
+      if (!confirm("क्या इस शिक्षक का रिकॉर्ड हटाना चाहते हैं?")) return;
+
+      try {
+        await db.collection("teachers").doc(t.id).delete();
+        show(teacherMessage, "शिक्षक का रिकॉर्ड हटा दिया गया।");
+      } catch (e) {
+        show(teacherMessage, "त्रुटि: " + e.message);
+      }
+    };
+
+    box.append(info, edit, del);
+    teacherList.appendChild(box);
+  });
+}
+
+db.collection("teachers").orderBy("name").onSnapshot(
+  snap => {
+    teachers = snap.docs.map(d => ({
+      id: d.id,
+      ...d.data()
+    }));
+    renderTeachers();
+  },
+  e => show(teacherMessage, "सूची लोड नहीं हुई: " + e.message)
+);
+
+el("saveTeacher").onclick = async () => {
+  const name = el("teacherName").value.trim();
+
+  if (!name) {
+    return show(teacherMessage, "शिक्षक का नाम लिखें।");
+  }
+
+  try {
+    await db.collection("teachers").add({
+      name,
+      post: el("teacherPost").value.trim(),
+      subject: el("teacherSubject").value.trim(),
+      mobile: el("teacherMobile").value.trim(),
+      photo: el("teacherPhoto").value.trim(),
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      createdBy: auth.currentUser.uid
+    });
+
+    [
+      "teacherName",
+      "teacherPost",
+      "teacherSubject",
+      "teacherMobile",
+      "teacherPhoto"
+    ].forEach(id => el(id).value = "");
+
+    show(teacherMessage, "शिक्षक सफलतापूर्वक जोड़ दिया गया।");
+  } catch (e) {
+    show(teacherMessage, "सेव नहीं हुआ: " + e.message);
+  }
+};
     // विषय और पूर्णांक पढ़ना
     function parseSubjects() {
       return el("examSubjects").value
