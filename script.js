@@ -492,6 +492,91 @@ await loadFirebase(
 
     studentFilter.addEventListener("change", renderStudents);
 
+// मुख्य Admin के लिए निजी विद्यार्थी विवरण
+el("loadPrivateStudents").onclick = async () => {
+  const message = el("privateStudentMessage");
+  const list = el("privateStudentList");
+  const btn = el("loadPrivateStudents");
+
+  if (!auth.currentUser || auth.currentUser.uid !== ADMIN_UID) {
+    return show(message, "केवल मुख्य Admin यह जानकारी देख सकता है।");
+  }
+
+  btn.disabled = true;
+  list.innerHTML = "";
+  show(message, "निजी विवरण लोड हो रहे हैं...");
+
+  try {
+    const [publicSnap, privateSnap] = await Promise.all([
+      db.collection("students_public").get(),
+      db.collection("students_private").get()
+    ]);
+
+    const publicMap = {};
+    publicSnap.forEach(doc => {
+      publicMap[doc.id] = doc.data();
+    });
+
+    if (privateSnap.empty) {
+      show(message, "कोई निजी विवरण उपलब्ध नहीं है।");
+      return;
+    }
+
+    privateSnap.forEach(doc => {
+      const p = doc.data();
+      const s = publicMap[doc.id] || {};
+
+      const card = document.createElement("div");
+      card.style.cssText =
+        "border:1px solid #bbb;padding:12px;margin:10px 0;border-radius:8px";
+
+      const heading = document.createElement("h4");
+      heading.textContent =
+        (s.name || "नाम उपलब्ध नहीं") +
+        " | कक्षा " + (s.className || "—") +
+        " | रोल नं. " + (s.rollNo || "—");
+      card.appendChild(heading);
+
+      const fields = [
+        ["पिता का नाम", p.guardianName],
+        ["माता का नाम", p.motherName],
+        ["जाति", p.caste],
+        ["प्रवेश क्रमांक", p.admissionNo],
+        ["प्रवेश दिनांक", p.admissionDate],
+        ["जन्मतिथि", p.dob],
+        ["मोबाइल", p.mobile],
+        ["ग्राम", p.village],
+        ["छात्रवृत्ति", p.scholarship],
+        ["श्रम कार्ड", p.shramCard],
+        ["जाति प्रमाण पत्र", p.casteCertificate],
+        ["निवास प्रमाण पत्र", p.domicile],
+        ["PEN नंबर", p.penNo],
+        ["APAAR ID", p.apaarId]
+      ];
+
+      fields.forEach(([label, value]) => {
+        const row = document.createElement("p");
+        row.textContent = label + ": " + (value || "—");
+        card.appendChild(row);
+      });
+
+      list.appendChild(card);
+    });
+
+    show(
+      message,
+      "कुल " + privateSnap.size + " विद्यार्थियों का निजी विवरण उपलब्ध है।"
+    );
+
+  } catch (error) {
+    console.error("Private Student Error:", error);
+    show(message, "विवरण लोड नहीं हुए: " + error.message);
+  } finally {
+    btn.disabled = false;
+  }
+};
+
+
 // Excel विद्यार्थी डेटा Preview
 let excelStudentData = [];
 
