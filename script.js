@@ -511,10 +511,69 @@ await loadFirebase(
 
     studentFilter.addEventListener("change", renderStudents);
 
+
 // मुख्य Admin के लिए निजी विद्यार्थी विवरण
+let privateStudentRecords = [];
+
+function renderPrivateStudents() {
+  const list = el("privateStudentList");
+  const search = el("privateStudentSearch");
+  const classFilter = el("privateClassFilter");
+
+  if (!list) return;
+
+  list.innerHTML = "";
+
+  const query = (search.value || "").trim().toLowerCase();
+  const selectedClass = classFilter.value;
+
+  const filtered = privateStudentRecords.filter(item => {
+    const name = (item.name || "").toLowerCase();
+
+    const matchName = name.includes(query);
+    const matchClass =
+      selectedClass === "all" ||
+      item.className === selectedClass;
+
+    return matchName && matchClass;
+  });
+
+  if (!filtered.length) {
+    list.textContent = "कोई विद्यार्थी नहीं मिला।";
+    return;
+  }
+
+  filtered.forEach(item => {
+    const card = document.createElement("div");
+    card.style.cssText =
+      "border:1px solid #bbb;padding:12px;margin:10px 0;border-radius:8px";
+
+    const heading = document.createElement("h4");
+    heading.textContent =
+      item.name + " | कक्षा " + item.className +
+      " | रोल नं. " + item.rollNo;
+    card.appendChild(heading);
+
+    item.fields.forEach(([label, value]) => {
+      const row = document.createElement("p");
+      row.textContent = label + ": " + (value || "—");
+      card.appendChild(row);
+    });
+
+    list.appendChild(card);
+  });
+}
+
+el("privateStudentSearch").addEventListener(
+  "input", renderPrivateStudents
+);
+
+el("privateClassFilter").addEventListener(
+  "change", renderPrivateStudents
+);
+
 el("loadPrivateStudents").onclick = async () => {
   const message = el("privateStudentMessage");
-  const list = el("privateStudentList");
   const btn = el("loadPrivateStudents");
 
   if (!auth.currentUser || auth.currentUser.uid !== ADMIN_UID) {
@@ -522,7 +581,6 @@ el("loadPrivateStudents").onclick = async () => {
   }
 
   btn.disabled = true;
-  list.innerHTML = "";
   show(message, "निजी विवरण लोड हो रहे हैं...");
 
   try {
@@ -536,64 +594,51 @@ el("loadPrivateStudents").onclick = async () => {
       publicMap[doc.id] = doc.data();
     });
 
-    if (privateSnap.empty) {
-      show(message, "कोई निजी विवरण उपलब्ध नहीं है।");
-      return;
-    }
+    privateStudentRecords = [];
 
     privateSnap.forEach(doc => {
       const p = doc.data();
       const s = publicMap[doc.id] || {};
 
-      const card = document.createElement("div");
-      card.style.cssText =
-        "border:1px solid #bbb;padding:12px;margin:10px 0;border-radius:8px";
-
-      const heading = document.createElement("h4");
-      heading.textContent =
-        (s.name || "नाम उपलब्ध नहीं") +
-        " | कक्षा " + (s.className || "—") +
-        " | रोल नं. " + (s.rollNo || "—");
-      card.appendChild(heading);
-
-      const fields = [
-        ["पिता का नाम", p.guardianName],
-        ["माता का नाम", p.motherName],
-        ["जाति", p.caste],
-        ["प्रवेश क्रमांक", p.admissionNo],
-        ["प्रवेश दिनांक", p.admissionDate],
-        ["जन्मतिथि", p.dob],
-        ["मोबाइल", p.mobile],
-        ["ग्राम", p.village],
-        ["छात्रवृत्ति", p.scholarship],
-        ["श्रम कार्ड", p.shramCard],
-        ["जाति प्रमाण पत्र", p.casteCertificate],
-        ["निवास प्रमाण पत्र", p.domicile],
-        ["PEN नंबर", p.penNo],
-        ["APAAR ID", p.apaarId]
-      ];
-
-      fields.forEach(([label, value]) => {
-        const row = document.createElement("p");
-        row.textContent = label + ": " + (value || "—");
-        card.appendChild(row);
+      privateStudentRecords.push({
+        name: s.name || "नाम उपलब्ध नहीं",
+        className: s.className || "",
+        rollNo: s.rollNo || "",
+        fields: [
+          ["पिता का नाम", p.guardianName],
+          ["माता का नाम", p.motherName],
+          ["जाति", p.caste],
+          ["प्रवेश क्रमांक", p.admissionNo],
+          ["प्रवेश दिनांक", p.admissionDate],
+          ["जन्मतिथि", p.dob],
+          ["मोबाइल", p.mobile],
+          ["ग्राम", p.village],
+          ["छात्रवृत्ति", p.scholarship],
+          ["श्रम कार्ड", p.shramCard],
+          ["जाति प्रमाण पत्र", p.casteCertificate],
+          ["निवास प्रमाण पत्र", p.domicile],
+          ["PEN नंबर", p.penNo],
+          ["APAAR ID", p.apaarId]
+        ]
       });
-
-      list.appendChild(card);
     });
+
+    renderPrivateStudents();
 
     show(
       message,
-      "कुल " + privateSnap.size + " विद्यार्थियों का निजी विवरण उपलब्ध है।"
+      "कुल " + privateStudentRecords.length +
+      " विद्यार्थियों का विवरण लोड हुआ।"
     );
 
   } catch (error) {
-    console.error("Private Student Error:", error);
-    show(message, "विवरण लोड नहीं हुए: " + error.message);
+    console.error(error);
+    show(message, "त्रुटि: " + error.message);
   } finally {
     btn.disabled = false;
   }
 };
+
 
 
 // Excel विद्यार्थी डेटा Preview
