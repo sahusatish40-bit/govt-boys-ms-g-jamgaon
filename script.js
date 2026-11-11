@@ -577,6 +577,96 @@ el("previewExcel").onclick = async () => {
   }
 };
 
+// Excel डेटा को सुरक्षित रूप से Firebase में Import करना
+el("confirmExcelImport").onclick = async () => {
+  const message = el("excelImportMessage");
+  const confirmBtn = el("confirmExcelImport");
+
+  if (!auth.currentUser || auth.currentUser.uid !== ADMIN_UID) {
+    return show(message, "केवल मुख्य Admin Import कर सकता है।");
+  }
+
+  if (!excelStudentData.length) {
+    return show(message, "पहले Excel Preview करें।");
+  }
+
+  const ok = confirm(
+    "क्या आप " + excelStudentData.length +
+    " विद्यार्थियों का डेटा Firebase में सेव करना चाहते हैं?\n\n" +
+    "सार्वजनिक जानकारी और निजी जानकारी अलग-अलग सेव होगी।\n" +
+    "Aadhaar नंबर Import नहीं होगा।"
+  );
+
+  if (!ok) return;
+
+  confirmBtn.disabled = true;
+  show(message, "डेटा Firebase में सेव हो रहा है...");
+
+  try {
+    const batch = db.batch();
+
+    excelStudentData.forEach(student => {
+      const safeRoll = String(student.rollNo)
+        .trim()
+        .replace(/[^a-zA-Z0-9_-]/g, "_");
+
+      const docId =
+        "class_" + student.className + "_roll_" + safeRoll;
+
+      // सार्वजनिक जानकारी: केवल नाम, कक्षा और रोल नंबर
+      const publicRef = db
+        .collection("students_public")
+        .doc(docId);
+
+      batch.set(publicRef, {
+        name: student.name,
+        className: student.className,
+        rollNo: student.rollNo,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+
+      // निजी जानकारी: केवल Admin के लिए
+      const privateRef = db
+        .collection("students_private")
+        .doc(docId);
+
+      batch.set(privateRef, {
+        guardianName: student.guardianName,
+        motherName: student.motherName,
+        caste: student.caste,
+        admissionNo: student.admissionNo,
+        admissionDate: student.admissionDate,
+        dob: student.dob,
+        mobile: student.mobile,
+        village: student.village,
+        scholarship: student.scholarship,
+        shramCard: student.shramCard,
+        casteCertificate: student.casteCertificate,
+        domicile: student.domicile,
+        penNo: student.penNo,
+        apaarId: student.apaarId,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+    });
+
+    await batch.commit();
+
+    show(
+      message,
+      "सफलता! " + excelStudentData.length +
+      " विद्यार्थियों का डेटा Firebase में सेव हो गया।"
+    );
+
+    confirmBtn.hidden = true;
+    confirmBtn.disabled = false;
+
+  } catch (error) {
+    console.error("Excel Import Error:", error);
+    show(message, "Import में त्रुटि: " + error.message);
+    confirmBtn.disabled = false;
+  }
+};
+
 // शिक्षक प्रबंधन: सूची, जोड़ना, एडिट और डिलीट
 
 const teacherList = el("teacherList");
