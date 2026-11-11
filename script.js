@@ -147,6 +147,30 @@ async function startSchoolWebsite() {
 
 <hr>
 
+<hr>
+<section id="excelImport">
+  <h3>📥 Excel से विद्यार्थी Import करें</h3>
+
+  <p>केवल कक्षा 6वीं, 7वीं और 8वीं का डेटा लिया जाएगा।</p>
+
+  <input
+    type="file"
+    id="studentExcelFile"
+    accept=".xlsx,.xls"
+  >
+
+  <button id="previewExcel" type="button">
+    Excel डेटा Preview करें
+  </button>
+
+  <p id="excelImportMessage"></p>
+  <div id="excelPreview"></div>
+
+  <button id="confirmExcelImport" type="button" hidden>
+    पुष्टि करें और Firebase में सेव करें
+  </button>
+</section>
+<hr>
 <section id="teacherManagement">
   <h3>👨‍🏫 शिक्षक प्रबंधन</h3>
 
