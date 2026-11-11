@@ -478,6 +478,105 @@ await loadFirebase(
 
     studentFilter.addEventListener("change", renderStudents);
 
+// Excel विद्यार्थी डेटा Preview
+let excelStudentData = [];
+
+el("previewExcel").onclick = async () => {
+  const file = el("studentExcelFile").files[0];
+  const message = el("excelImportMessage");
+  const preview = el("excelPreview");
+  const confirmBtn = el("confirmExcelImport");
+
+  preview.innerHTML = "";
+  confirmBtn.hidden = true;
+  excelStudentData = [];
+
+  if (!file) {
+    return show(message, "पहले Excel फाइल चुनें।");
+  }
+
+  try {
+    const buffer = await file.arrayBuffer();
+    const workbook = XLSX.read(buffer, { type: "array" });
+
+    const classSheets = [
+      { name: "class 6th", className: "6" },
+      { name: "class 7th", className: "7" },
+      { name: "class 8 th", className: "8" }
+    ];
+
+    classSheets.forEach(item => {
+      const sheet = workbook.Sheets[item.name];
+
+      if (!sheet) return;
+
+      const rows = XLSX.utils.sheet_to_json(sheet, {
+        header: 1,
+        defval: ""
+      });
+
+      rows.slice(2).forEach(row => {
+        const name = String(row[1] || "").trim();
+        if (!name) return;
+
+        excelStudentData.push({
+          name,
+          className: item.className,
+          rollNo: String(row[0]).trim(),
+          guardianName: String(row[2] || "").trim(),
+          motherName: String(row[3] || "").trim(),
+          caste: String(row[4] || "").trim(),
+          admissionNo: String(row[5] || "").trim(),
+          admissionDate: String(row[6] || "").trim(),
+          dob: String(row[7] || "").trim(),
+          mobile: String(row[9] || "").trim(),
+          village: String(row[11] || "").trim(),
+          scholarship: String(row[12] || "").trim(),
+          shramCard: String(row[13] || "").trim(),
+          casteCertificate: String(row[14] || "").trim(),
+          domicile: String(row[15] || "").trim(),
+          penNo: String(row[16] || "").trim(),
+          apaarId: String(row[17] || "").trim()
+        });
+      });
+    });
+
+    if (!excelStudentData.length) {
+      return show(message, "कोई विद्यार्थी रिकॉर्ड नहीं मिला।");
+    }
+
+    const table = document.createElement("table");
+    table.style.cssText =
+      "width:100%;border-collapse:collapse";
+
+    table.innerHTML =
+      "<tr><th>कक्षा</th><th>रोल नं.</th>" +
+      "<th>विद्यार्थी का नाम</th></tr>";
+
+    excelStudentData.forEach(student => {
+      const tr = document.createElement("tr");
+      [student.className, student.rollNo, student.name]
+        .forEach(value => {
+          const td = document.createElement("td");
+          td.textContent = value;
+          tr.appendChild(td);
+        });
+      table.appendChild(tr);
+    });
+
+    preview.appendChild(table);
+
+    show(
+      message,
+      "Preview तैयार: " + excelStudentData.length +
+      " विद्यार्थी। कक्षा 9वीं शामिल नहीं है।"
+    );
+
+  } catch (error) {
+    show(message, "Excel पढ़ने में त्रुटि: " + error.message);
+  }
+};
+
 // शिक्षक प्रबंधन: सूची, जोड़ना, एडिट और डिलीट
 
 const teacherList = el("teacherList");
