@@ -151,7 +151,8 @@ await loadFirebase(
 <section id="privateStudentDetails">
   <h3>🔒 निजी विद्यार्थी विवरण (केवल मुख्य Admin)</h3>
 
-  <button id="loadPrivateStudents" type="button">
+  <button id="loadPrivateStudents" type="button"
+  onclick="document.getElementById('privateStudentMessage').textContent='बटन काम कर रहा है।';">
     निजी विवरण देखें
   </button>
 
