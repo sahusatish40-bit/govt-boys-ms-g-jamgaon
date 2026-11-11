@@ -152,6 +152,24 @@ await loadFirebase(
   <h3>🔒 निजी विद्यार्थी विवरण (केवल मुख्य Admin)</h3>
 
   <button id="loadPrivateStudents" type="button"
+
+<div style="margin:12px 0">
+  <label>विद्यार्थी खोजें</label>
+  <input
+    type="search"
+    id="privateStudentSearch"
+    placeholder="विद्यार्थी का नाम लिखें"
+  >
+
+  <label>कक्षा चुनें</label>
+  <select id="privateClassFilter">
+    <option value="all">सभी कक्षाएँ</option>
+    <option value="6">कक्षा 6वीं</option>
+    <option value="7">कक्षा 7वीं</option>
+    <option value="8">कक्षा 8वीं</option>
+  </select>
+</div>
+
   onclick="document.getElementById('privateStudentMessage').textContent='बटन काम कर रहा है।';">
     निजी विवरण देखें
   </button>
