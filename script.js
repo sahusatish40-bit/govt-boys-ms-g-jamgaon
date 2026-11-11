@@ -565,6 +565,7 @@ el("previewExcel").onclick = async () => {
     });
 
     preview.appendChild(table);
+confirmBtn.hidden = false;
 
     show(
       message,
