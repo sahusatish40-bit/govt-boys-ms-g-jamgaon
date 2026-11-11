@@ -148,6 +148,20 @@ await loadFirebase(
           <div id="studentList"></div>
 
 <hr>
+<section id="privateStudentDetails">
+  <h3>🔒 निजी विद्यार्थी विवरण (केवल मुख्य Admin)</h3>
+
+  <button id="loadPrivateStudents" type="button">
+    निजी विवरण देखें
+  </button>
+
+  <p id="privateStudentMessage"></p>
+  <div id="privateStudentList"></div>
+</section>
+<hr>
+
+
+<hr>
 
 <hr>
 <section id="excelImport">
