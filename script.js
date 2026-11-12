@@ -150,6 +150,14 @@ await loadFirebase(
           <button id="logoutBtn" type="button">Logout</button>
           <hr>
 
+       <hr>
+<h3>🖼️ Gallery Management</h3>
+<p>विद्यालय की तस्वीरों का प्रबंधन</p>
+
+<div id="adminGalleryList">
+  <p>Gallery लोड हो रही है...</p>
+</div>
+<hr>
           <h3>नई विद्यालयीन सूचना</h3>
           <input id="noticeInput" maxlength="180" placeholder="सूचना लिखें">
           <button id="addNotice" type="button">Publish Notice</button>
