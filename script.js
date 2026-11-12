@@ -996,6 +996,7 @@ const studentRef = db.collection("students").doc(studentDocId);
 
 batch.set(studentRef, {
   name: student.name,
+  createdBy: firebase.auth().currentUser.uid,
   className: student.className,
   rollNo: student.rollNo,
   guardianName: student.guardianName || "",
