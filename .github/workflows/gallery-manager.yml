@@ -1,0 +1,84 @@
+
+name: School Gallery Manager
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Choose action"
+        required: true
+        type: choice
+        options:
+          - add
+          - rename
+          - delete
+      filename:
+        description: "Existing or new image filename"
+        required: true
+        type: string
+      new_filename:
+        description: "New filename (only for rename)"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  manage-gallery:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Manage gallery
+        env:
+          ACTION_TYPE: ${{ inputs.action }}
+          FILENAME: ${{ inputs.filename }}
+          NEW_FILENAME: ${{ inputs.new_filename }}
+        run: |
+          mkdir -p images
+          python3 - <<'PY'
+          import os
+          import pathlib
+          import re
+
+          folder = pathlib.Path("images")
+          action = os.environ["ACTION_TYPE"]
+          filename = os.environ["FILENAME"]
+          new_filename = os.environ.get("NEW_FILENAME", "")
+
+          def safe_name(name):
+              if name != pathlib.Path(name).name or not re.fullmatch(r"[A-Za-z0-9_. -]+\.(jpg|jpeg|png|webp|gif)", name, re.I):
+                  raise SystemExit("Invalid image filename")
+              return name
+
+          filename = safe_name(filename)
+          source = folder / filename
+
+          if action == "add":
+              raise SystemExit("Upload images using repository Code > images > Add file > Upload files")
+
+          if action == "rename":
+              new_filename = safe_name(new_filename)
+              target = folder / new_filename
+              if not source.is_file() or target.exists():
+                  raise SystemExit("Source missing or destination already exists")
+              source.rename(target)
+
+          elif action == "delete":
+              if not source.is_file():
+                  raise SystemExit("Image not found")
+              source.unlink()
+
+          else:
+              raise SystemExit("Unknown action")
+          PY
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add images
+          git diff --cached --quiet || git commit -m "Manage school gallery"
+          git push
