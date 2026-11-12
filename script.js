@@ -686,7 +686,7 @@ const list = students.filter(s => {
     }
 
     studentFilter.addEventListener("change", renderStudents);
-
+studentSearch?.addEventListener("input", renderStudents);
 
 // मुख्य Admin के लिए निजी विद्यार्थी विवरण
 let privateStudentRecords = [];
