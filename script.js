@@ -985,6 +985,25 @@ const batch = db.batch();
         apaarId: student.apaarId,
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       }, { merge: true });
+    // Student Management में भी विद्यार्थी सेव करें
+const studentKey =
+  student.className + "|" + String(student.rollNo).trim();
+
+const studentDocId =
+  existingByKey.get(studentKey) || docId;
+
+const studentRef = db.collection("students").doc(studentDocId);
+
+batch.set(studentRef, {
+  name: student.name,
+  className: student.className,
+  rollNo: student.rollNo,
+  guardianName: student.guardianName || "",
+  dob: student.dob || "",
+  address: student.village || "",
+  mobile: student.mobile || "",
+  updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+}, { merge: true });  
     });
 
     await batch.commit();
