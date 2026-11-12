@@ -1846,11 +1846,7 @@ async function loadAutoGallery() {
       img.src = file.download_url;
       img.alt = file.name;
       img.loading = "lazy";
-      img.style.cssText =
-width:100%;
-height:200px;
-object-fit:cover;
-border-radius:12px;
+      img.style.cssText = "width:100%;height:200px;object-fit:cover;border-radius:12px;";
 
       const caption = document.createElement("p");
       caption.textContent = file.name.replace(/\.[^.]+$/, "");
