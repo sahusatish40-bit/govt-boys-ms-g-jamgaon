@@ -1,0 +1,44 @@
+
+name: View All School Gallery Photos
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gallery:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show all gallery photos
+        run: |
+          python3 - <<'PY'
+          import pathlib
+          import urllib.parse
+
+          folder = pathlib.Path("images")
+          files = sorted(
+              [p for p in folder.iterdir()
+               if p.is_file() and p.suffix.lower() in
+               [".jpg", ".jpeg", ".png", ".webp", ".gif"]],
+              key=lambda p: p.name.lower()
+          ) if folder.exists() else []
+
+          with open("gallery.md", "w") as f:
+              f.write("# School Gallery Photos\n\n")
+              if not files:
+                  f.write("No photos found.\n")
+              for p in files:
+                  url = "https://github.com/" + \
+                    "${{ github.repository }}" + \
+                    "/blob/main/images/" + urllib.parse.quote(p.name)
+                  f.write(f"### {p.name}\n\n")
+                  f.write(f"![{p.name}]({url}?raw=true)\n\n")
+                  f.write("---\n\n")
+          PY
+
+          cat gallery.md >> "$GITHUB_STEP_SUMMARY"
