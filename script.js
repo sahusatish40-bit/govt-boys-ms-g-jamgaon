@@ -351,6 +351,53 @@ await loadFirebase(
     const show = (n, m) => {
       if (n) n.textContent = m;
     };
+    
+
+async function loadAdminGallery() {
+  const box = document.getElementById("adminGalleryList");
+  if (!box) return;
+
+  box.textContent = "फोटो लोड हो रही हैं...";
+
+  try {
+    const response = await fetch(
+      "https://api.github.com/repos/sahusatish40-bit/govt-boys-ms-g-jamgaon/contents/images"
+    );
+
+    if (!response.ok) throw new Error("फोटो सूची नहीं मिली");
+
+    const files = await response.json();
+    const images = files.filter(file =>
+      file.type === "file" &&
+      /\.(jpg|jpeg|png|webp|gif)$/i.test(file.name)
+    );
+
+    box.innerHTML = "";
+
+    if (!images.length) {
+      box.textContent = "कोई फोटो उपलब्ध नहीं है।";
+      return;
+    }
+
+    images.forEach(file => {
+      const card = document.createElement("div");
+      card.style.cssText = "padding:10px;border:1px solid #ddd;margin:10px;border-radius:10px";
+
+      const img = document.createElement("img");
+      img.src = file.download_url;
+      img.style.cssText = "width:120px;height:90px;object-fit:cover";
+
+      const name = document.createElement("p");
+      name.textContent = file.name;
+
+      card.append(img, name);
+      box.appendChild(card);
+    });
+
+  } catch (error) {
+    box.textContent = "त्रुटि: " + error.message;
+  }
+}
 
     const loginBox = el("loginBox");
     const adminTools = el("adminTools");
@@ -1718,8 +1765,9 @@ const topper = results.find(r => r.attendance === "P");
       if (user && user.uid === ADMIN_UID) {
         loginBox.hidden = true;
         adminTools.hidden = false;
-        beginStudentFeed();
+     beginStudentFeed();
 beginTeacherFeed();
+loadAdminGallery();
 await loadExams();
 
       } else {
