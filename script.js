@@ -1747,4 +1747,59 @@ if (stopTeachers) {
   }
 }
 
+
+// GitHub images Folder से सभी फोटो अपने-आप लोड करें
+async function loadAutoGallery() {
+  const box = document.getElementById("autoGallery");
+  if (!box) return;
+
+  try {
+    const response = await fetch(
+      "https://api.github.com/repos/sahusatish40-bit/govt-boys-ms-g-jamgaon/contents/images"
+    );
+
+    if (!response.ok) {
+      throw new Error("GitHub से फोटो सूची नहीं मिली।");
+    }
+
+    const files = await response.json();
+
+    const images = files
+      .filter(file =>
+        file.type === "file" &&
+        /\.(jpg|jpeg|png|webp|gif)$/i.test(file.name)
+      )
+      .sort((a, b) => b.name.localeCompare(a.name));
+
+    box.innerHTML = "";
+
+    if (images.length === 0) {
+      box.textContent = "अभी images Folder में कोई फोटो नहीं है।";
+      return;
+    }
+
+    images.forEach(file => {
+      const card = document.createElement("div");
+
+      const img = document.createElement("img");
+      img.src = file.download_url;
+      img.alt = file.name;
+      img.loading = "lazy";
+      img.style.cssText =
+        "width:100%;height:220px;object-fit:cover;border-radius:12px;";
+
+      const caption = document.createElement("p");
+      caption.textContent = file.name.replace(/\.[^.]+$/, "");
+
+      card.append(img, caption);
+      box.appendChild(card);
+    });
+
+  } catch (error) {
+    box.textContent = "फोटो लोड नहीं हुईं: " + error.message;
+  }
+}
+
+loadAutoGallery();
+
 startSchoolWebsite();
