@@ -931,7 +931,17 @@ el("confirmExcelImport").onclick = async () => {
   show(message, "डेटा Firebase में सेव हो रहा है...");
 
   try {
-    const batch = db.batch();
+    const existingSnap = await db.collection("students").get();
+
+const existingByKey = new Map();
+
+existingSnap.forEach(doc => {
+  const d = doc.data();
+  const key = d.className + "|" + String(d.rollNo).trim();
+  existingByKey.set(key, doc.id);
+});
+
+const batch = db.batch();
 
     excelStudentData.forEach(student => {
       const safeRoll = String(student.rollNo)
