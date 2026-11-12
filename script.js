@@ -532,10 +532,20 @@ const studentSearch = el("studentSearch");
     function renderStudents() {
       studentList.innerHTML = "";
 
-      const list = students.filter(s =>
-        studentFilter.value === "all" ||
-        s.className === studentFilter.value
-      );
+      const query = (studentSearch?.value || "").trim().toLocaleLowerCase();
+
+const list = students.filter(s => {
+  const classMatch =
+    studentFilter.value === "all" ||
+    s.className === studentFilter.value;
+
+  const searchMatch =
+    !query ||
+    String(s.name || "").toLocaleLowerCase().includes(query) ||
+    String(s.rollNo || "").toLocaleLowerCase().includes(query);
+
+  return classMatch && searchMatch;
+});
 
       if (!list.length) {
         studentList.textContent =
