@@ -389,7 +389,12 @@ async function loadAdminGallery() {
 
       const name = document.createElement("p");
       name.textContent = file.name;
-
+const openLink = document.createElement("a");
+openLink.href = file.html_url;
+openLink.textContent = "📂 GitHub में खोलें";
+openLink.target = "_blank";
+openLink.style.cssText = "display:block;margin:10px;";
+card.appendChild(openLink);
       card.append(img, name);
       box.appendChild(card);
     });
