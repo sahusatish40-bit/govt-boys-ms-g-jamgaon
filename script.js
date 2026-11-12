@@ -465,7 +465,7 @@ async function loadAdminGallery() {
     const studentMessage = el("studentMessage");
     const studentList = el("studentList");
     const studentFilter = el("studentFilter");
-
+const studentSearch = el("studentSearch");
     let students = [];
     let stopStudents = null;
     let exams = [];
