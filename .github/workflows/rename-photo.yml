@@ -1,0 +1,59 @@
+
+name: Rename School Photo
+
+on:
+  workflow_dispatch:
+    inputs:
+      old_name:
+        description: "Current photo filename"
+        required: true
+        type: string
+      new_name:
+        description: "New photo filename"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  rename:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Rename photo
+        env:
+          OLD_NAME: ${{ inputs.old_name }}
+          NEW_NAME: ${{ inputs.new_name }}
+        run: |
+          python3 - <<'PY'
+          import os
+          import pathlib
+          import re
+
+          def safe(name):
+              if not re.fullmatch(r"[A-Za-z0-9_. -]+\.(jpg|jpeg|png|webp|gif)", name, re.I):
+                  raise SystemExit("Invalid filename")
+              return name
+
+          old = pathlib.Path("images") / safe(os.environ["OLD_NAME"])
+          new = pathlib.Path("images") / safe(os.environ["NEW_NAME"])
+
+          if not old.is_file():
+              raise SystemExit("Old photo not found")
+          if new.exists():
+              raise SystemExit("New filename already exists")
+
+          old.rename(new)
+          print("Photo renamed successfully")
+          PY
+
+      - name: Save changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add images
+          git commit -m "Rename school gallery photo"
+          git push
