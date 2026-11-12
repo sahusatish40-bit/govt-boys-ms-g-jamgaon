@@ -76,6 +76,58 @@ await loadFirebase(
     const auth = firebase.auth();
     const db = firebase.firestore();
 
+    // सभी लोगों के लिए सार्वजनिक शिक्षक सूची
+    const publicTeacherBox = document.getElementById("publicTeacherList");
+
+    if (publicTeacherBox) {
+      db.collection("teachers_public").onSnapshot(
+        snap => {
+          publicTeacherBox.innerHTML = "";
+
+          if (snap.empty) {
+            publicTeacherBox.textContent =
+              "शिक्षकों की जानकारी शीघ्र उपलब्ध होगी।";
+            return;
+          }
+
+          snap.docs
+            .map(d => ({ id: d.id, ...d.data() }))
+            .sort((a, b) => (a.name || "").localeCompare(b.name || ""))
+            .forEach(t => {
+              const card = document.createElement("article");
+              card.className = "card";
+
+              if (t.photo) {
+                const img = document.createElement("img");
+                img.src = t.photo;
+                img.alt = t.name || "शिक्षक";
+                img.style.cssText =
+                  "width:100%;height:180px;object-fit:cover;border-radius:10px";
+                card.appendChild(img);
+              }
+
+              const name = document.createElement("h3");
+              name.textContent = t.name || "शिक्षक";
+              card.appendChild(name);
+
+              const post = document.createElement("p");
+              post.textContent = "पद: " + (t.post || "—");
+              card.appendChild(post);
+
+              const subject = document.createElement("p");
+              subject.textContent = "विषय: " + (t.subject || "—");
+              card.appendChild(subject);
+
+              publicTeacherBox.appendChild(card);
+            });
+        },
+        error => {
+          publicTeacherBox.textContent =
+            "शिक्षक सूची लोड नहीं हुई: " + error.message;
+        }
+      );
+    }
+
     if (adminBox) {
       adminBox.innerHTML = `
         <p><strong>विद्यालय एडमिन लॉगिन</strong></p>
@@ -928,6 +980,29 @@ function beginTeacherFeed() {
           id: d.id,
           ...d.data()
         }));
+        
+// Admin की शिक्षक सूची को सार्वजनिक Collection में सुरक्षित रूप से कॉपी करें
+const publicBatch = db.batch();
+
+snap.docs.forEach(doc => {
+  const t = doc.data();
+
+  publicBatch.set(
+    db.collection("teachers_public").doc(doc.id),
+    {
+      name: t.name || "",
+      post: t.post || "",
+      subject: t.subject || "",
+      photo: t.photo || ""
+    },
+    { merge: true }
+  );
+});
+
+publicBatch.commit().catch(error => {
+  console.error("Public teacher sync error:", error);
+});
+
         renderTeachers();
       },
       e => show(
