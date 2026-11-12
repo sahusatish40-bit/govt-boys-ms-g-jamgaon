@@ -1,15 +1,10 @@
-
-name: Rename School Photo
+name: Rename Latest School Photo
 
 on:
   workflow_dispatch:
     inputs:
-      old_name:
-        description: "Current photo filename"
-        required: true
-        type: string
       new_name:
-        description: "New photo filename"
+        description: "Enter new photo name"
         required: true
         type: string
 
@@ -20,34 +15,47 @@ jobs:
   rename:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Rename photo
+      - name: Rename latest added photo
         env:
-          OLD_NAME: ${{ inputs.old_name }}
           NEW_NAME: ${{ inputs.new_name }}
         run: |
           python3 - <<'PY'
           import os
           import pathlib
           import re
+          import subprocess
 
-          def safe(name):
-              if not re.fullmatch(r"[A-Za-z0-9_. -]+\.(jpg|jpeg|png|webp|gif)", name, re.I):
-                  raise SystemExit("Invalid filename")
-              return name
+          result = subprocess.run(
+              ["git", "log", "--diff-filter=A", "--no-renames",
+               "--format=", "--name-only", "--", "images"],
+              capture_output=True, text=True, check=True
+          )
 
-          old = pathlib.Path("images") / safe(os.environ["OLD_NAME"])
-          new = pathlib.Path("images") / safe(os.environ["NEW_NAME"])
+          files = [
+              x.strip() for x in result.stdout.splitlines()
+              if re.fullmatch(r"images/[^/]+\.(jpg|jpeg|png|webp|gif)", x.strip(), re.I)
+          ]
 
-          if not old.is_file():
-              raise SystemExit("Old photo not found")
+          if not files:
+              raise SystemExit("No image found")
+
+          old = pathlib.Path(files[0])
+          name = os.environ["NEW_NAME"].strip()
+          if not re.fullmatch(r"[A-Za-z0-9_. -]+", name):
+              raise SystemExit("Invalid new name")
+
+          suffix = old.suffix
+          new = old.with_name(name + suffix)
+
           if new.exists():
-              raise SystemExit("New filename already exists")
+              raise SystemExit("New name already exists")
 
           old.rename(new)
-          print("Photo renamed successfully")
+          print(f"Renamed {old.name} to {new.name}")
           PY
 
       - name: Save changes
@@ -55,5 +63,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add images
-          git commit -m "Rename school gallery photo"
+          git commit -m "Rename latest school gallery photo"
           git push
