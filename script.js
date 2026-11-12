@@ -198,6 +198,8 @@ await loadFirebase(
           <p id="studentMessage"></p>
 
           <label>कक्षा के अनुसार सूची</label>
+         <label>विद्यार्थी खोजें (नाम या रोल नंबर)</label>
+<input id="studentSearch" type="search" placeholder="नाम या रोल नंबर लिखें">
           <select id="studentFilter">
             <option value="all">सभी कक्षाएँ</option>
             <option value="6">कक्षा 6वीं</option>
