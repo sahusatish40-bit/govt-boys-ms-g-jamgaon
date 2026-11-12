@@ -353,6 +353,7 @@ await loadFirebase(
     };
     
 
+
 async function loadAdminGallery() {
   const box = document.getElementById("adminGalleryList");
   if (!box) return;
@@ -381,21 +382,71 @@ async function loadAdminGallery() {
 
     images.forEach(file => {
       const card = document.createElement("div");
-      card.style.cssText = "padding:10px;border:1px solid #ddd;margin:10px;border-radius:10px";
+      card.style.cssText =
+        "padding:12px;border:1px solid #ddd;margin:10px;border-radius:10px;display:inline-block;vertical-align:top;max-width:230px;width:100%;box-sizing:border-box";
 
       const img = document.createElement("img");
       img.src = file.download_url;
-      img.style.cssText = "width:120px;height:90px;object-fit:cover";
+      img.alt = file.name;
+      img.style.cssText =
+        "width:100%;height:150px;object-fit:cover;border-radius:8px";
 
       const name = document.createElement("p");
       name.textContent = file.name;
-const openLink = document.createElement("a");
-openLink.href = file.html_url;
-openLink.textContent = "📂 GitHub में खोलें";
-openLink.target = "_blank";
-openLink.style.cssText = "display:block;margin:10px;";
-card.appendChild(openLink);
-      card.append(img, name);
+      name.style.overflowWrap = "anywhere";
+
+      const newName = document.createElement("input");
+      newName.type = "text";
+      newName.placeholder = "नया फोटो नाम लिखें";
+      newName.style.cssText = "width:100%;padding:8px;box-sizing:border-box";
+
+      const rename = document.createElement("button");
+      rename.textContent = "✏️ Rename";
+      rename.type = "button";
+      rename.onclick = async () => {
+        if (!newName.value.trim()) {
+          alert("पहले नया नाम लिखें।");
+          return;
+        }
+
+        try {
+          await navigator.clipboard.writeText(file.name);
+        } catch (e) {
+          alert("पुराना नाम कॉपी नहीं हुआ: " + file.name);
+        }
+
+        alert(
+          "पुराना नाम कॉपी किया गया। GitHub Actions में Filename में Paste करें और New filename में नया नाम लिखें: " +
+          newName.value.trim()
+        );
+
+        window.open(
+          "https://github.com/sahusatish40-bit/govt-boys-ms-g-jamgaon/actions/workflows/gallery-manager.yml",
+          "_blank"
+        );
+      };
+
+      const remove = document.createElement("button");
+      remove.textContent = "🗑️ Delete";
+      remove.type = "button";
+      remove.onclick = async () => {
+        if (!confirm("क्या यह फोटो हटानी है?\n" + file.name)) return;
+
+        try {
+          await navigator.clipboard.writeText(file.name);
+        } catch (e) {
+          alert("फोटो का नाम: " + file.name);
+        }
+
+        alert("GitHub Actions में Action = delete चुनें और Filename में फोटो का नाम Paste करें।");
+
+        window.open(
+          "https://github.com/sahusatish40-bit/govt-boys-ms-g-jamgaon/actions/workflows/gallery-manager.yml",
+          "_blank"
+        );
+      };
+
+      card.append(img, name, newName, rename, remove);
       box.appendChild(card);
     });
 
@@ -403,6 +454,7 @@ card.appendChild(openLink);
     box.textContent = "त्रुटि: " + error.message;
   }
 }
+
 
     const loginBox = el("loginBox");
     const adminTools = el("adminTools");
