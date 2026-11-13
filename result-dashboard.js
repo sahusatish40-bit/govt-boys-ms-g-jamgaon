@@ -107,6 +107,10 @@
             </tr>`).join("")}
           </table></div>
           <p><b>कुल अंक:</b> ${obtained}/${maximum} &nbsp; <b>प्रतिशत:</b> ${percent}%</p>
+          <button type="button" onclick="window.printStudentMarksheet()"
+style="padding:12px 18px;margin:12px 0;background:#167a45;color:white;border:0;border-radius:6px">
+मार्कशीट PDF डाउनलोड / प्रिंट करें
+</button>
         </div>`;
     }
 
@@ -139,7 +143,33 @@
     select.addEventListener("change", showResult);
     showResult();
   }
-
+window.printStudentMarksheet = function () {
+  const style = document.createElement("style");
+  style.id = "printMarksheetStyle";
+  style.innerHTML = `
+    @media print {
+      body * { visibility: hidden !important; }
+      #personalResultOutput,
+      #personalResultOutput * {
+        visibility: visible !important;
+      }
+      #personalResultOutput {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 15px;
+        box-sizing: border-box;
+      }
+      #personalResultOutput button {
+        display: none !important;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+  window.print();
+  setTimeout(() => style.remove(), 1000);
+};
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initResultDashboard);
   else initResultDashboard();
 })();
