@@ -1,3 +1,4 @@
+
 // School Sathi - Aggregate Result Dashboard
 (function () {
   const results = {
@@ -35,8 +36,13 @@
           ${Object.keys(results).map(x => `<option>${x}</option>`).join("")}
         </select>
         <div id="aggregateTable"></div>
+        <hr style="margin:25px 0">
+        <h3>चारों परीक्षाओं की तुलनात्मक प्रगति</h3>
+        <p style="font-size:13px">कक्षा-वार औसत प्रतिशत</p>
+        <div id="progressChart"></div>
         <p style="font-size:13px;margin-top:12px">
           कक्षा 7 में 13 विद्यार्थी उपस्थित और 2 अनुपस्थित थे।
+          जुलाई में 2 विषयों के अंक दर्ज नहीं हैं।
           यह सामूहिक रिपोर्ट है, व्यक्तिगत अंक नहीं।
         </p>
       </div>`;
@@ -45,7 +51,9 @@
 
     function showResult() {
       const rows = results[select.value];
+
       document.getElementById("aggregateTable").innerHTML = `
+        <div style="overflow-x:auto">
         <table style="width:100%;border-collapse:collapse">
           <tr>
             <th style="border:1px solid #ccc;padding:10px">कक्षा</th>
@@ -55,11 +63,28 @@
           ${rows.map(r => `
             <tr>
               <td style="border:1px solid #ccc;padding:10px;text-align:center">कक्षा ${r.c}</td>
-              <td style="border:1px solid #ccc;padding:10px;text-align:center">${r.p.toFixed(2)}%</td>
+              <td style="border:1px solid #ccc;padding:10px;text-align:center;font-weight:bold">${r.p.toFixed(2)}%</td>
               <td style="border:1px solid #ccc;padding:10px;text-align:center">${r.n}</td>
             </tr>`).join("")}
-        </table>`;
+        </table></div>`;
     }
+
+    const chart = document.getElementById("progressChart");
+    const colors = {6:"#2878d0",7:"#e39b27",8:"#299b68"};
+
+    chart.innerHTML = Object.entries(results).map(([exam, rows]) => `
+      <div style="margin:18px 0">
+        <b>${exam}</b>
+        ${rows.map(r => `
+          <div style="margin:10px 0">
+            <div style="display:flex;justify-content:space-between;font-size:13px">
+              <span>कक्षा ${r.c}</span><b>${r.p.toFixed(2)}%</b>
+            </div>
+            <div style="height:13px;background:#e8e8e8;border-radius:8px;overflow:hidden">
+              <div style="height:13px;width:${r.p}%;background:${colors[r.c]};border-radius:8px"></div>
+            </div>
+          </div>`).join("")}
+      </div>`).join("");
 
     select.addEventListener("change", showResult);
     showResult();
