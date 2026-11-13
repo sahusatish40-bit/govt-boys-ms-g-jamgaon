@@ -83,35 +83,80 @@
       const obtained = marks.reduce((s, x) => s + (Number(x.total) || 0), 0);
       const maximum = marks.reduce((s, x) => s + (Number(x.theoryMax)||0) + (Number(x.practicalMax)||0), 0);
       const percent = maximum ? (obtained / maximum * 100).toFixed(2) : "—";
+      
+      const overallGrade =
+        percent >= 91 ? "A+" :
+        percent >= 81 ? "A" :
+        percent >= 71 ? "B+" :
+        percent >= 61 ? "B" :
+        percent >= 51 ? "C+" :
+        percent >= 41 ? "C" :
+        percent >= 33 ? "D" : "E";
+
       personalOutput.innerHTML = `
-        <div style="border:1px solid #bbb;border-radius:10px;padding:14px;margin:12px 0">
-          <h3>विद्यार्थी परिणाम पत्रक</h3>
-          <p><b>नाम:</b> ${student.name}</p>
-          <p><b>कक्षा:</b> ${student.class}वीं &nbsp; <b>रोल नंबर:</b> ${student.roll}</p>
-          <p><b>परीक्षा:</b> ${exam}</p>
-          <div style="overflow-x:auto">
-          <table style="width:100%;border-collapse:collapse;font-size:13px">
-            <tr>
-              <th style="border:1px solid #bbb;padding:6px">विषय</th>
-              <th style="border:1px solid #bbb;padding:6px">लिखित</th>
-              <th style="border:1px solid #bbb;padding:6px">प्रायोगिक</th>
-              <th style="border:1px solid #bbb;padding:6px">कुल</th>
-              <th style="border:1px solid #bbb;padding:6px">ग्रेड</th>
+        <div class="report-card" style="background:#fff;color:#172554;border:3px double #24558a;padding:22px;margin:15px 0;border-radius:8px;font-family:Arial,sans-serif">
+          
+          <div style="text-align:center;border-bottom:2px solid #24558a;padding-bottom:12px">
+            <h2 style="margin:5px 0;font-size:21px">शासकीय उच्चतर माध्यमिक विद्यालय</h2>
+            <h2 style="margin:5px 0;font-size:21px">जी- जामगाँव (बालक माध्य.)</h2>
+            <p style="margin:5px 0;font-size:13px">वि.ख. कुरुद, जिला धमतरी (छ.ग.)</p>
+            <h3 style="margin:12px 0 4px;color:#174a80">परीक्षा प्रगति पत्रक</h3>
+            <b>सत्र 2026–27</b>
+          </div>
+
+          <div style="margin:16px 0;line-height:2">
+            <b>विद्यार्थी का नाम:</b> ${student.name}<br>
+            <b>कक्षा:</b> ${student.class}वीं
+            &nbsp;&nbsp; <b>रोल नंबर:</b> ${student.roll}<br>
+            <b>परीक्षा:</b> ${exam}
+          </div>
+
+          <table style="width:100%;border-collapse:collapse;font-size:12px">
+            <tr style="background:#e5efff">
+              <th style="border:1px solid #555;padding:8px">विषय</th>
+              <th style="border:1px solid #555;padding:8px">लिखित</th>
+              <th style="border:1px solid #555;padding:8px">प्रायोगिक</th>
+              <th style="border:1px solid #555;padding:8px">कुल</th>
+              <th style="border:1px solid #555;padding:8px">ग्रेड</th>
             </tr>
-            ${marks.map(m => `<tr>
-              <td style="border:1px solid #bbb;padding:6px">${m.subject}</td>
-              <td style="border:1px solid #bbb;padding:6px;text-align:center">${m.theory ?? "—"}/${m.theoryMax ?? "—"}</td>
-              <td style="border:1px solid #bbb;padding:6px;text-align:center">${m.practical ?? "—"}/${m.practicalMax ?? "—"}</td>
-              <td style="border:1px solid #bbb;padding:6px;text-align:center">${m.total ?? "—"}</td>
-              <td style="border:1px solid #bbb;padding:6px;text-align:center">${m.grade || "—"}</td>
-            </tr>`).join("")}
-          </table></div>
-          <p><b>कुल अंक:</b> ${obtained}/${maximum} &nbsp; <b>प्रतिशत:</b> ${percent}%</p>
-          <button type="button" onclick="window.printStudentMarksheet()"
-style="padding:12px 18px;margin:12px 0;background:#167a45;color:white;border:0;border-radius:6px">
-मार्कशीट PDF डाउनलोड / प्रिंट करें
-</button>
+            ${marks.map(m => `
+              <tr>
+                <td style="border:1px solid #555;padding:8px">${m.subject}</td>
+                <td style="border:1px solid #555;padding:8px;text-align:center">${m.theory ?? "—"}/${m.theoryMax ?? "—"}</td>
+                <td style="border:1px solid #555;padding:8px;text-align:center">${m.practical ?? "—"}/${m.practicalMax ?? "—"}</td>
+                <td style="border:1px solid #555;padding:8px;text-align:center">${m.total ?? "—"}</td>
+                <td style="border:1px solid #555;padding:8px;text-align:center">${m.grade || "—"}</td>
+              </tr>
+            `).join("")}
+          </table>
+
+          <div style="margin-top:18px;padding:12px;background:#eef5ff;line-height:2">
+            <b>कुल प्राप्तांक:</b> ${obtained} / ${maximum}<br>
+            <b>प्राप्त प्रतिशत:</b> ${percent}%<br>
+            <b>समग्र ग्रेड:</b> ${overallGrade}
+          </div>
+
+          <div style="display:flex;justify-content:space-between;gap:15px;margin-top:65px;text-align:center;font-size:12px">
+            <div style="width:45%;border-top:1px solid #333;padding-top:8px">
+              कक्षा शिक्षक के हस्ताक्षर
+            </div>
+            <div style="width:45%;border-top:1px solid #333;padding-top:8px">
+              प्रधानपाठक के हस्ताक्षर
+            </div>
+          </div>
+
+          <p style="text-align:center;margin-top:20px;font-size:11px">
+            परिणाम की पुष्टि विद्यालय अभिलेख से करें।
+          </p>
+
+          <div class="no-print" style="text-align:center;margin-top:20px">
+            <button type="button" onclick="window.printStudentMarksheet()"
+              style="padding:12px 18px;background:#167a45;color:white;border:0;border-radius:6px">
+              मार्कशीट PDF डाउनलोड / प्रिंट करें
+            </button>
+          </div>
         </div>`;
+
     }
 
     findButton.addEventListener("click", findResult);
