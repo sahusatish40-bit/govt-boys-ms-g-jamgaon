@@ -272,3 +272,85 @@
     font-size: 15px;
   }
 }
+
+/* PREMIUM SCHOOL WEBSITE - FINAL POLISH */
+
+.section-title {
+  position: relative;
+  padding-bottom: 14px;
+}
+
+.section-title h2 {
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.section-title h2::after {
+  content: "";
+  display: block;
+  width: 65px;
+  height: 4px;
+  margin-top: 12px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #1c8b83, #f3b84b);
+}
+
+.card {
+  border-radius: 22px;
+  border: 1px solid #e4edf1;
+  box-shadow: 0 12px 30px #102b4610;
+  transition: all .3s ease;
+}
+
+.card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 18px 38px #102b4620;
+  border-color: #b8dcd7;
+}
+
+.card h3 {
+  font-weight: 800;
+}
+
+.gallery div {
+  border: 1px solid #e4edf1;
+  box-shadow: 0 8px 22px #102b4610;
+  transition: all .3s ease;
+}
+
+.gallery div:hover {
+  transform: scale(1.03);
+}
+
+.resource-box {
+  border-radius: 22px;
+  box-shadow: 0 10px 30px #102b460c;
+}
+
+.contact {
+  background: linear-gradient(120deg, #102b46, #176b87);
+}
+
+footer {
+  background: #081c30;
+}
+
+@media(max-width:700px) {
+  .section-title h2 {
+    font-size: 26px;
+  }
+
+  .card {
+    border-radius: 18px;
+  }
+
+  .nav {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+  }
+
+  .nav a {
+    white-space: nowrap;
+  }
+}
