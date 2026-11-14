@@ -1853,7 +1853,36 @@ const topper = results.find(r => r.attendance === "P");
         show(adminMessage, "Error: " + e.message);
       }
     };
+el("addEvent").onclick = async () => {
+  const title = el("eventTitle").value.trim();
+  const eventDate = el("eventDate").value;
+  const type = el("eventType").value;
+  const description = el("eventDescription").value.trim();
 
+  if (!title || !eventDate) {
+    return show(adminMessage, "कार्यक्रम का नाम और तारीख आवश्यक हैं।");
+  }
+
+  try {
+    await db.collection("events").add({
+      title,
+      eventDate,
+      type,
+      description,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      createdBy: auth.currentUser.uid
+    });
+
+    el("eventTitle").value = "";
+    el("eventDate").value = "";
+    el("eventDescription").value = "";
+
+    show(adminMessage, "कार्यक्रम सफलतापूर्वक प्रकाशित हो गया।");
+
+  } catch (e) {
+    show(adminMessage, "Error: " + e.message);
+  }
+};
     el("saveStudent").onclick = async () => {
       const name = el("studentName").value.trim();
       const className = el("studentClass").value;
