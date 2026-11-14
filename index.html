@@ -235,6 +235,7 @@ CHHATTISGARH
 <span>© 2026–27 • सभी अधिकार सुरक्षित</span>
 </footer>
 
+
 <section class="section tinted" id="visitor-counter">
   <div class="section-title" style="text-align:center">
     <span>OUR WEBSITE REACH</span>
@@ -246,29 +247,63 @@ CHHATTISGARH
     <article class="card" style="text-align:center">
       <div class="emoji">👥</div>
       <h3>कुल विज़िटर्स</h3>
-      <div class="counterapi"
-        ns="govt-boys-ms-g-jamgaon"
-        key="total-visits"
-        label="कुल विज़िटर्स">
-      </div>
+      <strong id="totalVisitorCount">लोड हो रहा है...</strong>
     </article>
 
     <article class="card" style="text-align:center">
       <div class="emoji">📅</div>
-      <h3>पिछले 24 घंटे के विज़िटर्स</h3>
-      <div class="counterapi"
-        ns="govt-boys-ms-g-jamgaon"
-        key="total-visits"
-        timeline="24h"
-        readOnly="true"
-        label="विज़िटर्स">
-      </div>
+      <h3>आज के विज़िटर्स</h3>
+      <strong id="todayVisitorCount">लोड हो रहा है...</strong>
     </article>
   </div>
 </section>
 
-<script src="https://counterapi.com/c.js?ns=govt-boys-ms-g-jamgaon" async></script>
-  
+<script>
+(async function () {
+  const ns = "govt-boys-ms-g-jamgaon-2026";
+  const today = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Kolkata",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).format(new Date());
+
+  const sessionKey = "jamgaon-visitor-counted";
+
+  try {
+    if (!sessionStorage.getItem(sessionKey)) {
+      const hits = await Promise.all([
+        fetch(`https://abacus.jasoncameron.dev/hit/${ns}/all-visits`),
+        fetch(`https://abacus.jasoncameron.dev/hit/${ns}/visits-${today}`)
+      ]);
+      if (hits.some(r => !r.ok)) throw new Error("Counter unavailable");
+      sessionStorage.setItem(sessionKey, "1");
+    }
+
+    const [total, daily] = await Promise.all([
+      fetch(`https://abacus.jasoncameron.dev/get/${ns}/all-visits`).then(r => {
+        if (!r.ok) throw new Error();
+        return r.json();
+      }),
+      fetch(`https://abacus.jasoncameron.dev/get/${ns}/visits-${today}`).then(r => {
+        if (!r.ok) throw new Error();
+        return r.json();
+      })
+    ]);
+
+    document.getElementById("totalVisitorCount").textContent =
+      Number(total.value ?? 0).toLocaleString("en-IN");
+
+    document.getElementById("todayVisitorCount").textContent =
+      Number(daily.value ?? 0).toLocaleString("en-IN");
+
+  } catch (error) {
+    document.getElementById("totalVisitorCount").textContent = "अभी उपलब्ध नहीं";
+    document.getElementById("todayVisitorCount").textContent = "अभी उपलब्ध नहीं";
+  }
+})();
+</script>
+
 <script src="script.js?v=16"></script>
 <script src="student-results.js?v=1"></script>
 <script src="result-dashboard.js?v=3"></script>
