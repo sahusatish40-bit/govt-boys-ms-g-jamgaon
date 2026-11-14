@@ -573,3 +573,51 @@ footer {
     font-size: 12px;
   }
 }
+
+/* PREMIUM TEACHER PROFILE SECTION */
+
+#publicTeachers {
+  background: linear-gradient(135deg, #f4f9fc, #eaf5f3);
+}
+
+#publicTeacherList .card {
+  text-align: center;
+  padding: 25px 18px;
+  border-radius: 22px;
+  background: white;
+  box-shadow: 0 12px 30px #102b4612;
+}
+
+#publicTeacherList .card img {
+  width: 145px !important;
+  height: 145px !important;
+  object-fit: cover;
+  border-radius: 50% !important;
+  border: 5px solid #f3e2b8;
+  padding: 4px;
+  box-shadow: 0 8px 20px #102b4620;
+}
+
+#publicTeacherList .card h3 {
+  color: #102b46;
+  font-size: 19px;
+  margin: 18px 0 10px;
+}
+
+#publicTeacherList .card p {
+  color: #176b87;
+  font-weight: 600;
+  margin: 8px 0;
+}
+
+#publicTeacherList .card:hover {
+  transform: translateY(-7px);
+  border-color: #e4bd62;
+}
+
+@media(max-width:700px) {
+  #publicTeacherList .card img {
+    width: 125px !important;
+    height: 125px !important;
+  }
+}
