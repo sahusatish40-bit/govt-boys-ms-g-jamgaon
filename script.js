@@ -552,65 +552,7 @@ const studentSearch = el("studentSearch");
       .orderBy("createdAt", "desc")
       .limit(30)
       .onSnapshot(
-        // UPCOMING EVENTS CALENDAR
-const eventCalendar = document.getElementById("eventCalendar");
-
-db.collection("events")
-  .orderBy("eventDate", "asc")
-  .onSnapshot(snapshot => {
-    if (!eventCalendar) return;
-
-    eventCalendar.innerHTML = "";
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const upcomingEvents = snapshot.docs
-      .map(doc => ({ id: doc.id, ...doc.data() }))
-      .filter(event =>
-        event.eventDate &&
-        new Date(event.eventDate + "T00:00:00") >= today
-      );
-
-    if (upcomingEvents.length === 0) {
-      eventCalendar.textContent =
-        "अभी कोई आगामी कार्यक्रम उपलब्ध नहीं है।";
-      return;
-    }
-
-    upcomingEvents.forEach(event => {
-      const card = document.createElement("article");
-      card.className = "event-card";
-
-      const date = document.createElement("time");
-      date.textContent = new Date(
-        event.eventDate + "T00:00:00"
-      ).toLocaleDateString("hi-IN", {
-        day: "numeric",
-        month: "long",
-        year: "numeric"
-      });
-
-      const type = document.createElement("span");
-      type.className = "event-type";
-      type.textContent = event.type || "कार्यक्रम";
-
-      const title = document.createElement("h3");
-      title.textContent = event.title || "";
-
-      const description = document.createElement("p");
-      description.textContent = event.description || "";
-
-      card.append(date, type, title, description);
-      eventCalendar.appendChild(card);
-    });
-  }, error => {
-    console.error("Events loading error:", error);
-    if (eventCalendar) {
-      eventCalendar.textContent =
-        "कार्यक्रम लोड नहीं हो सके।";
-    }
-  });
+        
         renderNotices,
         e => {
           console.error(e);
@@ -619,7 +561,62 @@ db.collection("events")
           }
         }
       );
+// UPCOMING EVENTS CALENDAR
+const eventCalendar = document.getElementById("eventCalendar");
 
+if (eventCalendar) {
+  db.collection("events")
+    .orderBy("eventDate", "asc")
+    .onSnapshot(snapshot => {
+      eventCalendar.innerHTML = "";
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const upcomingEvents = snapshot.docs
+        .map(doc => ({ id: doc.id, ...doc.data() }))
+        .filter(event =>
+          event.eventDate &&
+          new Date(event.eventDate + "T00:00:00") >= today
+        );
+
+      if (upcomingEvents.length === 0) {
+        eventCalendar.textContent =
+          "अभी कोई आगामी कार्यक्रम उपलब्ध नहीं है।";
+        return;
+      }
+
+      upcomingEvents.forEach(event => {
+        const card = document.createElement("article");
+        card.className = "event-card";
+
+        const date = document.createElement("time");
+        date.textContent = new Date(
+          event.eventDate + "T00:00:00"
+        ).toLocaleDateString("hi-IN", {
+          day: "numeric",
+          month: "long",
+          year: "numeric"
+        });
+
+        const type = document.createElement("span");
+        type.className = "event-type";
+        type.textContent = event.type || "कार्यक्रम";
+
+        const title = document.createElement("h3");
+        title.textContent = event.title || "";
+
+        const description = document.createElement("p");
+        description.textContent = event.description || "";
+
+        card.append(date, type, title, description);
+        eventCalendar.appendChild(card);
+      });
+    }, error => {
+      console.error("Events loading error:", error);
+      eventCalendar.textContent = "कार्यक्रम लोड नहीं हो सके।";
+    });
+}
     function renderStudents() {
       studentList.innerHTML = "";
 
