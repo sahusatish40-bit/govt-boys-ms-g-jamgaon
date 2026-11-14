@@ -621,3 +621,74 @@ footer {
     height: 125px !important;
   }
 }
+
+/* PREMIUM STUDENT RESULT SECTION */
+
+#student-result {
+  background:
+    radial-gradient(circle at top right, #f3b84b25, transparent 35%),
+    linear-gradient(135deg, #edf7f8, #f8fafc);
+}
+
+#student-result .section-title {
+  text-align: center;
+}
+
+.result-form {
+  max-width: 520px;
+  margin: 25px auto 0;
+  padding: 28px;
+  text-align: left;
+  background: white;
+  border: 1px solid #e2edf0;
+  border-radius: 24px;
+  box-shadow: 0 15px 40px #102b4615;
+}
+
+.result-form label {
+  display: block;
+  margin: 16px 0 7px;
+  color: #102b46;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.result-form select,
+.result-form input {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid #cbdde3;
+  border-radius: 12px;
+  background: #f9fcfd;
+  color: #183047;
+  font-size: 15px;
+}
+
+.result-form button {
+  width: 100%;
+  margin-top: 22px;
+  padding: 15px;
+  border-radius: 30px;
+  background: linear-gradient(90deg, #176b87, #1c8b83);
+  color: white;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.result-form button:hover {
+  background: #102b46;
+}
+
+#resultOutput {
+  margin-top: 18px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+@media(max-width:700px) {
+  .result-form {
+    padding: 20px 16px;
+    border-radius: 18px;
+  }
+}
