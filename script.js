@@ -162,6 +162,38 @@ await loadFirebase(
           <input id="noticeInput" maxlength="180" placeholder="सूचना लिखें">
           <button id="addNotice" type="button">Publish Notice</button>
           <p id="adminMessage"></p>
+          
+<hr>
+<h3>📅 विद्यालय कार्यक्रम प्रबंधन</h3>
+<p>नया कार्यक्रम जोड़ें</p>
+
+<label>कार्यक्रम का नाम *</label>
+<input id="eventTitle" maxlength="100"
+  placeholder="जैसे: मासिक परीक्षा">
+
+<label>कार्यक्रम की तारीख *</label>
+<input id="eventDate" type="date">
+
+<label>कार्यक्रम का प्रकार</label>
+<select id="eventType">
+  <option value="परीक्षा">परीक्षा</option>
+  <option value="अवकाश">अवकाश</option>
+  <option value="No Bag Day">No Bag Day</option>
+  <option value="विद्यालय गतिविधि">विद्यालय गतिविधि</option>
+  <option value="अन्य">अन्य</option>
+</select>
+
+<label>कार्यक्रम का विवरण</label>
+<textarea id="eventDescription" rows="3"
+  maxlength="300"
+  placeholder="कार्यक्रम की जानकारी लिखें"></textarea>
+
+<button id="addEvent" type="button">
+  📅 कार्यक्रम प्रकाशित करें
+</button>
+<p id="eventMessage"></p>
+<hr>
+
           <hr>
 
           <h3>विद्यार्थी प्रबंधन (केवल एडमिन)</h3>
