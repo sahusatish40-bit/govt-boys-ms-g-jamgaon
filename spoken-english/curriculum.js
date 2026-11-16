@@ -25,7 +25,7 @@ const speakingLessons = [{"n":4,"t":"Pronouns — सर्वनाम","d":"I,
   {title:"5. Two Friends",hi:"दो मित्रों की बातचीत",lines:[["A","Hello! Where are you going?","नमस्ते! तुम कहाँ जा रहे हो?"],["B","I am going to the library.","मैं पुस्तकालय जा रहा हूँ।"],["A","Can I come with you?","क्या मैं तुम्हारे साथ आ सकता हूँ?"],["B","Of course. Let's go together.","बिल्कुल। चलो साथ चलते हैं।"],["A","What book will you read?","तुम कौन-सी किताब पढ़ोगे?"],["B","I will read a storybook.","मैं कहानी की किताब पढ़ूँगा।"]]},
   {title:"6. Customer – Restaurant Waiter",hi:"ग्राहक और होटल कर्मचारी",lines:[["Waiter","Good afternoon. What would you like?","नमस्कार। आप क्या लेना चाहेंगे?"],["Customer","I would like a glass of milk.","मुझे एक गिलास दूध चाहिए।"],["Waiter","Would you like anything to eat?","क्या आप कुछ खाना भी चाहेंगे?"],["Customer","Yes, please. One sandwich.","जी हाँ, एक सैंडविच।"],["Waiter","Certainly. Please wait a moment.","ज़रूर। कृपया थोड़ी देर प्रतीक्षा करें।"],["Customer","Thank you.","धन्यवाद।"]]}
  ];
- const conversationSection=document.createElement('section');conversationSection.className='practice';
+ const conversationSection=document.createElement('section');conversationSection.className='practice real-life-conversations';
  conversationSection.innerHTML='<span class="pill">REAL LIFE ENGLISH</span><h2>🗣️ Real Life English Conversations</h2><p>इन संवादों को दो विद्यार्थियों के साथ पढ़ें। पहले एक विद्यार्थी पहला किरदार बोले और दूसरा विद्यार्थी जवाब दे। फिर अपनी भूमिका बदलें। हर अंग्रेज़ी पंक्ति सुनकर दोहराएँ।</p>';
  conversations.forEach(c=>{
   const card=document.createElement('div');card.className='dialogue';
@@ -33,6 +33,55 @@ const speakingLessons = [{"n":4,"t":"Pronouns — सर्वनाम","d":"I,
   conversationSection.appendChild(card);
  });
  root.appendChild(conversationSection);
+ const speakingTopics=[
+  {title:"Asking a Neighbour for Help",hi:"पड़ोसी से मदद माँगना",lines:[
+   ["My neighbour is very kind.","मेरे पड़ोसी बहुत दयालु हैं।"],
+   ["I need your help, please.","कृपया मुझे आपकी मदद चाहिए।"],
+   ["Can you help me?","क्या आप मेरी मदद कर सकते हैं?"],
+   ["My mother is not at home.","मेरी माँ घर पर नहीं हैं।"],
+   ["I need some water.","मुझे थोड़ा पानी चाहिए।"],
+   ["Can I use your phone?","क्या मैं आपका फोन इस्तेमाल कर सकता हूँ?"],
+   ["Please call my father.","कृपया मेरे पिताजी को फोन कीजिए।"],
+   ["Thank you for your help.","आपकी मदद के लिए धन्यवाद।"],
+   ["You are always welcome.","आपका हमेशा स्वागत है।"],
+   ["We should help our neighbours.","हमें अपने पड़ोसियों की मदद करनी चाहिए।"],
+   ["Good neighbours are like family.","अच्छे पड़ोसी परिवार जैसे होते हैं।"]
+  ]},
+  {title:"Story of a Festival",hi:"एक त्योहार की कहानी",lines:[
+   ["Diwali is my favourite festival.","दीवाली मेरा पसंदीदा त्योहार है।"],
+   ["It is the festival of lights.","यह रोशनी का त्योहार है।"],
+   ["People clean their homes.","लोग अपने घर साफ करते हैं।"],
+   ["We decorate our houses with lamps.","हम अपने घरों को दीपों से सजाते हैं।"],
+   ["Children wear new clothes.","बच्चे नए कपड़े पहनते हैं।"],
+   ["We make sweets at home.","हम घर पर मिठाइयाँ बनाते हैं।"],
+   ["We meet our friends and relatives.","हम अपने मित्रों और रिश्तेदारों से मिलते हैं।"],
+   ["We pray for happiness and peace.","हम सुख और शांति के लिए प्रार्थना करते हैं।"],
+   ["We share sweets with others.","हम दूसरों के साथ मिठाइयाँ बाँटते हैं।"],
+   ["We celebrate the festival together.","हम सब मिलकर त्योहार मनाते हैं।"],
+   ["Festivals teach us love and unity.","त्योहार हमें प्रेम और एकता सिखाते हैं।"]
+  ]},
+  {title:"My Hero / Role Model",hi:"मेरे आदर्श व्यक्ति",lines:[
+   ["My role model is my teacher.","मेरे आदर्श मेरे शिक्षक हैं।"],
+   ["My teacher is very kind.","मेरे शिक्षक बहुत दयालु हैं।"],
+   ["He teaches us good things.","वे हमें अच्छी बातें सिखाते हैं।"],
+   ["He is honest and hardworking.","वे ईमानदार और मेहनती हैं।"],
+   ["He helps all students.","वे सभी विद्यार्थियों की मदद करते हैं।"],
+   ["He always speaks the truth.","वे हमेशा सच बोलते हैं।"],
+   ["He inspires me to study well.","वे मुझे अच्छी पढ़ाई करने के लिए प्रेरित करते हैं।"],
+   ["I learn good habits from him.","मैं उनसे अच्छी आदतें सीखता/सीखती हूँ।"],
+   ["I want to become a good person.","मैं एक अच्छा इंसान बनना चाहता/चाहती हूँ।"],
+   ["I respect my role model.","मैं अपने आदर्श का सम्मान करता/करती हूँ।"],
+   ["I want to make him proud.","मैं उन्हें गर्व महसूस कराना चाहता/चाहती हूँ।"]
+  ]}
+ ];
+ const topicSection=document.createElement('section');topicSection.className='practice speaking-topics';
+ topicSection.innerHTML='<span class="pill">SPEAKING TOPICS</span><h2>🎤 Speaking Practice – बोलने के विषय</h2><p>हर विषय पर दिए गए आसान वाक्य पढ़ें, सुनें और याद करके बोलें। फिर बिना देखे बोलने का प्रयास करें।</p>';
+ speakingTopics.forEach(topic=>{
+  const card=document.createElement('div');card.className='dialogue';
+  card.innerHTML='<h3>'+esc(topic.title)+'</h3><p>'+esc(topic.hi)+'</p>'+topic.lines.map((line,index)=>'<div class="word" style="margin:8px 0"><strong>'+String(index+1)+'. '+esc(line[0])+'</strong><span>'+esc(line[1])+'</span><button class="speak" type="button" data-say="'+esc(line[0])+'">🔊 सुनें</button></div>').join('')+'<div class="note">अभ्यास: इन वाक्यों को जोड़कर 1 मिनट बोलने की कोशिश करें।</div>';
+  topicSection.appendChild(card);
+ });
+ root.appendChild(topicSection);
  function update(){const count=Object.keys(completed).filter(k=>completed[k]).length;const el=document.getElementById('courseProgress');if(el)el.textContent='आपकी प्रगति: '+count+' / '+speakingLessons.length+' पाठ पूरे';}
  document.addEventListener('click',e=>{
   const speak=e.target.closest('[data-say]');if(speak){if(typeof say==='function')say(speak.getAttribute('data-say'));}
