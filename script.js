@@ -532,7 +532,7 @@ const studentSearch = el("studentSearch");
     const adminBirthdayList = el("adminBirthdayList");
 
     function birthdayDateParts(value) {
-      if (!value || !/^\\d{4}-\\d{2}-\\d{2}$/.test(value)) return null;
+      if (!value || /^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
       const parts = value.split("-").map(Number);
       return { month: parts[1], day: parts[2] };
     }
