@@ -820,3 +820,6 @@ footer span {
     padding: 17px;
   }
 }
+
+/* Security UI: never display admin controls unless the authorized admin is signed in. */
+#adminTools[hidden], #loginBox[hidden] { display: none !important; }
