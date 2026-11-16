@@ -56,4 +56,10 @@ service cloud.firestore {
         && request.auth.uid == 'Y79AJ2xs8mTjaWepHml1lA74fj83';
     }
   }
+
+    match /birthdays/{birthdayId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null
+        && request.auth.uid == 'Y79AJ2xs8mTjaWepHml1lA74fj83';
+    }
 }
