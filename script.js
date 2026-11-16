@@ -145,7 +145,7 @@ await loadFirebase(
           <p id="loginMessage"></p>
         </div>
 
-        <div id="adminTools" hidden>
+        <div id="adminTools" hidden style="display:none!important">
           <h3>Admin Dashboard</h3>
           <button id="logoutBtn" type="button">Logout</button>
           <hr>
@@ -1981,6 +1981,7 @@ el("addEvent").onclick = async () => {
       if (user && user.uid === ADMIN_UID) {
         loginBox.hidden = true;
         adminTools.hidden = false;
+        adminTools.style.setProperty("display", "block", "important");
      beginStudentFeed();
 beginTeacherFeed();
 loadAdminGallery();
@@ -1994,6 +1995,7 @@ await loadExams();
 
         loginBox.hidden = false;
         adminTools.hidden = true;
+        adminTools.style.setProperty("display", "none", "important");
 
         if (stopStudents)
 {
