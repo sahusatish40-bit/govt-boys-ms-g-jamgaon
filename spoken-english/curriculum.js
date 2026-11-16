@@ -81,7 +81,7 @@ const speakingLessons = [{"n":4,"t":"Pronouns — सर्वनाम","d":"I,
   card.innerHTML='<h3>'+esc(topic.title)+'</h3><p>'+esc(topic.hi)+'</p>'+topic.lines.map((line,index)=>'<div class="word" style="margin:8px 0"><strong>'+String(index+1)+'. '+esc(line[0])+'</strong><span>'+esc(line[1])+'</span><button class="speak" type="button" data-say="'+esc(line[0])+'">🔊 सुनें</button></div>').join('')+'<div class="note">अभ्यास: इन वाक्यों को जोड़कर 1 मिनट बोलने की कोशिश करें।</div>';
   topicSection.appendChild(card);
  });
- root.appendChild(topicSection);
+ final.appendChild(topicSection);
  function update(){const count=Object.keys(completed).filter(k=>completed[k]).length;const el=document.getElementById('courseProgress');if(el)el.textContent='आपकी प्रगति: '+count+' / '+speakingLessons.length+' पाठ पूरे';}
  document.addEventListener('click',e=>{
   const speak=e.target.closest('[data-say]');if(speak){if(typeof say==='function')say(speak.getAttribute('data-say'));}
