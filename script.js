@@ -298,6 +298,31 @@ await loadFirebase(
   </button>
 </section>
 <hr>
+
+<hr>
+<section id="birthdayManagement">
+  <h3>🎂 जन्मदिन कार्ड प्रबंधन</h3>
+  <p>विद्यार्थी या शिक्षक का जन्मदिन जोड़ें। जन्मदिन हर वर्ष अपने-आप दिखाई देगा।</p>
+  <label>व्यक्ति का प्रकार *</label>
+  <select id="birthdayRole">
+    <option value="विद्यार्थी">विद्यार्थी</option>
+    <option value="शिक्षक">शिक्षक</option>
+  </select>
+  <label>नाम *</label>
+  <input id="birthdayName" maxlength="80" placeholder="पूरा नाम">
+  <label>कक्षा / पद</label>
+  <input id="birthdayDetail" maxlength="80" placeholder="जैसे कक्षा 7वीं / शिक्षक">
+  <label>जन्मतिथि *</label>
+  <input id="birthdayDate" type="date">
+  <label>फोटो लिंक (वैकल्पिक)</label>
+  <input id="birthdayPhoto" type="url" placeholder="फोटो का URL">
+  <button id="saveBirthday" type="button">🎉 जन्मदिन जोड़ें</button>
+  <p id="birthdayMessage"></p>
+  <h3>जन्मदिन सूची</h3>
+  <div id="adminBirthdayList"></div>
+</section>
+<hr>
+
 <section id="teacherManagement">
   <h3>👨‍🏫 शिक्षक प्रबंधन</h3>
 
@@ -499,6 +524,159 @@ const studentSearch = el("studentSearch");
     let students = [];
     let stopStudents = null;
     let exams = [];
+
+
+    // Birthday cards: public read, admin-only writes.
+    const birthdayTodayBox = document.getElementById("birthdayToday");
+    const birthdayListBox = document.getElementById("birthdayList");
+    const adminBirthdayList = el("adminBirthdayList");
+
+    function birthdayDateParts(value) {
+      if (!value || !/^\\d{4}-\\d{2}-\\d{2}$/.test(value)) return null;
+      const parts = value.split("-").map(Number);
+      return { month: parts[1], day: parts[2] };
+    }
+
+    function nextBirthdayDate(value, base) {
+      const parts = birthdayDateParts(value);
+      if (!parts) return null;
+      const next = new Date(base.getFullYear(), parts.month - 1, parts.day);
+      next.setHours(0,0,0,0);
+      if (next < base) next.setFullYear(next.getFullYear() + 1);
+      return next;
+    }
+
+    function renderBirthdayCards(snapshot) {
+      const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const todayKey = String(today.getMonth()+1).padStart(2,"0") + "-" + String(today.getDate()).padStart(2,"0");
+      const valid = items.map(item => {
+        const parts = birthdayDateParts(item.birthDate);
+        return parts ? { ...item, parts, nextDate: nextBirthdayDate(item.birthDate, today) } : null;
+      }).filter(Boolean).sort((a,b) => a.nextDate - b.nextDate);
+
+      const todays = valid.filter(x => String(x.parts.month).padStart(2,"0")+"-"+String(x.parts.day).padStart(2,"0") === todayKey);
+      birthdayTodayBox.innerHTML = "";
+      if (!todays.length) {
+        const empty = document.createElement("p");
+        empty.className = "birthday-empty";
+        empty.textContent = "आज विद्यालय में किसी का जन्मदिन दर्ज नहीं है। आने वाले जन्मदिन नीचे देखें।";
+        birthdayTodayBox.appendChild(empty);
+      } else {
+        todays.forEach(person => birthdayTodayBox.appendChild(makeBirthdayCard(person, true)));
+      }
+
+      birthdayListBox.innerHTML = "";
+      const upcoming = valid.filter(x => {
+        const days = Math.round((x.nextDate - today) / 86400000);
+        return days > 0;
+      }).slice(0, 12);
+      if (!upcoming.length) {
+        birthdayListBox.textContent = "अभी आने वाले जन्मदिन दर्ज नहीं हैं।";
+      } else {
+        upcoming.forEach(person => birthdayListBox.appendChild(makeBirthdayCard(person, false)));
+      }
+
+      if (adminBirthdayList) {
+        adminBirthdayList.innerHTML = "";
+        if (!items.length) adminBirthdayList.textContent = "अभी कोई जन्मदिन दर्ज नहीं है।";
+        items.sort((a,b)=>(a.name||"").localeCompare(b.name||"")).forEach(person => {
+          const row = document.createElement("div");
+          row.className = "birthday-admin-row";
+          const label = document.createElement("span");
+          label.textContent = (person.role || "") + " — " + (person.name || "") + " (" + (person.birthDate || "") + ")";
+          const del = document.createElement("button");
+          del.type = "button";
+          del.textContent = "हटाएँ";
+          del.onclick = async () => {
+            if (confirm("क्या " + (person.name || "यह रिकॉर्ड") + " का जन्मदिन रिकॉर्ड हटाएँ?")) {
+              try { await db.collection("birthdays").doc(person.id).delete(); }
+              catch (error) { alert("रिकॉर्ड नहीं हट सका: " + error.message); }
+            }
+          };
+          row.append(label, del);
+          adminBirthdayList.appendChild(row);
+        });
+      }
+    }
+
+    function makeBirthdayCard(person, isToday) {
+      const card = document.createElement("article");
+      card.className = "birthday-card" + (isToday ? " birthday-card-today" : "");
+      const photo = document.createElement("div");
+      photo.className = "birthday-photo";
+      if (person.photo) {
+        const img = document.createElement("img");
+        img.src = person.photo;
+        img.alt = person.name || "जन्मदिन";
+        img.loading = "lazy";
+        img.onerror = () => { photo.textContent = "🎂"; };
+        photo.appendChild(img);
+      } else {
+        photo.textContent = person.role === "शिक्षक" ? "👩‍🏫" : "🎓";
+      }
+      const title = document.createElement("h3");
+      title.textContent = person.name || "जन्मदिन";
+      const detail = document.createElement("p");
+      detail.textContent = (person.role || "विद्यालय परिवार") + (person.detail ? " • " + person.detail : "");
+      const date = document.createElement("p");
+      date.className = "birthday-date";
+      date.textContent = new Date(person.birthDate + "T00:00:00").toLocaleDateString("hi-IN", {day:"numeric",month:"long"});
+      const wishes = document.createElement("p");
+      wishes.className = "birthday-wishes";
+      wishes.textContent = isToday ? "🎉 जन्मदिन की हार्दिक शुभकामनाएँ! आपका दिन खुशियों से भरा हो।" : "आपके आने वाले जन्मदिन के लिए ढेरों शुभकामनाएँ!";
+      const actions = document.createElement("div");
+      actions.className = "birthday-actions";
+      const share = document.createElement("button");
+      share.type = "button";
+      share.textContent = "WhatsApp शेयर";
+      share.onclick = () => {
+        const message = "🎂 जन्मदिन की हार्दिक शुभकामनाएँ!\\n" + person.name + "\\n" + (person.role || "") + (person.detail ? " • " + person.detail : "") + "\\nशासकीय उच्चतर माध्यमिक विद्यालय जी-जामगाँव (बालक माध्य.)";
+        window.open("https://wa.me/?text=" + encodeURIComponent(message), "_blank", "noopener");
+      };
+      const print = document.createElement("button");
+      print.type = "button";
+      print.textContent = "कार्ड प्रिंट / PDF";
+      print.onclick = () => {
+        const w = window.open("", "_blank");
+        if (!w) return alert("कृपया इस वेबसाइट के लिए पॉप-अप की अनुमति दें।");
+        const safeName = String(person.name || "").replace(/[&<>"]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
+        w.document.write("<!doctype html><html lang='hi'><meta charset='utf-8'><title>Birthday Card</title><style>body{font-family:Arial,sans-serif;background:#fff7e9;display:grid;place-items:center;min-height:95vh}.card{max-width:650px;margin:25px;padding:45px;text-align:center;border:8px double #d6a83d;border-radius:28px;background:linear-gradient(145deg,#fff,#fff1d6);color:#173b60}.emoji{font-size:58px}.name{font-size:36px;color:#b83270}.school{margin-top:30px;font-weight:bold}</style><div class='card'><div class='emoji'>🎂🎈🎉</div><h1>Happy Birthday!</h1><div class='name'>"+safeName+"</div><h2>"+(person.role || "")+"</h2><p>"+(person.detail || "")+"</p><p>आपका जीवन खुशियों, स्वास्थ्य और सफलता से भरा रहे।</p><div class='school'>शासकीय उच्चतर माध्यमिक विद्यालय जी-जामगाँव (बालक माध्य.)</div></div><script>window.onload=function(){window.print()}<\\/script></html>");
+        w.document.close();
+      };
+      actions.append(share, print);
+      card.append(photo, title, detail, date, wishes, actions);
+      return card;
+    }
+
+    db.collection("birthdays").onSnapshot(renderBirthdayCards, error => {
+      console.error("Birthday list error:", error);
+      birthdayListBox.textContent = "जन्मदिन की सूची लोड नहीं हो सकी।";
+      birthdayTodayBox.textContent = "जन्मदिन की जानकारी अभी उपलब्ध नहीं है।";
+    });
+
+    el("saveBirthday").onclick = async () => {
+      const role = el("birthdayRole").value;
+      const name = el("birthdayName").value.trim();
+      const birthDate = el("birthdayDate").value;
+      const detail = el("birthdayDetail").value.trim();
+      const photo = el("birthdayPhoto").value.trim();
+      if (!name || !birthDate) return show(el("birthdayMessage"), "नाम और जन्मतिथि आवश्यक हैं।");
+      if (photo && !/^https:\\/\\//i.test(photo)) return show(el("birthdayMessage"), "फोटो लिंक https:// से शुरू होना चाहिए।");
+      try {
+        await db.collection("birthdays").add({
+          role, name, detail, birthDate, photo,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          createdBy: auth.currentUser.uid
+        });
+        ["birthdayName","birthdayDetail","birthdayDate","birthdayPhoto"].forEach(id => el(id).value = "");
+        show(el("birthdayMessage"), "जन्मदिन कार्ड सफलतापूर्वक जोड़ दिया गया।");
+      } catch (error) {
+        show(el("birthdayMessage"), "सेव नहीं हो सका: " + error.message);
+      }
+    };
+
 
     function renderNotices(snap) {
       if (!noticeList) return;
