@@ -59,6 +59,19 @@ main{max-width:900px;padding-top:14px}
 .note{font-size:14px}
 @media(max-width:560px){.academy-dashboard{gap:7px}.dash-item{padding:9px 5px}.dash-item b{font-size:19px}.lesson-accordion summary{padding:12px}.lesson-summary-text strong{font-size:14px}}
 
+
+/* Lesson-name-only home screen */
+.lesson-list-heading{margin:18px 2px 10px;color:var(--blue);font-size:19px}
+.lesson-accordion{margin:7px 0;border-radius:12px;box-shadow:0 2px 9px #123b6708}
+.lesson-accordion summary{padding:13px 14px;min-height:52px}
+.lesson-accordion summary:after{content:"›";font-size:26px;font-weight:400}
+.lesson-accordion[open] summary:after{content:"⌄"}
+.lesson-number{width:30px;height:30px;flex-basis:30px;border-radius:9px;font-size:13px}
+.lesson-summary-text strong{font-size:15px;font-weight:650}
+.lesson-summary-text small{display:none!important}
+#complete-course>.intro,#complete-course>.course-title,.academy-dashboard,main>.intro{display:none!important}
+#complete-course{margin-top:0}
+
 </style>
 </head>
 <body>
@@ -232,17 +245,19 @@ function checkQuiz(){
 <script>
 (function(){
  const main=document.querySelector('main');
- if(!main)return;
- function makeAccordion(nodes,num,title,subtitle,open){
-  const details=document.createElement('details');details.className='lesson-accordion';if(open)details.open=true;
+ const course=document.getElementById('complete-course');
+ if(!main||!course)return;
+ function makeAccordion(nodes,num,title){
+  const details=document.createElement('details');details.className='lesson-accordion';
   const summary=document.createElement('summary');
-  summary.innerHTML='<span class="lesson-number">'+num+'</span><span class="lesson-summary-text"><strong>'+title+'</strong><small>'+subtitle+'</small></span>';
+  summary.innerHTML='<span class="lesson-number">'+num+'</span><span class="lesson-summary-text"><strong>'+title+'</strong></span>';
   const body=document.createElement('div');body.className='lesson-body';
   nodes.forEach(n=>body.appendChild(n));details.append(summary,body);return details;
  }
- // Bundle the first three lessons with their practice and quiz sections.
- let node=main.querySelector('.intro')?.nextElementSibling;
- let lessonNo=0;
+ const intro=main.querySelector('.intro');
+ const listTitle=document.createElement('h2');listTitle.className='lesson-list-heading';listTitle.textContent='अपना पाठ चुनें';
+ if(intro) intro.after(listTitle); else main.prepend(listTitle);
+ let node=listTitle.nextElementSibling,lessonNo=0;
  while(node && node.id!=='complete-course'){
   if(node.classList.contains('lesson')){
    lessonNo++;
@@ -251,35 +266,18 @@ function checkQuiz(){
     const after=next.nextElementSibling;group.push(next);next=after;
    }
    const title=node.querySelector('h2')?.textContent||('Lesson '+lessonNo);
-   const details=makeAccordion(group,lessonNo,title,'पाठ खोलने के लिए यहाँ टैप करें',false);
+   const details=makeAccordion(group,lessonNo,title);
    main.insertBefore(details,group[0]);node=details.nextElementSibling;
   }else node=node.nextElementSibling;
  }
- const intro=main.querySelector('.intro');
- if(intro && !main.querySelector('.academy-dashboard')){
-  const dash=document.createElement('div');dash.className='academy-dashboard';
-  dash.innerHTML='<div class="dash-item"><b>33</b><span>कुल पाठ</span></div><div class="dash-item"><b>Zero</b><span>शुरुआती स्तर</span></div><div class="dash-item"><b>Daily</b><span>बोलने का अभ्यास</span></div>';
-  intro.after(dash);
- }
- // Add a compact title before the advanced lessons.
- const course=document.getElementById('complete-course');
- if(course){
-  const courseIntro=course.querySelector('.intro');
-  if(courseIntro){
-   const heading=document.createElement('h2');heading.className='course-title';heading.textContent='आगे के पाठ • Lesson 4–33';
-   course.insertBefore(heading,courseIntro);
-  }
-  const sections=[...course.querySelectorAll(':scope > .lesson')];
-  sections.forEach((section)=>{
-   const n=Number((section.querySelector('.pill')?.textContent.match(/\d+/)||[])[0]||0);
-   const title=section.querySelector('h2')?.textContent||('Lesson '+n);
-   const details=document.createElement('details');details.className='lesson-accordion';
-   const summary=document.createElement('summary');
-   summary.innerHTML='<span class="lesson-number">'+n+'</span><span class="lesson-summary-text"><strong>'+title+'</strong><small>शब्द, हिंदी अर्थ और वाक्य अभ्यास</small></span>';
-   const body=document.createElement('div');body.className='lesson-body';body.appendChild(section);
-   details.append(summary,body);course.appendChild(details);
-  });
- }
+ const courseSections=[...course.querySelectorAll(':scope > .lesson')];
+ courseSections.forEach(section=>{
+  const n=Number((section.querySelector('.pill')?.textContent.match(/\d+/)||[])[0]||0);
+  const title=section.querySelector('h2')?.textContent||('Lesson '+n);
+  const details=makeAccordion([section],n,title);course.appendChild(details);
+ });
+ const finalPractice=course.querySelector(':scope > .practice');
+ if(finalPractice)course.appendChild(makeAccordion([finalPractice],'★','Final Speaking Practice'));
 })();
 </script>
 </body>
