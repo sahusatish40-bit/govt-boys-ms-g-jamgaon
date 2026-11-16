@@ -24,7 +24,7 @@ footer{text-align:center;padding:25px;color:#65758a;font-size:.9rem}
 <body>
 <header><p>सत्र 2026–27 • हिंदी माध्यम</p><h1>राष्ट्रीय साधन-सह-योग्यता छात्रवृत्ति परीक्षा (NMMSE)</h1><p>100 प्रश्नों का MAT एवं SAT अभ्यास टेस्ट • ऑनलाइन मूल्यांकन • प्रिंट योग्य वर्कशीट</p><p>शासकीय उच्चतर माध्यमिक विद्यालय जी-जामगाँव (बालक माध्य.)</p></header>
 <main>
-<nav class="no-print"><a href="#mat">MAT क्विज़</a><a href="#sat">SAT क्विज़</a><a href="#teacherResults">परिणाम रिकॉर्ड</a><a href="#worksheet">वर्कशीट</a><a class="secondary" href="#links">अध्ययन लिंक</a></nav>
+<nav class="no-print"><a href="#mat">MAT क्विज़</a><a href="#sat">SAT क्विज़</a><a href="#worksheet">वर्कशीट</a><a class="secondary" href="#links">अध्ययन लिंक</a><a class="secondary" href="#teacherLogin">शिक्षक लॉगिन</a></nav>
 <section class="panel"><h2>अभ्यास कैसे करें?</h2><p>कक्षा 8वीं स्तर के अभ्यास हेतु कुल 100 नमूना प्रश्न दिए गए हैं—50 MAT और 50 SAT। प्रत्येक भाग के सभी प्रश्न हल करके <b>उत्तर जाँचें</b> दबाएँ। सही उत्तर और संक्षिप्त व्याख्या दिखाई जाएगी। यह अभ्यास सामग्री आधिकारिक प्रश्नपत्र नहीं है।</p></section>
 <section class="panel" id="studentPanel">
 <h2>👩‍🎓 विद्यार्थी विवरण</h2>
@@ -32,7 +32,14 @@ footer{text-align:center;padding:25px;color:#65758a;font-size:.9rem}
 <input id="studentName" type="text" maxlength="80" placeholder="जैसे: राहुल कुमार" style="width:100%;padding:12px;border:1px solid #b8c8d8;border-radius:9px;margin:8px 0">
 <p id="studentHint"><small>नाम भरने के बाद क्विज़ हल करें। परिणाम इसी डिवाइस में सुरक्षित होंगे।</small></p>
 </section>
-<section class="panel" id="teacherResults">
+<section class="panel" id="teacherLogin">
+<h2>🔐 शिक्षक लॉगिन</h2><p>विद्यालय वेबसाइट के मौजूदा Admin Email और Password से लॉगिन करें।</p>
+<div id="teacherLoginForm">
+<label for="teacherEmail">Admin Email</label><input id="teacherEmail" type="email" autocomplete="username" placeholder="अपना Admin Email लिखें" style="width:100%;padding:12px;border:1px solid #b8c8d8;border-radius:9px;margin:8px 0">
+<label for="teacherPassword">Password</label><input id="teacherPassword" type="password" autocomplete="current-password" placeholder="अपना Password लिखें" style="width:100%;padding:12px;border:1px solid #b8c8d8;border-radius:9px;margin:8px 0">
+<button class="btn" id="teacherLoginBtn" type="button">लॉगिन करें</button></div>
+<p id="teacherAuthMessage" aria-live="polite"></p><button class="btn secondary" id="teacherLogoutBtn" type="button" hidden>Logout</button></section>
+<section class="panel" id="teacherResults" hidden>
 <h2>📊 शिक्षक परिणाम रिकॉर्ड</h2>
 <p>इस डिवाइस पर जमा MAT/SAT समूह परिणाम यहाँ देखें और CSV फाइल में डाउनलोड करें। इसे Excel में खोलकर GitHub रिपॉज़िटरी में अपलोड किया जा सकता है।</p>
 <p id="savedCount">सुरक्षित परिणाम: 0</p>
@@ -42,8 +49,8 @@ footer{text-align:center;padding:25px;color:#65758a;font-size:.9rem}
 </div>
 <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;margin-top:12px"><thead><tr><th>दिनांक/समय</th><th>विद्यार्थी</th><th>विषय</th><th>समूह</th><th>अंक</th><th>प्रतिशत</th></tr></thead><tbody id="resultsBody"></tbody></table></div>
 </section>
-<section class="panel" id="mat"><h2>🧠 MAT – मानसिक योग्यता अभ्यास</h2><p id="matProgress">प्रश्न समूह 1 • 10 प्रश्न</p><div id="matQuiz"></div><button class="btn" id="matCheck" onclick="checkQuiz('mat')">उत्तर जाँचें</button><div class="result" id="matResult" aria-live="polite"></div></section>
-<section class="panel" id="sat"><h2>📘 SAT – शैक्षणिक योग्यता अभ्यास</h2><p id="satProgress">प्रश्न समूह 1 • 10 प्रश्न</p><div id="satQuiz"></div><button class="btn" id="satCheck" onclick="checkQuiz('sat')">उत्तर जाँचें</button><div class="result" id="satResult" aria-live="polite"></div></section>
+<section class="panel" id="mat"><h2>🧠 MAT – मानसिक योग्यता अभ्यास</h2><p id="matProgress">प्रश्न समूह 1 • 10 प्रश्न</p><div id="matQuiz"></div><button class="btn" id="matCheck" onclick="checkQuiz('mat')">उत्तर जाँचें</button> <button class="btn secondary" id="matNext" onclick="nextGroup('mat')" hidden>अगला क्विज़ शुरू करें</button><div class="result" id="matResult" aria-live="polite"></div></section>
+<section class="panel" id="sat"><h2>📘 SAT – शैक्षणिक योग्यता अभ्यास</h2><p id="satProgress">प्रश्न समूह 1 • 10 प्रश्न</p><div id="satQuiz"></div><button class="btn" id="satCheck" onclick="checkQuiz('sat')">उत्तर जाँचें</button> <button class="btn secondary" id="satNext" onclick="nextGroup('sat')" hidden>अगला क्विज़ शुरू करें</button><div class="result" id="satResult" aria-live="polite"></div></section>
 <section class="panel" id="worksheet"><h2>📝 अभ्यास वर्कशीट</h2><p>प्रश्न कॉपी में हल करें। प्रिंट निकालने के लिए बटन दबाएँ।</p><ol>
 <li>श्रृंखला पूरी कीजिए: 2, 4, 8, 16, __।</li><li>यदि CAT को DBU लिखा जाए, तो DOG को कैसे लिखेंगे?</li><li>40 विद्यार्थियों में 25% अनुपस्थित हैं। उपस्थित विद्यार्थियों की संख्या ज्ञात कीजिए।</li><li>पौधों में भोजन बनाने की प्रक्रिया क्या कहलाती है?</li><li>जल का रासायनिक सूत्र लिखिए।</li><li>भारत का संविधान कब लागू हुआ?</li><li>12 सेमी लंबाई और 5 सेमी चौड़ाई वाले आयत का क्षेत्रफल ज्ञात कीजिए।</li><li>मानव शरीर में रक्त पंप करने वाला अंग कौन-सा है?</li><li>संज्ञा की परिभाषा एक उदाहरण सहित लिखिए।</li><li>भारत के राष्ट्रीय पशु का नाम लिखिए।</li></ol><div class="no-print"><button class="btn" onclick="window.print()">🖨️ वर्कशीट प्रिंट / PDF सेव करें</button></div></section>
 <section class="panel" id="links"><h2>🔗 अतिरिक्त अध्ययन सामग्री</h2><div class="grid">
@@ -83,8 +90,34 @@ function clearResults(){if(confirm("क्या इस डिवाइस क�
 
 const quizState={mat:{deck:[],group:[],round:0,roundScore:0,totalScore:0,answered:false,timer:null},sat:{deck:[],group:[],round:0,roundScore:0,totalScore:0,answered:false,timer:null}};
 function shuffle(list){const a=[...list];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-function nextGroup(type){const st=quizState[type];if(st.deck.length<GROUP_SIZE)st.deck=st.deck.concat(shuffle(quizzes[type]));st.group=st.deck.splice(0,GROUP_SIZE);st.round++;st.answered=false;st.roundScore=0;document.getElementById(type+"Progress").textContent="प्रश्न समूह "+st.round+" • "+st.group.length+" प्रश्न";document.getElementById(type+"Result").textContent="कुल सही उत्तर: "+st.totalScore;document.getElementById(type+"Check").disabled=false;renderQuiz(type);}
+function nextGroup(type){const st=quizState[type];if(st.deck.length<GROUP_SIZE)st.deck=st.deck.concat(shuffle(quizzes[type]));st.group=st.deck.splice(0,GROUP_SIZE);st.round++;st.answered=false;st.roundScore=0;document.getElementById(type+"Progress").textContent="प्रश्न समूह "+st.round+" • "+st.group.length+" प्रश्न";document.getElementById(type+"Result").textContent="कुल सही उत्तर: "+st.totalScore;document.getElementById(type+"Check").disabled=false;document.getElementById(type+"Next").hidden=true;renderQuiz(type);}
 function renderQuiz(type){const root=document.getElementById(type+"Quiz");root.innerHTML="";const st=quizState[type];st.group.forEach((q,i)=>{const d=document.createElement("div");d.className="question";d.innerHTML="<p>"+(i+1)+". "+q.q+"</p>"+q.o.map((v,j)=>'<label class="option"><input type="radio" name="'+type+i+'" value="'+j+'"> '+v+'</label>').join("")+'<div class="feedback" id="'+type+'Feedback'+i+'"></div>';root.appendChild(d);});}
-function checkQuiz(type){const st=quizState[type];if(st.answered)return;if(!document.getElementById("studentName").value.trim()){document.getElementById("studentHint").textContent="क्विज़ जाँचने से पहले विद्यार्थी का नाम भरना आवश्यक है।";document.getElementById("studentName").focus();return;}const missing=st.group.findIndex((q,i)=>!document.querySelector('input[name="'+type+i+'"]:checked'));if(missing!==-1){document.getElementById(type+"Result").textContent="कृपया सभी "+st.group.length+" प्रश्नों के उत्तर चुनें।";document.querySelector('input[name="'+type+missing+'"]').focus();return;}st.answered=true;st.roundScore=0;st.group.forEach((q,i)=>{const selected=document.querySelector('input[name="'+type+i+'"]:checked');const f=document.getElementById(type+"Feedback"+i);if(Number(selected.value)===q.a){st.roundScore++;f.className="feedback correct";f.textContent="✓ सही उत्तर। "+q.e;}else{f.className="feedback wrong";f.textContent="✗ सही उत्तर: "+q.o[q.a]+". "+q.e;}document.querySelectorAll('input[name="'+type+i+'"]').forEach(x=>x.disabled=true);});st.totalScore+=st.roundScore;if(!saveResult(type,st)){st.answered=false;return;}const percent=Math.round(st.roundScore/st.group.length*100);document.getElementById(type+"Result").textContent="इस समूह में आपका स्कोर: "+st.roundScore+"/"+st.group.length+" ("+percent+"%) • अब तक कुल सही: "+st.totalScore+" • 5 सेकंड में अगला प्रश्न समूह अपने-आप खुलेगा…";document.getElementById(type+"Check").disabled=true;st.timer=setTimeout(()=>nextGroup(type),5000);}
+function checkQuiz(type){const st=quizState[type];if(st.answered)return;if(!document.getElementById("studentName").value.trim()){document.getElementById("studentHint").textContent="क्विज़ जाँचने से पहले विद्यार्थी का नाम भरना आवश्यक है।";document.getElementById("studentName").focus();return;}const missing=st.group.findIndex((q,i)=>!document.querySelector('input[name="'+type+i+'"]:checked'));if(missing!==-1){document.getElementById(type+"Result").textContent="कृपया सभी "+st.group.length+" प्रश्नों के उत्तर चुनें।";document.querySelector('input[name="'+type+missing+'"]').focus();return;}st.answered=true;st.roundScore=0;st.group.forEach((q,i)=>{const selected=document.querySelector('input[name="'+type+i+'"]:checked');const f=document.getElementById(type+"Feedback"+i);if(Number(selected.value)===q.a){st.roundScore++;f.className="feedback correct";f.textContent="✓ सही उत्तर। "+q.e;}else{f.className="feedback wrong";f.textContent="✗ सही उत्तर: "+q.o[q.a]+". "+q.e;}document.querySelectorAll('input[name="'+type+i+'"]').forEach(x=>x.disabled=true);});st.totalScore+=st.roundScore;if(!saveResult(type,st)){st.answered=false;return;}const percent=Math.round(st.roundScore/st.group.length*100);document.getElementById(type+"Result").textContent="इस समूह में आपका स्कोर: "+st.roundScore+"/"+st.group.length+" ("+percent+"%) • अब तक कुल सही: "+st.totalScore+"। अगला समूह शुरू करने के लिए नीचे बटन दबाएँ।";document.getElementById(type+"Check").disabled=true;document.getElementById(type+"Next").hidden=false;}
 renderResults();nextGroup("mat");nextGroup("sat");
+
+const NMMSE_FIREBASE_CONFIG = {apiKey:"AIzaSyAGPlqFFNCmQIj9ROjF9Ujj4C9a8Z5f9cQ",authDomain:"govt-boys-ms-g-jamgaon.firebaseapp.com",projectId:"govt-boys-ms-g-jamgaon",storageBucket:"govt-boys-ms-g-jamgaon.firebasestorage.app",messagingSenderId:"1076919620059",appId:"1:1076919620059:web:b1c1bfcdb1d9e260d8d7fe"};
+const NMMSE_ADMIN_UID="Y79AJ2xs8mTjaWepHml1lA74fj83";
+(async function setupTeacherAccess(){
+ const msg=document.getElementById("teacherAuthMessage"),results=document.getElementById("teacherResults"),form=document.getElementById("teacherLoginForm"),logout=document.getElementById("teacherLogoutBtn"),login=document.getElementById("teacherLoginBtn");
+ const loadSdk=url=>new Promise((resolve,reject)=>{const s=document.createElement("script");s.src=url;s.onload=resolve;s.onerror=()=>reject(new Error("Firebase SDK लोड नहीं हुआ"));document.head.appendChild(s);});
+ try{
+  await loadSdk("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+  await loadSdk("https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js");
+  if(!firebase.apps.length)firebase.initializeApp(NMMSE_FIREBASE_CONFIG);
+  const auth=firebase.auth();
+  auth.onAuthStateChanged(user=>{
+   const allowed=!!user&&user.uid===NMMSE_ADMIN_UID;
+   results.hidden=!allowed;form.hidden=allowed;logout.hidden=!allowed;
+   msg.textContent=allowed?"एडमिन लॉगिन सफल। शिक्षक परिणाम रिकॉर्ड खुल गया।":(user?"इस अकाउंट को एडमिन अनुमति नहीं है।":"शिक्षक परिणाम देखने के लिए एडमिन लॉगिन करें।");
+   if(user&&!allowed)auth.signOut();
+  });
+  login.addEventListener("click",async()=>{
+   const email=document.getElementById("teacherEmail").value.trim(),password=document.getElementById("teacherPassword").value;
+   if(!email||!password){msg.textContent="कृपया Admin Email और Password भरें।";return;}
+   login.disabled=true;try{await auth.signInWithEmailAndPassword(email,password);}catch(e){msg.textContent="लॉगिन नहीं हुआ: "+e.message;}finally{login.disabled=false;}
+  });
+  logout.addEventListener("click",()=>auth.signOut());
+ }catch(e){msg.textContent="शिक्षक लॉगिन उपलब्ध नहीं: "+e.message;}
+})();
+
 </script></body></html>
