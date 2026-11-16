@@ -264,7 +264,7 @@ await loadFirebase(
       <option value="7">कक्षा 7वीं</option>
       <option value="8">कक्षा 8वीं</option>
     </select>
-  </div>n>
+  </div>
 
   <p id="privateStudentMessage"></p>
   <div id="privateStudentList"></div>
@@ -846,56 +846,60 @@ el("loadPrivateStudents").onclick = async () => {
   show(message, "निजी विवरण लोड हो रहे हैं...");
 
   try {
-    const [publicSnap, privateSnap] = await Promise.all([
+    const [publicSnap, privateSnap, studentsSnap] = await Promise.all([
       db.collection("students_public").get(),
-      db.collection("students_private").get()
+      db.collection("students_private").get(),
+      db.collection("students").get()
     ]);
 
     const publicMap = {};
-    publicSnap.forEach(doc => {
-      publicMap[doc.id] = doc.data();
-    });
-
+    publicSnap.forEach(doc => { publicMap[doc.id] = doc.data(); });
     privateStudentRecords = [];
 
     privateSnap.forEach(doc => {
       const p = doc.data();
       const s = publicMap[doc.id] || {};
-
       privateStudentRecords.push({
         name: s.name || "नाम उपलब्ध नहीं",
         className: s.className || "",
         rollNo: s.rollNo || "",
         fields: [
-          ["पिता का नाम", p.guardianName],
-          ["माता का नाम", p.motherName],
-          ["जाति", p.caste],
-          ["प्रवेश क्रमांक", p.admissionNo],
-          ["प्रवेश दिनांक", p.admissionDate],
-          ["जन्मतिथि", p.dob],
-          ["मोबाइल", p.mobile],
-          ["ग्राम", p.village],
-          ["छात्रवृत्ति", p.scholarship],
-          ["श्रम कार्ड", p.shramCard],
-          ["जाति प्रमाण पत्र", p.casteCertificate],
-          ["निवास प्रमाण पत्र", p.domicile],
-          ["PEN नंबर", p.penNo],
-          ["APAAR ID", p.apaarId]
+          ["पिता का नाम", p.guardianName], ["माता का नाम", p.motherName],
+          ["जाति", p.caste], ["प्रवेश क्रमांक", p.admissionNo],
+          ["प्रवेश दिनांक", p.admissionDate], ["जन्मतिथि", p.dob],
+          ["मोबाइल", p.mobile], ["ग्राम", p.village],
+          ["छात्रवृत्ति", p.scholarship], ["श्रम कार्ड", p.shramCard],
+          ["जाति प्रमाण पत्र", p.casteCertificate], ["निवास प्रमाण पत्र", p.domicile],
+          ["PEN नंबर", p.penNo], ["APAAR ID", p.apaarId]
         ]
       });
     });
 
+    if (privateSnap.empty && !studentsSnap.empty) {
+      studentsSnap.forEach(doc => {
+        const d = doc.data();
+        privateStudentRecords.push({
+          name: d.name || "नाम उपलब्ध नहीं",
+          className: String(d.className || ""),
+          rollNo: String(d.rollNo || ""),
+          fields: [
+            ["पिता/अभिभावक का नाम", d.guardianName],
+            ["जन्मतिथि", d.dob], ["मोबाइल", d.mobile], ["पता", d.address],
+            ["निजी Excel विवरण", "इस रिकॉर्ड में उपलब्ध नहीं — निजी रिकॉर्ड की जाँच आवश्यक है"]
+          ]
+        });
+      });
+    }
+
     renderPrivateStudents();
-
-    show(
-      message,
-      "कुल " + privateStudentRecords.length +
-      " विद्यार्थियों का विवरण लोड हुआ।"
-    );
-
+    const counts = "जाँच: Public " + publicSnap.size +
+      " | Private " + privateSnap.size + " | Students " + studentsSnap.size + "। ";
+    show(message, privateSnap.empty
+      ? counts + "निजी Excel रिकॉर्ड नहीं मिले। नीचे सामान्य विद्यार्थी सूची दिखाई गई है।"
+      : counts + "कुल " + privateStudentRecords.length + " निजी विद्यार्थी रिकॉर्ड लोड हुए।");
   } catch (error) {
     console.error(error);
-    show(message, "त्रुटि: " + error.message);
+    show(message, "डेटा पढ़ने में त्रुटि: " + error.message);
   } finally {
     btn.disabled = false;
   }
