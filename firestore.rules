@@ -1,0 +1,44 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /nmmse_results/{resultId} {
+      // Students may submit only their own authenticated session's result.
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasOnly([
+          'date', 'name', 'subject', 'group', 'score', 'total',
+          'percent', 'createdAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'date', 'name', 'subject', 'group', 'score', 'total',
+          'percent', 'createdAt'
+        ])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 80
+        && request.resource.data.subject in ['MAT', 'SAT', 'FULL MOCK']
+        && request.resource.data.group is int
+        && request.resource.data.group >= 1
+        && request.resource.data.score is int
+        && request.resource.data.total is int
+        && request.resource.data.total > 0
+        && request.resource.data.total <= 100
+        && request.resource.data.score >= 0
+        && request.resource.data.score <= request.resource.data.total
+        && request.resource.data.percent is int
+        && request.resource.data.percent >= 0
+        && request.resource.data.percent <= 100
+        && request.resource.data.createdAt is int
+        && request.resource.data.date is string
+        && request.resource.data.date.size() <= 50;
+
+      // Only the designated school administrator can read results.
+      allow read: if request.auth != null
+        && request.auth.uid == 'Y79AJ2xs8mTjaWepHml1lA74fj83';
+
+      // Results are immutable; only admin can delete if needed.
+      allow update: if false;
+      allow delete: if request.auth != null
+        && request.auth.uid == 'Y79AJ2xs8mTjaWepHml1lA74fj83';
+    }
+  }
+}
