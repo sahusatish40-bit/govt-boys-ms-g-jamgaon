@@ -837,6 +837,8 @@ function renderPrivateStudents() {
           toggle.dataset.revealed = revealed ? "no" : "yes";
         };
         row.append(labelText, numberText, toggle);
+      } else if (sensitive) {
+        row.textContent = label + ": Excel/Firebase रिकॉर्ड में उपलब्ध नहीं";
       } else {
         row.textContent = label + ": " + (value || "—");
       }
@@ -913,11 +915,16 @@ el("loadPrivateStudents").onclick = async () => {
     }
 
     renderPrivateStudents();
+    const aadhaarCount = privateSnap.docs.filter(doc => {
+      const value = String((doc.data() || {}).aadhaarNo || "").replace(/\\D/g, "");
+      return value.length === 12;
+    }).length;
     const counts = "जाँच: Public " + publicSnap.size +
-      " | Private " + privateSnap.size + " | Students " + studentsSnap.size + "। ";
+      " | Private " + privateSnap.size + " | Students " + studentsSnap.size +
+      " | आधार सेव " + aadhaarCount + "। ";
     show(message, privateSnap.empty
       ? counts + "निजी Excel रिकॉर्ड नहीं मिले। नीचे सामान्य विद्यार्थी सूची दिखाई गई है।"
-      : counts + "कुल " + privateStudentRecords.length + " निजी विद्यार्थी रिकॉर्ड लोड हुए।");
+      : counts + "कुल " + privateStudentRecords.length + " निजी विद्यार्थी रिकॉर्ड लोड हुए। आधार उपलब्ध रिकॉर्ड: " + aadhaarCount + "।");
   } catch (error) {
     console.error(error);
     show(message, "डेटा पढ़ने में त्रुटि: " + error.message);
