@@ -816,9 +816,30 @@ function renderPrivateStudents() {
       " | रोल नं. " + item.rollNo;
     card.appendChild(heading);
 
-    item.fields.forEach(([label, value]) => {
+    item.fields.forEach(([label, value, sensitive]) => {
       const row = document.createElement("p");
-      row.textContent = label + ": " + (value || "—");
+      if (sensitive && value) {
+        const labelText = document.createElement("span");
+        labelText.textContent = label + ": ";
+        const numberText = document.createElement("strong");
+        numberText.textContent = "••••••••" + String(value).slice(-4);
+        numberText.dataset.fullValue = String(value);
+        const toggle = document.createElement("button");
+        toggle.type = "button";
+        toggle.textContent = "देखें";
+        toggle.style.marginLeft = "8px";
+        toggle.onclick = () => {
+          const revealed = toggle.dataset.revealed === "yes";
+          numberText.textContent = revealed
+            ? "••••••••" + String(value).slice(-4)
+            : String(value);
+          toggle.textContent = revealed ? "देखें" : "छिपाएँ";
+          toggle.dataset.revealed = revealed ? "no" : "yes";
+        };
+        row.append(labelText, numberText, toggle);
+      } else {
+        row.textContent = label + ": " + (value || "—");
+      }
       card.appendChild(row);
     });
 
@@ -870,7 +891,7 @@ el("loadPrivateStudents").onclick = async () => {
           ["मोबाइल", p.mobile], ["ग्राम", p.village],
           ["छात्रवृत्ति", p.scholarship], ["श्रम कार्ड", p.shramCard],
           ["जाति प्रमाण पत्र", p.casteCertificate], ["निवास प्रमाण पत्र", p.domicile],
-          ["PEN नंबर", p.penNo], ["APAAR ID", p.apaarId]
+          ["PEN नंबर", p.penNo], ["APAAR ID", p.apaarId], ["आधार नंबर", p.aadhaarNo, true]
         ]
       });
     });
@@ -959,6 +980,7 @@ el("previewExcel").onclick = async () => {
           admissionDate: String(row[6] || "").trim(),
           dob: String(row[7] || "").trim(),
           mobile: String(row[9] || "").trim(),
+          aadhaarNo: String(row[10] || "").replace(/\s+/g, "").trim(),
           village: String(row[11] || "").trim(),
           scholarship: String(row[12] || "").trim(),
           shramCard: String(row[13] || "").trim(),
@@ -1078,6 +1100,7 @@ const batch = db.batch();
         admissionDate: student.admissionDate,
         dob: student.dob,
         mobile: student.mobile,
+        aadhaarNo: student.aadhaarNo,
         village: student.village,
         scholarship: student.scholarship,
         shramCard: student.shramCard,
