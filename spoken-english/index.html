@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#123b67">
+<title>School English Speaking Academy | G-Jamgaon</title>
+<style>
+:root{--blue:#123b67;--blue2:#1e6091;--gold:#f4b942;--ink:#172b3a;--muted:#607080;--paper:#f4f8fc;--green:#16794b}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,"Noto Sans Devanagari",sans-serif;background:var(--paper);color:var(--ink);line-height:1.55}
+header{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;padding:24px 16px;text-align:center}
+header a{color:#fff;text-decoration:none}header .tag{display:inline-block;background:#ffffff20;padding:5px 12px;border-radius:20px;font-size:13px}
+header h1{margin:12px 0 5px;font-size:clamp(25px,5vw,36px)}header p{margin:4px 0}
+main{max-width:980px;margin:auto;padding:18px 14px 50px}.intro,.lesson,.practice,.quiz,.plan{background:#fff;border-radius:16px;padding:18px;margin:14px 0;box-shadow:0 5px 18px #123b6710}
+h2{color:var(--blue);margin:0 0 12px}h3{margin:4px 0 10px;color:var(--blue)}
+.pill{display:inline-block;background:#e7f1fa;color:var(--blue);padding:4px 10px;border-radius:20px;font-size:13px;font-weight:bold}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.word{border:1px solid #dce7f0;border-radius:12px;padding:13px;display:flex;flex-direction:column;gap:5px}
+.word strong{font-size:20px;color:var(--blue)}.word small{color:var(--muted)}
+button{border:0;border-radius:9px;background:var(--blue);color:#fff;padding:10px 14px;font-size:15px;cursor:pointer;margin:4px 4px 4px 0}
+button.secondary{background:#e7f1fa;color:var(--blue)}button.gold{background:var(--gold);color:#253343}
+button:disabled{opacity:.5}.speak{font-size:13px;padding:7px 10px;align-self:flex-start}
+table{width:100%;border-collapse:collapse}td,th{padding:10px;border-bottom:1px solid #e5edf3;text-align:left}th{background:#edf4fa}
+.dialogue{padding:12px;border-radius:10px;background:#f1f7fc;margin:8px 0}.dialogue b{color:var(--blue)}
+.question{padding:14px 0;border-bottom:1px solid #e5edf3}.question label{display:block;padding:6px 0}
+#quizResult{font-weight:bold;margin-top:12px}.note{background:#fff8e6;padding:12px;border-left:4px solid var(--gold);border-radius:8px}
+footer{text-align:center;color:var(--muted);padding:22px;font-size:13px}
+a.back{display:inline-block;margin-top:12px;color:#fff;text-decoration:underline}
+@media(max-width:560px){main{padding:12px 10px 35px}.intro,.lesson,.practice,.quiz,.plan{padding:15px}td,th{padding:7px;font-size:14px}}
+</style>
+</head>
+<body>
+<header>
+<span class="tag">BEGINNER • ZERO LEVEL • CLASS 6–8</span>
+<h1>🗣️ School English Speaking Academy</h1>
+<p>शासकीय उच्चतर माध्यमिक विद्यालय जी-जामगाँव (बालक माध्य.)</p>
+<p>वि.ख. कुरुद • जिला धमतरी (छ.ग.)</p>
+<a class="back" href="../">← मुख्य वेबसाइट पर वापस जाएँ</a>
+</header>
+<main>
+<section class="intro">
+<span class="pill">बिल्कुल शुरुआत से</span>
+<h2>अंग्रेज़ी बोलना सीखें — धीरे-धीरे, रोज़ अभ्यास से!</h2>
+<p>यह कोर्स उन बच्चों के लिए है जिन्हें अभी अंग्रेज़ी बोलना नहीं आता। पहले शब्द, फिर छोटे वाक्य और फिर बातचीत सीखेंगे। हर वाक्य को सुनें, दोहराएँ और अभ्यास करें।</p>
+<div class="note">रोज़ 10–15 मिनट अभ्यास करें। गलती होने से न डरें—बोलने का अभ्यास सबसे ज़रूरी है।</div>
+</section>
+
+<section class="lesson">
+<span class="pill">DAY 1 • LESSON 1</span>
+<h2>Greetings — अभिवादन करना</h2>
+<p>आज हम पाँच आसान अंग्रेज़ी अभिवादन सीखेंगे। 🔊 बटन दबाकर वाक्य सुनें और फिर स्वयं बोलें।</p>
+<div class="grid">
+<div class="word"><strong>Hello!</strong><span>नमस्ते!</span><small>उच्चारण: हेलो</small><button class="speak" onclick="say('Hello')">🔊 सुनें</button></div>
+<div class="word"><strong>Good Morning!</strong><span>सुप्रभात!</span><small>उच्चारण: गुड मॉर्निंग</small><button class="speak" onclick="say('Good Morning')">🔊 सुनें</button></div>
+<div class="word"><strong>Good Afternoon!</strong><span>नमस्कार (दोपहर)</span><small>उच्चारण: गुड आफ्टरनून</small><button class="speak" onclick="say('Good Afternoon')">🔊 सुनें</button></div>
+<div class="word"><strong>Good Evening!</strong><span>शुभ संध्या!</span><small>उच्चारण: गुड ईवनिंग</small><button class="speak" onclick="say('Good Evening')">🔊 सुनें</button></div>
+<div class="word"><strong>Thank You!</strong><span>धन्यवाद!</span><small>उच्चारण: थैंक यू</small><button class="speak" onclick="say('Thank You')">🔊 सुनें</button></div>
+</div>
+</section>
+
+<section class="practice">
+<h2>🎭 Teacher–Student Conversation</h2>
+<div class="dialogue"><b>Teacher:</b> Good Morning, Students!<br><span>शिक्षक: सुप्रभात, विद्यार्थियों!</span><br><button class="speak" onclick="say('Good Morning, Students!')">🔊 सुनें</button></div>
+<div class="dialogue"><b>Students:</b> Good Morning, Sir!<br><span>विद्यार्थी: सुप्रभात, सर!</span><br><button class="speak" onclick="say('Good Morning, Sir!')">🔊 सुनें</button></div>
+<div class="dialogue"><b>Teacher:</b> How are you?<br><span>शिक्षक: आप कैसे हैं?</span><br><button class="speak" onclick="say('How are you?')">🔊 सुनें</button></div>
+<div class="dialogue"><b>Students:</b> I am fine, thank you.<br><span>विद्यार्थी: मैं ठीक हूँ, धन्यवाद।</span><br><button class="speak" onclick="say('I am fine, thank you.')">🔊 सुनें</button></div>
+</section>
+
+<section class="practice">
+<h2>🗣️ आज बोलने का अभ्यास</h2>
+<p>हर वाक्य को पाँच बार बोलें। अपने मित्र के साथ भी अभ्यास करें।</p>
+<div class="grid">
+<div class="word"><strong>My name is Rahul.</strong><span>मेरा नाम राहुल है।</span><button class="speak" onclick="say('My name is Rahul')">🔊 सुनें</button></div>
+<div class="word"><strong>I am a student.</strong><span>मैं एक विद्यार्थी हूँ।</span><button class="speak" onclick="say('I am a student')">🔊 सुनें</button></div>
+<div class="word"><strong>I am fine.</strong><span>मैं ठीक हूँ।</span><button class="speak" onclick="say('I am fine')">🔊 सुनें</button></div>
+<div class="word"><strong>Thank you, Sir.</strong><span>धन्यवाद, सर।</span><button class="speak" onclick="say('Thank you, Sir')">🔊 सुनें</button></div>
+<div class="word"><strong>Good Morning, Sir.</strong><span>सुप्रभात, सर।</span><button class="speak" onclick="say('Good Morning, Sir')">🔊 सुनें</button></div>
+</div>
+</section>
+
+<section class="quiz">
+<h2>✍️ Lesson 1 — छोटा टेस्ट</h2>
+<p>सही उत्तर चुनें और अपना स्कोर देखें।</p>
+<form id="quizForm">
+<div class="question"><b>1. Good Morning का अर्थ क्या है?</b>
+<label><input type="radio" name="q1" value="a"> शुभ रात्रि</label><label><input type="radio" name="q1" value="b"> सुप्रभात</label><label><input type="radio" name="q1" value="c"> धन्यवाद</label></div>
+<div class="question"><b>2. Thank You का अर्थ क्या है?</b>
+<label><input type="radio" name="q2" value="a"> धन्यवाद</label><label><input type="radio" name="q2" value="b"> नमस्ते</label><label><input type="radio" name="q2" value="c"> आप कैसे हैं</label></div>
+<div class="question"><b>3. I am fine का अर्थ क्या है?</b>
+<label><input type="radio" name="q3" value="a"> मैं विद्यार्थी हूँ</label><label><input type="radio" name="q3" value="b"> मैं ठीक हूँ</label><label><input type="radio" name="q3" value="c"> मेरा नाम राहुल है</label></div>
+<button type="button" onclick="checkQuiz()">उत्तर जाँचें</button>
+<button type="reset" class="secondary" onclick="document.getElementById('quizResult').textContent=''">फिर से करें</button>
+<div id="quizResult" aria-live="polite"></div>
+</form>
+</section>
+
+<section class="plan">
+<span class="pill">NEXT LESSON • DAY 2</span>
+<h2>English Alphabet A–Z</h2>
+<p>अगले पाठ में बच्चे A से Z तक अक्षरों के नाम, उनकी आवाज़ और आसान उदाहरण वाले शब्द सीखेंगे।</p>
+<p><b>उदाहरण:</b> A for Apple 🍎 • B for Ball ⚽ • C for Cat 🐱</p>
+<button class="gold" onclick="say('A for Apple. B for Ball. C for Cat.')">🔊 उदाहरण सुनें</button>
+</section>
+</main>
+<footer>School English Speaking Academy • Session 2026–27<br>Govt. H.S.S. G-Jamgaon (Boys MS)</footer>
+<script>
+function say(text){
+ if(!('speechSynthesis' in window)){alert('इस ब्राउज़र में आवाज़ सुनने की सुविधा उपलब्ध नहीं है। Chrome में खोलकर प्रयास करें।');return;}
+ window.speechSynthesis.cancel();
+ const utterance=new SpeechSynthesisUtterance(text);
+ utterance.lang='en-IN';
+ utterance.rate=0.82;
+ window.speechSynthesis.speak(utterance);
+}
+function checkQuiz(){
+ const answers={q1:'b',q2:'a',q3:'b'};
+ let score=0,done=0;
+ Object.keys(answers).forEach(key=>{
+  const selected=document.querySelector('input[name="'+key+'"]:checked');
+  if(selected){done++;if(selected.value===answers[key])score++;}
+ });
+ const box=document.getElementById('quizResult');
+ if(done<3){box.textContent='कृपया तीनों प्रश्नों के उत्तर चुनें।';box.style.color='#a15b00';return;}
+ box.textContent='आपका स्कोर: '+score+'/3 — '+(score===3?'बहुत बढ़िया! शाबाश!':'अच्छा प्रयास! पाठ फिर से पढ़कर दोबारा अभ्यास करें।');
+ box.style.color=score===3?'#16794b':'#a15b00';
+}
+</script>
+</body>
+</html>
