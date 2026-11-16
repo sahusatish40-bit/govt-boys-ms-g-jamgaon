@@ -1029,10 +1029,15 @@ el("previewExcel").onclick = async () => {
     preview.appendChild(table);
 confirmBtn.hidden = false;
 
+    const aadhaarReady = excelStudentData.filter(student =>
+      /^\\d{12}$/.test(String(student.aadhaarNo || "").replace(/\\D/g, ""))
+    ).length;
     show(
       message,
       "Preview तैयार: " + excelStudentData.length +
-      " विद्यार्थी। कक्षा 9वीं शामिल नहीं है।"
+      " विद्यार्थी। आधार नंबर (12 अंक) उपलब्ध: " + aadhaarReady +
+      "। आधार अनुपलब्ध/अपूर्ण: " + (excelStudentData.length - aadhaarReady) +
+      "। कक्षा 9वीं शामिल नहीं है।"
     );
 
   } catch (error) {
@@ -1145,10 +1150,14 @@ batch.set(studentRef, {
 
     await batch.commit();
 
+    const aadhaarSaved = excelStudentData.filter(student =>
+      /^\\d{12}$/.test(String(student.aadhaarNo || "").replace(/\\D/g, ""))
+    ).length;
     show(
       message,
       "सफलता! " + excelStudentData.length +
-      " विद्यार्थियों का डेटा Firebase में सेव हो गया।"
+      " विद्यार्थियों का डेटा Firebase में सेव हुआ। आधार नंबर वाले रिकॉर्ड: " +
+      aadhaarSaved + "। निजी विवरण खोलकर 'आधार सेव' संख्या भी जाँचें।"
     );
 
     confirmBtn.hidden = true;
