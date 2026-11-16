@@ -318,6 +318,8 @@ await loadFirebase(
   <input id="birthdayPhoto" type="url" placeholder="फोटो का URL">
   <button id="saveBirthday" type="button">🎉 जन्मदिन जोड़ें</button>
   <p id="birthdayMessage"></p>
+  <button id="syncStudentBirthdays" type="button">🎂 विद्यार्थियों की DOB से कार्ड अपडेट करें</button>
+  <p id="syncBirthdayMessage"></p>
   <h3>जन्मदिन सूची</h3>
   <div id="adminBirthdayList"></div>
 </section>
@@ -648,6 +650,43 @@ const studentSearch = el("studentSearch");
       actions.append(share, print);
       card.append(photo, title, detail, date, wishes, actions);
       return card;
+    }
+
+    // Admin-triggered sync: copy only name, class and month/day into public birthday cards.
+    const syncBirthdayButton = el("syncStudentBirthdays");
+    if (syncBirthdayButton) {
+      syncBirthdayButton.onclick = async () => {
+        const message = el("syncBirthdayMessage");
+        syncBirthdayButton.disabled = true;
+        show(message, "विद्यार्थियों की जन्मतिथि जाँची जा रही है...");
+        try {
+          const snap = await db.collection("students").get();
+          let count = 0;
+          const batch = db.batch();
+          snap.docs.forEach(doc => {
+            const student = doc.data();
+            const parts = birthdayDateParts(student.dob);
+            if (!student.name || !parts) return;
+            const birthdayRef = db.collection("birthdays").doc("student_" + doc.id);
+            batch.set(birthdayRef, {
+              role: "विद्यार्थी",
+              name: student.name,
+              detail: "कक्षा " + (student.className || ""),
+              birthDate: "2000-" + String(parts.month).padStart(2, "0") + "-" + String(parts.day).padStart(2, "0"),
+              photo: "",
+              source: "student_dob",
+              updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
+            count++;
+          });
+          if (count) await batch.commit();
+          show(message, count + " विद्यार्थियों के Birthday Card अपडेट हो गए। जन्म-वर्ष सार्वजनिक नहीं किया गया।");
+        } catch (error) {
+          show(message, "अपडेट नहीं हो सका: " + error.message);
+        } finally {
+          syncBirthdayButton.disabled = false;
+        }
+      };
     }
 
     db.collection("birthdays").onSnapshot(renderBirthdayCards, error => {
