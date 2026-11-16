@@ -27,6 +27,38 @@ table{width:100%;border-collapse:collapse}td,th{padding:10px;border-bottom:1px s
 footer{text-align:center;color:var(--muted);padding:22px;font-size:13px}
 a.back{display:inline-block;margin-top:12px;color:#fff;text-decoration:underline}
 @media(max-width:560px){main{padding:12px 10px 35px}.intro,.lesson,.practice,.quiz,.plan{padding:15px}td,th{padding:7px;font-size:14px}}
+
+/* Compact academy layout */
+body{background:linear-gradient(180deg,#eaf3fb 0,#f6f9fc 320px)}
+header{padding:22px 14px 25px;background:radial-gradient(circle at 85% 15%,#4b91c5 0,transparent 28%),linear-gradient(135deg,#102f55,#1d6594)}
+header h1{font-size:clamp(23px,5vw,34px);letter-spacing:.2px}
+main{max-width:900px;padding-top:14px}
+.intro{background:linear-gradient(135deg,#fff,#edf6ff);border:1px solid #d9e8f5}
+.intro h2{font-size:clamp(20px,4vw,27px)}
+.academy-dashboard{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:14px 0}
+.dash-item{background:#fff;border:1px solid #e0eaf2;border-radius:14px;padding:12px;text-align:center;box-shadow:0 4px 14px #123b6709}
+.dash-item b{display:block;font-size:22px;color:var(--blue)}
+.dash-item span{font-size:12px;color:var(--muted)}
+.lesson-accordion{background:#fff;border:1px solid #dce7f0;border-radius:15px;margin:10px 0;overflow:hidden;box-shadow:0 4px 14px #123b6709}
+.lesson-accordion summary{list-style:none;cursor:pointer;padding:15px 16px;display:flex;align-items:center;gap:12px}
+.lesson-accordion summary::-webkit-details-marker{display:none}
+.lesson-accordion summary:after{content:"＋";margin-left:auto;color:var(--blue);font-size:21px;font-weight:bold}
+.lesson-accordion[open] summary:after{content:"−"}
+.lesson-number{width:38px;height:38px;flex:0 0 38px;border-radius:12px;background:#e8f2fb;color:var(--blue);display:grid;place-items:center;font-weight:bold}
+.lesson-summary-text{min-width:0;flex:1}
+.lesson-summary-text strong{display:block;color:var(--blue);font-size:16px}
+.lesson-summary-text small{display:block;color:var(--muted);font-size:12px}
+.lesson-body{padding:0 13px 14px;border-top:1px solid #edf1f5}
+.lesson-body>.lesson,.lesson-body>.practice,.lesson-body>.quiz,.lesson-body>.plan{box-shadow:none;margin:10px 0;padding:12px;border:1px solid #edf1f5}
+#complete-course{margin-top:16px}
+#complete-course>.intro{padding:16px}
+#complete-course>.lesson{padding:0;box-shadow:none;border:0;background:transparent;margin:0}
+.course-title{margin:20px 0 8px;color:var(--blue)}
+.course-progress-bar{height:8px;border-radius:20px;background:#e5edf5;overflow:hidden;margin:8px 0}
+.course-progress-fill{height:100%;background:linear-gradient(90deg,#2a8c69,#73c7a4);width:0;transition:width .25s}
+.note{font-size:14px}
+@media(max-width:560px){.academy-dashboard{gap:7px}.dash-item{padding:9px 5px}.dash-item b{font-size:19px}.lesson-accordion summary{padding:12px}.lesson-summary-text strong{font-size:14px}}
+
 </style>
 </head>
 <body>
@@ -196,5 +228,59 @@ function checkQuiz(){
 }
 </script>
 <script src="curriculum.js?v=1"></script>
+
+<script>
+(function(){
+ const main=document.querySelector('main');
+ if(!main)return;
+ function makeAccordion(nodes,num,title,subtitle,open){
+  const details=document.createElement('details');details.className='lesson-accordion';if(open)details.open=true;
+  const summary=document.createElement('summary');
+  summary.innerHTML='<span class="lesson-number">'+num+'</span><span class="lesson-summary-text"><strong>'+title+'</strong><small>'+subtitle+'</small></span>';
+  const body=document.createElement('div');body.className='lesson-body';
+  nodes.forEach(n=>body.appendChild(n));details.append(summary,body);return details;
+ }
+ // Bundle the first three lessons with their practice and quiz sections.
+ let node=main.querySelector('.intro')?.nextElementSibling;
+ let lessonNo=0;
+ while(node && node.id!=='complete-course'){
+  if(node.classList.contains('lesson')){
+   lessonNo++;
+   const group=[node];let next=node.nextElementSibling;
+   while(next && next.id!=='complete-course' && !next.classList.contains('lesson')){
+    const after=next.nextElementSibling;group.push(next);next=after;
+   }
+   const title=node.querySelector('h2')?.textContent||('Lesson '+lessonNo);
+   const details=makeAccordion(group,lessonNo,title,'पाठ खोलने के लिए यहाँ टैप करें',false);
+   main.insertBefore(details,group[0]);node=details.nextElementSibling;
+  }else node=node.nextElementSibling;
+ }
+ const intro=main.querySelector('.intro');
+ if(intro && !main.querySelector('.academy-dashboard')){
+  const dash=document.createElement('div');dash.className='academy-dashboard';
+  dash.innerHTML='<div class="dash-item"><b>33</b><span>कुल पाठ</span></div><div class="dash-item"><b>Zero</b><span>शुरुआती स्तर</span></div><div class="dash-item"><b>Daily</b><span>बोलने का अभ्यास</span></div>';
+  intro.after(dash);
+ }
+ // Add a compact title before the advanced lessons.
+ const course=document.getElementById('complete-course');
+ if(course){
+  const courseIntro=course.querySelector('.intro');
+  if(courseIntro){
+   const heading=document.createElement('h2');heading.className='course-title';heading.textContent='आगे के पाठ • Lesson 4–33';
+   course.insertBefore(heading,courseIntro);
+  }
+  const sections=[...course.querySelectorAll(':scope > .lesson')];
+  sections.forEach((section)=>{
+   const n=Number((section.querySelector('.pill')?.textContent.match(/\d+/)||[])[0]||0);
+   const title=section.querySelector('h2')?.textContent||('Lesson '+n);
+   const details=document.createElement('details');details.className='lesson-accordion';
+   const summary=document.createElement('summary');
+   summary.innerHTML='<span class="lesson-number">'+n+'</span><span class="lesson-summary-text"><strong>'+title+'</strong><small>शब्द, हिंदी अर्थ और वाक्य अभ्यास</small></span>';
+   const body=document.createElement('div');body.className='lesson-body';body.appendChild(section);
+   details.append(summary,body);course.appendChild(details);
+  });
+ }
+})();
+</script>
 </body>
 </html>
