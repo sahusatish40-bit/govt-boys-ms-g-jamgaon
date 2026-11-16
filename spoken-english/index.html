@@ -118,12 +118,41 @@ a.back{display:inline-block;margin-top:12px;color:#fff;text-decoration:underline
 </form>
 </section>
 
+<section class="lesson">
+<span class="pill">DAY 3 • LESSON 3</span>
+<h2>Daily Use Words — रोज़मर्रा के आसान शब्द</h2>
+<p>आज हम घर और स्कूल में रोज़ काम आने वाले 20 आसान शब्द सीखेंगे। शब्द सुनें, हिंदी अर्थ समझें और फिर स्वयं बोलें।</p>
+<div class="grid">
+<div class="word"><strong>Book</strong><span>किताब</span><button class="speak" onclick="say('Book')">🔊 सुनें</button></div><div class="word"><strong>Pen</strong><span>कलम</span><button class="speak" onclick="say('Pen')">🔊 सुनें</button></div><div class="word"><strong>Pencil</strong><span>पेंसिल</span><button class="speak" onclick="say('Pencil')">🔊 सुनें</button></div><div class="word"><strong>Bag</strong><span>बस्ता</span><button class="speak" onclick="say('Bag')">🔊 सुनें</button></div><div class="word"><strong>School</strong><span>विद्यालय</span><button class="speak" onclick="say('School')">🔊 सुनें</button></div><div class="word"><strong>Teacher</strong><span>शिक्षक</span><button class="speak" onclick="say('Teacher')">🔊 सुनें</button></div><div class="word"><strong>Student</strong><span>विद्यार्थी</span><button class="speak" onclick="say('Student')">🔊 सुनें</button></div><div class="word"><strong>Water</strong><span>पानी</span><button class="speak" onclick="say('Water')">🔊 सुनें</button></div><div class="word"><strong>Food</strong><span>भोजन</span><button class="speak" onclick="say('Food')">🔊 सुनें</button></div><div class="word"><strong>Milk</strong><span>दूध</span><button class="speak" onclick="say('Milk')">🔊 सुनें</button></div><div class="word"><strong>Mother</strong><span>माँ</span><button class="speak" onclick="say('Mother')">🔊 सुनें</button></div><div class="word"><strong>Father</strong><span>पिता</span><button class="speak" onclick="say('Father')">🔊 सुनें</button></div><div class="word"><strong>Friend</strong><span>मित्र</span><button class="speak" onclick="say('Friend')">🔊 सुनें</button></div><div class="word"><strong>House</strong><span>घर</span><button class="speak" onclick="say('House')">🔊 सुनें</button></div><div class="word"><strong>Door</strong><span>दरवाज़ा</span><button class="speak" onclick="say('Door')">🔊 सुनें</button></div><div class="word"><strong>Window</strong><span>खिड़की</span><button class="speak" onclick="say('Window')">🔊 सुनें</button></div><div class="word"><strong>Chair</strong><span>कुर्सी</span><button class="speak" onclick="say('Chair')">🔊 सुनें</button></div><div class="word"><strong>Table</strong><span>मेज़</span><button class="speak" onclick="say('Table')">🔊 सुनें</button></div><div class="word"><strong>Come</strong><span>आना</span><button class="speak" onclick="say('Come')">🔊 सुनें</button></div><div class="word"><strong>Go</strong><span>जाना</span><button class="speak" onclick="say('Go')">🔊 सुनें</button></div>
+</div>
+<div class="note">अभ्यास: हर शब्द को तीन बार बोलें। फिर किताब, पेन, पानी और स्कूल जैसी चीज़ों की ओर इशारा करके उनका अंग्रेज़ी नाम बोलें।</div>
+</section>
+<section class="practice">
+<h2>🗣️ छोटे वाक्य बोलें</h2>
+<div class="grid">
+<div class="word"><strong>This is a book.</strong><span>यह एक किताब है।</span><button class="speak" onclick="say('This is a book.')">🔊 सुनें</button></div>
+<div class="word"><strong>This is my pen.</strong><span>यह मेरा पेन है।</span><button class="speak" onclick="say('This is my pen.')">🔊 सुनें</button></div>
+<div class="word"><strong>I drink water.</strong><span>मैं पानी पीता/पीती हूँ।</span><button class="speak" onclick="say('I drink water.')">🔊 सुनें</button></div>
+<div class="word"><strong>I go to school.</strong><span>मैं स्कूल जाता/जाती हूँ।</span><button class="speak" onclick="say('I go to school.')">🔊 सुनें</button></div>
+</div>
+</section>
+<section class="quiz">
+<h2>✍️ Lesson 3 — छोटा टेस्ट</h2>
+<form id="dailyWordsQuiz">
+<div class="question"><b>1. Book का हिंदी अर्थ क्या है?</b>
+<label><input type="radio" name="w1" value="a"> कलम</label><label><input type="radio" name="w1" value="b"> किताब</label><label><input type="radio" name="w1" value="c"> पानी</label></div>
+<div class="question"><b>2. Water का अर्थ क्या है?</b>
+<label><input type="radio" name="w2" value="a"> दूध</label><label><input type="radio" name="w2" value="b"> भोजन</label><label><input type="radio" name="w2" value="c"> पानी</label></div>
+<div class="question"><b>3. Teacher का अर्थ क्या है?</b>
+<label><input type="radio" name="w3" value="a"> शिक्षक</label><label><input type="radio" name="w3" value="b"> विद्यार्थी</label><label><input type="radio" name="w3" value="c"> मित्र</label></div>
+<button type="button" onclick="checkDailyWordsQuiz()">उत्तर जाँचें</button>
+<div id="dailyWordsQuizResult" aria-live="polite"></div>
+</form>
+</section>
 <section class="plan">
-<span class="pill">NEXT LESSON • DAY 3</span>
-<h2>English Alphabet A–Z</h2>
-<p>अगले पाठ में बच्चे A से Z तक अक्षरों के नाम, उनकी आवाज़ और आसान उदाहरण वाले शब्द सीखेंगे।</p>
-<p><b>उदाहरण:</b> A for Apple 🍎 • B for Ball ⚽ • C for Cat 🐱</p>
-<button class="gold" onclick="say('A for Apple. B for Ball. C for Cat.')">🔊 उदाहरण सुनें</button>
+<span class="pill">NEXT LESSON • DAY 4</span>
+<h2>Pronouns — I, You, He, She, We, They</h2>
+<p>अगले पाठ में बच्चे सीखेंगे कि मैं, तुम, वह, हम और वे को अंग्रेज़ी में कैसे बोलते हैं।</p>
 </section>
 </main>
 <footer>School English Speaking Academy • Session 2026–27<br>Govt. H.S.S. G-Jamgaon (Boys MS)</footer>
@@ -135,6 +164,14 @@ function say(text){
  utterance.lang='en-IN';
  utterance.rate=0.82;
  window.speechSynthesis.speak(utterance);
+}
+function checkDailyWordsQuiz(){
+ const answers={w1:'b',w2:'c',w3:'a'};let score=0,done=0;
+ Object.keys(answers).forEach(k=>{const v=document.querySelector('input[name="'+k+'"]:checked');if(v){done++;if(v.value===answers[k])score++;}});
+ const box=document.getElementById('dailyWordsQuizResult');
+ if(done<3){box.textContent='कृपया तीनों प्रश्नों के उत्तर चुनें।';box.style.color='#a15b00';return;}
+ box.textContent='आपका स्कोर: '+score+'/3 — '+(score===3?'बहुत बढ़िया!':'अच्छा प्रयास! फिर से अभ्यास करें।');
+ box.style.color=score===3?'#16794b':'#a15b00';
 }
 function checkAlphabetQuiz(){
  const answers={a1:'a',a2:'b',a3:'c'};let score=0,done=0;
