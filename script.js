@@ -916,7 +916,7 @@ el("loadPrivateStudents").onclick = async () => {
 
     renderPrivateStudents();
     const aadhaarCount = privateSnap.docs.filter(doc => {
-      const value = String((doc.data() || {}).aadhaarNo || "").replace(/\\D/g, "");
+      const value = String((doc.data() || {}).aadhaarNo || "").replace(/\D/g, "");
       return value.length === 12;
     }).length;
     const counts = "जाँच: Public " + publicSnap.size +
@@ -1013,7 +1013,7 @@ el("previewExcel").onclick = async () => {
 
     excelStudentData.forEach(student => {
       const tr = document.createElement("tr");
-      const aadhaar = String(student.aadhaarNo || "").replace(/\\D/g, "");
+      const aadhaar = String(student.aadhaarNo || "").replace(/\D/g, "");
       const aadhaarStatus = aadhaar.length === 12
         ? "उपलब्ध (अंतिम 4 अंक: " + aadhaar.slice(-4) + ")"
         : "नहीं मिला / 12 अंक नहीं";
@@ -1030,7 +1030,7 @@ el("previewExcel").onclick = async () => {
 confirmBtn.hidden = false;
 
     const aadhaarReady = excelStudentData.filter(student =>
-      /^\\d{12}$/.test(String(student.aadhaarNo || "").replace(/\\D/g, ""))
+      /^\d{12}$/.test(String(student.aadhaarNo || "").replace(/\D/g, ""))
     ).length;
     show(
       message,
@@ -1151,7 +1151,7 @@ batch.set(studentRef, {
     await batch.commit();
 
     const aadhaarSaved = excelStudentData.filter(student =>
-      /^\\d{12}$/.test(String(student.aadhaarNo || "").replace(/\\D/g, ""))
+      /^\d{12}$/.test(String(student.aadhaarNo || "").replace(/\D/g, ""))
     ).length;
     show(
       message,
