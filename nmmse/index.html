@@ -174,7 +174,7 @@ quizzes.sat.push(...buildExtraSAT());
 const GROUP_SIZE=10;
 const RESULT_KEY="nmmseStudentResultsV1";
 const WRONG_KEY="nmmseWrongQuestionsV1";
-let nmmseDb=null;
+let nmmseDb=null, nmmseAuth=null;
 function getResults(){try{return JSON.parse(localStorage.getItem(RESULT_KEY)||"[]")}catch(e){return []}}
 function saveResult(type,st){
  const name=document.getElementById("studentName").value.trim();
@@ -183,7 +183,7 @@ function saveResult(type,st){
  const rows=getResults();rows.push({date:new Date().toLocaleString("hi-IN"),name,subject:type.toUpperCase(),group:st.round,score:st.roundScore,total:st.group.length,percent});
  localStorage.setItem(RESULT_KEY,JSON.stringify(rows));renderResults();
  const record={date:new Date().toLocaleString("hi-IN"),name,subject:type.toUpperCase(),group:st.round,score:st.roundScore,total:st.group.length,percent,createdAt:Date.now()};
- if(nmmseDb)nmmseDb.collection("nmmse_results").add(record).then(()=>{const s=document.getElementById("studentHint");s.textContent="परिणाम इस डिवाइस और विद्यालय क्लाउड में सुरक्षित किया गया।";}).catch(e=>{document.getElementById("studentHint").textContent="परिणाम डिवाइस में सुरक्षित है; क्लाउड सेव नहीं हुआ ("+e.code+")। Firebase नियम जाँचें।";});
+ if(nmmseDb&&nmmseAuth&&nmmseAuth.currentUser)nmmseDb.collection("nmmse_results").add(record).then(()=>{const s=document.getElementById("studentHint");s.textContent="परिणाम इस डिवाइस और विद्यालय क्लाउड में सुरक्षित किया गया।";}).catch(e=>{document.getElementById("studentHint").textContent="परिणाम डिवाइस में सुरक्षित है; क्लाउड सेव नहीं हुआ ("+e.code+")। Firebase नियम जाँचें।";});
  return true;
 }
 function saveWrong(q,type){try{const a=JSON.parse(localStorage.getItem(WRONG_KEY)||"[]");if(!a.some(x=>x.q===q.q&&x.type===type))a.push({...q,type});localStorage.setItem(WRONG_KEY,JSON.stringify(a));updateWrongCount();}catch(e){}}
@@ -222,13 +222,15 @@ const NMMSE_ADMIN_UID="Y79AJ2xs8mTjaWepHml1lA74fj83";
   await loadSdk("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
   if(!firebase.apps.length)firebase.initializeApp(NMMSE_FIREBASE_CONFIG);
   const auth=firebase.auth();
+  nmmseAuth=auth;
   nmmseDb=firebase.firestore();
+  try{if(!auth.currentUser)await auth.signInAnonymously();}catch(anonError){document.getElementById("studentHint").textContent="क्लाउड सेव शुरू नहीं हुआ: Firebase में Anonymous sign-in सक्षम करना आवश्यक है। परिणाम इस डिवाइस में सुरक्षित रहेंगे।";}
   auth.onAuthStateChanged(user=>{
    const allowed=!!user&&user.uid===NMMSE_ADMIN_UID;
    results.hidden=!allowed;form.hidden=allowed;logout.hidden=!allowed;
    msg.textContent=allowed?"एडमिन लॉगिन सफल। शिक्षक परिणाम रिकॉर्ड खुल गया।":(user?"इस अकाउंट को एडमिन अनुमति नहीं है।":"शिक्षक परिणाम देखने के लिए एडमिन लॉगिन करें।");
    if(allowed){nmmseDb.collection("nmmse_results").orderBy("createdAt","desc").limit(500).onSnapshot(snap=>{const body=document.getElementById("cloudResultsBody");body.innerHTML=snap.docs.map(d=>{const x=d.data();return "<tr><td>"+safeText(x.date||"")+"</td><td>"+safeText(x.name||"")+"</td><td>"+safeText(x.subject||"")+"</td><td>"+Number(x.score||0)+"/"+Number(x.total||0)+"</td><td>"+Number(x.percent||0)+"%</td></tr>";}).join("");document.getElementById("cloudStatus").textContent="क्लाउड में कुल "+snap.size+" परिणाम उपलब्ध।";},e=>{document.getElementById("cloudStatus").textContent="क्लाउड परिणाम नहीं पढ़ सके: "+e.code+" (Firestore Rules जाँचें)।";});}
-   if(user&&!allowed)auth.signOut();
+   if(user&&!user.isAnonymous&&!allowed)auth.signOut();
   });
   login.addEventListener("click",async()=>{
    const email=document.getElementById("teacherEmail").value.trim(),password=document.getElementById("teacherPassword").value;
@@ -257,7 +259,7 @@ function submitMock(auto=false){
  const percent=Math.round(score/90*100),name=document.getElementById("studentName").value.trim();
  const row={date:new Date().toLocaleString("hi-IN"),name,subject:"FULL MOCK",group:1,score,total:90,percent};
  const rows=getResults();rows.push(row);localStorage.setItem(RESULT_KEY,JSON.stringify(rows));renderResults();
- if(nmmseDb)nmmseDb.collection("nmmse_results").add({...row,createdAt:Date.now()}).catch(e=>document.getElementById("mockResult").textContent+=" क्लाउड सेव नहीं हुआ: "+e.code);
+ if(nmmseDb&&nmmseAuth&&nmmseAuth.currentUser)nmmseDb.collection("nmmse_results").add({...row,createdAt:Date.now()}).catch(e=>document.getElementById("mockResult").textContent+=" क्लाउड सेव नहीं हुआ: "+e.code);
  document.querySelectorAll("#mockQuestions input").forEach(x=>x.disabled=true);
  document.getElementById("mockSubmit").hidden=true;document.getElementById("mockStart").hidden=false;
  document.getElementById("mockResult").textContent=(auto?"समय समाप्त! ":"टेस्ट जमा हुआ! ")+"कुल अंक "+score+"/90 ("+percent+"%) • MAT: "+mat+"/45 • SAT: "+sat+"/45 • गलत/छूटे प्रश्न: "+wrong.length+". गलत प्रश्न पुनः अभ्यास में जोड़ दिए गए।";
