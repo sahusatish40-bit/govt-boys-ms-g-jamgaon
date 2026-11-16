@@ -1002,11 +1002,15 @@ el("previewExcel").onclick = async () => {
 
     table.innerHTML =
       "<tr><th>कक्षा</th><th>रोल नं.</th>" +
-      "<th>विद्यार्थी का नाम</th></tr>";
+      "<th>विद्यार्थी का नाम</th><th>आधार स्थिति</th></tr>";
 
     excelStudentData.forEach(student => {
       const tr = document.createElement("tr");
-      [student.className, student.rollNo, student.name]
+      const aadhaar = String(student.aadhaarNo || "").replace(/\\D/g, "");
+      const aadhaarStatus = aadhaar.length === 12
+        ? "उपलब्ध (अंतिम 4 अंक: " + aadhaar.slice(-4) + ")"
+        : "नहीं मिला / 12 अंक नहीं";
+      [student.className, student.rollNo, student.name, aadhaarStatus]
         .forEach(value => {
           const td = document.createElement("td");
           td.textContent = value;
@@ -1046,7 +1050,7 @@ el("confirmExcelImport").onclick = async () => {
     "क्या आप " + excelStudentData.length +
     " विद्यार्थियों का डेटा Firebase में सेव करना चाहते हैं?\n\n" +
     "सार्वजनिक जानकारी और निजी जानकारी अलग-अलग सेव होगी।\n" +
-    "Aadhaar नंबर Import नहीं होगा।"
+    "आधार नंबर केवल मुख्य Admin के निजी रिकॉर्ड में सेव होगा।"
   );
 
   if (!ok) return;
