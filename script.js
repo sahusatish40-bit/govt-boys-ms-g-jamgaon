@@ -673,14 +673,32 @@ const studentSearch = el("studentSearch");
         syncBirthdayButton.disabled = true;
         show(message, "विद्यार्थियों की जन्मतिथि जाँची जा रही है...");
         try {
-          const snap = await db.collection("students").get();
+          // Student data is stored in split public/private collections.
+          const [publicSnap, privateSnap, legacySnap] = await Promise.all([
+            db.collection("students_public").get(),
+            db.collection("students_private").get(),
+            db.collection("students").get()
+          ]);
+          const privateById = new Map(privateSnap.docs.map(doc => [doc.id, doc.data()]));
+          const combined = [];
+          publicSnap.docs.forEach(doc => {
+            const pub = doc.data();
+            const priv = privateById.get(doc.id) || {};
+            combined.push({ id: doc.id, name: pub.name, className: pub.className, dob: priv.dob });
+          });
+          // Also include any legacy student records not represented in the split collections.
+          legacySnap.docs.forEach(doc => {
+            if (!combined.some(item => item.id === doc.id)) {
+              combined.push({ id: doc.id, ...doc.data() });
+            }
+          });
           let count = 0;
-          const batch = db.batch();
-          snap.docs.forEach(doc => {
-            const student = doc.data();
+          let batch = db.batch();
+          let writes = 0;
+          for (const student of combined) {
             const parts = birthdayDateParts(student.dob);
-            if (!student.name || !parts) return;
-            const birthdayRef = db.collection("birthdays").doc("student_" + doc.id);
+            if (!student.name || !parts) continue;
+            const birthdayRef = db.collection("birthdays").doc("student_" + student.id);
             batch.set(birthdayRef, {
               role: "विद्यार्थी",
               name: student.name,
@@ -691,9 +709,15 @@ const studentSearch = el("studentSearch");
               updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             }, { merge: true });
             count++;
-          });
-          if (count) await batch.commit();
-          show(message, count + " विद्यार्थियों के Birthday Card अपडेट हो गए। जन्म-वर्ष सार्वजनिक नहीं किया गया।");
+            writes++;
+            if (writes === 450) {
+              await batch.commit();
+              batch = db.batch();
+              writes = 0;
+            }
+          }
+          if (writes) await batch.commit();
+          show(message, count + " विद्यार्थियों के Birthday Card अपडेट हो गए। (कुल रिकॉर्ड जाँचे: " + combined.length + ")");
         } catch (error) {
           show(message, "अपडेट नहीं हो सका: " + error.message);
         } finally {
