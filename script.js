@@ -534,9 +534,22 @@ const studentSearch = el("studentSearch");
     const adminBirthdayList = el("adminBirthdayList");
 
     function birthdayDateParts(value) {
-      if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
-      const parts = value.split("-").map(Number);
-      return { month: parts[1], day: parts[2] };
+      if (!value) return null;
+      const text = String(value).trim();
+      let day, month, year;
+      let match = text.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+      if (match) {
+        year = Number(match[1]); month = Number(match[2]); day = Number(match[3]);
+      } else {
+        match = text.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})$/);
+        if (!match) return null;
+        day = Number(match[1]); month = Number(match[2]); year = Number(match[3]);
+      }
+      const check = new Date(year, month - 1, day);
+      if (month < 1 || month > 12 || day < 1 || day > 31 ||
+          check.getFullYear() !== year || check.getMonth() !== month - 1 ||
+          check.getDate() !== day) return null;
+      return { month, day };
     }
 
     function nextBirthdayDate(value, base) {
