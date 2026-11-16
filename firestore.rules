@@ -1,6 +1,10 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    match /students/{studentId} {
+      allow read, create, update, delete: if request.auth != null && request.auth.uid == 'Y79AJ2xs8mTjaWepHml1lA74fj83';
+    }
+
     // Student private/public records: only the designated admin can access.
     match /students_private/{studentId} {
       allow read, create, update, delete: if request.auth != null
