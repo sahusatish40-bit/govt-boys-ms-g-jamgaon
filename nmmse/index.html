@@ -19,6 +19,7 @@ h2{color:var(--navy);margin-top:0}.question{border:1px solid #e0e8f1;border-radi
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
 .resource{border:1px solid #dce7f2;border-radius:12px;padding:14px;background:#fbfdff}
 footer{text-align:center;padding:25px;color:#65758a;font-size:.9rem}
+@media(max-width:600px){main{padding:0 10px;margin:12px auto}.panel{padding:14px;border-radius:12px}nav a,.btn{padding:10px 12px;font-size:.94rem}.question{padding:11px;margin:10px 0}.option{padding:9px 6px}input[type=radio]{transform:scale(1.15);margin-right:6px}.grid{grid-template-columns:1fr}header{padding:22px 12px}}
 @media print{header,nav,.no-print,footer{display:none!important}body{background:#fff}.panel{box-shadow:none;border:0;padding:0}.question{break-inside:avoid}}
 </style></head>
 <body>
@@ -26,6 +27,21 @@ footer{text-align:center;padding:25px;color:#65758a;font-size:.9rem}
 <main>
 <nav class="no-print"><a href="#mat">MAT क्विज़</a><a href="#sat">SAT क्विज़</a><a href="#worksheet">वर्कशीट</a><a class="secondary" href="#links">अध्ययन लिंक</a><a class="secondary" href="#teacherLogin">शिक्षक लॉगिन</a></nav>
 <section class="panel"><h2>अभ्यास कैसे करें?</h2><p>कक्षा 8वीं स्तर के अभ्यास हेतु कुल 600 नमूना प्रश्न दिए गए हैं—300 MAT और 300 SAT। प्रत्येक समूह में 10 प्रश्न होंगे। अपनी गति से समूह हल करके <b>उत्तर जाँचें</b> दबाएँ। सही उत्तर और संक्षिप्त व्याख्या दिखाई जाएगी। यह अभ्यास सामग्री आधिकारिक प्रश्नपत्र नहीं है।</p></section>
+<section class="panel" id="mockExam">
+<h2>⏱️ पूर्ण NMMSE मॉक टेस्ट</h2>
+<p>90 प्रश्न (45 MAT + 45 SAT) • समय 90 मिनट • पूरा टेस्ट एक बार में जमा होगा।</p>
+<div class="grid"><div class="resource"><b>शेष समय</b><p id="mockTimer" class="result">90:00</p></div><div class="resource"><b>स्थिति</b><p id="mockProgress">टेस्ट शुरू नहीं हुआ</p></div></div>
+<button class="btn" id="mockStart" type="button">मॉक टेस्ट शुरू करें</button>
+<button class="btn secondary" id="mockSubmit" type="button" hidden>टेस्ट जमा करें</button>
+<div id="mockQuestions"></div><div id="mockResult" class="result" aria-live="polite"></div>
+</section>
+<section class="panel" id="wrongReview">
+<h2>🔁 गलत प्रश्नों का पुनः अभ्यास</h2>
+<p>क्विज़ या मॉक टेस्ट में गलत हुए प्रश्न यहाँ सुरक्षित रहेंगे।</p>
+<p id="wrongCount">गलत प्रश्न: 0</p>
+<button class="btn" id="wrongStart" type="button">गलत प्रश्नों का टेस्ट दें</button>
+<div id="wrongQuiz"></div><div id="wrongResult" class="result" aria-live="polite"></div>
+</section>
 <section class="panel" id="studentPanel">
 <h2>👩‍🎓 विद्यार्थी विवरण</h2>
 <label for="studentName"><b>विद्यार्थी का पूरा नाम लिखें:</b></label>
@@ -47,7 +63,7 @@ footer{text-align:center;padding:25px;color:#65758a;font-size:.9rem}
 <button class="btn" onclick="downloadResults()">⬇️ CSV/Excel फाइल डाउनलोड करें</button>
 <button class="btn secondary" onclick="clearResults()">रिकॉर्ड साफ करें</button>
 </div>
-<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;margin-top:12px"><thead><tr><th>दिनांक/समय</th><th>विद्यार्थी</th><th>विषय</th><th>समूह</th><th>अंक</th><th>प्रतिशत</th></tr></thead><tbody id="resultsBody"></tbody></table></div>
+<h3>🌐 सभी डिवाइस से प्राप्त परिणाम</h3><p id="cloudStatus">क्लाउड परिणाम लोड होने की प्रतीक्षा में।</p><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;margin-top:12px"><thead><tr><th>दिनांक/समय</th><th>विद्यार्थी</th><th>टेस्ट</th><th>अंक</th><th>प्रतिशत</th></tr></thead><tbody id="cloudResultsBody"></tbody></table></div><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;margin-top:12px"><thead><tr><th>दिनांक/समय</th><th>विद्यार्थी</th><th>विषय</th><th>समूह</th><th>अंक</th><th>प्रतिशत</th></tr></thead><tbody id="resultsBody"></tbody></table></div>
 </section>
 <section class="panel" id="mat"><h2>🧠 MAT – मानसिक योग्यता अभ्यास</h2><p id="matProgress">प्रश्न समूह 1 • 10 प्रश्न</p><div id="matQuiz"></div><button class="btn" id="matCheck" onclick="checkQuiz('mat')">उत्तर जाँचें</button> <button class="btn secondary" id="matNext" onclick="nextGroup('mat')" hidden>अगला क्विज़ शुरू करें</button><div class="result" id="matResult" aria-live="polite"></div></section>
 <section class="panel" id="sat"><h2>📘 SAT – शैक्षणिक योग्यता अभ्यास</h2><p id="satProgress">प्रश्न समूह 1 • 10 प्रश्न</p><div id="satQuiz"></div><button class="btn" id="satCheck" onclick="checkQuiz('sat')">उत्तर जाँचें</button> <button class="btn secondary" id="satNext" onclick="nextGroup('sat')" hidden>अगला क्विज़ शुरू करें</button><div class="result" id="satResult" aria-live="polite"></div></section>
@@ -157,14 +173,21 @@ quizzes.sat.push(...buildExtraSAT());
 // प्रत्येक समूह में 10 प्रश्न। 50 प्रश्न पूरे होने तक कोई प्रश्न दोबारा नहीं आएगा।
 const GROUP_SIZE=10;
 const RESULT_KEY="nmmseStudentResultsV1";
+const WRONG_KEY="nmmseWrongQuestionsV1";
+let nmmseDb=null;
 function getResults(){try{return JSON.parse(localStorage.getItem(RESULT_KEY)||"[]")}catch(e){return []}}
 function saveResult(type,st){
  const name=document.getElementById("studentName").value.trim();
  if(!name){document.getElementById("studentHint").textContent="कृपया पहले विद्यार्थी का नाम भरें।";document.getElementById("studentName").focus();return false;}
  const percent=Math.round(st.roundScore/st.group.length*100);
  const rows=getResults();rows.push({date:new Date().toLocaleString("hi-IN"),name,subject:type.toUpperCase(),group:st.round,score:st.roundScore,total:st.group.length,percent});
- localStorage.setItem(RESULT_KEY,JSON.stringify(rows));renderResults();return true;
+ localStorage.setItem(RESULT_KEY,JSON.stringify(rows));renderResults();
+ const record={date:new Date().toLocaleString("hi-IN"),name,subject:type.toUpperCase(),group:st.round,score:st.roundScore,total:st.group.length,percent,createdAt:Date.now()};
+ if(nmmseDb)nmmseDb.collection("nmmse_results").add(record).then(()=>{const s=document.getElementById("studentHint");s.textContent="परिणाम इस डिवाइस और विद्यालय क्लाउड में सुरक्षित किया गया।";}).catch(e=>{document.getElementById("studentHint").textContent="परिणाम डिवाइस में सुरक्षित है; क्लाउड सेव नहीं हुआ ("+e.code+")। Firebase नियम जाँचें।";});
+ return true;
 }
+function saveWrong(q,type){try{const a=JSON.parse(localStorage.getItem(WRONG_KEY)||"[]");if(!a.some(x=>x.q===q.q&&x.type===type))a.push({...q,type});localStorage.setItem(WRONG_KEY,JSON.stringify(a));updateWrongCount();}catch(e){}}
+function updateWrongCount(){const a=JSON.parse(localStorage.getItem(WRONG_KEY)||"[]");const el=document.getElementById("wrongCount");if(el)el.textContent="गलत प्रश्न: "+a.length;}
 function safeText(v){return String(v).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");}
 function renderResults(){
  const rows=getResults();document.getElementById("savedCount").textContent="सुरक्षित परिणाम: "+rows.length;
@@ -184,8 +207,9 @@ const quizState={mat:{deck:[],group:[],round:0,roundScore:0,totalScore:0,answere
 function shuffle(list){const a=[...list];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function nextGroup(type){const st=quizState[type];if(st.deck.length<GROUP_SIZE)st.deck=st.deck.concat(shuffle(quizzes[type]));st.group=st.deck.splice(0,GROUP_SIZE);st.round++;st.answered=false;st.roundScore=0;document.getElementById(type+"Progress").textContent="प्रश्न समूह "+st.round+" • "+st.group.length+" प्रश्न";document.getElementById(type+"Result").textContent="कुल सही उत्तर: "+st.totalScore;document.getElementById(type+"Check").disabled=false;document.getElementById(type+"Next").hidden=true;renderQuiz(type);}
 function renderQuiz(type){const root=document.getElementById(type+"Quiz");root.innerHTML="";const st=quizState[type];st.group.forEach((q,i)=>{const d=document.createElement("div");d.className="question";d.innerHTML="<p>"+(i+1)+". "+q.q+"</p>"+q.o.map((v,j)=>'<label class="option"><input type="radio" name="'+type+i+'" value="'+j+'"> '+v+'</label>').join("")+'<div class="feedback" id="'+type+'Feedback'+i+'"></div>';root.appendChild(d);});}
-function checkQuiz(type){const st=quizState[type];if(st.answered)return;if(!document.getElementById("studentName").value.trim()){document.getElementById("studentHint").textContent="क्विज़ जाँचने से पहले विद्यार्थी का नाम भरना आवश्यक है।";document.getElementById("studentName").focus();return;}const missing=st.group.findIndex((q,i)=>!document.querySelector('input[name="'+type+i+'"]:checked'));if(missing!==-1){document.getElementById(type+"Result").textContent="कृपया सभी "+st.group.length+" प्रश्नों के उत्तर चुनें।";document.querySelector('input[name="'+type+missing+'"]').focus();return;}st.answered=true;st.roundScore=0;st.group.forEach((q,i)=>{const selected=document.querySelector('input[name="'+type+i+'"]:checked');const f=document.getElementById(type+"Feedback"+i);if(Number(selected.value)===q.a){st.roundScore++;f.className="feedback correct";f.textContent="✓ सही उत्तर। "+q.e;}else{f.className="feedback wrong";f.textContent="✗ सही उत्तर: "+q.o[q.a]+". "+q.e;}document.querySelectorAll('input[name="'+type+i+'"]').forEach(x=>x.disabled=true);});st.totalScore+=st.roundScore;if(!saveResult(type,st)){st.answered=false;return;}const percent=Math.round(st.roundScore/st.group.length*100);document.getElementById(type+"Result").textContent="इस समूह में आपका स्कोर: "+st.roundScore+"/"+st.group.length+" ("+percent+"%) • अब तक कुल सही: "+st.totalScore+"। अगला समूह शुरू करने के लिए नीचे बटन दबाएँ।";document.getElementById(type+"Check").disabled=true;document.getElementById(type+"Next").hidden=false;}
+function checkQuiz(type){const st=quizState[type];if(st.answered)return;if(!document.getElementById("studentName").value.trim()){document.getElementById("studentHint").textContent="क्विज़ जाँचने से पहले विद्यार्थी का नाम भरना आवश्यक है।";document.getElementById("studentName").focus();return;}const missing=st.group.findIndex((q,i)=>!document.querySelector('input[name="'+type+i+'"]:checked'));if(missing!==-1){document.getElementById(type+"Result").textContent="कृपया सभी "+st.group.length+" प्रश्नों के उत्तर चुनें।";document.querySelector('input[name="'+type+missing+'"]').focus();return;}st.answered=true;st.roundScore=0;st.group.forEach((q,i)=>{const selected=document.querySelector('input[name="'+type+i+'"]:checked');const f=document.getElementById(type+"Feedback"+i);if(Number(selected.value)===q.a){st.roundScore++;f.className="feedback correct";f.textContent="✓ सही उत्तर। "+q.e;}else{f.className="feedback wrong";f.textContent="✗ सही उत्तर: "+q.o[q.a]+". "+q.e;saveWrong(q,type);}document.querySelectorAll('input[name="'+type+i+'"]').forEach(x=>x.disabled=true);});st.totalScore+=st.roundScore;if(!saveResult(type,st)){st.answered=false;return;}const percent=Math.round(st.roundScore/st.group.length*100);document.getElementById(type+"Result").textContent="इस समूह में आपका स्कोर: "+st.roundScore+"/"+st.group.length+" ("+percent+"%) • अब तक कुल सही: "+st.totalScore+"। अगला समूह शुरू करने के लिए नीचे बटन दबाएँ।";document.getElementById(type+"Check").disabled=true;document.getElementById(type+"Next").hidden=false;}
 renderResults();nextGroup("mat");nextGroup("sat");
+updateWrongCount();
 
 const NMMSE_FIREBASE_CONFIG = {apiKey:"AIzaSyAGPlqFFNCmQIj9ROjF9Ujj4C9a8Z5f9cQ",authDomain:"govt-boys-ms-g-jamgaon.firebaseapp.com",projectId:"govt-boys-ms-g-jamgaon",storageBucket:"govt-boys-ms-g-jamgaon.firebasestorage.app",messagingSenderId:"1076919620059",appId:"1:1076919620059:web:b1c1bfcdb1d9e260d8d7fe"};
 const NMMSE_ADMIN_UID="Y79AJ2xs8mTjaWepHml1lA74fj83";
@@ -195,12 +219,15 @@ const NMMSE_ADMIN_UID="Y79AJ2xs8mTjaWepHml1lA74fj83";
  try{
   await loadSdk("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
   await loadSdk("https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js");
+  await loadSdk("https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js");
   if(!firebase.apps.length)firebase.initializeApp(NMMSE_FIREBASE_CONFIG);
   const auth=firebase.auth();
+  nmmseDb=firebase.firestore();
   auth.onAuthStateChanged(user=>{
    const allowed=!!user&&user.uid===NMMSE_ADMIN_UID;
    results.hidden=!allowed;form.hidden=allowed;logout.hidden=!allowed;
    msg.textContent=allowed?"एडमिन लॉगिन सफल। शिक्षक परिणाम रिकॉर्ड खुल गया।":(user?"इस अकाउंट को एडमिन अनुमति नहीं है।":"शिक्षक परिणाम देखने के लिए एडमिन लॉगिन करें।");
+   if(allowed){nmmseDb.collection("nmmse_results").orderBy("createdAt","desc").limit(500).onSnapshot(snap=>{const body=document.getElementById("cloudResultsBody");body.innerHTML=snap.docs.map(d=>{const x=d.data();return "<tr><td>"+safeText(x.date||"")+"</td><td>"+safeText(x.name||"")+"</td><td>"+safeText(x.subject||"")+"</td><td>"+Number(x.score||0)+"/"+Number(x.total||0)+"</td><td>"+Number(x.percent||0)+"%</td></tr>";}).join("");document.getElementById("cloudStatus").textContent="क्लाउड में कुल "+snap.size+" परिणाम उपलब्ध।";},e=>{document.getElementById("cloudStatus").textContent="क्लाउड परिणाम नहीं पढ़ सके: "+e.code+" (Firestore Rules जाँचें)।";});}
    if(user&&!allowed)auth.signOut();
   });
   login.addEventListener("click",async()=>{
@@ -212,4 +239,37 @@ const NMMSE_ADMIN_UID="Y79AJ2xs8mTjaWepHml1lA74fj83";
  }catch(e){msg.textContent="शिक्षक लॉगिन उपलब्ध नहीं: "+e.message;}
 })();
 
+
+/* पूर्ण समयबद्ध मॉक टेस्ट */
+let mockClock=null,mockQuestions=[],mockStarted=false;
+function startMock(){
+ if(!document.getElementById("studentName").value.trim()){document.getElementById("studentHint").textContent="मॉक टेस्ट शुरू करने से पहले विद्यार्थी का नाम भरें।";document.getElementById("studentName").focus();return;}
+ clearInterval(mockClock);mockQuestions=[...shuffle(quizzes.mat).slice(0,45).map(q=>({...q,type:"MAT"})),...shuffle(quizzes.sat).slice(0,45).map(q=>({...q,type:"SAT"}))];
+ const root=document.getElementById("mockQuestions");root.innerHTML="";mockQuestions.forEach((q,i)=>{const d=document.createElement("div");d.className="question";d.innerHTML="<p>"+(i+1)+". ["+q.type+"] "+safeText(q.q)+"</p>"+q.o.map((v,j)=>'<label class="option"><input type="radio" name="mock'+i+'" value="'+j+'"> '+safeText(v)+'</label>').join("");root.appendChild(d);});
+ let seconds=5400;mockStarted=true;document.getElementById("mockResult").textContent="";document.getElementById("mockProgress").textContent="90 में से 0 उत्तर चुने गए";document.getElementById("mockStart").hidden=true;document.getElementById("mockSubmit").hidden=false;
+ const tick=()=>{document.getElementById("mockTimer").textContent=Math.floor(seconds/60)+":"+String(seconds%60).padStart(2,"0");if(seconds<=0){clearInterval(mockClock);submitMock(true);}seconds--;};
+ tick();mockClock=setInterval(tick,1000);
+ root.addEventListener("change",()=>{const n=mockQuestions.filter((q,i)=>document.querySelector('input[name="mock'+i+'"]:checked')).length;document.getElementById("mockProgress").textContent="90 में से "+n+" उत्तर चुने गए";},{once:false});
+}
+function submitMock(auto=false){
+ if(!mockStarted)return;clearInterval(mockClock);mockStarted=false;let score=0,mat=0,sat=0,wrong=[];
+ mockQuestions.forEach((q,i)=>{const sel=document.querySelector('input[name="mock'+i+'"]:checked');if(sel&&Number(sel.value)===q.a){score++;if(q.type==="MAT")mat++;else sat++;}else{wrong.push(q);saveWrong(q,q.type);}});
+ const percent=Math.round(score/90*100),name=document.getElementById("studentName").value.trim();
+ const row={date:new Date().toLocaleString("hi-IN"),name,subject:"FULL MOCK",group:1,score,total:90,percent};
+ const rows=getResults();rows.push(row);localStorage.setItem(RESULT_KEY,JSON.stringify(rows));renderResults();
+ if(nmmseDb)nmmseDb.collection("nmmse_results").add({...row,createdAt:Date.now()}).catch(e=>document.getElementById("mockResult").textContent+=" क्लाउड सेव नहीं हुआ: "+e.code);
+ document.querySelectorAll("#mockQuestions input").forEach(x=>x.disabled=true);
+ document.getElementById("mockSubmit").hidden=true;document.getElementById("mockStart").hidden=false;
+ document.getElementById("mockResult").textContent=(auto?"समय समाप्त! ":"टेस्ट जमा हुआ! ")+"कुल अंक "+score+"/90 ("+percent+"%) • MAT: "+mat+"/45 • SAT: "+sat+"/45 • गलत/छूटे प्रश्न: "+wrong.length+". गलत प्रश्न पुनः अभ्यास में जोड़ दिए गए।";
+ document.getElementById("mockTimer").textContent="समाप्त";
+}
+function startWrongQuiz(){
+ const bank=JSON.parse(localStorage.getItem(WRONG_KEY)||"[]");const root=document.getElementById("wrongQuiz");root.innerHTML="";document.getElementById("wrongResult").textContent="";
+ if(!bank.length){document.getElementById("wrongResult").textContent="अभी कोई गलत प्रश्न उपलब्ध नहीं है।";return;}
+ const batch=shuffle(bank).slice(0,Math.min(20,bank.length));batch.forEach((q,i)=>{const d=document.createElement("div");d.className="question";d.innerHTML="<p>"+(i+1)+". "+safeText(q.q)+"</p>"+q.o.map((v,j)=>'<label class="option"><input type="radio" name="wrong'+i+'" value="'+j+'"> '+safeText(v)+'</label>').join("");root.appendChild(d);});
+ const b=document.createElement("button");b.className="btn";b.textContent="गलत प्रश्न टेस्ट जाँचें";b.onclick=()=>{let s=0;batch.forEach((q,i)=>{const v=document.querySelector('input[name="wrong'+i+'"]:checked');const d=root.children[i];if(v&&Number(v.value)===q.a)s++;const f=document.createElement("p");f.className="feedback "+(v&&Number(v.value)===q.a?"correct":"wrong");f.textContent=(v&&Number(v.value)===q.a?"✓ सही। ":"✗ सही उत्तर: "+q.o[q.a]+". ")+q.e;d.appendChild(f);d.querySelectorAll("input").forEach(x=>x.disabled=true);});document.getElementById("wrongResult").textContent="आपका स्कोर: "+s+"/"+batch.length;};root.appendChild(b);
+}
+document.getElementById("mockStart").addEventListener("click",startMock);
+document.getElementById("mockSubmit").addEventListener("click",()=>submitMock(false));
+document.getElementById("wrongStart").addEventListener("click",startWrongQuiz);
 </script></body></html>
