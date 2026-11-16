@@ -663,7 +663,7 @@ const studentSearch = el("studentSearch");
       const detail = el("birthdayDetail").value.trim();
       const photo = el("birthdayPhoto").value.trim();
       if (!name || !birthDate) return show(el("birthdayMessage"), "नाम और जन्मतिथि आवश्यक हैं।");
-      if (photo && !/^https:\\/\\//i.test(photo)) return show(el("birthdayMessage"), "फोटो लिंक https:// से शुरू होना चाहिए।");
+      if (photo && !/^https:\/\//i.test(photo)) return show(el("birthdayMessage"), "फोटो लिंक https:// से शुरू होना चाहिए।");
       try {
         await db.collection("birthdays").add({
           role, name, detail, birthDate, photo,
