@@ -699,9 +699,9 @@ CHHATTISGARH
   box.innerHTML="<div class='game-welcome-icon'>"+(percent>=80?"🏆":percent>=40?"👏":"🌱")+"</div><h3>शाबाश! आपने खेल पूरा किया।</h3><p class='game-final-score'>"+score+" / "+questions.length+" अंक ("+percent+"%)</p><p>"+(percent>=80?"बहुत अच्छा प्रदर्शन!":percent>=40?"अच्छा प्रयास! अभ्यास जारी रखें।":"फिर से प्रयास करें—अभ्यास से सफलता मिलेगी।")+"</p>";
   const again=document.createElement("button");again.type="button";again.className="cta";again.textContent="दोबारा खेलें";again.onclick=start;$("learningGameCard").appendChild(again);
  }
- function start(){const level=$("gameLevel").value,chapter=$("gameChapter").value,cls=$("gameClass").value,sub=$("gameSubject").value;
-  const chapter=(chapterData[cls]&&chapterData[cls][sub]||[]).find(ch=>ch.id===chapter);
-  questions=chapter?chapter.levels[level].slice():(level==="easy"?banks[sub]:advanced[level][sub]).slice();
+ function start(){const level=$("gameLevel").value,chapterId=$("gameChapter").value,cls=$("gameClass").value,sub=$("gameSubject").value;
+  const selectedChapter=(chapterData[cls]&&chapterData[cls][sub]||[]).find(ch=>ch.id===chapterId);
+  questions=selectedChapter?selectedChapter.levels[level].slice():(level==="easy"?banks[sub]:advanced[level][sub]).slice();
   index=0;score=0;render();}
  $("gameClass").addEventListener("change",fillChapterOptions);
  $("gameSubject").addEventListener("change",fillChapterOptions);
