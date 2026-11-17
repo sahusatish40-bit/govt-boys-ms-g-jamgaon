@@ -884,3 +884,30 @@ footer span {
 .creativity-home-challenge li{padding:5px 0;line-height:1.6;color:#385364}
 .creativity-gallery-note{color:#617486}
 @media(max-width:700px){.creativity-learning-grid{grid-template-columns:1fr}.creativity-learning-card{padding:18px}.creativity-home-challenge{padding:18px}}
+
+
+/* Learning Games Zone */
+.learning-games-section{background:linear-gradient(135deg,#f4f8ff,#f4fff9)}
+.games-toolbar{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;background:#fff;padding:20px;border-radius:18px;box-shadow:0 8px 28px rgba(20,50,90,.08);margin:24px 0}
+.games-toolbar label{font-weight:700;color:#233b5d}
+.games-toolbar select{padding:12px 14px;border:1px solid #cbd7e7;border-radius:10px;background:#fff;font:inherit;min-width:125px}
+.game-scorebar{display:flex;justify-content:space-between;max-width:760px;margin:0 auto 12px;color:#29415f;font-weight:700}
+.learning-game-card{max-width:760px;margin:0 auto;background:#fff;border:1px solid #e0e9f4;border-radius:22px;padding:clamp(20px,4vw,34px);text-align:center;box-shadow:0 12px 35px rgba(28,57,91,.1);min-height:270px}
+.game-welcome-icon{font-size:48px;margin:8px}
+.learning-game-card h3{font-size:clamp(21px,4vw,28px);color:#18375d;margin:14px 0}
+.learning-game-card p{line-height:1.7;color:#53657b}
+.game-subject-tag{display:inline-block;background:#eaf2ff;color:#24548c;padding:6px 12px;border-radius:30px;font-size:13px;font-weight:700}
+.game-question{margin:20px 0!important}
+.game-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:22px}
+.game-option{padding:14px 12px;border:1px solid #d8e2ef;border-radius:12px;background:#f8fbff;color:#233b5d;font:inherit;font-weight:600;text-align:left;cursor:pointer}
+.game-option:hover:not(:disabled){border-color:#4d82c8;background:#edf5ff}
+.game-option:disabled{opacity:1;cursor:default}
+.game-option.game-correct{background:#e4f8eb;border-color:#35a765;color:#176538}
+.game-option.game-wrong{background:#fff0ed;border-color:#dc7666;color:#9d3025}
+.game-feedback{margin:18px 0 0;padding:12px;border-radius:10px}
+.game-feedback.is-correct{background:#eaf8ef;color:#176538}
+.game-feedback.is-wrong{background:#fff2ee;color:#923c30}
+.game-next{margin-top:16px}
+.game-final-score{font-size:30px!important;font-weight:800;color:#1c568c!important}
+.games-note{text-align:center;color:#66758a;font-size:14px;margin-top:18px}
+@media(max-width:600px){.games-toolbar{align-items:stretch;flex-direction:column}.games-toolbar select,.games-toolbar .cta{width:100%}.game-options{grid-template-columns:1fr}.game-option{text-align:left}.game-scorebar{padding:0 4px}}
