@@ -300,6 +300,8 @@ await loadFirebase(
 <hr>
 
 <hr>
+
+<hr><section id="creativityAdmin"><h3>🌟 विद्यार्थी रचनात्मकता – समीक्षा एवं प्रकाशन</h3><p>बच्चों द्वारा भेजी गई रचनाओं को जाँचकर प्रकाशित करें।</p><div id="creativityAdminList"><p>लॉगिन के बाद सूची लोड होगी।</p></div></section><hr>
 <section id="birthdayManagement">
   <h3>🎂 जन्मदिन कार्ड प्रबंधन</h3>
   <p>विद्यार्थी या शिक्षक का जन्मदिन जोड़ें। जन्मदिन हर वर्ष अपने-आप दिखाई देगा।</p>
@@ -527,6 +529,75 @@ const studentSearch = el("studentSearch");
     let stopStudents = null;
     let exams = [];
 
+
+
+    // Student Creativity Corner: public submissions are pending until admin approval.
+    const creativityGallery = document.getElementById("creativityGallery");
+    const creativityAdminList = document.getElementById("creativityAdminList");
+    const creativeSubmitMessage = document.getElementById("creativeSubmitMessage");
+    const creativeCategoryLabels = ["कला एवं चित्रकारी","कहानी, कविता एवं लेखन","विज्ञान एवं नवाचार मॉडल","गायन, नृत्य एवं अभिनय","मेरी उपलब्धियाँ","पुस्तक समीक्षा","हरित विद्यालय गतिविधि","ज्ञान चुनौती"];
+
+    function safeHttpsUrl(value) {
+      if (!value) return "";
+      try { const u = new URL(value); return u.protocol === "https:" ? u.href : null; }
+      catch (_) { return null; }
+    }
+
+    function makeCreativityCard(item, adminMode) {
+      const card = document.createElement("article"); card.className = "creativity-card";
+      const tag = document.createElement("span"); tag.className = "creativity-tag"; tag.textContent = item.category || "विद्यार्थी रचना"; card.appendChild(tag);
+      const title = document.createElement("h3"); title.textContent = item.title || "शीर्षक"; card.appendChild(title);
+      const meta = document.createElement("p"); meta.className = "creativity-meta"; meta.textContent = (item.studentName || "विद्यार्थी") + " • कक्षा " + (item.className || "—"); card.appendChild(meta);
+      const body = document.createElement("p"); body.className = "creativity-description"; body.textContent = item.description || ""; card.appendChild(body);
+      if (item.mediaUrl) { const link = document.createElement("a"); link.href = item.mediaUrl; link.target = "_blank"; link.rel = "noopener noreferrer"; link.textContent = "📎 फोटो / वीडियो देखें"; card.appendChild(link); }
+      if (adminMode) {
+        const status = document.createElement("p"); status.className = "creativity-meta"; status.textContent = "स्थिति: " + (item.status === "approved" ? "प्रकाशित" : item.status === "rejected" ? "अस्वीकृत" : "लंबित"); card.appendChild(status);
+        const actions = document.createElement("div"); actions.className = "creativity-actions";
+        if (item.status !== "approved") { const approve = document.createElement("button"); approve.type="button"; approve.textContent="✓ प्रकाशित करें"; approve.onclick=async()=>{try{await db.collection("creativity_submissions").doc(item.id).update({status:"approved",reviewedAt:firebase.firestore.FieldValue.serverTimestamp()});}catch(e){alert("प्रकाशित नहीं हुआ: "+e.message);}}; actions.appendChild(approve); }
+        if (item.status !== "rejected") { const reject = document.createElement("button"); reject.type="button"; reject.className="secondary"; reject.textContent="अस्वीकृत"; reject.onclick=async()=>{try{await db.collection("creativity_submissions").doc(item.id).update({status:"rejected"});}catch(e){alert("अपडेट नहीं हुआ: "+e.message);}}; actions.appendChild(reject); }
+        const remove = document.createElement("button"); remove.type="button"; remove.className="danger"; remove.textContent="हटाएँ"; remove.onclick=async()=>{if(confirm("क्या यह रचना हटानी है?")){try{await db.collection("creativity_submissions").doc(item.id).delete();}catch(e){alert("हटाया नहीं जा सका: "+e.message);}}}; actions.appendChild(remove); card.appendChild(actions);
+      }
+      return card;
+    }
+
+    if (creativityGallery) {
+      db.collection("creativity_submissions").where("status","==","approved").onSnapshot(snap=>{
+        creativityGallery.innerHTML="";
+        if(snap.empty){creativityGallery.textContent="अभी कोई रचना प्रकाशित नहीं हुई है। बच्चों की रचनाएँ जल्द यहाँ दिखाई देंगी।";return;}
+        snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)).forEach(item=>creativityGallery.appendChild(makeCreativityCard(item,false)));
+      },err=>{creativityGallery.textContent="रचनाएँ लोड नहीं हुईं: "+err.message;});
+    }
+
+    const submitCreativityButton = document.getElementById("submitCreativity");
+    if (submitCreativityButton) submitCreativityButton.addEventListener("click",async()=>{
+      const studentName=document.getElementById("creativeName").value.trim();
+      const className=document.getElementById("creativeClass").value;
+      const category=document.getElementById("creativeCategory").value;
+      const title=document.getElementById("creativeTitle").value.trim();
+      const description=document.getElementById("creativeDescription").value.trim();
+      const rawMedia=document.getElementById("creativeMedia").value.trim();
+      const mediaUrl=safeHttpsUrl(rawMedia);
+      if(!studentName||!className||!title||!description){creativeSubmitMessage.textContent="कृपया नाम, कक्षा, शीर्षक और रचना भरें।";return;}
+      if(!creativeCategoryLabels.includes(category)||studentName.length>80||title.length>100||description.length>1800){creativeSubmitMessage.textContent="कृपया सही जानकारी भरें।";return;}
+      if(rawMedia && !mediaUrl){creativeSubmitMessage.textContent="मीडिया लिंक https:// से शुरू होना चाहिए।";return;}
+      submitCreativityButton.disabled=true; creativeSubmitMessage.textContent="रचना भेजी जा रही है…";
+      try{
+        await db.collection("creativity_submissions").add({studentName,className,category,title,description,mediaUrl,status:"pending",createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+        ["creativeName","creativeClass","creativeTitle","creativeDescription","creativeMedia"].forEach(id=>document.getElementById(id).value="");
+        creativeSubmitMessage.textContent="धन्यवाद! आपकी रचना शिक्षक के पास समीक्षा के लिए भेज दी गई है। स्वीकृति के बाद वेबसाइट पर दिखाई देगी।";
+      }catch(e){creativeSubmitMessage.textContent="रचना भेजी नहीं जा सकी: "+e.message+" (Firebase Rules प्रकाशित होने की जाँच करें।)";}
+      finally{submitCreativityButton.disabled=false;}
+    });
+
+    let stopCreativityAdmin = null;
+    function beginCreativityAdmin(){
+      if(!creativityAdminList||stopCreativityAdmin)return;
+      stopCreativityAdmin=db.collection("creativity_submissions").orderBy("createdAt","desc").onSnapshot(snap=>{
+        creativityAdminList.innerHTML="";
+        if(snap.empty){creativityAdminList.textContent="अभी कोई रचना प्राप्त नहीं हुई है।";return;}
+        snap.docs.forEach(d=>creativityAdminList.appendChild(makeCreativityCard({id:d.id,...d.data()},true)));
+      },err=>{creativityAdminList.textContent="सूची लोड नहीं हुई: "+err.message;});
+    }
 
     // Birthday cards: public read, admin-only writes.
     const birthdayTodayBox = document.getElementById("birthdayToday");
@@ -2305,6 +2376,7 @@ if (stopTeachers) {
   stopTeachers();
   stopTeachers = null;
 }
+if (stopCreativityAdmin) { stopCreativityAdmin(); stopCreativityAdmin = null; }
       }
     });
 
