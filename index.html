@@ -32,6 +32,7 @@ style="width:85px;height:85px;object-fit:contain;">
 <a href="#about" data-hi="विद्यालय परिचय" data-en="About">विद्यालय परिचय</a>
 <a href="#academics" data-hi="शैक्षणिक जानकारी" data-en="Academics">शैक्षणिक जानकारी</a>
 <a href="#creativity">रचनात्मकता</a>
+<a href="#learning-games">लर्निंग गेम्स</a>
 <a href="#birthdays" data-hi="जन्मदिन" data-en="Birthdays">जन्मदिन</a>
 <a href="#notice" data-hi="सूचना पटल" data-en="Notice Board">सूचना पटल</a>
 <a href="#gallery" data-hi="गतिविधियाँ" data-en="Activities">गतिविधियाँ</a>
@@ -264,6 +265,32 @@ style="width:85px;height:85px;object-fit:contain;">
   <div id="creativityGallery" class="creativity-grid"><p>स्वीकृत रचनाएँ लोड हो रही हैं...</p></div>
 </section>
 
+
+<section id="learning-games" class="section learning-games-section">
+  <div class="section-title">
+    <span>PLAY • PRACTICE • PROGRESS</span>
+    <h2>🎮 खेल-खेल में सीखें — Learning Games Zone</h2>
+    <p>कक्षा 6वीं, 7वीं और 8वीं के विद्यार्थियों के लिए छह विषयों के रोचक अभ्यास खेल।</p>
+  </div>
+  <div class="games-toolbar">
+    <label for="gameClass">अपनी कक्षा चुनें</label>
+    <select id="gameClass"><option value="6">कक्षा 6वीं</option><option value="7">कक्षा 7वीं</option><option value="8">कक्षा 8वीं</option></select>
+    <label for="gameSubject">विषय चुनें</label>
+    <select id="gameSubject">
+      <option value="hindi">हिंदी</option><option value="english">English</option>
+      <option value="sanskrit">संस्कृत</option><option value="science">विज्ञान</option>
+      <option value="social">सामाजिक विज्ञान</option><option value="maths">गणित</option>
+    </select>
+    <button type="button" id="startLearningGame" class="cta">🎯 खेल शुरू करें</button>
+  </div>
+  <div class="game-scorebar"><span id="gameProgress">प्रश्न 1 / 5</span><strong id="gameScore">⭐ अंक: 0</strong></div>
+  <div id="learningGameCard" class="learning-game-card" aria-live="polite">
+    <div class="game-welcome-icon">🧠</div><h3>आज कुछ नया सीखें!</h3>
+    <p>कक्षा और विषय चुनकर “खेल शुरू करें” दबाएँ। हर खेल में 5 प्रश्न होंगे।</p>
+  </div>
+  <p class="games-note">नोट: ये अभ्यास खेल सामान्य पाठ्यक्रम-आधारित प्रश्नों से शुरू किए गए हैं। शिक्षक इन्हें कक्षा में चर्चा और पुनरावृत्ति के लिए भी उपयोग कर सकते हैं।</p>
+</section>
+
 <section id="notice" class="section tinted">
 <div class="section-title">
 <span>04 / UPDATES</span>
@@ -426,5 +453,83 @@ CHHATTISGARH
 <script src="script.js?v=35"></script>
 <script src="student-results.js?v=1"></script>
 <script src="result-dashboard.js?v=3"></script>
+
+<script>
+(function(){
+ const banks={
+  hindi:[
+   [{q:"‘जल’ का समानार्थी शब्द कौन-सा है?",o:["अग्नि","नीर","पवन","धरा"],a:1,e:"‘नीर’ जल का समानार्थी शब्द है।"},
+    {q:"‘दिन’ का विलोम शब्द क्या है?",o:["सुबह","दोपहर","रात","प्रकाश"],a:2,e:"‘दिन’ का विलोम ‘रात’ है।"},
+    {q:"‘आँखों का तारा’ मुहावरे का अर्थ है—",o:["बहुत प्रिय","बहुत दूर","बहुत क्रोधित","बहुत तेज"],a:0,e:"इसका अर्थ है अत्यंत प्रिय व्यक्ति।"},
+    {q:"‘विद्यालय’ शब्द में कौन-सा भाव है?",o:["खेल का स्थान","विद्या का स्थान","बाजार","अस्पताल"],a:1,e:"विद्यालय का अर्थ है विद्या प्राप्त करने का स्थान।"},
+    {q:"शुद्ध वर्तनी चुनिए।",o:["आर्शीवाद","आशीर्वाद","आशीरवाद","आर्शिवाद"],a:1,e:"सही वर्तनी ‘आशीर्वाद’ है।"}],
+  english:[
+   [{q:"Choose the plural of ‘child’.",o:["Childs","Childes","Children","Childrens"],a:2,e:"The plural form of child is children."},
+    {q:"Choose the opposite of ‘brave’.",o:["Bold","Cowardly","Strong","Kind"],a:1,e:"Cowardly is the opposite of brave."},
+    {q:"Fill in: She ___ to school every day.",o:["go","goes","going","gone"],a:1,e:"With ‘she’ in the simple present, use ‘goes’."},
+    {q:"Which word is a noun?",o:["Quickly","Beautiful","Honesty","Run"],a:2,e:"Honesty names a quality, so it is a noun."},
+    {q:"Choose the correct article: ___ apple.",o:["A","An","Thee","No article"],a:1,e:"Use ‘an’ before a vowel sound."}],
+  sanskrit:[
+   [{q:"‘रामः’ शब्द का अर्थ क्या है?",o:["राम","फल","जल","पुस्तक"],a:0,e:"‘रामः’ संस्कृत में राम का नाम है।"},
+    {q:"‘फलम्’ का बहुवचन क्या है?",o:["फलः","फले","फलानि","फलम्"],a:2,e:"नपुंसकलिंग के इस रूप का बहुवचन ‘फलानि’ है।"},
+    {q:"‘नमः’ का सामान्य अर्थ है—",o:["नमस्कार","जल्दी","भोजन","पुस्तक"],a:0,e:"‘नमः’ का अर्थ नमस्कार/वंदन है।"},
+    {q:"‘गच्छति’ का अर्थ क्या है?",o:["खाता है","जाता है","पढ़ता है","लिखता है"],a:1,e:"‘गच्छति’ का अर्थ है ‘जाता है’।"},
+    {q:"संस्कृत में ‘एक’ को क्या कहते हैं?",o:["द्वे","त्रीणि","एकम्","चत्वारि"],a:2,e:"‘एकम्’ एक संख्या के लिए प्रयुक्त होता है।"}],
+  science:[
+   [{q:"पौधे अपना भोजन मुख्यतः किस प्रक्रिया से बनाते हैं?",o:["श्वसन","प्रकाश संश्लेषण","वाष्पीकरण","पाचन"],a:1,e:"हरे पौधे प्रकाश संश्लेषण से भोजन बनाते हैं।"},
+    {q:"मानव शरीर में रक्त पंप करने वाला अंग है—",o:["फेफड़ा","मस्तिष्क","हृदय","गुर्दा"],a:2,e:"हृदय रक्त को पूरे शरीर में पंप करता है।"},
+    {q:"जल का सामान्य हिमांक कितना है?",o:["0°C","10°C","50°C","100°C"],a:0,e:"सामान्य वायुदाब पर जल 0°C पर जमता है।"},
+    {q:"पृथ्वी को प्रकाश और ऊष्मा मुख्यतः किससे मिलती है?",o:["चंद्रमा","सूर्य","मंगल","तारे"],a:1,e:"पृथ्वी का प्रमुख प्राकृतिक ऊर्जा स्रोत सूर्य है।"},
+    {q:"इनमें से कौन-सा पदार्थ चुंबक से आकर्षित होता है?",o:["लकड़ी","प्लास्टिक","लोहा","कागज"],a:2,e:"लोहा चुंबकीय पदार्थ है।"}],
+  social:[
+   [{q:"भारत की राजधानी कौन-सी है?",o:["मुंबई","नई दिल्ली","कोलकाता","चेन्नई"],a:1,e:"भारत की राजधानी नई दिल्ली है।"},
+    {q:"भारत का संविधान कब लागू हुआ?",o:["15 अगस्त 1947","26 जनवरी 1950","2 अक्टूबर 1950","26 नवंबर 1949"],a:1,e:"संविधान 26 जनवरी 1950 को लागू हुआ।"},
+    {q:"छत्तीसगढ़ राज्य का गठन कब हुआ?",o:["1 नवंबर 2000","1 मई 1960","15 अगस्त 1947","26 जनवरी 1950"],a:0,e:"छत्तीसगढ़ 1 नवंबर 2000 को राज्य बना।"},
+    {q:"ग्राम पंचायत का निर्वाचित प्रमुख सामान्यतः कहलाता है—",o:["राज्यपाल","सरपंच","सांसद","कलेक्टर"],a:1,e:"ग्राम पंचायत का प्रमुख सरपंच कहलाता है।"},
+    {q:"भारत का राष्ट्रीय प्रतीक किससे लिया गया है?",o:["साँची स्तूप","सारनाथ का अशोक सिंह स्तंभ","लाल किला","कुतुब मीनार"],a:1,e:"राष्ट्रीय प्रतीक सारनाथ के अशोक सिंह स्तंभ से लिया गया है।"}],
+  maths:[
+   [{q:"12 × 8 = ?",o:["86","92","96","108"],a:2,e:"12 के 8 समूह = 96।"},
+    {q:"एक वर्ग की भुजा 5 cm है। परिमाप कितना होगा?",o:["10 cm","15 cm","20 cm","25 cm"],a:2,e:"वर्ग का परिमाप = 4 × भुजा = 20 cm।"},
+    {q:"3/4 का दशमलव रूप क्या है?",o:["0.25","0.50","0.75","1.25"],a:2,e:"3 को 4 से भाग देने पर 0.75 मिलता है।"},
+    {q:"यदि x + 7 = 15, तो x = ?",o:["6","7","8","9"],a:2,e:"15 − 7 = 8।"},
+    {q:"त्रिभुज के तीनों कोणों का योग कितना होता है?",o:["90°","180°","270°","360°"],a:1,e:"समतल ज्यामिति में त्रिभुज के कोणों का योग 180° होता है।"}]
+ };
+ const labels={hindi:"हिंदी",english:"English",sanskrit:"संस्कृत",science:"विज्ञान",social:"सामाजिक विज्ञान",maths:"गणित"};
+ let questions=[],index=0,score=0,locked=false;
+ const $=id=>document.getElementById(id);
+ function render(){
+  const box=$("learningGameCard"),item=questions[index]; locked=false;
+  $("gameProgress").textContent="प्रश्न "+(index+1)+" / "+questions.length;
+  $("gameScore").textContent="⭐ अंक: "+score;
+  box.innerHTML="";
+  const tag=document.createElement("span");tag.className="game-subject-tag";tag.textContent=labels[$("gameSubject").value]+" • कक्षा "+$("gameClass").value;
+  const q=document.createElement("h3");q.className="game-question";q.textContent=item.q;
+  box.append(tag,q);
+  const opts=document.createElement("div");opts.className="game-options";
+  item.o.forEach((value,i)=>{const b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+i)+". "+value;b.addEventListener("click",()=>answer(i,b));opts.appendChild(b);});
+  box.appendChild(opts);
+  const feedback=document.createElement("p");feedback.id="gameFeedback";feedback.className="game-feedback";box.appendChild(feedback);
+ }
+ function answer(choice,button){
+  if(locked)return;locked=true;
+  const item=questions[index],feedback=$("gameFeedback");
+  document.querySelectorAll(".game-option").forEach((b,i)=>{b.disabled=true;if(i===item.a)b.classList.add("game-correct");else if(i===choice)b.classList.add("game-wrong");});
+  if(choice===item.a){score++;feedback.textContent="बहुत बढ़िया! सही उत्तर। "+item.e;feedback.classList.add("is-correct");}
+  else{feedback.textContent="कोई बात नहीं! सही उत्तर: "+item.o[item.a]+". "+item.e;feedback.classList.add("is-wrong");}
+  $("gameScore").textContent="⭐ अंक: "+score;
+  const next=document.createElement("button");next.type="button";next.className="cta game-next";next.textContent=index===questions.length-1?"परिणाम देखें":"अगला प्रश्न →";
+  next.addEventListener("click",()=>{if(index<questions.length-1){index++;render();}else finish();});$("learningGameCard").appendChild(next);
+ }
+ function finish(){
+  const box=$("learningGameCard"),percent=Math.round(score/questions.length*100);
+  $("gameProgress").textContent="खेल पूरा हुआ!";
+  box.innerHTML="<div class='game-welcome-icon'>"+(percent>=80?"🏆":percent>=40?"👏":"🌱")+"</div><h3>शाबाश! आपने खेल पूरा किया।</h3><p class='game-final-score'>"+score+" / "+questions.length+" अंक ("+percent+"%)</p><p>"+(percent>=80?"बहुत अच्छा प्रदर्शन!":percent>=40?"अच्छा प्रयास! अभ्यास जारी रखें।":"फिर से प्रयास करें—अभ्यास से सफलता मिलेगी।")+"</p>";
+  const again=document.createElement("button");again.type="button";again.className="cta";again.textContent="दोबारा खेलें";again.onclick=start;$("learningGameCard").appendChild(again);
+ }
+ function start(){questions=banks[$("gameSubject").value][0].slice();index=0;score=0;render();}
+ $("startLearningGame").addEventListener("click",start);
+})();
+</script>
+
 </body>
 </html>
