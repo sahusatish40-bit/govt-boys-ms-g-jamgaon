@@ -285,6 +285,12 @@ style="width:85px;height:85px;object-fit:contain;">
     <select id="gameLevel"><option value="easy">आसान</option><option value="medium">मध्यम</option><option value="hard">कठिन</option></select>
     <button type="button" id="startLearningGame" class="cta">🎯 खेल शुरू करें</button>
   </div>
+  <div id="gameBookSource" class="game-book-source">
+    <strong>📚 आपकी कक्षा की पाठ्यपुस्तकें</strong>
+    <p id="gameBookNames">कक्षा 6वीं: NCERT नई हिंदी माध्यम पुस्तकें — मल्हार, Poorvi, दीपकम्, गणित प्रकाश, जिज्ञासा और समाज का अध्ययन।</p>
+    <p class="game-source-links"><a href="https://ncert.nic.in/textbook.php" target="_blank" rel="noopener">NCERT आधिकारिक पुस्तकें देखें ↗</a> <a href="https://scert.cg.gov.in/pdf/textbook-2024-25/textbook-2024-25.htm" target="_blank" rel="noopener">SCERT छत्तीसगढ़ कक्षा 8 पुस्तकें देखें ↗</a></p>
+    <small>पुस्तक लिंक आधिकारिक पोर्टल पर खुलेंगे। वर्तमान प्रश्न अभ्यास हेतु हैं; अध्यायवार प्रश्न संबंधित अध्याय-सामग्री की पुष्टि के बाद जोड़े जाएँगे।</small>
+  </div>
   <div class="game-scorebar"><span id="gameProgress">प्रश्न 1 / 5</span><strong id="gameScore">⭐ अंक: 0</strong></div>
   <div id="learningGameCard" class="learning-game-card" aria-live="polite">
     <div class="game-welcome-icon">🧠</div><h3>आज कुछ नया सीखें!</h3>
@@ -575,7 +581,15 @@ CHHATTISGARH
   {q:"एक आयत की लंबाई 12 cm और चौड़ाई 7 cm है। क्षेत्रफल है—",o:["19 cm²","38 cm²","72 cm²","84 cm²"],a:3,e:"आयत का क्षेत्रफल = लंबाई × चौड़ाई = 12 × 7 = 84 cm²।"}]
  }
  };
- const labels={hindi:"हिंदी",english:"English",sanskrit:"संस्कृत",science:"विज्ञान",social:"सामाजिक विज्ञान",maths:"गणित"};
+ const labels={hindi:"हिंदी",english:"English",sanskrit:"संस्कृत",science:"विज्ञान",social:"सामाजिक विज्ञान",maths:"गणित"}; 
+ const bookNames={
+ "6":"NCERT नई हिंदी माध्यम पुस्तकें — मल्हार, Poorvi, दीपकम्, गणित प्रकाश, जिज्ञासा और समाज का अध्ययन।",
+ "7":"NCERT नई हिंदी माध्यम पुस्तकें — मल्हार, Poorvi, दीपकम्, गणित प्रकाश, जिज्ञासा और समाज का अध्ययन (भाग/खंड जहाँ लागू हों)।",
+ "8":"SCERT छत्तीसगढ़ पुस्तकें — छत्तीसगढ़ भारती, English Reader, संस्कृत मनोरमा, गणित, विज्ञान एवं प्रौद्योगिकी, सामाजिक विज्ञान भाग-1 और भूगोल भाग-2 (संसाधन एवं विकास)।"
+ };
+ $("gameClass").addEventListener("change",()=>{$("gameBookNames").textContent=bookNames[$("gameClass").value];});
+ $("gameBookNames").textContent=bookNames[$("gameClass").value];
+
  let questions=[],index=0,score=0,locked=false;
  const $=id=>document.getElementById(id);
  function render(){
