@@ -61,5 +61,47 @@ service cloud.firestore {
       allow create, update, delete: if request.auth != null
         && request.auth.uid == 'Y79AJ2xs8mTjaWepHml1lA74fj83';
     }
+
+    // Student Creativity Corner submissions
+    match /creativity_submissions/{submissionId} {
+      // Public visitors can see approved work; the designated admin can see all.
+      allow read: if resource.data.status == 'approved'
+        || (request.auth != null
+          && request.auth.uid == 'Y79AJ2xs8mTjaWepHml1lA74fj83');
+
+      // Students may submit moderated work with a strict field allowlist.
+      allow create: if request.resource.data.keys().hasOnly([
+          'studentName', 'className', 'category', 'title',
+          'description', 'mediaUrl', 'status', 'createdAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'studentName', 'className', 'category', 'title',
+          'description', 'mediaUrl', 'status', 'createdAt'
+        ])
+        && request.resource.data.studentName is string
+        && request.resource.data.studentName.size() > 0
+        && request.resource.data.studentName.size() <= 80
+        && request.resource.data.className in ['6', '7', '8']
+        && request.resource.data.category in [
+          'कला एवं चित्रकारी', 'कहानी, कविता एवं लेखन',
+          'विज्ञान एवं नवाचार मॉडल', 'गायन, नृत्य एवं अभिनय',
+          'मेरी उपलब्धियाँ', 'पुस्तक समीक्षा',
+          'हरित विद्यालय गतिविधि', 'ज्ञान चुनौती'
+        ]
+        && request.resource.data.title is string
+        && request.resource.data.title.size() > 0
+        && request.resource.data.title.size() <= 100
+        && request.resource.data.description is string
+        && request.resource.data.description.size() > 0
+        && request.resource.data.description.size() <= 1800
+        && request.resource.data.mediaUrl is string
+        && request.resource.data.mediaUrl.size() <= 1000
+        && request.resource.data.status == 'pending';
+
+      // Only the designated admin can approve, reject, or delete submissions.
+      allow update, delete: if request.auth != null
+        && request.auth.uid == 'Y79AJ2xs8mTjaWepHml1lA74fj83';
+    }
+
   }
 }
