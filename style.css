@@ -911,3 +911,8 @@ footer span {
 .game-final-score{font-size:30px!important;font-weight:800;color:#1c568c!important}
 .games-note{text-align:center;color:#66758a;font-size:14px;margin-top:18px}
 @media(max-width:600px){.games-toolbar{align-items:stretch;flex-direction:column}.games-toolbar select,.games-toolbar .cta{width:100%}.game-options{grid-template-columns:1fr}.game-option{text-align:left}.game-scorebar{padding:0 4px}}
+
+
+.games-toolbar{gap:10px 12px}
+.games-toolbar select{min-width:145px}
+@media(max-width:600px){.games-toolbar select{min-width:0}}
