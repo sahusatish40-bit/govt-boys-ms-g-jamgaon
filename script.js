@@ -2354,6 +2354,7 @@ el("addEvent").onclick = async () => {
         adminTools.style.setProperty("display", "block", "important");
      beginStudentFeed();
 beginTeacherFeed();
+beginCreativityAdmin();
 loadAdminGallery();
 await loadExams();
 
