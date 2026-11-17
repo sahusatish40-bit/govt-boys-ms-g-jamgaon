@@ -298,7 +298,7 @@ style="width:85px;height:85px;object-fit:contain;">
     <div class="game-welcome-icon">🧠</div><h3>आज कुछ नया सीखें!</h3>
     <p>कक्षा और विषय चुनकर “खेल शुरू करें” दबाएँ। हर खेल में 5 प्रश्न होंगे। आसान, मध्यम और कठिन स्तर चुनें।</p>
   </div>
-  <p class="games-note">नोट: कक्षा और विषय चुनने पर अध्याय-सूची उपलब्ध होगी। अध्याय-विशिष्ट प्रश्न केवल उन्हीं अध्यायों में उपलब्ध हैं जिनका प्रश्न-संग्रह जोड़ा गया है; अन्य अध्यायों के लिए सामान्य अभ्यास प्रश्न उपलब्ध हैं।</p>
+  <p class="games-note">नोट: सभी कक्षाओं के छह विषयों की अध्याय-सूचियाँ उपलब्ध हैं। जिन अध्यायों का अलग प्रश्न-संग्रह अभी तैयार नहीं है, उनमें विषय-आधारित सामान्य अभ्यास प्रश्न दिखेंगे और इसकी सूचना प्रश्न के साथ दी जाएगी।</p>
 </section>
 
 <section id="notice" class="section tinted">
@@ -712,9 +712,15 @@ CHHATTISGARH
   $("gameProgress").textContent="प्रश्न "+(index+1)+" / "+questions.length;
   $("gameScore").textContent="⭐ अंक: "+score;
   box.innerHTML="";
-  const tag=document.createElement("span");tag.className="game-subject-tag";tag.textContent=labels[$("gameSubject").value]+" • कक्षा "+$("gameClass").value+" • "+({easy:"आसान",medium:"मध्यम",hard:"कठिन"}[$("gameLevel").value]);
+  const cls=$("gameClass").value,sub=$("gameSubject").value,chapterId=$("gameChapter").value;
+  const selectedChapter=(chapterData[cls]&&chapterData[cls][sub]||[]).find(ch=>ch.id===chapterId);
+  const chapterIndex=chapterId.startsWith("catalog-")?Number(chapterId.split("-").pop()):-1;
+  const chapterName=selectedChapter?selectedChapter.name:(chapterIndex>=0?(chapterCatalog[cls][sub]||[])[chapterIndex]:"");
+  const tag=document.createElement("span");tag.className="game-subject-tag";tag.textContent=labels[sub]+" • कक्षा "+cls+" • "+({easy:"आसान",medium:"मध्यम",hard:"कठिन"}[$("gameLevel").value]);
+  const chapterLabel=document.createElement("p");chapterLabel.className="game-chapter-label";chapterLabel.textContent=chapterName?"चयनित अध्याय: "+chapterName:"सामान्य अभ्यास";
   const q=document.createElement("h3");q.className="game-question";q.textContent=item.q;
-  box.append(tag,q);
+  box.append(tag,chapterLabel,q);
+  if(chapterName&&!selectedChapter){const hint=document.createElement("small");hint.className="game-chapter-hint";hint.textContent="इस अध्याय के लिए अलग प्रश्न अभी तैयार किए जा रहे हैं। नीचे दिए प्रश्न इस विषय के सामान्य अभ्यास प्रश्न हैं।";box.appendChild(hint);}
   const opts=document.createElement("div");opts.className="game-options";
   item.o.forEach((value,i)=>{const b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+i)+". "+value;b.addEventListener("click",()=>answer(i,b));opts.appendChild(b);});
   box.appendChild(opts);
