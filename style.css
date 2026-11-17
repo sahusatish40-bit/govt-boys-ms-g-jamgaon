@@ -842,3 +842,29 @@ footer span {
 .birthday-empty{padding:18px;background:#fff;border-radius:14px;color:#617486}
 .birthday-admin-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px;border-bottom:1px solid #e5edf0}
 @media(max-width:700px){.birthday-grid{grid-template-columns:1fr}.birthday-card{padding:18px}.birthday-admin-row{align-items:flex-start;flex-direction:column}}
+
+
+/* Student Creativity Corner */
+.creativity-section{background:linear-gradient(135deg,#f2f9ff,#f2faf6)}
+.creativity-intro{padding:20px 24px;margin:0 0 22px;border-radius:18px;background:linear-gradient(110deg,#e4f4f2,#fff3d9);color:#173b60}
+.creativity-intro p{margin-bottom:0;color:#52616b}
+.creativity-form{max-width:760px;margin:0 auto 42px;padding:26px}
+.creativity-form label{display:block;margin:14px 0 7px;color:#102b46;font-weight:800;font-size:14px}
+.creativity-form input,.creativity-form select,.creativity-form textarea{width:100%;padding:13px 14px;border:1px solid #cbdde3;border-radius:11px;background:#fbfdfe;color:#183047;font:inherit}
+.creativity-form textarea{resize:vertical;line-height:1.7}
+.creativity-form small{display:block;color:#687985;line-height:1.6;margin:12px 0}
+.creativity-form button,.creativity-actions button{margin-top:14px;padding:12px 18px;border:0;border-radius:24px;background:#176b87;color:white;font-weight:800;cursor:pointer}
+.creativity-form button:disabled{opacity:.6;cursor:wait}
+.creativity-gallery-title{color:#102b46;margin:20px 0}
+.creativity-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.creativity-card{background:#fff;border:1px solid #e1ebef;border-radius:18px;padding:20px;box-shadow:0 9px 24px #102b4610;overflow-wrap:anywhere}
+.creativity-card h3{color:#102b46;margin:12px 0 7px}
+.creativity-tag{display:inline-block;background:#e6f4f1;color:#176b87;border-radius:20px;padding:6px 11px;font-size:12px;font-weight:800}
+.creativity-meta{color:#627584;font-size:13px}
+.creativity-description{color:#334e60;line-height:1.75;white-space:pre-wrap}
+.creativity-card a{color:#176b87;font-weight:800}
+.creativity-actions{display:flex;flex-wrap:wrap;gap:7px}
+.creativity-actions button{font-size:12px;margin-top:8px;padding:9px 12px}
+.creativity-actions .secondary{background:#b7791f}.creativity-actions .danger{background:#a83245}
+#creativityAdmin{margin-top:22px}
+@media(max-width:700px){.creativity-form{padding:18px}.creativity-grid{grid-template-columns:1fr}}
