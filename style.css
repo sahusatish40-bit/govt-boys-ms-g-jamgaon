@@ -868,3 +868,19 @@ footer span {
 .creativity-actions .secondary{background:#b7791f}.creativity-actions .danger{background:#a83245}
 #creativityAdmin{margin-top:22px}
 @media(max-width:700px){.creativity-form{padding:18px}.creativity-grid{grid-template-columns:1fr}}
+
+
+/* Creativity learning hub */
+.creativity-learning-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:26px 0}
+.creativity-learning-card{background:#fff;border:1px solid #e1ebef;border-radius:20px;padding:22px;box-shadow:0 9px 24px #102b4610}
+.creativity-learning-icon{font-size:34px;margin-bottom:10px}
+.creativity-level{display:inline-block;padding:5px 10px;border-radius:18px;background:#e8f4f2;color:#176b87;font-size:12px;font-weight:800}
+.creativity-learning-card h3{color:#102b46;margin:12px 0 8px}
+.creativity-learning-card p{color:#52616b;line-height:1.7}
+.creativity-learning-card b{color:#176b87}
+.creativity-task{padding:12px 14px;margin-top:14px;border-radius:12px;background:#fff5df;color:#684d1b;font-weight:700;line-height:1.6}
+.creativity-home-challenge{background:#eaf5f3;border:1px solid #cfe7e2;border-radius:18px;padding:20px 24px;margin:28px 0}
+.creativity-home-challenge h3{color:#102b46;margin-top:0}
+.creativity-home-challenge li{padding:5px 0;line-height:1.6;color:#385364}
+.creativity-gallery-note{color:#617486}
+@media(max-width:700px){.creativity-learning-grid{grid-template-columns:1fr}.creativity-learning-card{padding:18px}.creativity-home-challenge{padding:18px}}
