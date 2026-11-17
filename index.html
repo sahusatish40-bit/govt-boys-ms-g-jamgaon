@@ -831,7 +831,16 @@ CHHATTISGARH
   const old=sel.value;sel.innerHTML="";
   const general=document.createElement("option");general.value="general";general.textContent="सामान्य अभ्यास";sel.appendChild(general);
   (chapterCatalog[cls]&&chapterCatalog[cls][sub]||[]).forEach((name,i)=>{
-   const op=document.createElement("option");op.value="catalog-"+cls+"-"+sub+"-"+i;op.textContent="पाठ "+(i+1)+": "+name;sel.appendChild(op);
+   const available=chapterData[cls]&&chapterData[cls][sub]||[];
+   const normalized=name.trim();
+   const match=available.find(ch=>{
+    const title=ch.name.replace(/^.*?:\\s*/,"").trim();
+    return title===normalized||ch.name.trim()===normalized||title.endsWith(normalized);
+   });
+   const op=document.createElement("option");
+   op.value=match?match.id:"catalog-"+cls+"-"+sub+"-"+i;
+   op.textContent="पाठ "+(i+1)+": "+name+(match?"":" (सामान्य अभ्यास)");
+   sel.appendChild(op);
   });
   if([...sel.options].some(o=>o.value===old))sel.value=old;
  }
