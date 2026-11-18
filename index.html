@@ -1871,5 +1871,41 @@ function finish(){let pct=Math.round(score/qs.length*100);document.getElementByI
 })();
 </script>
 
+
+<script>
+/* Class 8 Sanskrit Manorama 2024-25: SCERT contents and पाठ-आधारित starter questions */
+(function(){
+const rows=[
+["मङ्गलकामना","भारतस्य सुताः कीदृशाः भवेयुः?",["शूर-वीराः","आलसिनः","क्रुद्धाः","निरक्षराः"],0,"पाठ में प्रार्थना है—सुताः शूर-वीराः भवाम।"],
+["छत्तीसगढ़स्य लोकगीतानि","छत्तीसगढ़स्य लोकगीतानि कासु भाषासु अवलम्बितानि?",["लोकभाषासु","केवलं आङ्ग्लभाषायाम्","केवलं संस्कृते","केवलं हिन्दीभाषायाम्"],0,"पाठ के अनुसार छत्तीसगढ़ के लोकगीत लोकभाषाओं पर आधारित हैं।"],
+["अनुशासनम्","‘अनुशासनम्’ अस्मान् किं शिक्षयति?",["नियमपालनम्","अव्यवस्थाम्","आलस्यम्","असत्यभाषणम्"],0,"अनुशासन का आशय नियमों का पालन और व्यवस्थित आचरण है।"],
+["सुभाषितानि","‘सुभाषितानि’ इत्यस्य अर्थः कः?",["सुन्दराणि हितवचनानि","क्रीडाः","पत्राणि","चित्राणि"],0,"सुभाषित अच्छे, हितकारी और नीति-युक्त वचन होते हैं।"],
+["डॉ. सर्वपल्ली राधाकृष्णन्","डॉ. राधाकृष्णन् कस्य क्षेत्रे प्रसिद्धः आसीत्?",["शिक्षा-दर्शनयोः","क्रीडायाम्","चित्रकलायाम्","कृषिकार्ये"],0,"डॉ. राधाकृष्णन् महान शिक्षक और दार्शनिक थे।"],
+["प्राच्यनगरी सिरपुरम्","सिरपुरम् कुत्र स्थितम् अस्ति?",["छत्तीसगढ़े","केरले","पञ्जाबे","गुजराते"],0,"सिरपुर छत्तीसगढ़ का प्रसिद्ध प्राचीन नगर और पुरातात्विक स्थल है।"],
+["गीताग्रैवेदकम्","भगवद्गीता महाभारतस्य कस्मिन् पर्वणि अस्ति?",["भीष्मपर्वणि","आदिपर्वणि","वनपर्वणि","विराटपर्वणि"],0,"भगवद्गीता महाभारत के भीष्मपर्व में आती है।"],
+["ग्रामजीवनम्","‘ग्रामजीवनम्’ इत्यस्य अर्थः कः?",["ग्रामस्य जीवनम्","नगरस्य जीवनम्","वनस्य जीवनम्","समुद्रस्य जीवनम्"],0,"ग्रामजीवनम् का अर्थ गाँव का जीवन है।"],
+["षड्ऋतुवर्णनम्","‘षड्’ इत्यस्य अर्थः कः?",["षट्","चत्वारि","अष्ट","दश"],0,"षड् का अर्थ छह है; पाठ में छह ऋतुओं का वर्णन है।"],
+["राष्ट्रीयः सञ्चयः","‘राष्ट्रीयः’ शब्दः केन सह सम्बद्धः?",["राष्ट्रेण","गृहेण","क्रीडया","वनेन"],0,"राष्ट्रीयः का अर्थ राष्ट्र से संबंधित है।"],
+["चतुरः वानरः","‘चतुरः’ इत्यस्य अर्थः कः?",["बुद्धिमान्","मूर्खः","आलसी","दुःखी"],0,"चतुरः का अर्थ बुद्धिमान या होशियार है।"],
+["महर्षिः दधीचिः","महर्षिः दधीचिः कस्य उदाहरणम् अस्ति?",["त्यागस्य","लोभस्य","आलस्यस्य","क्रोधस्य"],0,"महर्षि दधीचि त्याग के लिए प्रसिद्ध हैं।"],
+["रामगिरिः (रामगढम्)","रामगिरिः/रामगढ़ः कस्यां भूमौ प्रसिद्धः?",["छत्तीसगढ़े","पञ्जाबे","गुजराते","असमे"],0,"रामगढ़ छत्तीसगढ़ की ऐतिहासिक-सांस्कृतिक धरोहर है।"],
+["नीतिनवनीतम्","‘नीतिः’ किम् बोधयति?",["सदाचारम्","असत्यम्","आलस्यम्","हिंसाम्"],0,"नीति सदाचार और उचित आचरण का बोध कराती है।"],
+["प्रकृतिवन्दना","‘प्रकृतिः’ इत्यस्य अर्थः कः?",["प्राकृतिकं जगत्","नगरः","आपणः","विद्यालयः"],0,"प्रकृति में जल, वायु, वनस्पति, पर्वत आदि आते हैं।"],
+["मित्रं प्रति पत्रम्","‘मित्रं प्रति पत्रम्’ किम् अस्ति?",["मित्राय लिखितं पत्रम्","लोकगीतम्","श्लोकः","नाटकम्"],0,"शीर्षक का अर्थ है मित्र को लिखा गया पत्र।"],
+["अन्तरिक्षज्ञानम्","‘अन्तरिक्षम्’ इत्यस्य अर्थः कः?",["अंतरिक्षम्","समुद्रः","पर्वतः","वनम्"],0,"अन्तरिक्षम् का अर्थ अंतरिक्ष है।"],
+["महाकविः कालिदासः","कालिदासः कः आसीत्?",["महाकविः","वैज्ञानिकः","क्रीडकः","चित्रकारः"],0,"कालिदास संस्कृत के महान कवि और नाटककार थे।"],
+["सूक्तयः","‘सूक्तयः’ इत्यस्य अर्थः कः?",["उत्तमाः विचाराः/वचनानि","पत्राणि","क्रीडाः","नगराणि"],0,"सूक्तियाँ अच्छे और सारगर्भित विचारों को व्यक्त करती हैं।"]
+];
+const c=document.getElementById("gameClass"),s=document.getElementById("gameSubject"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");if(!c||!s||!ch||!btn)return;
+function fill(){if(c.value!=="8"||s.value!=="sanskrit")return;ch.innerHTML='<option value="all">सभी 19 पाठ</option>'+rows.map((r,i)=>'<option value="'+i+'">'+(i+1)+'. '+r[0]+'</option>').join("");document.getElementById("gameBookNames").textContent="कक्षा 8 • संस्कृत मनोरमा • SCERT 2024–25 • 19 पाठ";}
+c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
+btn.addEventListener("click",function(e){if(c.value!=="8"||s.value!=="sanskrit")return;e.preventDefault();e.stopImmediatePropagation();let ids=ch.value==="all"?rows.map((_,i)=>i):[+ch.value],qs=ids.map(i=>rows[i]);let p=0,score=0,locked=false,box=document.getElementById("learningGameCard");
+function draw(){locked=false;document.getElementById("gameProgress").textContent="प्रश्न "+(p+1)+" / "+qs.length;document.getElementById("gameScore").textContent="⭐ अंक: "+score;box.innerHTML="";let h=document.createElement("h3");h.textContent=qs[p][1];box.appendChild(h);let opts=document.createElement("div");opts.className="game-options";qs[p][2].forEach((v,n)=>{let b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.onclick=()=>answer(n);opts.appendChild(b)});box.appendChild(opts);let f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f)}
+function answer(n){if(locked)return;locked=true;let q=qs[p],f=document.getElementById("gameFeedback");if(n===q[3]){score++;f.textContent="✅ सही उत्तर! "+q[4];f.classList.add("is-correct")}else{f.textContent="❌ सही उत्तर: "+q[2][q[3]]+". "+q[4];f.classList.add("is-wrong")}document.getElementById("gameScore").textContent="⭐ अंक: "+score;let b=document.createElement("button");b.className="cta game-next";b.textContent=p===qs.length-1?"परिणाम देखें":"अगला प्रश्न";b.onclick=()=>{if(p<qs.length-1){p++;draw()}else finish()};box.appendChild(b)}
+function finish(){let pct=Math.round(score/qs.length*100);document.getElementById("gameProgress").textContent="अभ्यास पूरा";box.innerHTML="<h3>🎉 अभ्यास पूरा!</h3><p>"+score+" / "+qs.length+" अंक • "+pct+"%</p><p>प्रश्न SCERT 2024–25 संस्कृत मनोरमा के पाठ-शीर्षक और पाठ-विषय पर आधारित प्रारंभिक अभ्यास हैं।</p>";let b=document.createElement("button");b.className="cta";b.textContent="🔁 दोबारा खेलें";b.onclick=()=>btn.click();box.appendChild(b)}draw();
+},true);
+})();
+</script>
+
 </body>
 </html>
