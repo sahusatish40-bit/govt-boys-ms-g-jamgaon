@@ -945,5 +945,44 @@ btn.addEventListener("click",function(e){if(c.value!=="8"||s.value!=="english"||
 })();
 </script>
 
+
+<script>
+/* Class 6 Poorvi unit-wise starter quiz */
+(function(){
+ const units=[
+ ["Fables and Folk Tales",[
+ ["A fable usually teaches a—",["moral lesson","science formula","map skill","recipe"],0,"Fables commonly communicate a moral or lesson."],
+ ["In ‘The Raven and the Fox’, the fox uses ____ to get the food.",["flattery","a map","a machine","a songbook"],0,"The fox flatters the raven to make it open its beak."],
+ ["‘Rama to the Rescue’ is mainly a—",["story","weather report","dictionary entry","notice"],0,"It is a narrative story from the unit."]]],
+ ["Friendship",[
+ ["A good friend should be—",["helpful and kind","selfish","dishonest","unkind"],0,"Friendship is built on care, trust and support."],
+ ["The word ‘prayer’ is closest in meaning to—",["a request to God","a game","a journey","a meal"],0,"A prayer is a sincere request or expression of faith."],
+ ["Which action strengthens friendship?",["sharing and helping","teasing","breaking trust","ignoring"],0,"Sharing and helping build trust and friendship."]]],
+ ["Nurturing Nature",[
+ ["‘Neem Baba’ is connected with—",["a tree","a planet","a machine","a river boat"],0,"The text focuses on the neem tree and its value."],
+ ["Which action helps nature?",["planting trees","wasting water","littering","cutting young trees"],0,"Planting and protecting trees support the environment."],
+ ["‘Spices That Heal Us’ mainly discusses spices and their—",["uses and benefits","prices only","colours only","shapes only"],0,"The text introduces spices and traditional uses/benefits."]]],
+ ["Sports and Wellness",[
+ ["Regular physical activity helps us stay—",["healthy","careless","inactive","unwell"],0,"Physical activity supports health and well-being."],
+ ["A fair player should—",["follow rules","cheat","hurt others","ignore the referee"],0,"Fair play means respecting rules and others."],
+ ["Yoga can support—",["physical and mental well-being","only loud speaking","carelessness","waste"],0,"Yoga supports balance, flexibility and calmness."]]],
+ ["Culture and Tradition",[
+ ["Culture includes a community’s—",["customs and traditions","only buildings","only numbers","only machines"],0,"Culture includes customs, arts, food and traditions."],
+ ["Traditional art forms should be—",["respected and preserved","forgotten","damaged","hidden"],0,"Preserving traditional art protects cultural heritage."],
+ ["The National War Memorial honours—",["soldiers who served the nation","famous shops","sports teams only","mountains"],0,"The memorial honours the service and sacrifice of soldiers."]]]
+ ];
+ const cls=document.getElementById("gameClass"),sub=document.getElementById("gameSubject"),lev=document.getElementById("gameLevel"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");
+ if(!cls||!sub||!lev||!ch||!btn)return;
+ function fill(){if(cls.value!=="6"||sub.value!=="english")return;ch.innerHTML='<option value="all">सभी 5 Units</option>'+units.map((u,i)=>'<option value="'+i+'">'+(i+1)+'. '+u[0]+'</option>').join("");document.getElementById("gameBookNames").textContent="कक्षा 6वीं • NCERT Poorvi • 5 Units • unit-wise starter quiz";}
+ cls.addEventListener("change",fill);sub.addEventListener("change",fill);fill();
+ btn.addEventListener("click",function(e){if(cls.value!=="6"||sub.value!=="english")return;e.preventDefault();e.stopImmediatePropagation();const level=Math.max(0,["easy","medium","hard"].indexOf(lev.value)),ids=ch.value==="all"?units.map((_,i)=>i):[Number(ch.value)],qs=ids.map(i=>units[i][1][level]);let p=0,score=0,locked=false;const box=document.getElementById("learningGameCard");
+ function draw(){locked=false;document.getElementById("gameProgress").textContent="प्रश्न "+(p+1)+" / "+qs.length;document.getElementById("gameScore").textContent="⭐ अंक: "+score;box.innerHTML="";const h=document.createElement("h3");h.textContent=qs[p][0];box.appendChild(h);const opts=document.createElement("div");opts.className="game-options";qs[p][1].forEach((v,n)=>{const b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.onclick=()=>answer(n);opts.appendChild(b)});box.appendChild(opts);const f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f)}
+ function answer(n){if(locked)return;locked=true;const q=qs[p],f=document.getElementById("gameFeedback");if(n===q[2]){score++;f.textContent="✅ सही उत्तर! "+q[3];f.classList.add("is-correct")}else{f.textContent="❌ सही उत्तर: "+q[1][q[2]]+". "+q[3];f.classList.add("is-wrong")}document.getElementById("gameScore").textContent="⭐ अंक: "+score;const b=document.createElement("button");b.className="cta game-next";b.textContent=p===qs.length-1?"परिणाम देखें":"अगला प्रश्न";b.onclick=()=>{if(p<qs.length-1){p++;draw()}else finish()};box.appendChild(b)}
+ function finish(){const pct=Math.round(score/qs.length*100);document.getElementById("gameProgress").textContent="खेल पूरा हुआ";box.innerHTML="<h3>🎉 अभ्यास पूरा!</h3><p>"+score+" / "+qs.length+" अंक • "+pct+"%</p><p>कहानी और पाठ की विस्तृत समझ के लिए पुस्तक भी पढ़ें।</p>";const b=document.createElement("button");b.className="cta";b.textContent="🔁 फिर से खेलें";b.onclick=()=>btn.click();box.appendChild(b)}
+ draw();
+ },true);
+})();
+</script>
+
 </body>
 </html>
