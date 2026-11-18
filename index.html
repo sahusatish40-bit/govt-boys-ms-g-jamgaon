@@ -1050,5 +1050,38 @@ btn.addEventListener("click",function(e){if(c.value!=="8"||s.value!=="english"||
 })();
 </script>
 
+
+<script>
+/* Class 6 Khel Yatra: activity and sports literacy quiz */
+(function(){
+ const units=[
+ ["स्वास्थ्य और शारीरिक गतिविधि",[
+ ["व्यायाम से पहले वार्म-अप क्यों किया जाता है?",["शरीर को गतिविधि के लिए तैयार करने","नींद लाने","भूख रोकने","थकाने"],0,"वार्म-अप शरीर को गतिविधि के लिए तैयार करता है।"],
+ ["नियमित शारीरिक गतिविधि किसमें सहायक है?",["स्वास्थ्य और फिटनेस","आलस्य","कमजोरी","निष्क्रियता"],0,"नियमित गतिविधि स्वास्थ्य और सहनशक्ति बढ़ाती है।"],
+ ["व्यायाम के बाद कूल-डाउन का उद्देश्य है—",["शरीर को धीरे-धीरे सामान्य करना","तुरंत तेज दौड़ना","पानी रोकना","आराम कभी न करना"],0,"कूल-डाउन शरीर को धीरे-धीरे सामान्य अवस्था में लाता है।"]]],
+ ["खेल भावना और नियम",[
+ ["खेल भावना का सही अर्थ है—",["निष्पक्षता और सम्मान","हर हाल में जीत","नियम तोड़ना","विरोधी का अपमान"],0,"खेल भावना में निष्पक्षता, सम्मान और सहयोग शामिल हैं।"],
+ ["खेल के नियमों का पालन क्यों जरूरी है?",["सुरक्षित और निष्पक्ष खेल के लिए","खेल रोकने के लिए","झगड़ा बढ़ाने के लिए","समय बर्बाद करने के लिए"],0,"नियम सभी खिलाड़ियों को समान अवसर और सुरक्षा देते हैं।"],
+ ["हारने पर खिलाड़ी को क्या करना चाहिए?",["सीख लेकर फिर अभ्यास करना","दूसरों को दोष देना","नियम तोड़ना","खेल छोड़कर झगड़ना"],0,"हार से सीखना और अभ्यास जारी रखना अच्छी खेल भावना है।"]]],
+ ["योग और संतुलन",[
+ ["योगाभ्यास के समय श्वास कैसी रखनी चाहिए?",["सामान्य और नियंत्रित","हमेशा रोककर","बहुत तेज और अनियमित","बिल्कुल नहीं"],0,"योग में सहज और नियंत्रित श्वास पर ध्यान दिया जाता है।"],
+ ["ताड़ासन मुख्यतः किससे जुड़ा है?",["शरीर की मुद्रा और संतुलन","दौड़","तैराकी","फेंकना"],0,"ताड़ासन खड़े होकर की जाने वाली मुद्रा है, जो शरीर की स्थिति पर ध्यान दिलाती है।"],
+ ["योग करते समय दर्द होने पर क्या करना चाहिए?",["रुककर शिक्षक/प्रशिक्षक को बताना","जोर लगाते रहना","दर्द छिपाना","तेजी से दोहराना"],0,"दर्द होने पर अभ्यास रोककर मार्गदर्शन लेना चाहिए।"]]],
+ ["टीम खेल और सहयोग",[
+ ["टीम खेल में सफलता के लिए क्या जरूरी है?",["सहयोग और संवाद","अकेले निर्णय","नियमों की अनदेखी","साथी को रोकना"],0,"टीम खेल में संवाद और सहयोग महत्वपूर्ण हैं।"],
+ ["फुटबॉल में एक टीम के मैदान पर कितने खिलाड़ी होते हैं?",["9","10","11","12"],2,"सामान्य फुटबॉल में प्रत्येक टीम के 11 खिलाड़ी मैदान पर होते हैं।"],
+ ["कबड्डी में एक टीम के कितने खिलाड़ी मैदान पर होते हैं?",["5","6","7","8"],2,"मानक कबड्डी में एक टीम के सात खिलाड़ी मैदान पर खेलते हैं।"]]]
+ ];
+ const c=document.getElementById("gameClass"),s=document.getElementById("gameSubject"),l=document.getElementById("gameLevel"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");if(!c||!s||!l||!ch||!btn)return;
+ function fill(){if(c.value!=="6"||s.value!=="sports")return;ch.innerHTML='<option value="all">सभी अभ्यास इकाइयाँ</option>'+units.map((u,i)=>'<option value="'+i+'">'+(i+1)+'. '+u[0]+'</option>').join("");document.getElementById("gameBookNames").textContent="कक्षा 6वीं • खेल यात्रा • स्वास्थ्य, योग, खेल भावना और टीम खेल अभ्यास";}
+ c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
+ btn.addEventListener("click",function(e){if(c.value!=="6"||s.value!=="sports")return;e.preventDefault();e.stopImmediatePropagation();const level=Math.max(0,["easy","medium","hard"].indexOf(l.value)),ids=ch.value==="all"?units.map((_,i)=>i):[Number(ch.value)],qs=ids.map(i=>units[i][1][level]);let p=0,score=0,locked=false;const box=document.getElementById("learningGameCard");
+ function draw(){locked=false;document.getElementById("gameProgress").textContent="प्रश्न "+(p+1)+" / "+qs.length;document.getElementById("gameScore").textContent="⭐ अंक: "+score;box.innerHTML="";const h=document.createElement("h3");h.textContent=qs[p][0];box.appendChild(h);const opts=document.createElement("div");opts.className="game-options";qs[p][1].forEach((v,n)=>{const b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.onclick=()=>answer(n);opts.appendChild(b)});box.appendChild(opts);const f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f)}
+ function answer(n){if(locked)return;locked=true;const q=qs[p],f=document.getElementById("gameFeedback");if(n===q[2]){score++;f.textContent="✅ सही उत्तर! "+q[3];f.classList.add("is-correct")}else{f.textContent="❌ सही उत्तर: "+q[1][q[2]]+". "+q[3];f.classList.add("is-wrong")}document.getElementById("gameScore").textContent="⭐ अंक: "+score;const b=document.createElement("button");b.className="cta game-next";b.textContent=p===qs.length-1?"परिणाम देखें":"अगला प्रश्न";b.onclick=()=>{if(p<qs.length-1){p++;draw()}else finish()};box.appendChild(b)}
+ function finish(){const pct=Math.round(score/qs.length*100);document.getElementById("gameProgress").textContent="खेल पूरा हुआ";box.innerHTML="<h3>🎉 अभ्यास पूरा!</h3><p>"+score+" / "+qs.length+" अंक • "+pct+"%</p><p>अभ्यास को शिक्षक के निर्देशन में सुरक्षित रूप से करें।</p>";const b=document.createElement("button");b.className="cta";b.textContent="🔁 फिर से खेलें";b.onclick=()=>btn.click();box.appendChild(b)}draw();
+ },true);
+})();
+</script>
+
 </body>
 </html>
