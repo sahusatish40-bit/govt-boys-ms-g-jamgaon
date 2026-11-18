@@ -1968,5 +1968,32 @@ function finish(){let pct=Math.round(score/qs.length*100);document.getElementByI
 })();
 </script>
 
+
+<script>
+/* Correct Class 7 Malhar chapter titles from current NCERT contents */
+(function(){
+const rows=[
+["माँ, कह एक कहानी","कहानी में संवाद किसकी सहायता करते हैं?",["पात्रों के विचार समझने में","गणना करने में","दिशा जानने में","तापमान मापने में"],0,"संवाद से पात्रों के विचार और भाव समझ में आते हैं।"],
+["तीन बुद्धिमान","‘बुद्धिमान’ का अर्थ क्या है?",["समझदार","आलसी","क्रोधित","भयभीत"],0,"बुद्धिमान का अर्थ समझदार होता है।"],
+["फूल और काँटा","कविता में फूल और काँटा किसके प्रतीक हो सकते हैं?",["जीवन के सुख और कठिनाइयों के","केवल ऋतुओं के","केवल नदियों के","केवल संख्याओं के"],0,"फूल और काँटा जीवन के सुख-दुःख या अच्छाई-कठिनाई का संकेत दे सकते हैं।"],
+["पानी रे पानी","जल संरक्षण क्यों आवश्यक है?",["जल जीवन के लिए आवश्यक और सीमित संसाधन है","जल का कोई उपयोग नहीं","जल कभी समाप्त नहीं होता","जल केवल उद्योगों के लिए है"],0,"जल सभी जीवों के लिए आवश्यक है, इसलिए इसका संरक्षण जरूरी है।"],
+["नहीं होना बीमार","स्वस्थ रहने के लिए कौन-सी आदत उपयोगी है?",["स्वच्छता और संतुलित भोजन","हाथ न धोना","केवल मिठाई खाना","व्यायाम से बचना"],0,"स्वच्छता, संतुलित भोजन और सक्रियता स्वास्थ्य में मदद करते हैं।"],
+["गिरिधर कविराय की कुंडलिया","कुंडलिया किस प्रकार की रचना है?",["काव्य/छंद","पत्र","नाटक","समाचार"],0,"कुंडलिया एक छंद/काव्य-रूप है।"],
+["वर्षा-बहार","वर्षा ऋतु का संबंध किससे है?",["बारिश और हरियाली","हिमपात ही","रेगिस्तान की गर्मी","पतझड़ ही"],0,"वर्षा ऋतु में वर्षा और हरियाली का वातावरण बनता है।"],
+["बिरजू महाराज से साक्षात्कार","साक्षात्कार में मुख्यतः क्या होता है?",["प्रश्न और उत्तर","केवल कविता","केवल गणना","केवल मानचित्र"],0,"साक्षात्कार में व्यक्ति से प्रश्न पूछकर उसके विचार जाने जाते हैं।"],
+["चिड़िया","चिड़िया किस वर्ग का जीव है?",["पक्षी","स्तनधारी","मछली","कीट"],0,"चिड़िया एक पक्षी है।"],
+["मीरा के पद","मीरा के पद मुख्यतः किस भाव से जुड़े हैं?",["भक्ति","व्यापार","युद्ध","विज्ञान"],0,"मीरा के पद कृष्ण भक्ति से जुड़े हैं।"]
+];
+const c=document.getElementById("gameClass"),s=document.getElementById("gameSubject"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");if(!c||!s||!ch||!btn)return;
+function fill(){if(c.value!=="7"||s.value!=="hindi")return;ch.innerHTML='<option value="all">सभी 10 पाठ</option>'+rows.map((r,i)=>'<option value="'+i+'">'+(i+1)+'. '+r[0]+'</option>').join("");document.getElementById("gameBookNames").textContent="कक्षा 7 • NCERT मल्हार • 10 पाठ (सही विषय-सूची)";}
+c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
+btn.addEventListener("click",function(e){if(c.value!=="7"||s.value!=="hindi")return;e.preventDefault();e.stopImmediatePropagation();let ids=ch.value==="all"?rows.map((_,i)=>i):[+ch.value],qs=ids.map(i=>rows[i]);let p=0,score=0,locked=false,box=document.getElementById("learningGameCard");
+function draw(){locked=false;document.getElementById("gameProgress").textContent="प्रश्न "+(p+1)+" / "+qs.length;document.getElementById("gameScore").textContent="⭐ अंक: "+score;box.innerHTML="";let h=document.createElement("h3");h.textContent=qs[p][1];box.appendChild(h);let opts=document.createElement("div");opts.className="game-options";qs[p][2].forEach((v,n)=>{let b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.onclick=()=>answer(n);opts.appendChild(b)});box.appendChild(opts);let f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f)}
+function answer(n){if(locked)return;locked=true;let q=qs[p],f=document.getElementById("gameFeedback");if(n===q[3]){score++;f.textContent="✅ सही उत्तर! "+q[4];f.classList.add("is-correct")}else{f.textContent="❌ सही उत्तर: "+q[2][q[3]]+". "+q[4];f.classList.add("is-wrong")}document.getElementById("gameScore").textContent="⭐ अंक: "+score;let b=document.createElement("button");b.className="cta game-next";b.textContent=p===qs.length-1?"परिणाम देखें":"अगला प्रश्न";b.onclick=()=>{if(p<qs.length-1){p++;draw()}else finish()};box.appendChild(b)}
+function finish(){let pct=Math.round(score/qs.length*100);document.getElementById("gameProgress").textContent="अभ्यास पूरा";box.innerHTML="<h3>🎉 अभ्यास पूरा!</h3><p>"+score+" / "+qs.length+" अंक • "+pct+"%</p><p>पाठों के नाम NCERT मल्हार की वर्तमान विषय-सूची के अनुसार हैं; ये प्रारंभिक पाठ-परिचय प्रश्न हैं।</p>";let b=document.createElement("button");b.className="cta";b.textContent="🔁 दोबारा खेलें";b.onclick=()=>btn.click();box.appendChild(b)}draw();
+},true);
+})();
+</script>
+
 </body>
 </html>
