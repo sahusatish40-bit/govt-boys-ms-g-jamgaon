@@ -692,5 +692,35 @@ btn.addEventListener("click",function(e){if(cls.value==="8"&&sub.value==="scienc
  btn.addEventListener("click",function(e){if(c.value==="8"&&s.value==="science"&&ch.value!=="general"){e.preventDefault();e.stopImmediatePropagation();launch()}},true);
 })();
 </script>
+<script>
+(function(){
+const data=[
+["वर्ग एवं घन","5 का वर्ग कितना है?",["10","15","25","30"],2,"5×5=25."],
+["घातांक","2³ का मान?",["6","8","9","12"],1,"2×2×2=8."],
+["समान्तर रेखाएँ","समान्तर रेखाएँ एक-दूसरे से कितने बिंदुओं पर मिलती हैं?",["एक","दो","कभी नहीं","अनंत"],2,"एक ही समतल में समान्तर रेखाएँ नहीं मिलतीं।"],
+["बीजीय व्यंजकों के गुणा एवं भाग","2x×3 का मान?",["5x","6x","6","x"],1,"2x×3=6x."],
+["वृत्त एवं उसके अवयव","वृत्त के केंद्र से परिधि तक की दूरी?",["व्यास","त्रिज्या","जीवा","चाप"],1,"यह त्रिज्या कहलाती है।"],
+["सांख्यिकी","2, 4, 6 का औसत?",["3","4","5","6"],1,"(2+4+6)÷3=4."],
+["प्रत्यक्ष एवं व्युत्क्रम समानुपात","2 पेन ₹10 के हैं। 4 पेन कितने के होंगे?",["₹15","₹20","₹25","₹40"],1,"प्रत्यक्ष समानुपात में मात्रा दोगुनी तो कीमत दोगुनी।"],
+["बीजीय व्यंजकों के गुणनखंड एवं गुणनखंडन","6x+12 का गुणनखंडन?",["6(x+2)","2(6x+12)","x(6+12)","6(x+12)"],0,"6x+12=6(x+2)."],
+["सर्वसमिकाएँ","(a+b)² का विस्तार?",["a²+b²","a²+2ab+b²","a²−2ab+b²","2a+2b"],1,"(a+b)²=a²+2ab+b²."],
+["बहुभुज","षट्भुज की भुजाएँ कितनी होती हैं?",["5","6","7","8"],1,"षट्भुज की छह भुजाएँ होती हैं।"],
+["चतुर्भुज की रचना","चतुर्भुज के अंतः कोणों का योग?",["180°","270°","360°","540°"],2,"चतुर्भुज के चारों कोणों का योग 360° है।"],
+["समीकरण","2x+5=17, x का मान?",["5","6","7","11"],1,"2x=12, इसलिए x=6."],
+["प्रतिशत का अनुप्रयोग","₹200 का 15% कितना?",["₹15","₹20","₹30","₹45"],2,"200×15÷100=30."],
+["क्षेत्रमिति-I","8 cm×5 cm आयत का क्षेत्रफल?",["13 cm²","26 cm²","40 cm²","80 cm²"],2,"क्षेत्रफल=लंबाई×चौड़ाई=40 cm²."],
+["क्षेत्रमिति-II","2 cm भुजा वाले घन का आयतन?",["6 cm³","8 cm³","12 cm³","16 cm³"],1,"आयतन=2³=8 cm³."],
+["आकृतियाँ (द्विविमीय एवं त्रिविमीय)","घन में कितने फलक होते हैं?",["4","6","8","12"],1,"घन के छह वर्गाकार फलक होते हैं।"],
+["संख्याओं के साथ खेलना","सबसे छोटी अभाज्य संख्या?",["0","1","2","3"],2,"2 सबसे छोटी अभाज्य संख्या है।"],
+["परिमेय संख्याओं पर संक्रियाएँ","1/2+1/2=?",["1","1/2","2","0"],0,"1/2+1/2=1."],
+["क्षेत्रमिति-III","5 cm भुजा वाले घन का कुल पृष्ठीय क्षेत्रफल?",["25 cm²","100 cm²","125 cm²","150 cm²"],3,"6×5²=150 cm²."]
+];
+const $=id=>document.getElementById(id),c=$("gameClass"),s=$("gameSubject"),ch=$("gameChapter"),btn=$("startLearningGame"),box=$("learningGameCard");
+if(!c||!s||!ch||!btn||!box)return;
+function fill(){ch.innerHTML='<option value="general">सामान्य अभ्यास</option>';if(c.value==="8"&&s.value==="maths")data.forEach((d,i)=>{const o=document.createElement("option");o.value=i;o.textContent="अध्याय "+(i+1)+" — "+d[0];ch.appendChild(o)});}
+c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
+btn.addEventListener("click",function(e){if(c.value!=="8"||s.value!=="maths"||ch.value==="general")return;e.preventDefault();e.stopImmediatePropagation();const q=data[Number(ch.value)];box.innerHTML="";$("gameProgress").textContent="कक्षा 8 • गणित • अध्याय "+(Number(ch.value)+1);$("gameScore").textContent="⭐ अंक: 0 / 1";const h=document.createElement("h3");h.className="game-question";h.textContent=q[1];box.appendChild(h);const opts=document.createElement("div");opts.className="game-options";q[2].forEach((v,i)=>{const b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+i)+". "+v;b.onclick=()=>{opts.querySelectorAll("button").forEach(x=>x.disabled=true);const ok=i===q[3];$("gameScore").textContent="⭐ अंक: "+(ok?1:0)+" / 1";const f=document.createElement("p");f.className="game-feedback "+(ok?"is-correct":"is-wrong");f.textContent=(ok?"✅ सही उत्तर! ":"❌ सही उत्तर: "+q[2][q[3]]+". ")+q[4];box.appendChild(f);};opts.appendChild(b)});box.appendChild(opts);},true);
+})();
+</script>
 </body>
 </html>
