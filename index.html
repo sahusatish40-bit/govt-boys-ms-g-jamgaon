@@ -1907,5 +1907,37 @@ function finish(){let pct=Math.round(score/qs.length*100);document.getElementByI
 })();
 </script>
 
+
+<script>
+/* Class 7 Poorvi II: NCERT 2026-27 contents-based 15-chapter practice */
+(function(){
+const rows=[
+["The Day the River Spoke","What does a river provide to living beings?",["Water and support for life","Only noise","Plastic","Electricity only"],0,"Rivers support life by providing water and habitats."],
+["Try Again","What is the message of ‘Try Again’?",["Keep trying after failure","Give up at once","Avoid learning","Blame others"],0,"The poem encourages persistence and repeated effort."],
+["Three Days to See","Helen Keller is remembered for overcoming which challenges?",["Being deaf and blind","Losing her home","Being unable to walk","Losing her memory"],0,"Helen Keller overcame deafness and blindness with support and determination."],
+["Animals, Birds, and Dr. Dolittle","Dr. Dolittle is known for his interest in—",["Communicating with animals","Building trains","Painting landscapes","Studying stars"],0,"The story presents Dr. Dolittle's special interest in animals."],
+["A Funny Man","Humour in a story is mainly intended to—",["Make readers laugh or smile","Create a timetable","Give directions","List facts only"],0,"Humour creates amusement through amusing situations or language."],
+["Say the Right Thing","Good communication requires—",["Choosing suitable words for the situation","Speaking without listening","Shouting always","Ignoring the listener"],0,"Effective communication depends on suitable words and listening."],
+["My Brother’s Great Invention","An invention is—",["A new device or method","An old rumour","A natural mountain","A type of poem"],0,"An invention is a new device, process or method."],
+["Paper Boats","A paper boat is made by—",["Folding paper","Melting metal","Carving stone","Weaving cloth"],0,"A paper boat is created by folding paper."],
+["North, South, East, West","Which direction is opposite to east?",["West","North","South","North-east"],0,"West is opposite to east."],
+["The Tunnel","A tunnel is generally a passage—",["Through or under a barrier such as a hill","Across the sky","On a tree branch","Inside a cloud"],0,"A tunnel is an underground or enclosed passage through an obstacle."],
+["Travel","Before a journey, it is useful to—",["Plan route and essentials","Forget all arrangements","Ignore safety","Carry no information"],0,"Planning helps make travel safe and convenient."],
+["Conquering the Summit","To reach a summit, climbers need—",["Preparation and perseverance","Carelessness","No equipment","Giving up quickly"],0,"Climbing requires preparation, safety and perseverance."],
+["A Homage to Our Brave Soldiers","The word ‘homage’ means—",["An expression of respect","A complaint","A joke","A direction"],0,"Homage is respect or honour shown to someone."],
+["My Dear Soldiers","The poem/letter expresses gratitude towards—",["Soldiers","Shopkeepers","Tourists","Actors"],0,"The text honours soldiers and their service."],
+["Rani Abbakka","Rani Abbakka is remembered for resisting—",["Portuguese colonial forces","The Mughal court","The British in 1857","The French in Bengal"],0,"Rani Abbakka of Ullal is remembered for resisting Portuguese expansion."]
+];
+const c=document.getElementById("gameClass"),s=document.getElementById("gameSubject"),l=document.getElementById("gameLevel"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");if(!c||!s||!l||!ch||!btn)return;
+function fill(){if(c.value!=="7"||s.value!=="english")return;ch.innerHTML='<option value="all">सभी 15 पाठ</option>'+rows.map((r,i)=>'<option value="'+i+'">'+(i+1)+'. '+r[0]+'</option>').join("");document.getElementById("gameBookNames").textContent="कक्षा 7 • Poorvi II • NCERT 2026–27 • 15 पाठ";}
+c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
+btn.addEventListener("click",function(e){if(c.value!=="7"||s.value!=="english")return;e.preventDefault();e.stopImmediatePropagation();let ids=ch.value==="all"?rows.map((_,i)=>i):[+ch.value],lv=Math.max(0,["easy","medium","hard"].indexOf(l.value)),qs=ids.map(i=>{let r=rows[i],q=r.slice(1);if(lv===1)return [q[0],q[1],q[2],q[3]];if(lv===2)return [q[0],q[1],q[2],q[3]];return q;});let p=0,score=0,locked=false,box=document.getElementById("learningGameCard");
+function draw(){locked=false;document.getElementById("gameProgress").textContent="प्रश्न "+(p+1)+" / "+qs.length;document.getElementById("gameScore").textContent="⭐ अंक: "+score;box.innerHTML="";let h=document.createElement("h3");h.textContent=qs[p][0];box.appendChild(h);let opts=document.createElement("div");opts.className="game-options";qs[p][1].forEach((v,n)=>{let b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.onclick=()=>answer(n);opts.appendChild(b)});box.appendChild(opts);let f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f)}
+function answer(n){if(locked)return;locked=true;let q=qs[p],f=document.getElementById("gameFeedback");if(n===q[2]){score++;f.textContent="✅ Correct! "+q[3];f.classList.add("is-correct")}else{f.textContent="❌ Correct answer: "+q[1][q[2]]+". "+q[3];f.classList.add("is-wrong")}document.getElementById("gameScore").textContent="⭐ Score: "+score;let b=document.createElement("button");b.className="cta game-next";b.textContent=p===qs.length-1?"See Result":"Next Question";b.onclick=()=>{if(p<qs.length-1){p++;draw()}else finish()};box.appendChild(b)}
+function finish(){let pct=Math.round(score/qs.length*100);document.getElementById("gameProgress").textContent="Practice completed";box.innerHTML="<h3>🎉 Practice completed!</h3><p>"+score+" / "+qs.length+" • "+pct+"%</p><p>Chapter titles are aligned to the current Poorvi contents. These are introductory questions, not a complete textbook question bank.</p>";let b=document.createElement("button");b.className="cta";b.textContent="🔁 Play Again";b.onclick=()=>btn.click();box.appendChild(b)}draw();
+},true);
+})();
+</script>
+
 </body>
 </html>
