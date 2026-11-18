@@ -1083,5 +1083,73 @@ btn.addEventListener("click",function(e){if(c.value!=="8"||s.value!=="english"||
 })();
 </script>
 
+
+<script>
+/* Class 6 Kaushal Bodh: practical skills quiz */
+(function(){
+ const units=[
+ ["विद्यालय किचन गार्डन",[
+ ["बीज बोने के लिए कैसी मिट्टी उपयुक्त होती है?",["भुरभुरी और उपजाऊ","प्लास्टिक से ढकी","पत्थर जैसी कठोर","पूरी तरह सूखी"],0,"भुरभुरी और उपजाऊ मिट्टी में जड़ों को हवा, पानी और पोषक तत्व मिलते हैं।"],
+ ["कम्पोस्ट बनाने में किसका उपयोग किया जा सकता है?",["सब्जियों के छिलके","प्लास्टिक रैपर","काँच","धातु के टुकड़े"],0,"जैविक रसोई कचरे से कम्पोस्ट बनाई जा सकती है।"],
+ ["पौधों को पानी देने का अच्छा तरीका है—",["जड़ों के पास उचित मात्रा में पानी देना","पत्तियों को लगातार डुबोना","हर समय पानी भर देना","पानी बिल्कुल न देना"],0,"पौधों को जरूरत के अनुसार पानी देना चाहिए; जलभराव से जड़ें खराब हो सकती हैं।"]]],
+ ["जैव विविधता रजिस्टर",[
+ ["जैव विविधता का अर्थ है—",["जीव-जंतुओं और पौधों की विविधता","केवल एक पेड़","केवल मौसम","केवल मिट्टी"],0,"जैव विविधता में जीवों की विभिन्न प्रजातियाँ शामिल हैं।"],
+ ["स्थानीय पौधे का रिकॉर्ड बनाते समय क्या लिखें?",["नाम, स्थान और देखी गई विशेषताएँ","केवल अनुमान","गलत नाम","कुछ भी नहीं"],0,"अवलोकन आधारित रिकॉर्ड में नाम, स्थान और पहचान की विशेषताएँ उपयोगी हैं।"],
+ ["स्थानीय प्रजातियों की रक्षा क्यों जरूरी है?",["पर्यावरणीय संतुलन के लिए","आवास नष्ट करने के लिए","प्रदूषण बढ़ाने के लिए","जीव हटाने के लिए"],0,"स्थानीय प्रजातियाँ पारिस्थितिकी तंत्र को संतुलित रखती हैं।"]]],
+ ["निर्माता कौशल",[
+ ["किसी वस्तु का मॉडल बनाने से पहले क्या करना चाहिए?",["जरूरत और समस्या समझना","बिना योजना काटना","सामग्री फेंकना","काम रोकना"],0,"डिजाइन की शुरुआत समस्या और जरूरत समझने से होती है।"],
+ ["औजारों का उपयोग करते समय क्या जरूरी है?",["सुरक्षा निर्देशों का पालन","औजार उछालना","दौड़ते हुए काटना","बिना देखे काम करना"],0,"सुरक्षा नियम और शिक्षक का मार्गदर्शन जरूरी है।"],
+ ["प्रोटोटाइप किसे कहते हैं?",["प्रारंभिक नमूना","अंतिम प्रमाणपत्र","कच्चा माल","रंग का नाम"],0,"प्रोटोटाइप विचार को जाँचने के लिए बनाया गया शुरुआती मॉडल है।"]]],
+ ["एनीमेशन और गेम",[
+ ["एनीमेशन में गति का भ्रम कैसे बनता है?",["क्रमिक चित्र तेजी से दिखाने से","एक स्थिर चित्र से","केवल आवाज से","कागज के रंग से"],0,"क्रमिक चित्रों को तेजी से दिखाने पर गति का भ्रम बनता है।"],
+ ["गेम के नियम क्यों जरूरी हैं?",["खेल का तरीका स्पष्ट करने","अंक छिपाने","खेल रोकने","चित्र मिटाने"],0,"नियम खिलाड़ी को लक्ष्य और खेलने की प्रक्रिया बताते हैं।"],
+ ["गेम का परीक्षण क्यों किया जाता है?",["त्रुटियाँ पहचानने और सुधारने","समय खराब करने","खिलाड़ी रोकने","नियम हटाने"],0,"परीक्षण से गेम की गलतियाँ और सुधार के अवसर मिलते हैं।"]]],
+ ["विद्यालय संग्रहालय",[
+ ["विद्यालय संग्रहालय का उद्देश्य है—",["वस्तुओं और इतिहास को सुरक्षित रखना","वस्तुएँ नष्ट करना","कचरा फैलाना","जानकारी छिपाना"],0,"संग्रहालय वस्तुओं और उनसे जुड़ी कहानियों को संरक्षित करता है।"],
+ ["संग्रहालय की वस्तु के साथ क्या जानकारी रखें?",["नाम, स्रोत और विवरण","केवल कीमत","गलत तारीख","कुछ नहीं"],0,"लेबल और स्रोत की जानकारी वस्तु को समझने में मदद करती है।"],
+ ["पुरानी वस्तु संभालते समय क्या करें?",["सावधानी से रखें","जोर से फेंकें","पानी में डुबोएँ","बिना अनुमति ले जाएँ"],0,"वस्तुओं को क्षति से बचाने के लिए सावधानी जरूरी है।"]]],
+ ["बिना आग के खाना बनाना",[
+ ["भोजन बनाने से पहले सबसे जरूरी स्वच्छता कार्य है—",["हाथ धोना","गंदे बर्तन लेना","खुला कचरा रखना","बासी सामग्री लेना"],0,"स्वच्छ हाथ और साफ बर्तन भोजन को सुरक्षित रखते हैं।"],
+ ["फल काटने के लिए क्या उपयोग करें?",["साफ कटिंग बोर्ड और सुरक्षित चाकू","जंग लगा औजार","फर्श","कागज"],0,"साफ उपकरण और सुरक्षित तरीके से काटना चाहिए।"],
+ ["तैयार भोजन को कैसे रखें?",["ढककर और उचित ताप पर","खुला छोड़कर","गंदे हाथों से","धूल में"],0,"भोजन को ढककर उचित तापमान पर रखना चाहिए।"]]]
+ ];
+ const c=document.getElementById("gameClass"),s=document.getElementById("gameSubject"),l=document.getElementById("gameLevel"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");if(!c||!s||!l||!ch||!btn)return;
+ function fill(){if(c.value!=="6"||s.value!=="skills")return;ch.innerHTML='<option value="all">सभी 6 इकाइयाँ</option>'+units.map((u,i)=>'<option value="'+i+'">'+(i+1)+'. '+u[0]+'</option>').join("");document.getElementById("gameBookNames").textContent="कक्षा 6वीं • कौशल बोध • 6 व्यावहारिक इकाइयाँ";}
+ c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
+ btn.addEventListener("click",function(e){if(c.value!=="6"||s.value!=="skills")return;e.preventDefault();e.stopImmediatePropagation();const level=Math.max(0,["easy","medium","hard"].indexOf(l.value)),ids=ch.value==="all"?units.map((_,i)=>i):[Number(ch.value)],qs=ids.map(i=>units[i][1][level]);let p=0,score=0,locked=false;const box=document.getElementById("learningGameCard");
+ function draw(){locked=false;document.getElementById("gameProgress").textContent="प्रश्न "+(p+1)+" / "+qs.length;document.getElementById("gameScore").textContent="⭐ अंक: "+score;box.innerHTML="";const h=document.createElement("h3");h.textContent=qs[p][0];box.appendChild(h);const opts=document.createElement("div");opts.className="game-options";qs[p][1].forEach((v,n)=>{const b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.onclick=()=>answer(n);opts.appendChild(b)});box.appendChild(opts);const f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f)}
+ function answer(n){if(locked)return;locked=true;const q=qs[p],f=document.getElementById("gameFeedback");if(n===q[2]){score++;f.textContent="✅ सही उत्तर! "+q[3];f.classList.add("is-correct")}else{f.textContent="❌ सही उत्तर: "+q[1][q[2]]+". "+q[3];f.classList.add("is-wrong")}document.getElementById("gameScore").textContent="⭐ अंक: "+score;const b=document.createElement("button");b.className="cta game-next";b.textContent=p===qs.length-1?"परिणाम देखें":"अगला प्रश्न";b.onclick=()=>{if(p<qs.length-1){p++;draw()}else finish()};box.appendChild(b)}
+ function finish(){const pct=Math.round(score/qs.length*100);document.getElementById("gameProgress").textContent="खेल पूरा हुआ";box.innerHTML="<h3>🎉 अभ्यास पूरा!</h3><p>"+score+" / "+qs.length+" अंक • "+pct+"%</p><p>गतिविधियों को शिक्षक के निर्देशन और सुरक्षा नियमों के साथ करें।</p>";const b=document.createElement("button");b.className="cta";b.textContent="🔁 दोबारा खेलें";b.onclick=()=>btn.click();box.appendChild(b)}draw();
+ },true);
+})();
+</script>
+<script>
+/* Class 6 Kriti: foundational visual arts practice */
+(function(){
+ const levels={
+ easy:[
+ ["चित्र में रेखा का उपयोग किसलिए होता है?",["आकार और आकृति बनाने","आवाज सुनने","वजन मापने","समय बताने"],0,"रेखाएँ आकृति और सीमा दिखाने में मदद करती हैं।"],
+ ["पारंपरिक कला-शिक्षा में प्राथमिक रंग कौन-से माने जाते हैं?",["लाल, पीला, नीला","हरा, काला, सफेद","गुलाबी, भूरा, धूसर","नारंगी, बैंगनी, काला"],0,"परंपरागत रंग-चक्र में लाल, पीला और नीला प्राथमिक रंग हैं।"],
+ ["चित्र में रंग भरने का साधन है—",["ब्रश","कंपास","थर्मामीटर","घड़ी"],0,"ब्रश से रंग लगाया जाता है।"]],
+ medium:[
+ ["चित्र की अग्रभूमि किसे कहते हैं?",["दर्शक के पास दिखाई देने वाला भाग","सबसे दूर का भाग","कागज का पिछला भाग","चित्र का शीर्षक"],0,"अग्रभूमि चित्र का सामने दिखाई देने वाला हिस्सा है।"],
+ ["रंगों का संतुलित संयोजन किसमें मदद करता है?",["दृश्य सामंजस्य","चित्र मिटाने","आकार घटाने","कागज मोड़ने"],0,"रंग-संतुलन चित्र को सामंजस्यपूर्ण बनाता है।"],
+ ["किसी वस्तु की सतह का दृश्य या स्पर्श गुण कहलाता है—",["बनावट","दूरी","समय","ध्वनि"],0,"बनावट से सतह के चिकने या खुरदरे होने का बोध होता है।"]],
+ hard:[
+ ["चित्र में विरोधाभास (contrast) का उपयोग क्यों किया जाता है?",["मुख्य तत्वों को उभारने","सभी तत्व छिपाने","रंग हटाने","कागज छोटा करने"],0,"रंग, आकार या प्रकाश के अंतर से मुख्य तत्व उभरते हैं।"],
+ ["सममित रचना में दोनों ओर के तत्व कैसे होते हैं?",["संतुलित या प्रतिबिंबित","पूरी तरह असंबंधित","केवल गहरे","अदृश्य"],0,"सममिति में दोनों ओर संतुलित व्यवस्था होती है।"],
+ ["रीसायकल कला का मुख्य विचार है—",["पुरानी सामग्री का रचनात्मक पुनः उपयोग","अधिक कचरा बनाना","सामग्री जलाना","संसाधन नष्ट करना"],0,"रीसायकल कला पुरानी सामग्री को नया उपयोग देती है।"]]
+ };
+ const c=document.getElementById("gameClass"),s=document.getElementById("gameSubject"),l=document.getElementById("gameLevel"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");if(!c||!s||!l||!ch||!btn)return;
+ function fill(){if(c.value!=="6"||s.value!=="kriti")return;ch.innerHTML='<option value="general">कला-अभ्यास</option>';document.getElementById("gameBookNames").textContent="कक्षा 6वीं • कृति 01 • कला के आधारभूत अभ्यास (अध्यायवार प्रश्न-संग्रह नहीं)";}
+ c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
+ btn.addEventListener("click",function(e){if(c.value!=="6"||s.value!=="kriti")return;e.preventDefault();e.stopImmediatePropagation();const qs=levels[l.value]||levels.easy;let p=0,score=0,locked=false;const box=document.getElementById("learningGameCard");
+ function draw(){locked=false;document.getElementById("gameProgress").textContent="प्रश्न "+(p+1)+" / "+qs.length;document.getElementById("gameScore").textContent="⭐ अंक: "+score;box.innerHTML="";const h=document.createElement("h3");h.textContent=qs[p][0];box.appendChild(h);const opts=document.createElement("div");opts.className="game-options";qs[p][1].forEach((v,n)=>{const b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.onclick=()=>answer(n);opts.appendChild(b)});box.appendChild(opts);const f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f)}
+ function answer(n){if(locked)return;locked=true;const q=qs[p],f=document.getElementById("gameFeedback");if(n===q[2]){score++;f.textContent="✅ सही उत्तर! "+q[3];f.classList.add("is-correct")}else{f.textContent="❌ सही उत्तर: "+q[1][q[2]]+". "+q[3];f.classList.add("is-wrong")}document.getElementById("gameScore").textContent="⭐ अंक: "+score;const b=document.createElement("button");b.className="cta game-next";b.textContent=p===qs.length-1?"परिणाम देखें":"अगला प्रश्न";b.onclick=()=>{if(p<qs.length-1){p++;draw()}else finish()};box.appendChild(b)}
+ function finish(){const pct=Math.round(score/qs.length*100);document.getElementById("gameProgress").textContent="खेल पूरा हुआ";box.innerHTML="<h3>🎨 अभ्यास पूरा!</h3><p>"+score+" / "+qs.length+" अंक • "+pct+"%</p><p>कृति की गतिविधियों और चित्र-निर्माण का अभ्यास पुस्तक के साथ करें।</p>";const b=document.createElement("button");b.className="cta";b.textContent="🔁 दोबारा खेलें";b.onclick=()=>btn.click();box.appendChild(b)}draw();
+ },true);
+})();
+</script>
+
 </body>
 </html>
