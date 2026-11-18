@@ -1178,5 +1178,42 @@ btn.addEventListener("click",function(e){if(c.value!=="8"||s.value!=="english"||
 })();
 </script>
 
+
+<script>
+/* Class 7 NCERT Poorvi: unit-based English practice */
+(function(){
+ const units=[
+ ["Learning Together",[
+ ["Learning together means—",["working and sharing with others","working against everyone","never listening","avoiding help"],0,"Learning together involves cooperation and sharing."],
+ ["Which action shows teamwork?",["helping a group member","hiding materials","ignoring others","breaking rules"],0,"Teamwork means supporting one another."],
+ ["A good group discussion needs—",["listening respectfully","shouting","interrupting","mocking"],0,"Respectful listening helps a discussion succeed."]]],
+ ["Wit and Wisdom",[
+ ["‘Wit’ is closest in meaning to—",["quick intelligence","sadness","laziness","fear"],0,"Wit means cleverness or quick intelligence."],
+ ["A wise decision is usually made after—",["thinking carefully","guessing blindly","getting angry","ignoring facts"],0,"Wisdom involves careful thought and judgement."],
+ ["A person who gives sensible advice is—",["wise","careless","rude","confused"],0,"A wise person uses good judgement."]]],
+ ["Dreams and Discoveries",[
+ ["A discovery is something that is—",["found or learned for the first time","forgotten","destroyed","hidden forever"],0,"A discovery reveals something previously unknown."],
+ ["Curiosity encourages us to—",["ask questions and explore","stop learning","avoid evidence","copy blindly"],0,"Curiosity motivates questions and exploration."],
+ ["Which habit helps scientific discovery?",["observing carefully","ignoring results","changing facts","avoiding questions"],0,"Careful observation supports discovery."]]],
+ ["Travel and Adventure",[
+ ["An adventure is often—",["an exciting or challenging experience","a routine nap","a spelling rule","a fixed timetable"],0,"An adventure is an unusual, exciting experience."],
+ ["Before a journey, it is sensible to—",["plan and prepare","ignore safety","forget essentials","travel without information"],0,"Planning helps make a journey safe and organised."],
+ ["A travel account usually describes—",["places and experiences","only equations","only recipes","only grammar rules"],0,"Travel writing shares places, people and experiences."]]],
+ ["Growing with Nature",[
+ ["Which action protects nature?",["planting and caring for trees","wasting water","littering","damaging habitats"],0,"Planting trees and protecting habitats help nature."],
+ ["Biodiversity means—",["variety of living organisms","only one kind of plant","weather changes","soil colour"],0,"Biodiversity is the variety of life."],
+ ["We should save water because—",["fresh water is limited and essential","water is never needed","rivers cannot dry","waste has no effect"],0,"Fresh water is essential and must be conserved."]]]
+ ];
+ const c=document.getElementById("gameClass"),s=document.getElementById("gameSubject"),l=document.getElementById("gameLevel"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");if(!c||!s||!l||!ch||!btn)return;
+ function fill(){if(c.value!=="7"||s.value!=="english")return;ch.innerHTML='<option value="all">All 5 Units</option>'+units.map((u,i)=>'<option value="'+i+'">'+(i+1)+'. '+u[0]+'</option>').join("");document.getElementById("gameBookNames").textContent="Class 7 • NCERT Poorvi • 5 unit-based English practice sets";}
+ c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
+ btn.addEventListener("click",function(e){if(c.value!=="7"||s.value!=="english")return;e.preventDefault();e.stopImmediatePropagation();const lv=Math.max(0,["easy","medium","hard"].indexOf(l.value)),ids=ch.value==="all"?units.map((_,i)=>i):[Number(ch.value)],qs=ids.map(i=>units[i][1][lv]);let p=0,score=0,locked=false;const box=document.getElementById("learningGameCard");
+ function draw(){locked=false;document.getElementById("gameProgress").textContent="Question "+(p+1)+" / "+qs.length;document.getElementById("gameScore").textContent="⭐ Score: "+score;box.innerHTML="";const h=document.createElement("h3");h.textContent=qs[p][0];box.appendChild(h);const opts=document.createElement("div");opts.className="game-options";qs[p][1].forEach((v,n)=>{const b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.onclick=()=>answer(n);opts.appendChild(b)});box.appendChild(opts);const f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f)}
+ function answer(n){if(locked)return;locked=true;const q=qs[p],f=document.getElementById("gameFeedback");if(n===q[2]){score++;f.textContent="✅ Correct! "+q[3];f.classList.add("is-correct")}else{f.textContent="❌ Correct answer: "+q[1][q[2]]+". "+q[3];f.classList.add("is-wrong")}document.getElementById("gameScore").textContent="⭐ Score: "+score;const b=document.createElement("button");b.className="cta game-next";b.textContent=p===qs.length-1?"See result":"Next question";b.onclick=()=>{if(p<qs.length-1){p++;draw()}else finish()};box.appendChild(b)}
+ function finish(){const pct=Math.round(score/qs.length*100);document.getElementById("gameProgress").textContent="Completed";box.innerHTML="<h3>🎉 Practice completed!</h3><p>"+score+" / "+qs.length+" • "+pct+"%</p><p>Read the textbook lesson for complete comprehension practice.</p>";const b=document.createElement("button");b.className="cta";b.textContent="🔁 Play again";b.onclick=()=>btn.click();box.appendChild(b)}draw();
+ },true);
+})();
+</script>
+
 </body>
 </html>
