@@ -1939,5 +1939,34 @@ function finish(){let pct=Math.round(score/qs.length*100);document.getElementByI
 })();
 </script>
 
+
+<script>
+/* Class 7 NCERT Curiosity: 12 chapter-wise starter MCQs */
+(function(){
+const rows=[
+["The Ever-Evolving World of Science","विज्ञान में किसी विचार को जाँचने का उचित तरीका क्या है?",["अवलोकन और प्रयोग","केवल अनुमान","अफवाह","बिना प्रमाण मान लेना"],0,"विज्ञान में अवलोकन, प्रश्न और प्रयोग से विचारों की जाँच की जाती है।"],
+["Exploring Substances: Acidic, Basic, and Neutral","नींबू का रस सामान्यतः कैसा होता है?",["अम्लीय","क्षारीय","उदासीन","धात्विक"],0,"नींबू के रस में अम्ल होता है, इसलिए वह अम्लीय है।"],
+["Electricity: Circuits and their Components","विद्युत परिपथ में बल्ब जलने के लिए परिपथ कैसा होना चाहिए?",["बंद/पूर्ण","खुला","टूटा हुआ","बिना स्रोत"],0,"धारा प्रवाहित होने के लिए परिपथ का बंद होना आवश्यक है।"],
+["The World of Metals and Non-metals","कौन-सा पदार्थ सामान्यतः धातु है?",["लोहा","गंधक","कार्बन","ऑक्सीजन"],0,"लोहा धातु है; गंधक, कार्बन और ऑक्सीजन अधातु हैं।"],
+["Changes Around Us: Physical and Chemical","बर्फ का पिघलना किस प्रकार का परिवर्तन है?",["भौतिक परिवर्तन","रासायनिक परिवर्तन","दहन","अपघटन"],0,"बर्फ पिघलने पर पदार्थ जल ही रहता है, इसलिए यह भौतिक परिवर्तन है।"],
+["Adolescence: A Stage of Growth and Change","किशोरावस्था में शरीर में होने वाले परिवर्तन मुख्यतः किससे जुड़े हैं?",["वृद्धि और हार्मोन","केवल मौसम","केवल भोजन का रंग","केवल खेल"],0,"किशोरावस्था में वृद्धि और हार्मोन संबंधी परिवर्तन होते हैं।"],
+["Heat Transfer in Nature","ऊष्मा का प्रवाह सामान्यतः किस दिशा में होता है?",["अधिक ताप से कम ताप की ओर","कम ताप से अधिक ताप की ओर","दोनों ओर समान रूप से हमेशा","कहीं नहीं"],0,"ऊष्मा स्वतः अधिक ताप वाले स्थान से कम ताप वाले स्थान की ओर जाती है।"],
+["Measurement of Time and Motion","चाल ज्ञात करने का सूत्र क्या है?",["दूरी ÷ समय","समय ÷ दूरी","दूरी × समय","दूरी + समय"],0,"चाल = तय की गई दूरी / लगा समय।"],
+["Life Processes in Animals","श्वसन का प्रमुख उद्देश्य क्या है?",["भोजन से ऊर्जा मुक्त करना","भोजन को रंगना","हड्डियाँ बनाना मात्र","पानी जमाना"],0,"श्वसन में भोजन से ऊर्जा मुक्त होती है।"],
+["Life Processes in Plants","हरे पौधे प्रकाश संश्लेषण के लिए कौन-सी गैस लेते हैं?",["कार्बन डाइऑक्साइड","ऑक्सीजन","नाइट्रोजन","हाइड्रोजन"],0,"प्रकाश संश्लेषण में पौधे कार्बन डाइऑक्साइड लेते हैं।"],
+["Light: Shadows and Reflections","समतल दर्पण में प्रतिबिंब कैसा होता है?",["आभासी और सीधा","वास्तविक और उल्टा","हमेशा छोटा","हमेशा बड़ा"],0,"समतल दर्पण आभासी, सीधा और समान आकार का प्रतिबिंब बनाता है।"],
+["Earth, Moon, and the Sun","दिन और रात होने का मुख्य कारण क्या है?",["पृथ्वी का अपनी धुरी पर घूमना","चंद्रमा का रंग","सूर्य का बुझना","पृथ्वी का आकार बदलना"],0,"पृथ्वी के घूर्णन से दिन और रात होते हैं।"]
+];
+const c=document.getElementById("gameClass"),s=document.getElementById("gameSubject"),l=document.getElementById("gameLevel"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");if(!c||!s||!l||!ch||!btn)return;
+function fill(){if(c.value!=="7"||s.value!=="science")return;ch.innerHTML='<option value="all">सभी 12 अध्याय</option>'+rows.map((r,i)=>'<option value="'+i+'">'+(i+1)+'. '+r[0]+'</option>').join("");document.getElementById("gameBookNames").textContent="कक्षा 7 • NCERT Curiosity / जिज्ञासा • 12 अध्याय • 2026–27";}
+c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
+btn.addEventListener("click",function(e){if(c.value!=="7"||s.value!=="science")return;e.preventDefault();e.stopImmediatePropagation();let ids=ch.value==="all"?rows.map((_,i)=>i):[+ch.value],qs=ids.map(i=>rows[i]);let p=0,score=0,locked=false,box=document.getElementById("learningGameCard");
+function draw(){locked=false;document.getElementById("gameProgress").textContent="प्रश्न "+(p+1)+" / "+qs.length;document.getElementById("gameScore").textContent="⭐ अंक: "+score;box.innerHTML="";let h=document.createElement("h3");h.textContent=qs[p][1];box.appendChild(h);let opts=document.createElement("div");opts.className="game-options";qs[p][2].forEach((v,n)=>{let b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.onclick=()=>answer(n);opts.appendChild(b)});box.appendChild(opts);let f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f)}
+function answer(n){if(locked)return;locked=true;let q=qs[p],f=document.getElementById("gameFeedback");if(n===q[3]){score++;f.textContent="✅ सही उत्तर! "+q[4];f.classList.add("is-correct")}else{f.textContent="❌ सही उत्तर: "+q[2][q[3]]+". "+q[4];f.classList.add("is-wrong")}document.getElementById("gameScore").textContent="⭐ अंक: "+score;let b=document.createElement("button");b.className="cta game-next";b.textContent=p===qs.length-1?"परिणाम देखें":"अगला प्रश्न";b.onclick=()=>{if(p<qs.length-1){p++;draw()}else finish()};box.appendChild(b)}
+function finish(){let pct=Math.round(score/qs.length*100);document.getElementById("gameProgress").textContent="अभ्यास पूरा";box.innerHTML="<h3>🎉 अभ्यास पूरा!</h3><p>"+score+" / "+qs.length+" अंक • "+pct+"%</p><p>अध्याय शीर्षक NCERT Curiosity 2026–27 के अनुसार हैं; प्रत्येक अध्याय का यह प्रारंभिक MCQ है।</p>";let b=document.createElement("button");b.className="cta";b.textContent="🔁 दोबारा खेलें";b.onclick=()=>btn.click();box.appendChild(b)}draw();
+},true);
+})();
+</script>
+
 </body>
 </html>
