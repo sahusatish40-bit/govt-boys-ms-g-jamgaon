@@ -984,5 +984,36 @@ btn.addEventListener("click",function(e){if(c.value!=="8"||s.value!=="english"||
 })();
 </script>
 
+
+<script>
+/* Class 6 Social Studies: three-level foundational practice */
+(function(){
+ const bank={
+ easy:[
+ ["ग्लोब किसका छोटा मॉडल है?",["पृथ्वी","सूर्य","चंद्रमा","मंगल"],0,"ग्लोब पृथ्वी का लघु मॉडल है।"],
+ ["मानचित्र में दिशाएँ बताने के लिए किसका उपयोग होता है?",["दिशा-सूचक","थर्मामीटर","तराजू","घड़ी"],0,"दिशा-सूचक मानचित्र पर उत्तर, दक्षिण, पूर्व और पश्चिम बताता है।"],
+ ["ग्राम पंचायत का निर्वाचित प्रमुख सामान्यतः कहलाता है—",["सरपंच","राज्यपाल","राष्ट्रपति","न्यायाधीश"],0,"ग्राम पंचायत का नेतृत्व सरपंच करता है।"]],
+ medium:[
+ ["पृथ्वी अपनी धुरी पर एक चक्कर लगभग कितने समय में लगाती है?",["24 घंटे","30 दिन","365 दिन","12 घंटे"],0,"पृथ्वी का घूर्णन लगभग 24 घंटे में पूरा होता है।"],
+ ["भूमध्य रेखा पृथ्वी को किन दो भागों में बाँटती है?",["उत्तरी और दक्षिणी गोलार्ध","पूर्वी और पश्चिमी गोलार्ध","स्थल और जल","दिन और रात"],0,"भूमध्य रेखा पृथ्वी को उत्तरी और दक्षिणी गोलार्ध में बाँटती है।"],
+ ["स्थानीय स्वशासन का एक प्रमुख उद्देश्य है—",["स्थानीय समस्याओं का समाधान","केवल राष्ट्रीय रक्षा","विदेश नीति बनाना","मुद्रा छापना"],0,"स्थानीय निकाय स्थानीय जरूरतों और समस्याओं पर काम करते हैं।"]],
+ hard:[
+ ["यदि मानचित्र का पैमाना 1 cm = 5 km है, तो 4 cm की दूरी वास्तविकता में कितनी होगी?",["9 km","15 km","20 km","25 km"],2,"4 × 5 = 20 km."],
+ ["पृथ्वी के घूर्णन के कारण मुख्यतः क्या होता है?",["दिन और रात","ऋतुओं का पूरा चक्र","ज्वार-भाटा ही","वर्ष की अवधि"],0,"पृथ्वी के घूर्णन से दिन और रात होते हैं।"],
+ ["ग्राम सभा में सामान्यतः कौन भाग लेता है?",["ग्राम के पंजीकृत वयस्क मतदाता","केवल सरपंच","केवल शिक्षक","केवल अधिकारी"],0,"ग्राम सभा में गाँव के सभी पंजीकृत वयस्क मतदाता सदस्य होते हैं।"]]
+ };
+ const cls=document.getElementById("gameClass"),sub=document.getElementById("gameSubject"),lev=document.getElementById("gameLevel"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");
+ if(!cls||!sub||!lev||!ch||!btn)return;
+ function fill(){if(cls.value!=="6"||sub.value!=="social")return;ch.innerHTML='<option value="general">सामाजिक विज्ञान — सामान्य अभ्यास</option>';document.getElementById("gameBookNames").textContent="कक्षा 6वीं • NCERT समाज का अध्ययन • भूगोल, इतिहास और नागरिक जीवन के आधारभूत अभ्यास";}
+ cls.addEventListener("change",fill);sub.addEventListener("change",fill);fill();
+ btn.addEventListener("click",function(e){if(cls.value!=="6"||sub.value!=="social")return;e.preventDefault();e.stopImmediatePropagation();const qs=bank[lev.value]||bank.easy;let p=0,score=0,locked=false;const box=document.getElementById("learningGameCard");
+ function draw(){locked=false;document.getElementById("gameProgress").textContent="प्रश्न "+(p+1)+" / "+qs.length;document.getElementById("gameScore").textContent="⭐ अंक: "+score;box.innerHTML="";const h=document.createElement("h3");h.textContent=qs[p][0];box.appendChild(h);const opts=document.createElement("div");opts.className="game-options";qs[p][1].forEach((v,n)=>{const b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.onclick=()=>answer(n);opts.appendChild(b)});box.appendChild(opts);const f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f)}
+ function answer(n){if(locked)return;locked=true;const q=qs[p],f=document.getElementById("gameFeedback");if(n===q[2]){score++;f.textContent="✅ सही उत्तर! "+q[3];f.classList.add("is-correct")}else{f.textContent="❌ सही उत्तर: "+q[1][q[2]]+". "+q[3];f.classList.add("is-wrong")}document.getElementById("gameScore").textContent="⭐ अंक: "+score;const b=document.createElement("button");b.className="cta game-next";b.textContent=p===qs.length-1?"परिणाम देखें":"अगला प्रश्न";b.onclick=()=>{if(p<qs.length-1){p++;draw()}else finish()};box.appendChild(b)}
+ function finish(){const pct=Math.round(score/qs.length*100);document.getElementById("gameProgress").textContent="खेल पूरा हुआ";box.innerHTML="<h3>🎉 अभ्यास पूरा!</h3><p>"+score+" / "+qs.length+" अंक • "+pct+"%</p><p>यह आधारभूत अभ्यास है; पाठ-विशेष तैयारी के लिए अपनी पुस्तक भी पढ़ें।</p>";const b=document.createElement("button");b.className="cta";b.textContent="🔁 फिर से खेलें";b.onclick=()=>btn.click();box.appendChild(b)}
+ draw();
+ },true);
+})();
+</script>
+
 </body>
 </html>
