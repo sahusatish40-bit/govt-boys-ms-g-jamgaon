@@ -907,5 +907,43 @@ btn.addEventListener("click",function(e){if(c.value!=="8"||s.value!=="english"||
 })();
 </script>
 
+
+<script>
+/* Class 6 NCERT Malhar: chapter navigation and literary-form practice */
+(function(){
+ const units=[
+ ["मातृभूमि","कविता","सोहनलाल द्विवेदी",["देशप्रेम","मातृभूमि का गौरव","प्रकृति चित्रण"]],
+ ["गोल","संस्मरण","मेजर ध्यानचंद",["हॉकी","खेल भावना","अभ्यास और लगन"]],
+ ["पहली बूँद","कविता","गोपालकृष्ण कौल",["वर्षा","प्रकृति","जल की पहली बूँद"]],
+ ["हार की जीत","कहानी","सुदर्शन",["सत्य","ईमानदारी","दयालुता"]],
+ ["रहीम के दोहे","दोहे","अब्दुर्रहीम खानखाना",["नीति","विनम्रता","मानवीय संबंध"]],
+ ["मेरी माँ","आत्मकथा","—",["माँ का स्नेह","परिवार","जीवन अनुभव"]],
+ ["जलाते चलो","कविता","द्वारिका प्रसाद माहेश्वरी",["आशा","प्रेरणा","सकारात्मकता"]],
+ ["सत्रिया और बिहू नृत्य","निबंध","—",["असम की संस्कृति","लोकनृत्य","परंपरा"]],
+ ["मैया मैं नहिं माखन खायो","पद","सूरदास",["कृष्ण बाललीला","संवाद","भक्ति काव्य"]],
+ ["परीक्षा","कहानी","—",["परिश्रम","आत्मविश्वास","सीख"]],
+ ["चेतक की वीरता","कविता","श्यामनारायण पाण्डेय",["महाराणा प्रताप","वीरता","निष्ठा"]],
+ ["हिंद महासागर में छोटा-सा हिंदुस्तान","यात्रा-वृत्तांत","—",["प्रवासी भारतीय","संस्कृति","मॉरीशस"]],
+ ["पेड़ की बात","निबंध","—",["पेड़ों का महत्व","पर्यावरण","प्रकृति संरक्षण"]]
+ ];
+ const cls=document.getElementById("gameClass"),sub=document.getElementById("gameSubject"),lev=document.getElementById("gameLevel"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");
+ if(!cls||!sub||!lev||!ch||!btn)return;
+ function fill(){if(cls.value!=="6"||sub.value!=="hindi")return;ch.innerHTML='<option value="all">सभी 13 पाठ</option>'+units.map((u,i)=>'<option value="'+i+'">'+(i+1)+'. '+u[0]+'</option>').join("");document.getElementById("gameBookNames").textContent="कक्षा 6वीं • NCERT मल्हार • 13 पाठ • साहित्यिक रूप और पाठ-परिचय अभ्यास";}
+ cls.addEventListener("change",fill);sub.addEventListener("change",fill);fill();
+ btn.addEventListener("click",function(e){if(cls.value!=="6"||sub.value!=="hindi")return;e.preventDefault();e.stopImmediatePropagation();
+ const ids=ch.value==="all"?units.map((_,i)=>i):[Number(ch.value)],level=["easy","medium","hard"].indexOf(lev.value),qs=[];
+ ids.forEach(i=>{const u=units[i],topic=u[3];if(level===0)qs.push(["‘"+u[0]+"’ किस साहित्यिक रूप में है?",["कविता","कहानी","निबंध","यात्रा-वृत्तांत"],["कविता","संस्मरण","कविता","कहानी","दोहे","आत्मकथा","कविता","निबंध","पद","कहानी","कविता","यात्रा-वृत्तांत","निबंध"][i]==="कविता"?0:["कहानी","संस्मरण","दोहे","आत्मकथा","निबंध","पद","यात्रा-वृत्तांत"].indexOf(["कविता","संस्मरण","कविता","कहानी","दोहे","आत्मकथा","कविता","निबंध","पद","कहानी","कविता","यात्रा-वृत्तांत","निबंध"][i])===-1?0:({"कहानी":1,"निबंध":2,"यात्रा-वृत्तांत":3,"संस्मरण":1,"दोहे":0,"आत्मकथा":1,"पद":0})[["कविता","संस्मरण","कविता","कहानी","दोहे","आत्मकथा","कविता","निबंध","पद","कहानी","कविता","यात्रा-वृत्तांत","निबंध"][i]],"यह पाठ मल्हार में "+u[1]+" के रूप में दिया गया है।"]);
+ else if(level===1)qs.push(["‘"+u[0]+"’ पाठ का मुख्य विषय किससे जुड़ा है?",[""+topic[0],""+topic[1],""+topic[2],"इनमें से कोई नहीं"],0,"पाठ का परिचय और शीर्षक "+topic[0]+" से जुड़ता है।"]);
+ else qs.push(["‘"+u[0]+"’ से कौन-सा व्यापक संदेश/विषय समझा जा सकता है?",[""+topic[0],""+topic[1],""+topic[2],"सभी असंबंधित"],0,"यह पाठ "+topic.join(", ")+" जैसे विषयों पर विचार कराता है।"]);
+ });
+ let p=0,score=0,locked=false;const box=document.getElementById("learningGameCard");
+ function draw(){locked=false;document.getElementById("gameProgress").textContent="प्रश्न "+(p+1)+" / "+qs.length;document.getElementById("gameScore").textContent="⭐ अंक: "+score;box.innerHTML="";const h=document.createElement("h3");h.textContent=qs[p][0];box.appendChild(h);const opts=document.createElement("div");opts.className="game-options";qs[p][1].forEach((v,n)=>{const b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.onclick=()=>answer(n);opts.appendChild(b)});box.appendChild(opts);const f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f)}
+ function answer(n){if(locked)return;locked=true;const q=qs[p],f=document.getElementById("gameFeedback");if(n===q[2]){score++;f.textContent="✅ सही उत्तर! "+q[3];f.classList.add("is-correct")}else{f.textContent="❌ सही उत्तर: "+q[1][q[2]]+". "+q[3];f.classList.add("is-wrong")}document.getElementById("gameScore").textContent="⭐ अंक: "+score;const b=document.createElement("button");b.className="cta game-next";b.textContent=p===qs.length-1?"परिणाम देखें":"अगला प्रश्न";b.onclick=()=>{if(p<qs.length-1){p++;draw()}else finish()};box.appendChild(b)}
+ function finish(){const pct=Math.round(score/qs.length*100);document.getElementById("gameProgress").textContent="खेल पूरा हुआ";box.innerHTML="<h3>🎉 अभ्यास पूरा!</h3><p>"+score+" / "+qs.length+" अंक • "+pct+"%</p><p>पाठ को पुस्तक से पढ़कर उत्तरों की पुष्टि करें।</p>";const b=document.createElement("button");b.className="cta";b.textContent="🔁 दोबारा खेलें";b.onclick=()=>btn.click();box.appendChild(b)}
+ draw();
+ },true);
+})();
+</script>
+
 </body>
 </html>
