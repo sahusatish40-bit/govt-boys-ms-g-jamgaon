@@ -466,11 +466,85 @@ CHHATTISGARH
 })();
 </script>
 
-<script src="script.js?v=35"></script>
+<script src="script.js?v=36"></script>
 <script src="student-results.js?v=1"></script>
 <script src="result-dashboard.js?v=3"></script>
 
-<script>(function(){const $=id=>document.getElementById(id);const labels={hindi:"हिंदी",english:"English",sanskrit:"संस्कृत",science:"विज्ञान",social:"सामाजिक विज्ञान",maths:"गणित"};const bank={hindi:[{q:"‘जल’ का समानार्थी शब्द?",o:["नीर","अग्नि","पवन","धरा"],a:0,e:"नीर जल का समानार्थी है।"},{q:"‘दिन’ का विलोम?",o:["सुबह","रात","प्रकाश","दोपहर"],a:1,e:"दिन का विलोम रात है।"}],english:[{q:"Plural of child?",o:["Childs","Children","Childes","Childrens"],a:1,e:"Children is the plural."},{q:"Opposite of brave?",o:["Bold","Cowardly","Strong","Kind"],a:1,e:"Cowardly is the opposite."}],sanskrit:[{q:"‘अ’ क्या है?",o:["स्वर","व्यंजन","विसर्ग","अनुस्वार"],a:0,e:"अ स्वर वर्ण है।"},{q:"‘फलम्’ का बहुवचन?",o:["फलः","फले","फलानि","फलम्"],a:2,e:"फलानि बहुवचन है।"}],science:[{q:"पौधे भोजन किस प्रक्रिया से बनाते हैं?",o:["श्वसन","प्रकाश संश्लेषण","पाचन","वाष्पीकरण"],a:1,e:"हरे पौधे प्रकाश संश्लेषण करते हैं।"},{q:"रक्त पंप करने वाला अंग?",o:["फेफड़ा","हृदय","मस्तिष्क","गुर्दा"],a:1,e:"हृदय रक्त पंप करता है।"}],social:[{q:"भारत की राजधानी?",o:["मुंबई","नई दिल्ली","कोलकाता","चेन्नई"],a:1,e:"नई दिल्ली भारत की राजधानी है।"},{q:"छत्तीसगढ़ राज्य कब बना?",o:["1 नवंबर 2000","15 अगस्त 1947","26 जनवरी 1950","1 मई 1960"],a:0,e:"छत्तीसगढ़ 1 नवंबर 2000 को बना।"}],maths:[{q:"12 × 8 = ?",o:["86","92","96","108"],a:2,e:"12 × 8 = 96।"},{q:"5 cm भुजा वाले वर्ग का परिमाप?",o:["10 cm","15 cm","20 cm","25 cm"],a:2,e:"परिमाप = 4 × 5 = 20 cm।"}]};let qs=[],i=0,score=0,locked=false;function fill(){const s=$("gameSubject").value,c=$("gameClass").value;const sel=$("gameChapter");sel.innerHTML="";const o=document.createElement("option");o.textContent="सामान्य अभ्यास";sel.appendChild(o);$("gameBookNames").textContent="कक्षा "+c+" • "+labels[s]}function show(){locked=false;const box=$("learningGameCard"),q=qs[i];box.innerHTML="";$("gameProgress").textContent="प्रश्न "+(i+1)+" / "+qs.length;$("gameScore").textContent="⭐ अंक: "+score;const h=document.createElement("h3");h.className="game-question";h.textContent=q.q;box.appendChild(h);const opts=document.createElement("div");opts.className="game-options";q.o.forEach((v,n)=>{const b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.addEventListener("click",()=>answer(n));opts.appendChild(b)});box.appendChild(opts);const f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f)}function answer(n){if(locked)return;locked=true;const q=qs[i],f=$("gameFeedback");if(n===q.a){score++;f.textContent="सही उत्तर! "+q.e;f.classList.add("is-correct")}else{f.textContent="सही उत्तर: "+q.o[q.a]+". "+q.e;f.classList.add("is-wrong")}$("gameScore").textContent="⭐ अंक: "+score;const b=document.createElement("button");b.type="button";b.className="cta game-next";b.textContent=i===qs.length-1?"परिणाम देखें":"अगला प्रश्न";b.addEventListener("click",()=>{if(i<qs.length-1){i++;show()}else finish()});$("learningGameCard").appendChild(b)}function finish(){const box=$("learningGameCard");$("gameProgress").textContent="खेल पूरा हुआ";box.innerHTML="<h3>शाबाश! खेल पूरा हुआ।</h3><p>"+score+" / "+qs.length+" अंक</p>";const b=document.createElement("button");b.className="cta";b.textContent="दोबारा खेलें";b.addEventListener("click",start);box.appendChild(b)}function start(){qs=bank[$("gameSubject").value].slice();i=0;score=0;show()}$("gameClass").addEventListener("change",fill);$("gameSubject").addEventListener("change",fill);fill();$("startLearningGame").addEventListener("click",start)})();</script>
+<script>
+(function(){
+ const $=id=>document.getElementById(id);
+ const subjects={
+ hindi:{label:"हिंदी",books:{6:"मल्हार",7:"मल्हार",8:"मल्हार"},q:{
+ 6:[["‘जल’ का समानार्थी शब्द?",["नीर","अग्नि","पवन","धरा"],0,"नीर का अर्थ जल है।"],["‘दिन’ का विलोम?",["रात","सुबह","प्रकाश","दोपहर"],0,"दिन का विलोम रात है।"]],
+ 7:[["‘आकाश’ का पर्यायवाची?",["गगन","पाताल","धरती","जल"],0,"गगन, आकाश का पर्यायवाची है।"],["‘लाभ’ का विलोम?",["हानि","फायदा","उन्नति","धन"],0,"लाभ का विलोम हानि है।"]],
+ 8:[["‘जो कभी न मरे’ के लिए एक शब्द?",["अमर","अजर","निडर","अटल"],0,"अमर का अर्थ है जो कभी न मरे।"],["‘उन्नति’ का विलोम?",["अवनति","प्रगति","विकास","सफलता"],0,"उन्नति का विलोम अवनति है।"]]}},
+ english:{label:"English",books:{6:"Poorvi",7:"Poorvi",8:"Poorvi"},q:{
+ 6:[["Choose the plural of ‘child’.",["Childs","Children","Childes","Childrens"],1,"Children is the plural form."],["Opposite of ‘hot’?",["Warm","Cold","Heat","Boil"],1,"Cold is the opposite of hot."]],
+ 7:[["Choose the past tense of ‘go’.",["Goed","Gone","Went","Going"],2,"Went is the simple past form."],["Identify the adjective: ‘a beautiful flower’.",["a","beautiful","flower","the"],1,"Beautiful describes the noun flower."]],
+ 8:[["Choose the passive form: ‘Ram writes a letter.’",["A letter is written by Ram.","A letter wrote Ram.","Ram is written a letter.","A letter has write."],0,"Simple present passive: is/am/are + V3."],["Choose the correct reported speech: He said, ‘I am ill.’",["He said that he was ill.","He says I was ill.","He said he is ill tomorrow.","He told that I am ill."],0,"Present changes to past in this reported statement."]]}},
+ sanskrit:{label:"संस्कृत",books:{6:"दीपकम्",7:"दीपकम्",8:"रुचिरा / पाठ्यक्रमानुसार"},q:{
+ 6:[["‘अ’ वर्णः कः?",["स्वरः","व्यञ्जनम्","विसर्गः","अनुस्वारः"],0,"‘अ’ स्वरवर्णः अस्ति।"],["‘फलम्’ शब्दस्य अर्थः?",["फल","पुस्तक","जल","वृक्ष"],0,"फलम् का अर्थ फल है।"]],
+ 7:[["‘रामः’ शब्दे कः विभक्तिः?",["प्रथमा","द्वितीया","तृतीया","चतुर्थी"],0,"रामः प्रथमा विभक्ति, एकवचन है।"],["‘गच्छति’ इत्यस्य अर्थः?",["जाता है","खाता है","पढ़ता है","लिखता है"],0,"गच्छति का अर्थ जाता है।"]],
+ 8:[["‘विद्या ददाति विनयम्’ का भाव?",["विद्या विनम्रता देती है","विद्या धन देती है","विद्या खेल है","विद्या भोजन है"],0,"विद्या से विनय अर्थात नम्रता आती है।"],["‘पठ्’ धातोः लट् लकारे प्रथमपुरुष एकवचनम्?",["पठति","पठसि","पठामि","अपठत्"],0,"लट् लकार में पठ् का रूप पठति है।"]]}},
+ maths:{label:"गणित",books:{6:"गणित प्रकाश",7:"गणित प्रकाश",8:"गणित प्रकाश"},q:{
+ 6:[["12 × 8 = ?",["86","92","96","108"],2,"12 × 8 = 96."],["एक वर्ग की भुजा 5 cm है। परिमाप?",["10 cm","15 cm","20 cm","25 cm"],2,"परिमाप = 4 × भुजा = 20 cm."]],
+ 7:[["(-5) + 8 = ?",["-13","-3","3","13"],2,"(-5) + 8 = 3."],["यदि x + 7 = 12, तो x = ?",["3","5","7","19"],1,"x = 12 − 7 = 5."]],
+ 8:[["(a+b)² का सही विस्तार?",["a²+b²","a²+2ab+b²","a²−2ab+b²","2a+2b"],1,"(a+b)² = a² + 2ab + b²."],["त्रिभुज के तीनों कोणों का योग?",["90°","180°","270°","360°"],1,"त्रिभुज के कोणों का योग 180° होता है।"]]}},
+ science:{label:"विज्ञान",books:{6:"जिज्ञासा",7:"जिज्ञासा",8:"जिज्ञासा"},q:{
+ 6:[["पौधे अपना भोजन किस प्रक्रिया से बनाते हैं?",["श्वसन","प्रकाश संश्लेषण","पाचन","वाष्पीकरण"],1,"हरे पौधे प्रकाश संश्लेषण करते हैं।"],["मानव शरीर में रक्त पंप करने वाला अंग?",["फेफड़ा","हृदय","मस्तिष्क","गुर्दा"],1,"हृदय रक्त पंप करता है।"]],
+ 7:[["ऊष्मा का SI मात्रक?",["जूल","मीटर","लीटर","सेकंड"],0,"ऊष्मा ऊर्जा है; इसका SI मात्रक जूल है।"],["हरे पौधों में गैसों का आदान-प्रदान मुख्यतः किससे?",["रंध्र","जड़","फूल","फल"],0,"पत्तियों के रंध्र गैसों के आदान-प्रदान में मदद करते हैं।"]],
+ 8:[["बल का SI मात्रक?",["न्यूटन","जूल","वाट","पास्कल"],0,"बल का SI मात्रक न्यूटन है।"],["मानव में गैसों का आदान-प्रदान कहाँ होता है?",["श्वासनली","वायुकोष्ठिका","ग्रसनी","स्वरयंत्र"],1,"फेफड़ों की वायुकोष्ठिकाओं में गैसों का आदान-प्रदान होता है।"]]}},
+ social:{label:"सामाजिक विज्ञान",books:{6:"समाज का अध्ययन",7:"समाज का अध्ययन",8:"समाज का अध्ययन"},q:{
+ 6:[["भारत की राजधानी कौन-सी है?",["मुंबई","नई दिल्ली","कोलकाता","चेन्नई"],1,"भारत की राजधानी नई दिल्ली है।"],["ग्लोब किसका मॉडल है?",["पृथ्वी","चंद्रमा","सूर्य","मंगल"],0,"ग्लोब पृथ्वी का लघु मॉडल है।"]],
+ 7:[["भारत का संविधान कब लागू हुआ?",["15 अगस्त 1947","26 जनवरी 1950","2 अक्टूबर 1950","1 नवंबर 2000"],1,"संविधान 26 जनवरी 1950 को लागू हुआ।"],["ग्राम पंचायत का प्रमुख सामान्यतः कौन होता है?",["सरपंच","राज्यपाल","सांसद","कलेक्टर"],0,"ग्राम पंचायत का निर्वाचित प्रमुख सरपंच होता है।"]],
+ 8:[["छत्तीसगढ़ राज्य की स्थापना कब हुई?",["1 नवंबर 2000","1 मई 1960","15 अगस्त 1947","26 जनवरी 1950"],0,"छत्तीसगढ़ 1 नवंबर 2000 को बना।"],["1857 के विद्रोह की शुरुआत कहाँ से हुई?",["मेरठ","दिल्ली","कानपुर","लखनऊ"],0,"1857 का विद्रोह मेरठ से प्रारंभ हुआ।"]]}},
+ kriti:{label:"कृति",books:{6:"कृति 01",7:"कृति 01",8:"कृति 01"},q:{
+ 6:[["चित्रकला में प्राथमिक रंग कौन-से हैं?",["लाल, पीला, नीला","हरा, काला, सफेद","गुलाबी, भूरा, बैंगनी","नारंगी, हरा, काला"],0,"परंपरागत रंग-चक्र में लाल, पीला और नीला प्राथमिक रंग हैं।"],["किससे कागज पर रंग भरे जाते हैं?",["रंग/क्रेयॉन","कंपास","पटरी","रबर"],0,"रंग और क्रेयॉन चित्रों में रंग भरने के साधन हैं।"]],
+ 7:[["पोस्टर बनाते समय संदेश कैसा होना चाहिए?",["स्पष्ट और संक्षिप्त","बहुत उलझा हुआ","बिना शीर्षक","बहुत छोटा और अस्पष्ट"],0,"पोस्टर का संदेश स्पष्ट और संक्षिप्त होना चाहिए।"],["कला में रंगों का संतुलित उपयोग क्या बढ़ाता है?",["आकर्षण","शोर","वजन","लंबाई"],0,"रंग-संतुलन चित्र को आकर्षक बनाता है।"]],
+ 8:[["डिजाइन में ‘कॉन्ट्रास्ट’ का अर्थ?",["रंग/आकार का स्पष्ट अंतर","एक ही रंग बार-बार","चित्र मिटाना","कागज मोड़ना"],0,"कॉन्ट्रास्ट तत्वों को अलग और स्पष्ट दिखाता है।"],["रीसाइक्लिंग कला का मुख्य उद्देश्य?",["पुनः उपयोग","अधिक कचरा","संसाधन नष्ट करना","पानी बर्बाद करना"],0,"रीसाइक्लिंग सामग्री का पुनः उपयोग सिखाती है।"]]}},
+ sports:{label:"खेल यात्रा",books:{6:"खेल यात्रा",7:"खेल यात्रा",8:"खेल यात्रा"},q:{
+ 6:[["खेल शुरू करने से पहले क्या करना चाहिए?",["वार्म-अप","तुरंत तेज दौड़","पानी बिल्कुल न पीना","आराम छोड़ना"],0,"वार्म-अप शरीर को गतिविधि के लिए तैयार करता है।"],["फुटबॉल में एक टीम के मैदान पर कितने खिलाड़ी होते हैं?",["9","10","11","12"],2,"फुटबॉल टीम में मैदान पर 11 खिलाड़ी होते हैं।"]],
+ 7:[["व्यायाम के दौरान पानी क्यों जरूरी है?",["शरीर में जल-संतुलन के लिए","नींद के लिए","ऊँचाई बढ़ाने के लिए","आवाज के लिए"],0,"पानी शरीर का जल-संतुलन बनाए रखने में मदद करता है।"],["ओलंपिक के प्रतीक में कितने छल्ले हैं?",["4","5","6","7"],1,"ओलंपिक प्रतीक में पाँच छल्ले हैं।"]],
+ 8:[["कबड्डी में एक टीम के कितने खिलाड़ी मैदान पर खेलते हैं?",["5","6","7","8"],2,"कबड्डी में एक टीम के सात खिलाड़ी मैदान पर होते हैं।"],["खेल भावना का अर्थ?",["निष्पक्षता और सम्मान","हर हाल में जीत","नियम तोड़ना","विरोधी का अपमान"],0,"खेल भावना में निष्पक्षता, सम्मान और सहयोग शामिल हैं।"]]}},
+ skills:{label:"कौशल बोध",books:{6:"कौशल बोध",7:"कौशल बोध",8:"कौशल बोध"},q:{
+ 6:[["समूह में काम करने से क्या बढ़ता है?",["सहयोग","झगड़ा","अकेलापन","आलस्य"],0,"समूह कार्य सहयोग और संवाद कौशल बढ़ाता है।"],["किसी समस्या का पहला कदम क्या है?",["समस्या को समझना","बिना सोचे निर्णय","दूसरों को दोष","काम छोड़ना"],0,"समस्या को समझना समाधान का पहला कदम है।"]],
+ 7:[["समय प्रबंधन का अच्छा तरीका?",["कार्य-सूची बनाना","काम टालना","बिना योजना काम","समय भूलना"],0,"कार्य-सूची से काम व्यवस्थित होता है।"],["सुरक्षित ऑनलाइन व्यवहार क्या है?",["पासवर्ड गुप्त रखना","OTP साझा करना","अजनबी लिंक खोलना","व्यक्तिगत जानकारी सार्वजनिक करना"],0,"पासवर्ड और OTP किसी से साझा नहीं करने चाहिए।"]],
+ 8:[["उद्यमिता में ‘लागत’ क्या है?",["काम/उत्पादन पर खर्च","कुल लाभ","ग्राहक की उम्र","विज्ञापन का रंग"],0,"लागत किसी वस्तु या सेवा को बनाने/देने का खर्च है।"],["प्रभावी संवाद में सबसे जरूरी क्या है?",["ध्यान से सुनना","बीच में रोकना","चिल्लाना","अनदेखा करना"],0,"ध्यान से सुनना प्रभावी संवाद का महत्वपूर्ण भाग है।"]]}}
+ };
+ const classEl=$("gameClass"),subEl=$("gameSubject"),levelEl=$("gameLevel"),chapterEl=$("gameChapter");
+ if(!classEl||!subEl||!levelEl||!chapterEl)return;
+ subEl.innerHTML=Object.entries(subjects).map(([k,v])=>'<option value="'+k+'">'+v.label+'</option>').join("");
+ function updateInfo(){
+  const c=classEl.value,s=subjects[subEl.value];chapterEl.innerHTML='<option value="general">सामान्य अभ्यास</option>';
+  $("gameBookNames").textContent="कक्षा "+c+"वीं • "+s.books[c]+" • "+s.label+" — अभ्यास प्रश्न";
+ }
+ let questions=[],pos=0,score=0,locked=false;
+ function render(){
+  locked=false;const q=questions[pos],box=$("learningGameCard");box.innerHTML="";
+  $("gameProgress").textContent="प्रश्न "+(pos+1)+" / "+questions.length;$("gameScore").textContent="⭐ अंक: "+score;
+  const h=document.createElement("h3");h.className="game-question";h.textContent=q[0];box.appendChild(h);
+  const opts=document.createElement("div");opts.className="game-options";
+  q[1].forEach((v,n)=>{const b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.addEventListener("click",()=>answer(n));opts.appendChild(b)});box.appendChild(opts);
+  const f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f);
+ }
+ function answer(n){
+  if(locked)return;locked=true;const q=questions[pos],f=$("gameFeedback");
+  if(n===q[2]){score++;f.textContent="✅ सही उत्तर! "+q[3];f.classList.add("is-correct")}
+  else{f.textContent="❌ सही उत्तर: "+q[1][q[2]]+". "+q[3];f.classList.add("is-wrong")}
+  $("gameScore").textContent="⭐ अंक: "+score;
+  const b=document.createElement("button");b.type="button";b.className="cta game-next";b.textContent=pos===questions.length-1?"परिणाम देखें":"अगला प्रश्न";b.addEventListener("click",()=>{if(pos<questions.length-1){pos++;render()}else finish()});$("learningGameCard").appendChild(b);
+ }
+ function finish(){
+  const box=$("learningGameCard"),pct=Math.round(score/questions.length*100);$("gameProgress").textContent="खेल पूरा हुआ";box.innerHTML="<h3>🎉 शाबाश! खेल पूरा हुआ।</h3><p>"+score+" / "+questions.length+" अंक • "+pct+"%</p><p>"+(pct>=80?"बहुत अच्छा प्रदर्शन!":pct>=50?"अच्छा प्रयास! अभ्यास जारी रखें।":"अभ्यास करते रहें, आप बेहतर करेंगे!")+"</p>";
+  const b=document.createElement("button");b.type="button";b.className="cta";b.textContent="🔁 दोबारा खेलें";b.addEventListener("click",start);box.appendChild(b);
+ }
+ function start(){
+  const c=classEl.value,s=subEl.value;questions=subjects[s].q[c].slice();pos=0;score=0;render();
+ }
+ classEl.addEventListener("change",updateInfo);subEl.addEventListener("change",updateInfo);
+ $("startLearningGame").addEventListener("click",start);updateInfo();
+})();
+</script>
 
 </body>
 </html>
