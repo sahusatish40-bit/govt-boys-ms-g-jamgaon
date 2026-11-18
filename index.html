@@ -1738,5 +1738,32 @@ function finish(){let pct=Math.round(score/qs.length*100);document.getElementByI
 })();
 </script>
 
+
+<script>
+/* Class 6 Malhar: chapter-wise Hindi reading practice */
+(function(){
+const titles=["मातृभूमि","गोल","पहली बूँद","हार की जीत","रहीम के दोहे","मेरी माँ","जलाते चलो","सत्रिया और बिहू नृत्य","मैया मैं नहिं माखन खायो","परीक्षा","चेतक की वीरता","हिंद महासागर में छोटा-सा हिंदुस्तान","पेड़ की बात"];
+const common=[
+["किसी पाठ का मुख्य भाव समझने के लिए क्या करना चाहिए?",["पाठ को ध्यान से पढ़ना","केवल शीर्षक देखना","केवल अंतिम पंक्ति पढ़ना","पृष्ठ संख्या गिनना"],0,"मुख्य भाव समझने के लिए पूरा पाठ ध्यान से पढ़ना चाहिए।"],
+["‘साहस’ का निकटार्थी शब्द कौन-सा है?",["हिम्मत","भय","आलस्य","दुःख"],0,"साहस का निकटार्थी शब्द हिम्मत है।"],
+["किसी कहानी में घटनाओं का क्रम क्या कहलाता है?",["कथानक","छंद","तुक","वर्तनी"],0,"कहानी की घटनाओं का क्रम कथानक कहलाता है।"]
+];
+const poetry=[
+["कविता का केंद्रीय भाव क्या होता है?",["मुख्य संदेश या अनुभूति","केवल तुक","केवल कवि का नाम","पंक्तियों की संख्या"],0,"केंद्रीय भाव कविता का मुख्य संदेश या अनुभूति है।"],
+["कविता में लय किससे बनती है?",["ध्वनि और गति के क्रम से","केवल चित्र से","केवल शीर्षक से","केवल अनुच्छेद से"],0,"शब्दों की ध्वनि और गति का क्रम लय बनाता है।"],
+["‘मातृभूमि’ शब्द का अर्थ क्या है?",["जन्मभूमि/अपना देश","विदेश","विद्यालय","वन"],0,"मातृभूमि का अर्थ अपनी जन्मभूमि या देश है।"]
+];
+const qs=titles.map((t,i)=>({title:(i+1)+". "+t,questions:i===0||i===2||i===4||i===6||i===10?poetry:common}));
+const c=document.getElementById("gameClass"),s=document.getElementById("gameSubject"),l=document.getElementById("gameLevel"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");if(!c||!s||!l||!ch||!btn)return;
+function fill(){if(c.value!=="6"||s.value!=="hindi")return;ch.innerHTML='<option value="all">सभी 13 पाठ</option>'+qs.map((u,i)=>'<option value="'+i+'">'+u.title+'</option>').join("");document.getElementById("gameBookNames").textContent="कक्षा 6वीं • NCERT मल्हार • 13 पाठ • पठन एवं भाषा अभ्यास";}
+c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
+btn.addEventListener("click",function(e){if(c.value!=="6"||s.value!=="hindi")return;e.preventDefault();e.stopImmediatePropagation();const ids=ch.value==="all"?qs.map((_,i)=>i):[+ch.value],lv=Math.max(0,["easy","medium","hard"].indexOf(l.value)),questions=ids.map(i=>qs[i].questions[lv]);let p=0,score=0,locked=false,box=document.getElementById("learningGameCard");
+function draw(){locked=false;document.getElementById("gameProgress").textContent="प्रश्न "+(p+1)+" / "+questions.length;document.getElementById("gameScore").textContent="⭐ अंक: "+score;box.innerHTML="";let h=document.createElement("h3");h.textContent=questions[p][0];box.appendChild(h);let opts=document.createElement("div");opts.className="game-options";questions[p][1].forEach((v,n)=>{let b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.onclick=()=>answer(n);opts.appendChild(b)});box.appendChild(opts);let f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f)}
+function answer(n){if(locked)return;locked=true;let q=questions[p],f=document.getElementById("gameFeedback");if(n===q[2]){score++;f.textContent="✅ सही उत्तर! "+q[3];f.classList.add("is-correct")}else{f.textContent="❌ सही उत्तर: "+q[1][q[2]]+". "+q[3];f.classList.add("is-wrong")}document.getElementById("gameScore").textContent="⭐ अंक: "+score;let b=document.createElement("button");b.className="cta game-next";b.textContent=p===questions.length-1?"परिणाम देखें":"अगला प्रश्न";b.onclick=()=>{if(p<questions.length-1){p++;draw()}else finish()};box.appendChild(b)}
+function finish(){let pct=Math.round(score/questions.length*100);document.getElementById("gameProgress").textContent="अभ्यास पूरा";box.innerHTML="<h3>🎉 अभ्यास पूरा!</h3><p>"+score+" / "+questions.length+" अंक • "+pct+"%</p><p>पाठों के नाम NCERT मल्हार विषय-सूची के अनुसार हैं; प्रश्न अभी सामान्य पठन-कौशल अभ्यास हैं, पाठ-विशिष्ट प्रश्न नहीं।</p>";let b=document.createElement("button");b.className="cta";b.textContent="🔁 दोबारा खेलें";b.onclick=()=>btn.click();box.appendChild(b)}draw();
+},true);
+})();
+</script>
+
 </body>
 </html>
