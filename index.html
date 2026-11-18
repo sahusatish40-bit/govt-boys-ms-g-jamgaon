@@ -1280,5 +1280,62 @@ btn.addEventListener("click",function(e){if(c.value!=="8"||s.value!=="english"||
 })();
 </script>
 
+
+<script>
+/* Class 7 Mathematics: foundational topic practice */
+(function(){
+ const topics=[
+ ["पूर्णांक",[
+ ["−5 + 8 का मान है—",["3","−3","13","−13"],0,"−5 + 8 = 3."],
+ ["−4 × 3 का मान है—",["−12","12","−7","7"],0,"ऋणात्मक × धनात्मक = ऋणात्मक; 4 × 3 = 12."],
+ ["−18 ÷ (−3) का मान है—",["6","−6","−15","15"],0,"दो ऋणात्मक संख्याओं का भागफल धनात्मक होता है।"]]],
+ ["भिन्न और दशमलव",[
+ ["1/2 + 1/4 = ?",["3/4","2/6","1/6","1/4"],0,"1/2 = 2/4; इसलिए 2/4 + 1/4 = 3/4."],
+ ["0.75 को भिन्न में लिखें—",["3/4","1/4","7/5","5/7"],0,"0.75 = 75/100 = 3/4."],
+ ["2/3 ÷ 4/5 = ?",["5/6","8/15","6/5","2/7"],0,"2/3 × 5/4 = 10/12 = 5/6."]]],
+ ["आँकड़ों का प्रबंधन",[
+ ["आँकड़ों में सबसे अधिक बार आने वाला मान कहलाता है—",["बहुलक","माध्य","माध्यिका","परास"],0,"बहुलक वह मान है जो सबसे अधिक बार आता है।"],
+ ["4, 6, 8 का माध्य है—",["6","4","8","18"],0,"माध्य = (4+6+8)/3 = 6."],
+ ["3, 5, 7, 9, 11 की माध्यिका है—",["7","5","9","11"],0,"क्रमबद्ध आँकड़ों का बीच का मान 7 है।"]]],
+ ["सरल समीकरण",[
+ ["x + 5 = 12, तो x = ?",["7","17","5","12"],0,"x = 12 − 5 = 7."],
+ ["3x = 21, तो x = ?",["7","18","24","3"],0,"x = 21 ÷ 3 = 7."],
+ ["2x + 3 = 13, तो x = ?",["5","8","10","3"],0,"2x = 10, इसलिए x = 5."]]],
+ ["रेखाएँ और कोण",[
+ ["पूरक कोणों का योग होता है—",["90°","180°","360°","45°"],0,"पूरक कोणों का योग 90° होता है।"],
+ ["एक सरल कोण का माप है—",["180°","90°","45°","360°"],0,"सरल कोण 180° का होता है।"],
+ ["यदि एक कोण 65° है, तो उसका संपूरक कोण होगा—",["115°","25°","65°","125°"],0,"संपूरक कोणों का योग 180°; 180° − 65° = 115°।"]]],
+ ["त्रिभुज और उसके गुण",[
+ ["त्रिभुज के तीनों कोणों का योग है—",["180°","90°","270°","360°"],0,"किसी भी त्रिभुज के आंतरिक कोणों का योग 180° होता है।"],
+ ["समबाहु त्रिभुज की प्रत्येक भुजा—",["समान होती है","अलग होती है","शून्य होती है","दोगुनी होती है"],0,"समबाहु त्रिभुज की तीनों भुजाएँ समान होती हैं।"],
+ ["त्रिभुज की दो भुजाएँ 5 cm और 6 cm हैं। तीसरी भुजा कौन-सी हो सकती है?",["4 cm","12 cm","1 cm","11 cm"],0,"त्रिभुज असमानता के अनुसार तीसरी भुजा 1 cm से बड़ी और 11 cm से छोटी होनी चाहिए।"]]],
+ ["राशियों की तुलना",[
+ ["200 का 10% कितना है?",["20","10","2","200"],0,"10% = 10/100; 200 का 10% = 20."],
+ ["₹500 पर 10% छूट कितनी होगी?",["₹50","₹10","₹100","₹450"],0,"छूट = 500 × 10/100 = ₹50."],
+ ["₹1000 पर 5% वार्षिक दर से 2 वर्ष का साधारण ब्याज है—",["₹100","₹50","₹150","₹200"],0,"SI = P×R×T/100 = 1000×5×2/100 = ₹100."]]],
+ ["परिमाप और क्षेत्रफल",[
+ ["5 cm भुजा वाले वर्ग का परिमाप है—",["20 cm","10 cm","25 cm","15 cm"],0,"परिमाप = 4 × 5 = 20 cm."],
+ ["8 cm × 4 cm आयत का क्षेत्रफल है—",["32 cm²","24 cm²","12 cm²","16 cm²"],0,"क्षेत्रफल = लंबाई × चौड़ाई = 8 × 4 = 32 cm²."],
+ ["वृत्त की परिधि का सूत्र है—",["2πr","πr²","4r","r²"],0,"वृत्त की परिधि 2πr होती है।"]]],
+ ["बीजीय व्यंजक",[
+ ["3x + 2 में x का गुणांक है—",["3","2","5","x"],0,"x के साथ गुणा होने वाली संख्या 3 है।"],
+ ["2a + 3a = ?",["5a","6a","5a²","a"],0,"समान पद जोड़ें: 2a + 3a = 5a."],
+ ["यदि x = 4, तो 2x + 1 = ?",["9","8","6","5"],0,"2 × 4 + 1 = 9."]]],
+ ["घातांक और घात",[
+ ["2³ का मान है—",["8","6","9","5"],0,"2³ = 2 × 2 × 2 = 8."],
+ ["10⁴ को विस्तारित रूप में लिखें—",["10000","1000","100","100000"],0,"10⁴ = 10 × 10 × 10 × 10 = 10000."],
+ ["a² × a³ = ?",["a⁵","a⁶","a","a⁹"],0,"समान आधार के गुणन में घातें जुड़ती हैं: a² × a³ = a⁵."]]]
+ ];
+ const c=document.getElementById("gameClass"),s=document.getElementById("gameSubject"),l=document.getElementById("gameLevel"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");if(!c||!s||!l||!ch||!btn)return;
+ function fill(){if(c.value!=="7"||s.value!=="maths")return;ch.innerHTML='<option value="all">सभी 10 गणितीय विषय</option>'+topics.map((u,i)=>'<option value="'+i+'">'+(i+1)+'. '+u[0]+'</option>').join("");document.getElementById("gameBookNames").textContent="कक्षा 7वीं • गणित • 10 विषय-आधारित अभ्यास इकाइयाँ (अध्याय सूची से सत्यापित नहीं)";}
+ c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
+ btn.addEventListener("click",function(e){if(c.value!=="7"||s.value!=="maths")return;e.preventDefault();e.stopImmediatePropagation();const lv=Math.max(0,["easy","medium","hard"].indexOf(l.value)),ids=ch.value==="all"?topics.map((_,i)=>i):[Number(ch.value)],qs=ids.map(i=>topics[i][1][lv]);let p=0,score=0,locked=false;const box=document.getElementById("learningGameCard");
+ function draw(){locked=false;document.getElementById("gameProgress").textContent="प्रश्न "+(p+1)+" / "+qs.length;document.getElementById("gameScore").textContent="⭐ अंक: "+score;box.innerHTML="";const h=document.createElement("h3");h.textContent=qs[p][0];box.appendChild(h);const opts=document.createElement("div");opts.className="game-options";qs[p][1].forEach((v,n)=>{const b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.onclick=()=>answer(n);opts.appendChild(b)});box.appendChild(opts);const f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f)}
+ function answer(n){if(locked)return;locked=true;const q=qs[p],f=document.getElementById("gameFeedback");if(n===q[2]){score++;f.textContent="✅ सही उत्तर! "+q[3];f.classList.add("is-correct")}else{f.textContent="❌ सही उत्तर: "+q[1][q[2]]+". "+q[3];f.classList.add("is-wrong")}document.getElementById("gameScore").textContent="⭐ अंक: "+score;const b=document.createElement("button");b.className="cta game-next";b.textContent=p===qs.length-1?"परिणाम देखें":"अगला प्रश्न";b.onclick=()=>{if(p<qs.length-1){p++;draw()}else finish()};box.appendChild(b)}
+ function finish(){const pct=Math.round(score/qs.length*100);document.getElementById("gameProgress").textContent="खेल पूरा हुआ";box.innerHTML="<h3>🎉 अभ्यास पूरा!</h3><p>"+score+" / "+qs.length+" अंक • "+pct+"%</p><p>ये विषय-आधारित अभ्यास हैं; पाठ्यपुस्तक के उदाहरण भी हल करें।</p>";const b=document.createElement("button");b.className="cta";b.textContent="🔁 दोबारा खेलें";b.onclick=()=>btn.click();box.appendChild(b)}draw();
+ },true);
+})();
+</script>
+
 </body>
 </html>
