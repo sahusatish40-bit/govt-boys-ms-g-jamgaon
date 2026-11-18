@@ -1015,5 +1015,40 @@ btn.addEventListener("click",function(e){if(c.value!=="8"||s.value!=="english"||
 })();
 </script>
 
+
+<script>
+/* Class 6 Deepakam chapter-wise Sanskrit vocabulary and grammar practice */
+(function(){
+ const lessons=[
+ ["वयं वर्णमालां पठामः",["अ, आ, इ, ई — एते के?",["स्वरवर्णाः","व्यञ्जनानि","संख्याः","धातवः"],0,"अ, आ, इ, ई स्वरवर्णाः सन्ति।"]],
+ ["संयुक्त-व्यञ्जनानि",["‘क्त’ इति कः प्रकारः?",["संयुक्तव्यञ्जनम्","स्वरः","विसर्गः","अनुस्वारः"],0,"द्वयोः व्यञ्जनयोः संयोगः संयुक्तव्यञ्जनं भवति।"]],
+ ["एषः कः? एषा का? एतत् किम्?",["‘एषः’ शब्दः सामान्यतः कस्य कृते प्रयुज्यते?",["पुल्लिङ्गे","स्त्रीलिङ्गे","नपुंसकलिङ्गे","बहुवचने"],0,"‘एषः’ पुल्लिङ्गे, ‘एषा’ स्त्रीलिङ्गे, ‘एतत्’ नपुंसकलिङ्गे प्रयुज्यते।"]],
+ ["अहं च त्वं च",["‘अहम्’ इत्यस्य अर्थः?",["मैं","तुम","वह","वे"],0,"‘अहम्’ का अर्थ ‘मैं’ है।"]],
+ ["संख्यागणना ननु सरला",["‘पञ्च’ इत्यस्य संख्या का?",["3","4","5","6"],2,"‘पञ्च’ का अर्थ पाँच है।"]],
+ ["अहं प्रातः उत्तिष्ठामि",["‘प्रातः’ इत्यस्य अर्थः?",["सुबह","रात","कल","अभी"],0,"‘प्रातः’ का अर्थ सुबह है।"]],
+ ["शूराः वयं धीराः वयम्",["‘शूराः’ इत्यस्य अर्थः?",["वीर","आलसी","दुःखी","मूर्ख"],0,"‘शूराः’ का अर्थ वीर/बहादुर है।"]],
+ ["सः एव महान् चित्रकारः",["‘चित्रकारः’ कः?",["चित्र बनाने वाला","किसान","गायक","लेखक"],0,"चित्रकारः चित्र बनाता है।"]],
+ ["अतिथिदेवो भव",["‘अतिथिः’ इत्यस्य अर्थः?",["मेहमान","शिक्षक","मित्र","सेवक"],0,"अतिथि का अर्थ मेहमान है।"]],
+ ["बुद्धिः सर्वार्थसाधिका",["‘बुद्धिः’ इत्यस्य अर्थः?",["बुद्धि","शक्ति","नदी","पुस्तक"],0,"‘बुद्धिः’ का अर्थ बुद्धि/समझ है।"]],
+ ["यः जानाति सः पण्डितः",["‘पण्डितः’ कः?",["विद्वान्","बालकः","कृषकः","अतिथिः"],0,"पण्डितः का अर्थ विद्वान व्यक्ति है।"]],
+ ["त्वम् आपणं गच्छ",["‘आपणम्’ इत्यस्य अर्थः?",["बाज़ार","विद्यालय","गृह","उद्यान"],0,"‘आपणम्’ का अर्थ बाज़ार/दुकान है।"]],
+ ["पृथिव्यां त्रीणि रत्नानि",["‘पृथिव्याम्’ इत्यस्य अर्थः?",["पृथ्वी पर","आकाश में","जल में","वन में"],0,"‘पृथिव्याम्’ का अर्थ पृथ्वी पर है।"]],
+ ["आलस्यं हि मनुष्याणां शरीरस्थः महान् रिपुः",["‘आलस्यम्’ इत्यस्य अर्थः?",["आलस्य","परिश्रम","साहस","ज्ञान"],0,"आलस्य का अर्थ काम न करने की प्रवृत्ति है।"]],
+ ["माधवस्य प्रियम् अङ्गम्",["‘अङ्गम्’ इत्यस्य अर्थः?",["अंग/शरीर का भाग","वृक्ष","पुस्तक","फल"],0,"‘अङ्गम्’ का अर्थ शरीर का भाग है।"]],
+ ["वृक्षाः सत्पुरुषाः इव",["‘वृक्षाः’ इत्यस्य एकवचनम्?",["वृक्षः","वृक्षम्","वृक्षे","वृक्षौ"],0,"‘वृक्षाः’ बहुवचन है; एकवचन ‘वृक्षः’ है।"]]
+ ];
+ const cls=document.getElementById("gameClass"),sub=document.getElementById("gameSubject"),lev=document.getElementById("gameLevel"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");
+ if(!cls||!sub||!lev||!ch||!btn)return;
+ function fill(){if(cls.value!=="6"||sub.value!=="sanskrit")return;ch.innerHTML='<option value="all">सभी 16 पाठ</option>'+lessons.map((u,i)=>'<option value="'+i+'">'+(i+1)+'. '+u[0]+'</option>').join("");document.getElementById("gameBookNames").textContent="कक्षा 6वीं • NCERT दीपकम् • 16 पाठ • शब्दार्थ एवं भाषा-अभ्यास";}
+ cls.addEventListener("change",fill);sub.addEventListener("change",fill);fill();
+ btn.addEventListener("click",function(e){if(cls.value!=="6"||sub.value!=="sanskrit")return;e.preventDefault();e.stopImmediatePropagation();const ids=ch.value==="all"?lessons.map((_,i)=>i):[Number(ch.value)],qs=ids.map(i=>lessons[i][1]);let p=0,score=0,locked=false;const box=document.getElementById("learningGameCard");
+ function draw(){locked=false;document.getElementById("gameProgress").textContent="प्रश्न "+(p+1)+" / "+qs.length;document.getElementById("gameScore").textContent="⭐ अंक: "+score;box.innerHTML="";const h=document.createElement("h3");h.textContent=qs[p][0];box.appendChild(h);const opts=document.createElement("div");opts.className="game-options";qs[p][1].forEach((v,n)=>{const b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.onclick=()=>answer(n);opts.appendChild(b)});box.appendChild(opts);const f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f)}
+ function answer(n){if(locked)return;locked=true;const q=qs[p],f=document.getElementById("gameFeedback");if(n===q[2]){score++;f.textContent="✅ सही उत्तर! "+q[3];f.classList.add("is-correct")}else{f.textContent="❌ सही उत्तर: "+q[1][q[2]]+". "+q[3];f.classList.add("is-wrong")}document.getElementById("gameScore").textContent="⭐ अंक: "+score;const b=document.createElement("button");b.className="cta game-next";b.textContent=p===qs.length-1?"परिणाम देखें":"अगला प्रश्न";b.onclick=()=>{if(p<qs.length-1){p++;draw()}else finish()};box.appendChild(b)}
+ function finish(){const pct=Math.round(score/qs.length*100);document.getElementById("gameProgress").textContent="खेल पूरा हुआ";box.innerHTML="<h3>🎉 अभ्यास पूरा!</h3><p>"+score+" / "+qs.length+" अंक • "+pct+"%</p><p>शब्दों और पाठ का संदर्भ पुस्तक में पढ़ें।</p>";const b=document.createElement("button");b.className="cta";b.textContent="🔁 दोबारा खेलें";b.onclick=()=>btn.click();box.appendChild(b)}
+ draw();
+ },true);
+})();
+</script>
+
 </body>
 </html>
