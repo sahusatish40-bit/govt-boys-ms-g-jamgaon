@@ -1995,5 +1995,30 @@ function finish(){let pct=Math.round(score/qs.length*100);document.getElementByI
 })();
 </script>
 
+
+<script>
+/* Class 7 Ganita Prakash Part 1: eight NCERT chapter-aligned practice questions */
+(function(){
+const rows=[
+["हमारे आस-पास की बड़ी संख्याएँ", "भारत की संख्या पद्धति में 1 लाख में कितने शून्य होते हैं?",["5","4","6","7"],0,"1 लाख = 1,00,000 अर्थात पाँच शून्य।"],
+["अंकगणितीय व्यंजक","8 + 3 × 2 का मान क्या है?",["14","22","19","16"],0,"BODMAS के अनुसार पहले गुणा: 3×2=6, फिर 8+6=14।"],
+["बिंदु से परे एक दृष्टि","0.7 में 7 किस स्थान पर है?",["दशांश","शतांश","इकाई","दहाई"],0,"दशमलव के बाद पहला स्थान दशांश होता है।"],
+["अक्षर-संख्याओं के उपयोगी व्यंजक","यदि x=5 हो, तो x+3 का मान क्या होगा?",["8","2","15","53"],0,"x के स्थान पर 5 रखने पर 5+3=8।"],
+["समांतर और प्रतिच्छेदी रेखाएँ","समांतर रेखाएँ कैसी होती हैं?",["एक ही तल में कभी नहीं मिलतीं","हमेशा समकोण पर मिलती हैं","एक ही बिंदु पर मिलती हैं","वृत्त बनाती हैं"],0,"समतल में समांतर रेखाएँ कितनी भी बढ़ाने पर नहीं मिलतीं।"],
+["संख्याओं का खेल","किसी संख्या का 0 से गुणा करने पर क्या मिलता है?",["0","वही संख्या","1","संख्या का दुगुना"],0,"किसी भी संख्या का शून्य से गुणनफल शून्य होता है।"],
+["तीन प्रतिच्छेदी रेखाओं की एक कथा","त्रिभुज की तीनों भुजाओं का योग क्या कहलाता है?",["परिमाप","क्षेत्रफल","आयतन","व्यास"],0,"त्रिभुज की सभी भुजाओं की लंबाइयों का योग उसका परिमाप है।"],
+["भिन्नों के साथ कार्य करना","1/2 + 1/2 का मान क्या है?",["1","1/2","2","1/4"],0,"समान हर होने पर अंश जोड़ें: 1/2+1/2=2/2=1।"]
+];
+const c=document.getElementById("gameClass"),s=document.getElementById("gameSubject"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");if(!c||!s||!ch||!btn)return;
+function fill(){if(c.value!=="7"||s.value!=="maths")return;ch.innerHTML='<option value="all">सभी 8 अध्याय (भाग 1)</option>'+rows.map((r,i)=>'<option value="'+i+'">'+(i+1)+'. '+r[0]+'</option>').join("");document.getElementById("gameBookNames").textContent="कक्षा 7 • गणित प्रकाश भाग 1 • NCERT 2026 • 8 अध्याय";}
+c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
+btn.addEventListener("click",function(e){if(c.value!=="7"||s.value!=="maths")return;e.preventDefault();e.stopImmediatePropagation();let ids=ch.value==="all"?rows.map((_,i)=>i):[+ch.value],qs=ids.map(i=>rows[i]);let p=0,score=0,locked=false,box=document.getElementById("learningGameCard");
+function draw(){locked=false;document.getElementById("gameProgress").textContent="प्रश्न "+(p+1)+" / "+qs.length;document.getElementById("gameScore").textContent="⭐ अंक: "+score;box.innerHTML="";let h=document.createElement("h3");h.textContent=qs[p][1];box.appendChild(h);let opts=document.createElement("div");opts.className="game-options";qs[p][2].forEach((v,n)=>{let b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.onclick=()=>answer(n);opts.appendChild(b)});box.appendChild(opts);let f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f)}
+function answer(n){if(locked)return;locked=true;let q=qs[p],f=document.getElementById("gameFeedback");if(n===q[3]){score++;f.textContent="✅ सही उत्तर! "+q[4];f.classList.add("is-correct")}else{f.textContent="❌ सही उत्तर: "+q[2][q[3]]+". "+q[4];f.classList.add("is-wrong")}document.getElementById("gameScore").textContent="⭐ अंक: "+score;let b=document.createElement("button");b.className="cta game-next";b.textContent=p===qs.length-1?"परिणाम देखें":"अगला प्रश्न";b.onclick=()=>{if(p<qs.length-1){p++;draw()}else finish()};box.appendChild(b)}
+function finish(){let pct=Math.round(score/qs.length*100);document.getElementById("gameProgress").textContent="अभ्यास पूरा";box.innerHTML="<h3>🎉 अभ्यास पूरा!</h3><p>"+score+" / "+qs.length+" अंक • "+pct+"%</p><p>यह गणित प्रकाश भाग 1 के आठ अध्यायों का प्रारंभिक अभ्यास है; भाग 2 के अध्याय अलग से जोड़े जाएंगे।</p>";let b=document.createElement("button");b.className="cta";b.textContent="🔁 दोबारा खेलें";b.onclick=()=>btn.click();box.appendChild(b)}draw();
+},true);
+})();
+</script>
+
 </body>
 </html>
