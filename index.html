@@ -1912,21 +1912,21 @@ function finish(){let pct=Math.round(score/qs.length*100);document.getElementByI
 /* Class 7 Poorvi II: NCERT 2026-27 contents-based 15-chapter practice */
 (function(){
 const rows=[
-["The Day the River Spoke","What does a river provide to living beings?",["Water and support for life","Only noise","Plastic","Electricity only"],0,"Rivers support life by providing water and habitats."],
-["Try Again","What is the message of ‘Try Again’?",["Keep trying after failure","Give up at once","Avoid learning","Blame others"],0,"The poem encourages persistence and repeated effort."],
-["Three Days to See","Helen Keller is remembered for overcoming which challenges?",["Being deaf and blind","Losing her home","Being unable to walk","Losing her memory"],0,"Helen Keller overcame deafness and blindness with support and determination."],
-["Animals, Birds, and Dr. Dolittle","Dr. Dolittle is known for his interest in—",["Communicating with animals","Building trains","Painting landscapes","Studying stars"],0,"The story presents Dr. Dolittle's special interest in animals."],
-["A Funny Man","Humour in a story is mainly intended to—",["Make readers laugh or smile","Create a timetable","Give directions","List facts only"],0,"Humour creates amusement through amusing situations or language."],
-["Say the Right Thing","Good communication requires—",["Choosing suitable words for the situation","Speaking without listening","Shouting always","Ignoring the listener"],0,"Effective communication depends on suitable words and listening."],
-["My Brother’s Great Invention","An invention is—",["A new device or method","An old rumour","A natural mountain","A type of poem"],0,"An invention is a new device, process or method."],
-["Paper Boats","A paper boat is made by—",["Folding paper","Melting metal","Carving stone","Weaving cloth"],0,"A paper boat is created by folding paper."],
-["North, South, East, West","Which direction is opposite to east?",["West","North","South","North-east"],0,"West is opposite to east."],
-["The Tunnel","A tunnel is generally a passage—",["Through or under a barrier such as a hill","Across the sky","On a tree branch","Inside a cloud"],0,"A tunnel is an underground or enclosed passage through an obstacle."],
-["Travel","Before a journey, it is useful to—",["Plan route and essentials","Forget all arrangements","Ignore safety","Carry no information"],0,"Planning helps make travel safe and convenient."],
-["Conquering the Summit","To reach a summit, climbers need—",["Preparation and perseverance","Carelessness","No equipment","Giving up quickly"],0,"Climbing requires preparation, safety and perseverance."],
-["A Homage to Our Brave Soldiers","The word ‘homage’ means—",["An expression of respect","A complaint","A joke","A direction"],0,"Homage is respect or honour shown to someone."],
-["My Dear Soldiers","The poem/letter expresses gratitude towards—",["Soldiers","Shopkeepers","Tourists","Actors"],0,"The text honours soldiers and their service."],
-["Rani Abbakka","Rani Abbakka is remembered for resisting—",["Portuguese colonial forces","The Mughal court","The British in 1857","The French in Bengal"],0,"Rani Abbakka of Ullal is remembered for resisting Portuguese expansion."]
+["Unit 1 • Learning Together — The Day the River Spoke","What does a river provide to living beings?",["Water and support for life","Only noise","Plastic","Electricity only"],0,"Rivers support life by providing water and habitats."],
+["Unit 1 • Learning Together — Try Again","What is the message of ‘Try Again’?",["Keep trying after failure","Give up at once","Avoid learning","Blame others"],0,"The poem encourages persistence and repeated effort."],
+["Unit 1 • Learning Together — Three Days to See","Helen Keller is remembered for overcoming which challenges?",["Being deaf and blind","Losing her home","Being unable to walk","Losing her memory"],0,"Helen Keller overcame deafness and blindness with support and determination."],
+["Unit 2 • Wit and Humour — Animals, Birds, and Dr. Dolittle","Dr. Dolittle is known for his interest in—",["Communicating with animals","Building trains","Painting landscapes","Studying stars"],0,"The story presents Dr. Dolittle's special interest in animals."],
+["Unit 2 • Wit and Humour — A Funny Man","Humour in a story is mainly intended to—",["Make readers laugh or smile","Create a timetable","Give directions","List facts only"],0,"Humour creates amusement through amusing situations or language."],
+["Unit 2 • Wit and Humour — Say the Right Thing","Good communication requires—",["Choosing suitable words for the situation","Speaking without listening","Shouting always","Ignoring the listener"],0,"Effective communication depends on suitable words and listening."],
+["Unit 3 • Dreams and Discoveries — My Brother’s Great Invention","An invention is—",["A new device or method","An old rumour","A natural mountain","A type of poem"],0,"An invention is a new device, process or method."],
+["Unit 3 • Dreams and Discoveries — Paper Boats","A paper boat is made by—",["Folding paper","Melting metal","Carving stone","Weaving cloth"],0,"A paper boat is created by folding paper."],
+["Unit 3 • Dreams and Discoveries — North, South, East, West","Which direction is opposite to east?",["West","North","South","North-east"],0,"West is opposite to east."],
+["Unit 4 • Travel and Adventure — The Tunnel","A tunnel is generally a passage—",["Through or under a barrier such as a hill","Across the sky","On a tree branch","Inside a cloud"],0,"A tunnel is an underground or enclosed passage through an obstacle."],
+["Unit 4 • Travel and Adventure — Travel","Before a journey, it is useful to—",["Plan route and essentials","Forget all arrangements","Ignore safety","Carry no information"],0,"Planning helps make travel safe and convenient."],
+["Unit 4 • Travel and Adventure — Conquering the Summit","To reach a summit, climbers need—",["Preparation and perseverance","Carelessness","No equipment","Giving up quickly"],0,"Climbing requires preparation, safety and perseverance."],
+["Unit 5 • Bravehearts — A Homage to Our Brave Soldiers","The word ‘homage’ means—",["An expression of respect","A complaint","A joke","A direction"],0,"Homage is respect or honour shown to someone."],
+["Unit 5 • Bravehearts — My Dear Soldiers","The poem/letter expresses gratitude towards—",["Soldiers","Shopkeepers","Tourists","Actors"],0,"The text honours soldiers and their service."],
+["Unit 5 • Bravehearts — Rani Abbakka","Rani Abbakka is remembered for resisting—",["Portuguese colonial forces","The Mughal court","The British in 1857","The French in Bengal"],0,"Rani Abbakka of Ullal is remembered for resisting Portuguese expansion."]
 ];
 const c=document.getElementById("gameClass"),s=document.getElementById("gameSubject"),l=document.getElementById("gameLevel"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");if(!c||!s||!l||!ch||!btn)return;
 function fill(){if(c.value!=="7"||s.value!=="english")return;ch.innerHTML='<option value="all">सभी 15 पाठ</option>'+rows.map((r,i)=>'<option value="'+i+'">'+(i+1)+'. '+r[0]+'</option>').join("");document.getElementById("gameBookNames").textContent="कक्षा 7 • Poorvi II • NCERT 2026–27 • 15 पाठ";}
