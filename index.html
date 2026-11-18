@@ -772,5 +772,80 @@ c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
 btn.addEventListener("click",function(e){if(c.value!=="8"||s.value!=="english"||ch.value==="general")return;e.preventDefault();e.stopImmediatePropagation();const d=lessons[Number(ch.value)];box.innerHTML="";$("gameProgress").textContent="Class 8 • English Reader • Lesson "+(Number(ch.value)+1);$("gameScore").textContent="⭐ Score: 0 / 1";const h=document.createElement("h3");h.className="game-question";h.textContent=d[1];box.appendChild(h);const opts=document.createElement("div");opts.className="game-options";d[2].forEach((v,i)=>{const b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+i)+". "+v;b.onclick=()=>{opts.querySelectorAll("button").forEach(x=>x.disabled=true);const ok=i===d[3];$("gameScore").textContent="⭐ Score: "+(ok?1:0)+" / 1";const f=document.createElement("p");f.className="game-feedback "+(ok?"is-correct":"is-wrong");f.textContent=(ok?"✅ Correct! ":"❌ Correct answer: "+d[2][d[3]]+". ")+d[4];box.appendChild(f);const note=document.createElement("p");note.textContent="यह शीर्षक/शब्दार्थ आधारित प्रारंभिक अभ्यास है; पाठ की विस्तृत समझ के प्रश्न आगे जोड़े जाएँगे।";box.appendChild(note)};opts.appendChild(b)});box.appendChild(opts);},true);
 })();
 </script>
+
+<script>
+/* Class 6 NCERT Jigyasa: chapter-wise practice bank */
+(function(){
+ const chapters=[
+ ["विज्ञान का अनूठा संसार",[
+ ["विज्ञान में किसी विचार की जाँच के लिए क्या किया जाता है?",["अनुमान को बिना जाँचे मानना","अवलोकन और प्रयोग","केवल याद करना","अफवाह सुनना"],1,"विज्ञान में अवलोकन और प्रयोग से विचारों की जाँच की जाती है।"],
+ ["प्रयोग करते समय निष्पक्ष परिणाम के लिए क्या जरूरी है?",["आँकड़े बदलना","सावधानी से निरीक्षण और रिकॉर्ड","परिणाम छिपाना","बिना माप निष्कर्ष"],1,"सही निरीक्षण और रिकॉर्ड विश्वसनीय निष्कर्ष में मदद करते हैं।"],
+ ["वैज्ञानिक जिज्ञासा का अर्थ है—",["प्रश्न पूछना और कारण खोजना","हर बात मान लेना","प्रयोग से बचना","उत्तर छिपाना"],0,"जिज्ञासा प्रश्न पूछने और प्रमाण खोजने की प्रेरणा देती है।"]]],
+ ["सजीव जगत में विविधता",[
+ ["जीवों में विविधता का एक उदाहरण है—",["केवल एक प्रकार के पौधे","पौधों और जानवरों के अनेक रूप","सभी जीव एक जैसे","केवल निर्जीव वस्तुएँ"],1,"जीव आकार, बनावट और आवास में अलग-अलग होते हैं।"],
+ ["जीवों को समूहों में बाँटने का एक आधार है—",["रंग ही केवल","समान और अलग विशेषताएँ","उनकी कीमत","उनका वजन ही"],1,"समानताओं और भिन्नताओं के आधार पर वर्गीकरण किया जाता है।"],
+ ["किसमें रीढ़ की हड्डी होती है?",["कशेरुकी","अकशेरुकी","दोनों में नहीं","केवल पौधों में"],0,"कशेरुकी जीवों में रीढ़ की हड्डी होती है।"]]],
+ ["उचित आहार— स्वस्थ शरीर का आधार",[
+ ["संतुलित आहार में क्या शामिल होना चाहिए?",["केवल मिठाई","विभिन्न पोषक तत्वों वाला भोजन","केवल चावल","केवल तेल"],1,"संतुलित आहार में विभिन्न पोषक तत्व उचित मात्रा में होते हैं।"],
+ ["शरीर को ऊर्जा देने वाला प्रमुख पोषक तत्व है—",["कार्बोहाइड्रेट","विटामिन C","खनिज लवण","पानी בלבד"],0,"कार्बोहाइड्रेट ऊर्जा का प्रमुख स्रोत हैं।"],
+ ["प्रोटीन का मुख्य कार्य है—",["शरीर की वृद्धि और मरम्मत","केवल स्वाद देना","भोजन को रंगना","शरीर ठंडा करना"],0,"प्रोटीन वृद्धि और ऊतकों की मरम्मत में मदद करता है।"]]],
+ ["चुंबकों को जानें",[
+ ["चुंबक के समान ध्रुव एक-दूसरे को—",["आकर्षित करते हैं","प्रतिकर्षित करते हैं","नष्ट करते हैं","गर्म करते हैं"],1,"समान ध्रुव प्रतिकर्षित और असमान ध्रुव आकर्षित करते हैं।"],
+ ["चुंबक के दो ध्रुव होते हैं—",["उत्तर और दक्षिण","पूर्व और पश्चिम","ऊपर और नीचे","दायाँ और बायाँ"],0,"चुंबक के उत्तर और दक्षिण ध्रुव होते हैं।"],
+ ["किस वस्तु को चुंबक आकर्षित कर सकता है?",["लोहे की कील","लकड़ी","कागज","रबर"],0,"लोहा चुंबकीय पदार्थ है।"]]],
+ ["लंबाई एवं गति का मापन",[
+ ["लंबाई का SI मात्रक है—",["मीटर","लीटर","सेकंड","किलोग्राम"],0,"लंबाई का SI मात्रक मीटर है।"],
+ ["गति का पता लगाने के लिए किसका मापन जरूरी है?",["दूरी और समय","रंग और आकार","ताप और दाब","द्रव्यमान और रंग"],0,"गति = तय की गई दूरी / लगा समय।"],
+ ["सीधी रेखा में होने वाली गति कहलाती है—",["रेखीय गति","वृत्तीय गति","घूर्णन गति","दोलन गति"],0,"सीधी रेखा के along होने वाली गति रेखीय गति है।"]]],
+ ["हमारे आस-पास की सामग्री",[
+ ["पारदर्शी पदार्थ से क्या दिखाई देता है?",["उसके पार की वस्तु स्पष्ट","कुछ भी नहीं","केवल छाया","केवल रंग"],0,"पारदर्शी पदार्थ से वस्तुएँ स्पष्ट दिखाई देती हैं।"],
+ ["पानी में घुलने वाला पदार्थ कौन-सा है?",["नमक","रेत","चाक का टुकड़ा","लकड़ी"],0,"नमक पानी में घुल जाता है।"],
+ ["वस्तुओं का वर्गीकरण किस आधार पर हो सकता है?",["गुणों के आधार पर","केवल नाम के अक्षर","केवल कीमत","केवल स्थान"],0,"कठोरता, घुलनशीलता और पारदर्शिता जैसे गुण आधार हो सकते हैं।"]]],
+ ["ताप एवं उसका मापन",[
+ ["तापमान मापने का यंत्र है—",["थर्मामीटर","बैरोमीटर","कंपास","स्टॉपवॉच"],0,"थर्मामीटर तापमान मापता है।"],
+ ["तापमान की SI इकाई है—",["केल्विन","मीटर","न्यूटन","लीटर"],0,"तापमान की SI इकाई केल्विन है।"],
+ ["गर्म वस्तु से ठंडी वस्तु की ओर ऊर्जा का प्रवाह कहलाता है—",["ऊष्मा का स्थानांतरण","प्रकाश संश्लेषण","वाष्पीकरण","चुंबकत्व"],0,"ऊष्मा स्वतः अधिक ताप से कम ताप की ओर जाती है।"]]],
+ ["जल की विविध अवस्थाओं की यात्रा",[
+ ["बर्फ जल की कौन-सी अवस्था है?",["ठोस","द्रव","गैस","प्लाज्मा"],0,"बर्फ जल की ठोस अवस्था है।"],
+ ["जल का वाष्प में बदलना कहलाता है—",["वाष्पीकरण","संघनन","जमना","गलना"],0,"द्रव जल गर्म होकर वाष्प में बदल सकता है।"],
+ ["जलवाष्प के ठंडा होकर जल की बूंद बनने की प्रक्रिया है—",["संघनन","वाष्पीकरण","उर्ध्वपातन","गलन"],0,"संघनन में गैस द्रव में बदलती है।"]]],
+ ["दैनिक जीवन में पृथक्करण विधियाँ",[
+ ["रेत और पानी को अलग करने की विधि है—",["छानना","चुंबक से खींचना","वाष्पीकरण ही","मथना"],0,"छानने से अघुलनशील ठोस रेत पानी से अलग होती है।"],
+ ["नमक के घोल से नमक प्राप्त करने के लिए उपयोगी विधि—",["वाष्पीकरण","छानना","हाथ से चुनना","चुंबकीय पृथक्करण"],0,"पानी वाष्पित होने पर नमक बच जाता है।"],
+ ["अनाज से भूसा अलग करने की पारंपरिक विधि है—",["फटकना","संघनन","गलन","चुंबकत्व"],0,"फटकने में हवा की सहायता से हल्का भूसा अलग होता है।"]]],
+ ["सजीव— विशेषताओं का अन्वेषण",[
+ ["सजीवों की एक सामान्य विशेषता है—",["वृद्धि","जंग लगना","पिघलना","टूटना"],0,"सजीवों में वृद्धि और अन्य जीवन प्रक्रियाएँ होती हैं।"],
+ ["पौधे श्वसन करते हैं—",["दिन और रात दोनों","केवल रात","केवल दिन","कभी नहीं"],0,"पौधे दिन-रात श्वसन करते हैं।"],
+ ["बीज के अंकुरण के लिए सामान्यतः जरूरी है—",["जल, वायु और उपयुक्त ताप","केवल तेज धूप","केवल मिट्टी का रंग","केवल खाद"],0,"अंकुरण के लिए नमी, ऑक्सीजन और उचित ताप आवश्यक हैं।"]]],
+ ["प्रकृति की अमूल्य संपदा",[
+ ["नवीकरणीय संसाधन का उदाहरण है—",["सौर ऊर्जा","कोयला","पेट्रोलियम","प्राकृतिक गैस"],0,"सौर ऊर्जा प्राकृतिक रूप से लगातार उपलब्ध होती है।"],
+ ["वनों का एक महत्वपूर्ण लाभ है—",["मृदा संरक्षण","वायु प्रदूषण बढ़ाना","जल स्रोत नष्ट करना","जैव विविधता घटाना"],0,"वन मिट्टी को बाँधते और अनेक जीवों को आवास देते हैं।"],
+ ["जल बचाने का अच्छा तरीका है—",["रिसाव ठीक करना","नल खुला छोड़ना","अनावश्यक बहाव","कचरा जल में डालना"],0,"रिसाव ठीक करने से पानी की बर्बादी कम होती है।"]]],
+ ["पृथ्वी से परे",[
+ ["पृथ्वी का प्राकृतिक उपग्रह है—",["चंद्रमा","मंगल","शुक्र","सूर्य"],0,"चंद्रमा पृथ्वी का प्राकृतिक उपग्रह है।"],
+ ["सूर्य क्या है?",["एक तारा","एक ग्रह","एक उपग्रह","एक धूमकेतु"],0,"सूर्य स्वयं प्रकाश देने वाला तारा है।"],
+ ["दिन और रात होने का मुख्य कारण है—",["पृथ्वी का घूर्णन","चंद्रमा का घूमना","पृथ्वी की परिक्रमा मात्र","सूर्य का बुझना"],0,"पृथ्वी के अपनी धुरी पर घूमने से दिन और रात होते हैं।"]]]
+ ];
+ const c=document.getElementById("gameClass"),s=document.getElementById("gameSubject"),l=document.getElementById("gameLevel"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");
+ if(!c||!s||!l||!ch||!btn)return;
+ const names=["आसान","मध्यम","कठिन"];
+ function fill(){if(c.value!=="6"||s.value!=="science")return;ch.innerHTML='<option value="general">सभी अध्यायों का अभ्यास</option>'+chapters.map((x,i)=>'<option value="'+i+'">'+(i+1)+'. '+x[0]+'</option>').join("");document.getElementById("gameBookNames").textContent="कक्षा 6वीं • NCERT जिज्ञासा • 12 अध्यायों का अभ्यास";}
+ c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
+ btn.addEventListener("click",function(e){
+  if(c.value!=="6"||s.value!=="science")return;
+  e.preventDefault();e.stopImmediatePropagation();
+  const selected=ch.value==="general"?chapters.map((x,i)=>i):[Number(ch.value)];
+  const level=Math.max(0,["easy","medium","hard"].indexOf(l.value));
+  let qs=[];selected.forEach(i=>{const q=chapters[i][1][level];qs.push({q:q[0],o:q[1],a:q[2],why:q[3]})});
+  if(ch.value==="general")qs=qs.slice(0,12);
+  let at=0,score=0,done=false;const card=document.getElementById("learningGameCard");
+  function show(){done=false;document.getElementById("gameProgress").textContent="प्रश्न "+(at+1)+" / "+qs.length;document.getElementById("gameScore").textContent="⭐ अंक: "+score;card.innerHTML="";const h=document.createElement("h3");h.textContent=qs[at].q;card.appendChild(h);const opts=document.createElement("div");opts.className="game-options";qs[at].o.forEach((v,n)=>{const b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.onclick=()=>answer(n);opts.appendChild(b)});card.appendChild(opts);const f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";card.appendChild(f)}
+  function answer(n){if(done)return;done=true;const q=qs[at],f=document.getElementById("gameFeedback");if(n===q.a){score++;f.textContent="✅ सही उत्तर! "+q.why;f.classList.add("is-correct")}else{f.textContent="❌ सही उत्तर: "+q.o[q.a]+". "+q.why;f.classList.add("is-wrong")}document.getElementById("gameScore").textContent="⭐ अंक: "+score;const b=document.createElement("button");b.className="cta game-next";b.textContent=at===qs.length-1?"परिणाम देखें":"अगला प्रश्न";b.onclick=()=>{if(at<qs.length-1){at++;show()}else finish()};card.appendChild(b)}
+  function finish(){const pct=Math.round(score/qs.length*100);document.getElementById("gameProgress").textContent="खेल पूरा हुआ";card.innerHTML="<h3>🎉 अभ्यास पूरा!</h3><p>"+score+" / "+qs.length+" अंक • "+pct+"%</p><p>"+(pct>=80?"बहुत अच्छा!":pct>=50?"अच्छा प्रयास, अभ्यास जारी रखें।":"दोबारा अभ्यास करें, आप बेहतर करेंगे।")+"</p>";const b=document.createElement("button");b.className="cta";b.textContent="🔁 फिर से खेलें";b.onclick=()=>btn.click();card.appendChild(b)}
+  show();
+ },true);
+})();
+</script>
+
 </body>
 </html>
