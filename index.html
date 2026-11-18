@@ -1897,6 +1897,7 @@ const rows=[
 ["सूक्तयः","‘सूक्तयः’ इत्यस्य अर्थः कः?",["उत्तमाः विचाराः/वचनानि","पत्राणि","क्रीडाः","नगराणि"],0,"सूक्तियाँ अच्छे और सारगर्भित विचारों को व्यक्त करती हैं।"]
 ];
 const c=document.getElementById("gameClass"),s=document.getElementById("gameSubject"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");if(!c||!s||!ch||!btn)return;
+if(![...s.options].some(o=>o.value==="sanskrit8scert")){const o=document.createElement("option");o.value="sanskrit8scert";o.textContent="संस्कृत मनोरमा • SCERT (19 पाठ)";s.appendChild(o);}
 function fill(){if(c.value!=="8"||s.value!=="sanskrit8scert")return;ch.innerHTML='<option value="all">सभी 19 पाठ</option>'+rows.map((r,i)=>'<option value="'+i+'">'+(i+1)+'. '+r[0]+'</option>').join("");document.getElementById("gameBookNames").textContent="कक्षा 8 • संस्कृत मनोरमा • SCERT 2024–25 • 19 पाठ";}
 c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
 btn.addEventListener("click",function(e){if(c.value!=="8"||s.value!=="sanskrit8scert")return;e.preventDefault();e.stopImmediatePropagation();let ids=ch.value==="all"?rows.map((_,i)=>i):[+ch.value],qs=ids.map(i=>rows[i]);let p=0,score=0,locked=false,box=document.getElementById("learningGameCard");
