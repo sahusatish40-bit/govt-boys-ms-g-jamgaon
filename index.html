@@ -1151,5 +1151,32 @@ btn.addEventListener("click",function(e){if(c.value!=="8"||s.value!=="english"||
 })();
 </script>
 
+
+<script>
+/* Class 7 NCERT Hindi Malhar: introductory chapter and language practice */
+(function(){
+ const units=[
+ ["चिड़िया",["कविता में चिड़िया किसका प्रतीक हो सकती है?",["स्वतंत्रता और चंचलता","आलस्य","क्रोध","भय"],0,"चिड़िया की उड़ान स्वतंत्रता और चंचलता का भाव जगाती है।"]],
+ ["सबसे सुंदर लड़की",["किसी व्यक्ति की सुंदरता का अच्छा आधार क्या है?",["उसके गुण और व्यवहार","केवल कपड़े","केवल धन","केवल ऊँचाई"],0,"अच्छे गुण और व्यवहार व्यक्ति को सुंदर बनाते हैं।"]],
+ ["मैं हूँ नदी",["नदी का जल किस काम आता है?",["जीवन और खेती में","केवल सजावट में","केवल खेल में","किसी काम में नहीं"],0,"नदियाँ जीवन, खेती और पर्यावरण के लिए महत्त्वपूर्ण हैं।"]],
+ ["हमारा प्यारा भारतवर्ष",["भारतवर्ष के प्रति प्रेम को क्या कहते हैं?",["देशप्रेम","ईर्ष्या","आलस्य","भ्रम"],0,"अपने देश के प्रति प्रेम देशप्रेम कहलाता है।"]],
+ ["आम का पेड़",["पेड़ हमें क्या देते हैं?",["फल, छाया और ऑक्सीजन","केवल धुआँ","केवल शोर","केवल धूल"],0,"पेड़ फल, छाया, ऑक्सीजन और अनेक उपयोगी संसाधन देते हैं।"]],
+ ["बीरबल की खिचड़ी",["कहानी में बीरबल किस गुण के लिए प्रसिद्ध हैं?",["बुद्धिमत्ता","आलस्य","भय","लापरवाही"],0,"बीरबल अपनी चतुराई और बुद्धिमत्ता के लिए प्रसिद्ध हैं।"]],
+ ["मित्र को पत्र",["पत्र के अंत में सामान्यतः क्या लिखा जाता है?",["स्नेह/शुभकामना और नाम","केवल प्रश्न","केवल तारीख","केवल शीर्षक"],0,"मित्र को लिखे पत्र का अंत स्नेहपूर्ण अभिवादन और नाम से होता है।"]],
+ ["चाँद का कुरता",["कविता में कल्पना का उपयोग किसलिए होता है?",["भावों को रोचक ढंग से व्यक्त करने","गणना करने","समाचार देने","नियम लिखने"],0,"कविता में कल्पना भावों को सुंदर और रोचक बनाती है।"]],
+ ["प्रकृति की सीख",["प्रकृति से हमें क्या सीख मिलती है?",["संतुलन और संरक्षण","अपव्यय","प्रदूषण","लापरवाही"],0,"प्रकृति हमें संतुलन और संरक्षण का महत्व सिखाती है।"]],
+ ["मेहनत का फल",["मेहनत का फल पाने के लिए क्या आवश्यक है?",["निरंतर प्रयास","काम टालना","हार मानना","दूसरों पर निर्भर रहना"],0,"निरंतर प्रयास से लक्ष्य प्राप्त करने में मदद मिलती है।"]]
+ ];
+ const c=document.getElementById("gameClass"),s=document.getElementById("gameSubject"),l=document.getElementById("gameLevel"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");if(!c||!s||!l||!ch||!btn)return;
+ function fill(){if(c.value!=="7"||s.value!=="hindi")return;ch.innerHTML='<option value="all">सभी पाठों का अभ्यास</option>'+units.map((u,i)=>'<option value="'+i+'">'+(i+1)+'. '+u[0]+'</option>').join("");document.getElementById("gameBookNames").textContent="कक्षा 7वीं • NCERT मल्हार • पाठ-आधारित प्रारंभिक अभ्यास";}
+ c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
+ btn.addEventListener("click",function(e){if(c.value!=="7"||s.value!=="hindi")return;e.preventDefault();e.stopImmediatePropagation();const ids=ch.value==="all"?units.map((_,i)=>i):[Number(ch.value)],qs=ids.map(i=>units[i][1]);let p=0,score=0,locked=false;const box=document.getElementById("learningGameCard");
+ function draw(){locked=false;document.getElementById("gameProgress").textContent="प्रश्न "+(p+1)+" / "+qs.length;document.getElementById("gameScore").textContent="⭐ अंक: "+score;box.innerHTML="";const h=document.createElement("h3");h.textContent=qs[p][0];box.appendChild(h);const opts=document.createElement("div");opts.className="game-options";qs[p][1].forEach((v,n)=>{const b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.onclick=()=>answer(n);opts.appendChild(b)});box.appendChild(opts);const f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f)}
+ function answer(n){if(locked)return;locked=true;const q=qs[p],f=document.getElementById("gameFeedback");if(n===q[2]){score++;f.textContent="✅ सही उत्तर! "+q[3];f.classList.add("is-correct")}else{f.textContent="❌ सही उत्तर: "+q[1][q[2]]+". "+q[3];f.classList.add("is-wrong")}document.getElementById("gameScore").textContent="⭐ अंक: "+score;const b=document.createElement("button");b.className="cta game-next";b.textContent=p===qs.length-1?"परिणाम देखें":"अगला प्रश्न";b.onclick=()=>{if(p<qs.length-1){p++;draw()}else finish()};box.appendChild(b)}
+ function finish(){const pct=Math.round(score/qs.length*100);document.getElementById("gameProgress").textContent="खेल पूरा हुआ";box.innerHTML="<h3>🎉 अभ्यास पूरा!</h3><p>"+score+" / "+qs.length+" अंक • "+pct+"%</p><p>पाठ का पूरा अर्थ समझने के लिए पुस्तक पढ़ें।</p>";const b=document.createElement("button");b.className="cta";b.textContent="🔁 फिर से खेलें";b.onclick=()=>btn.click();box.appendChild(b)}draw();
+ },true);
+})();
+</script>
+
 </body>
 </html>
