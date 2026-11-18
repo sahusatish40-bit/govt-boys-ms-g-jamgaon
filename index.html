@@ -1765,5 +1765,36 @@ function finish(){let pct=Math.round(score/questions.length*100);document.getEle
 })();
 </script>
 
+
+<script>
+/* Class 6 Exploring Society India and Beyond: 14 chapter starter quizzes */
+(function(){
+const data=[
+["Locating Places on the Earth","मानचित्र में दिशाएँ जानने के लिए किसका उपयोग होता है?",["दिशा सूचक","थर्मामीटर","तराजू","घड़ी"],0,"मानचित्र में उत्तर, दक्षिण, पूर्व और पश्चिम दिशाएँ दिशा सूचक से समझी जाती हैं।"],
+["Oceans and Continents","पृथ्वी पर सबसे बड़ा महासागर कौन-सा है?",["प्रशांत महासागर","हिंद महासागर","अटलांटिक महासागर","आर्कटिक महासागर"],0,"प्रशांत महासागर पृथ्वी का सबसे बड़ा महासागर है।"],
+["Landforms and Life","पर्वत, पठार और मैदान किसके उदाहरण हैं?",["स्थलरूप","जलवायु","मौसम","वनस्पति"],0,"पर्वत, पठार और मैदान पृथ्वी के प्रमुख स्थलरूप हैं।"],
+["Timeline and Sources of History","इतिहास की घटनाओं को समय क्रम में दिखाने का साधन क्या है?",["समयरेखा","मानचित्र संकेत","मौसम चार्ट","चित्रालेख"],0,"समयरेखा घटनाओं को कालक्रम में दर्शाती है।"],
+["India, That Is Bharat","भारत का संविधान भारत को किस नाम से संबोधित करता है?",["India, that is Bharat","Hindustan only","Aryavarta only","Bharatvarsha only"],0,"संविधान के अनुच्छेद 1 में 'India, that is Bharat' लिखा है।"],
+["The Beginnings of Indian Civilisation","सिंधु/हड़प्पा सभ्यता के नगरों की एक प्रमुख विशेषता क्या थी?",["सुनियोजित नगर व्यवस्था","केवल झोपड़ियाँ","कोई जल निकासी नहीं","लिखित अभिलेखों का पूर्ण अभाव"],0,"हड़प्पा नगरों में योजनाबद्ध सड़कें और जल निकासी व्यवस्था उल्लेखनीय थी।"],
+["India's Cultural Roots","भारत की सांस्कृतिक परंपराओं में विविधता का अर्थ क्या है?",["अलग-अलग परंपराओं का सह-अस्तित्व","सभी रीति-रिवाज एक जैसे","भाषाओं का अभाव","कला का अभाव"],0,"भारत में अनेक भाषाएँ, परंपराएँ और कलाएँ साथ-साथ विकसित हुई हैं।"],
+["Unity in Diversity, or Many in the One","'विविधता में एकता' का सही अर्थ क्या है?",["भिन्नताओं के बावजूद एकता","सभी को एक भाषा बोलना","सभी भोजन समान होना","क्षेत्रीय पहचान मिटाना"],0,"भारत की विविध पहचान के बीच साझा एकता का भाव विविधता में एकता है।"],
+["Family and Community","परिवार और समुदाय में सहयोग क्यों आवश्यक है?",["साझी जरूरतों और जिम्मेदारियों के लिए","केवल प्रतियोगिता के लिए","संबंध समाप्त करने के लिए","नियम तोड़ने के लिए"],0,"सहयोग से परिवार और समुदाय की साझा जरूरतें पूरी होती हैं।"],
+["Grassroots Democracy – Part 1: Governance","लोकतंत्र में शासन का आधार क्या है?",["जनता की भागीदारी","केवल एक व्यक्ति का निर्णय","वंशानुगत सत्ता","बिना नियम शासन"],0,"लोकतंत्र में जनता की भागीदारी और जवाबदेही महत्वपूर्ण हैं।"],
+["Grassroots Democracy – Part 2: Local Government in Rural Areas","ग्राम पंचायत किस स्तर की स्थानीय सरकार है?",["ग्रामीण","राष्ट्रीय","अंतरराष्ट्रीय","केवल शहरी"],0,"ग्राम पंचायत ग्रामीण क्षेत्र की स्थानीय स्वशासन संस्था है।"],
+["Grassroots Democracy – Part 3: Local Government in Urban Areas","नगरपालिका/नगर निगम किस क्षेत्र की स्थानीय संस्था है?",["शहरी","ग्रामीण","वन क्षेत्र","राष्ट्रीय"],0,"नगरपालिका और नगर निगम शहरी स्थानीय शासन संस्थाएँ हैं।"],
+["The Value of Work","किसी भी काम का सम्मान क्यों करना चाहिए?",["हर काम समाज के लिए उपयोगी हो सकता है","केवल कुछ काम जरूरी हैं","काम का कोई मूल्य नहीं","काम केवल धन के लिए है"],0,"हर प्रकार का श्रम समाज और जीवन में योगदान देता है।"],
+["Economic Activities Around Us","वस्तुओं का उत्पादन, वितरण और सेवाएँ किससे संबंधित हैं?",["आर्थिक गतिविधियाँ","केवल मनोरंजन","केवल खेल","केवल मौसम"],0,"उत्पादन, वितरण और सेवाएँ आर्थिक गतिविधियों के उदाहरण हैं।"]
+];
+const c=document.getElementById("gameClass"),s=document.getElementById("gameSubject"),l=document.getElementById("gameLevel"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");if(!c||!s||!l||!ch||!btn)return;
+function fill(){if(c.value!=="6"||s.value!=="social")return;ch.innerHTML='<option value="all">सभी 14 अध्याय</option>'+data.map((u,i)=>'<option value="'+i+'">'+(i+1)+'. '+u[0]+'</option>').join("");document.getElementById("gameBookNames").textContent="कक्षा 6वीं • Exploring Society: India and Beyond • 14 अध्याय";}
+c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
+btn.addEventListener("click",function(e){if(c.value!=="6"||s.value!=="social")return;e.preventDefault();e.stopImmediatePropagation();const ids=ch.value==="all"?data.map((_,i)=>i):[+ch.value],qs=ids.map(i=>{let u=data[i];return [u[1],[u[2][0],u[2][1],u[2][2],u[2][3]],u[3],u[4]]});let p=0,score=0,locked=false,box=document.getElementById("learningGameCard");
+function draw(){locked=false;document.getElementById("gameProgress").textContent="प्रश्न "+(p+1)+" / "+qs.length;document.getElementById("gameScore").textContent="⭐ अंक: "+score;box.innerHTML="";let h=document.createElement("h3");h.textContent=qs[p][0];box.appendChild(h);let opts=document.createElement("div");opts.className="game-options";qs[p][1].forEach((v,n)=>{let b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.onclick=()=>answer(n);opts.appendChild(b)});box.appendChild(opts);let f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f)}
+function answer(n){if(locked)return;locked=true;let q=qs[p],f=document.getElementById("gameFeedback");if(n===q[2]){score++;f.textContent="✅ सही उत्तर! "+q[3];f.classList.add("is-correct")}else{f.textContent="❌ सही उत्तर: "+q[1][q[2]]+". "+q[3];f.classList.add("is-wrong")}document.getElementById("gameScore").textContent="⭐ अंक: "+score;let b=document.createElement("button");b.className="cta game-next";b.textContent=p===qs.length-1?"परिणाम देखें":"अगला प्रश्न";b.onclick=()=>{if(p<qs.length-1){p++;draw()}else finish()};box.appendChild(b)}
+function finish(){let pct=Math.round(score/qs.length*100);document.getElementById("gameProgress").textContent="अभ्यास पूरा";box.innerHTML="<h3>🎉 अभ्यास पूरा!</h3><p>"+score+" / "+qs.length+" अंक • "+pct+"%</p><p>अध्याय शीर्षक NCERT पुस्तक-सूची से लिए गए हैं; प्रत्येक अध्याय का यह प्रारंभिक प्रश्न है।</p>";let b=document.createElement("button");b.className="cta";b.textContent="🔁 दोबारा खेलें";b.onclick=()=>btn.click();box.appendChild(b)}draw();
+},true);
+})();
+</script>
+
 </body>
 </html>
