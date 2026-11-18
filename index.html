@@ -1579,5 +1579,42 @@ function finish(){let pct=Math.round(score/qs.length*100);document.getElementByI
 })();
 </script>
 
+
+<script>
+/* Class 8 Sahayak Vachan reading-comprehension practice */
+(function(){
+const units=[
+["गद्य-पाठ 1 • पाठ का मुख्य भाव",[
+["गद्य-पाठ का मुख्य भाव पहचानने के लिए सबसे पहले क्या करना चाहिए?",["पूरा पाठ ध्यान से पढ़ना","केवल शीर्षक याद करना","अंतिम शब्द देखना","चित्र गिनना"],0,"मुख्य भाव समझने के लिए पाठ को ध्यानपूर्वक पढ़ना जरूरी है।"],
+["किसी कहानी में घटनाओं का क्रम क्या कहलाता है?",["कथानक","छंद","तुक","वर्तनी"],0,"कहानी की घटनाओं का क्रम कथानक कहलाता है।"],
+["पाठ का शीर्षक सामान्यतः किस ओर संकेत करता है?",["पाठ के विषय या केंद्रीय विचार की ओर","केवल लेखक की आयु","पृष्ठ संख्या","प्रकाशक का पता"],0,"शीर्षक पाठ के विषय या केंद्रीय भाव का संकेत देता है।"]]],
+["गद्य-पाठ 2 • पात्र और संवाद",[
+["किसी पात्र का स्वभाव जानने का अच्छा आधार क्या है?",["उसके कार्य और संवाद","केवल नाम","केवल पहनावा","पृष्ठ संख्या"],0,"पात्र के कार्य और संवाद उसके स्वभाव को प्रकट करते हैं।"],
+["संवाद से पाठक को क्या समझने में सहायता मिलती है?",["पात्रों के विचार और संबंध","केवल मौसम","केवल पुस्तक का आकार","केवल लेखक का पता"],0,"संवाद पात्रों के विचार, भाव और संबंध बताते हैं।"],
+["कहानी में समस्या का समाधान सामान्यतः किससे स्पष्ट होता है?",["घटनाओं के परिणाम से","केवल शीर्षक से","कागज के रंग से","पृष्ठ संख्या से"],0,"घटनाओं के परिणाम से समस्या के समाधान का पता चलता है।"]]],
+["पद्य-पाठ 3 • कविता का भाव",[
+["कविता का केंद्रीय भाव क्या है?",["कविता का मुख्य संदेश या अनुभूति","केवल तुक","केवल कवि का नाम","पंक्तियों की संख्या"],0,"केंद्रीय भाव कविता का मुख्य संदेश या अनुभूति है।"],
+["कविता में लय किससे बनती है?",["ध्वनि और गति के क्रम से","केवल चित्र से","केवल शीर्षक से","केवल अनुच्छेद से"],0,"शब्दों की ध्वनि और गति कविता में लय बनाती है।"],
+["कविता में प्रतीक का उपयोग क्यों किया जाता है?",["भाव को संकेत के रूप में व्यक्त करने के लिए","कविता लंबी करने के लिए","वर्तनी बदलने के लिए","पृष्ठ सजाने के लिए"],0,"प्रतीक किसी गहरे भाव या विचार को संकेत में व्यक्त करता है।"]]],
+["पठन कौशल 4 • शब्दार्थ और संदर्भ",[
+["किसी अपरिचित शब्द का अर्थ समझने में क्या मदद करता है?",["वाक्य का संदर्भ","केवल शब्द की लंबाई","पृष्ठ का रंग","लेखक का हस्ताक्षर"],0,"आसपास के वाक्यों और प्रसंग से शब्द का अर्थ समझने में मदद मिलती है।"],
+["‘परिश्रम’ का निकटार्थी शब्द कौन-सा है?",["मेहनत","आलस्य","विश्राम","भय"],0,"परिश्रम का अर्थ मेहनत है।"],
+["‘उदार’ का विलोम शब्द क्या है?",["कृपण","दयालु","सहृदय","विनम्र"],0,"उदार का विलोम कृपण है।"]]],
+["पठन कौशल 5 • निष्कर्ष और संदेश",[
+["पाठ से निष्कर्ष निकालते समय किसका ध्यान रखना चाहिए?",["पाठ में दिए तथ्यों और घटनाओं का","अपनी कल्पना मात्र का","केवल चित्रों का","बिना पढ़े अनुमान का"],0,"निष्कर्ष पाठ के तथ्य और घटनाओं पर आधारित होना चाहिए।"],
+["किसी पाठ का संदेश किससे समझा जाता है?",["पूरे पाठ के विचार और परिणाम से","केवल लेखक के नाम से","केवल पृष्ठ संख्या से","केवल कठिन शब्दों से"],0,"पाठ का संदेश उसके विचारों और घटनाओं के परिणाम से समझा जाता है।"],
+["पाठ पढ़ने के बाद सार लिखने का सही तरीका क्या है?",["मुख्य बातों को संक्षेप में लिखना","हर पंक्ति ज्यों की त्यों लिखना","असंबंधित बातें जोड़ना","केवल शीर्षक लिखना"],0,"सार में मुख्य विचार संक्षेप और अपने शब्दों में लिखे जाते हैं।"]]]
+];
+const c=document.getElementById("gameClass"),s=document.getElementById("gameSubject"),l=document.getElementById("gameLevel"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");if(!c||!s||!l||!ch||!btn)return;
+function fill(){if(c.value!=="8"||s.value!=="supplement")return;ch.innerHTML='<option value="all">सभी 5 पठन-अभ्यास</option>'+units.map((u,i)=>'<option value="'+i+'">'+u[0]+'</option>').join("");document.getElementById("gameBookNames").textContent="कक्षा 8वीं • सहायक वाचन • पठन-कौशल आधारित अभ्यास";}
+c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
+btn.addEventListener("click",function(e){if(c.value!=="8"||s.value!=="supplement")return;e.preventDefault();e.stopImmediatePropagation();const ids=ch.value==="all"?units.map((_,i)=>i):[+ch.value],lv=Math.max(0,["easy","medium","hard"].indexOf(l.value)),qs=ids.map(i=>units[i][1][lv]);let p=0,score=0,locked=false,box=document.getElementById("learningGameCard");
+function draw(){locked=false;document.getElementById("gameProgress").textContent="प्रश्न "+(p+1)+" / "+qs.length;document.getElementById("gameScore").textContent="⭐ अंक: "+score;box.innerHTML="";let h=document.createElement("h3");h.textContent=qs[p][0];box.appendChild(h);let opts=document.createElement("div");opts.className="game-options";qs[p][1].forEach((v,n)=>{let b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.onclick=()=>answer(n);opts.appendChild(b)});box.appendChild(opts);let f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f)}
+function answer(n){if(locked)return;locked=true;let q=qs[p],f=document.getElementById("gameFeedback");if(n===q[2]){score++;f.textContent="✅ सही उत्तर! "+q[3];f.classList.add("is-correct")}else{f.textContent="❌ सही उत्तर: "+q[1][q[2]]+". "+q[3];f.classList.add("is-wrong")}document.getElementById("gameScore").textContent="⭐ अंक: "+score;let b=document.createElement("button");b.className="cta game-next";b.textContent=p===qs.length-1?"परिणाम देखें":"अगला प्रश्न";b.onclick=()=>{if(p<qs.length-1){p++;draw()}else finish()};box.appendChild(b)}
+function finish(){let pct=Math.round(score/qs.length*100);document.getElementById("gameProgress").textContent="अभ्यास पूरा";box.innerHTML="<h3>🎉 अभ्यास पूरा!</h3><p>"+score+" / "+qs.length+" अंक • "+pct+"%</p><p>ये पठन-कौशल अभ्यास हैं, सहायक वाचन पुस्तक के सत्यापित पाठवार प्रश्न नहीं।</p>";let b=document.createElement("button");b.className="cta";b.textContent="🔁 दोबारा खेलें";b.onclick=()=>btn.click();box.appendChild(b)}draw();
+},true);
+})();
+</script>
+
 </body>
 </html>
