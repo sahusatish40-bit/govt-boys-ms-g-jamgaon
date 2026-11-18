@@ -2062,5 +2062,43 @@ function finish(){let pct=Math.round(score/qs.length*100);document.getElementByI
 })();
 </script>
 
+
+<script>
+/* Class 7 Exploring Society: India and Beyond Parts I & II — all 20 NCERT chapters */
+(function(){
+const rows=[
+["Geographical Diversity of India","भारत की उत्तरी प्राकृतिक सीमा पर कौन-सी पर्वत-श्रेणी है?",["हिमालय","अरावली","सतपुड़ा","नीलगिरि"],0,"हिमालय भारत के उत्तर में विस्तृत पर्वत-श्रेणी है।"],
+["Understanding the Weather","मौसम का अध्ययन किससे संबंधित है?",["किसी स्थान की अल्पकालिक वायुमंडलीय दशाओं से","लंबे समय के औसत से ही","केवल मिट्टी से","केवल समुद्र की गहराई से"],0,"मौसम किसी स्थान की अल्पकालिक वायुमंडलीय दशा है।"],
+["Climates of India","भारत की जलवायु पर किसका महत्वपूर्ण प्रभाव है?",["मानसून पवनों का","ध्रुवीय रातों का","ज्वालामुखी राख का","केवल हिमपात का"],0,"मानसून पवनें भारत की जलवायु और वर्षा को प्रभावित करती हैं।"],
+["New Beginnings: Cities and States","प्राचीन नगरों के विकास में कौन-सा कारक सहायक था?",["कृषि अधिशेष और व्यापार","केवल आधुनिक रेल","कंप्यूटर नेटवर्क","हवाई अड्डे"],0,"कृषि अधिशेष और व्यापार ने बस्तियों तथा नगरों के विकास में मदद की।"],
+["The Rise of Empires","मौर्य साम्राज्य के प्रसिद्ध शासक कौन थे?",["सम्राट अशोक","समुद्रगुप्त","हर्षवर्धन","पुलकेशिन"],0,"अशोक मौर्य वंश के प्रसिद्ध सम्राट थे।"],
+["The Age of Reorganisation","इतिहास में राजनीतिक पुनर्गठन का अर्थ क्या है?",["राज्यों और सत्ता-संरचनाओं में बदलाव","मौसम बदलना","नदियों का सूखना","फसलों का पकना"],0,"राजनीतिक पुनर्गठन में राज्यों, सत्ता और प्रशासनिक व्यवस्थाओं में परिवर्तन शामिल है।"],
+["The Gupta Era: An Age of Tireless Creativity","गुप्त काल किस क्षेत्र में उपलब्धियों के लिए प्रसिद्ध है?",["कला, साहित्य और विज्ञान","केवल समुद्री व्यापार","केवल आधुनिक उद्योग","केवल रेल निर्माण"],0,"गुप्त काल कला, साहित्य, गणित और विज्ञान की उपलब्धियों के लिए प्रसिद्ध है।"],
+["How the Land Becomes Sacred","किसी स्थान को पवित्र मानने का संबंध किससे हो सकता है?",["आस्था, परंपरा और सांस्कृतिक स्मृति से","केवल बाजार भाव से","केवल मौसम से","केवल खनिज से"],0,"धार्मिक आस्था, परंपराएँ और स्मृतियाँ स्थानों को सांस्कृतिक महत्व देती हैं।"],
+["From the Rulers to the Ruled: Types of Governments","लोकतंत्र में अंतिम सत्ता का स्रोत कौन है?",["जनता","वंशानुगत राजा","सेना मात्र","व्यापारी समूह"],0,"लोकतंत्र में शासन की वैधता जनता की सहमति से आती है।"],
+["The Constitution of India — An Introduction","भारतीय संविधान कब अपनाया गया?",["26 नवंबर 1949","26 जनवरी 1950","15 अगस्त 1947","2 अक्टूबर 1950"],0,"संविधान सभा ने 26 नवंबर 1949 को संविधान अपनाया।"],
+["From Barter to Money","वस्तु-विनिमय प्रणाली में लेन-देन किससे होता है?",["वस्तु के बदले वस्तु","केवल डिजिटल भुगतान","केवल कागजी मुद्रा","केवल बैंक ऋण"],0,"वस्तु-विनिमय में एक वस्तु के बदले दूसरी वस्तु दी जाती है।"],
+["Understanding Markets","बाजार में खरीदार और विक्रेता किसलिए मिलते हैं?",["वस्तुओं और सेवाओं के विनिमय के लिए","केवल खेल खेलने","मौसम देखने","चुनाव कराने"],0,"बाजार वस्तुओं और सेवाओं के क्रय-विक्रय का स्थान/व्यवस्था है।"],
+["The Story of Indian Farming","खरीफ फसलें सामान्यतः कब बोई जाती हैं?",["मानसून के आरंभ में","शीत ऋतु के अंत में","गर्मी के अंत में","पूरे वर्ष बिना मौसम"],0,"खरीफ फसलें मानसून के साथ बोई जाती हैं।"],
+["India and Her Neighbours","भारत के दक्षिण में कौन-सा द्वीपीय पड़ोसी देश है?",["श्रीलंका","नेपाल","भूटान","अफगानिस्तान"],0,"श्रीलंका भारत के दक्षिण में हिंद महासागर में स्थित द्वीपीय देश है।"],
+["Empires and Kingdoms: 6th to 10th Centuries","प्राचीन भारत में ‘साम्राज्य’ का अर्थ क्या है?",["विस्तृत क्षेत्र पर शासन","केवल एक गाँव","केवल व्यापार मंडी","एक धार्मिक स्थल"],0,"साम्राज्य अनेक क्षेत्रों और जनसमुदायों पर विस्तृत शासन होता है।"],
+["Turning Tides: 11th and 12th Centuries","इतिहास में ‘Turning Tides’ किस ओर संकेत करता है?",["महत्वपूर्ण बदलावों और सत्ता-परिवर्तनों की ओर","ऋतु चक्र की ओर","केवल खेती की ओर","नदी के जलस्तर की ओर"],0,"यह अध्याय 11वीं-12वीं शताब्दी के महत्वपूर्ण ऐतिहासिक बदलावों पर केंद्रित है।"],
+["India, a Home to Many","भारत की विविधता में कौन-सी बात शामिल है?",["भाषाओं और समुदायों की विविधता","एक ही भाषा और रीति","सभी क्षेत्रों का समान भोजन","सांस्कृतिक भिन्नता का अभाव"],0,"भारत में अनेक भाषाएँ, समुदाय और सांस्कृतिक परंपराएँ हैं।"],
+["The State, the Government, and You","सरकार का एक प्रमुख कार्य क्या है?",["सार्वजनिक सेवाएँ और कानून-व्यवस्था","केवल निजी व्यापार","केवल मनोरंजन","केवल खेल प्रतियोगिता"],0,"सरकार सार्वजनिक सेवाएँ उपलब्ध कराती और कानून लागू करती है।"],
+["Infrastructure: Engine of India’s Development","सड़क, रेल और बिजली किसके उदाहरण हैं?",["आधारभूत संरचना","प्राकृतिक आपदा","मुद्रा","फसल"],0,"सड़क, रेल, बिजली और संचार आधारभूत संरचना के उदाहरण हैं।"],
+["Banks and the Magic of Finance","बैंक में जमा धन पर खाताधारक को क्या मिल सकता है?",["ब्याज","कर-माफी हमेशा","मुफ्त भूमि","निश्चित वेतन"],0,"बैंक जमा पर नियमों के अनुसार ब्याज दे सकते हैं।"]
+];
+const c=document.getElementById("gameClass"),s=document.getElementById("gameSubject"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");if(!c||!s||!ch||!btn)return;
+function fill(){if(c.value!=="7")return;let o=[...s.options].find(x=>x.value==="social7");if(!o){o=document.createElement("option");o.value="social7";o.textContent="सामाजिक विज्ञान • Exploring Society भाग 1 एवं 2";s.appendChild(o);}if(s.value==="social7"){ch.innerHTML='<option value="all">सभी 20 अध्याय</option>'+rows.map((r,i)=>'<option value="'+i+'">'+(i+1)+'. '+r[0]+'</option>').join("");document.getElementById("gameBookNames").textContent="कक्षा 7 • Exploring Society: India and Beyond • भाग 1 (12) + भाग 2 (8)";}
+}
+c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
+btn.addEventListener("click",function(e){if(c.value!=="7"||s.value!=="social7")return;e.preventDefault();e.stopImmediatePropagation();let ids=ch.value==="all"?rows.map((_,i)=>i):[+ch.value],qs=ids.map(i=>rows[i]);let p=0,score=0,locked=false,box=document.getElementById("learningGameCard");
+function draw(){locked=false;document.getElementById("gameProgress").textContent="प्रश्न "+(p+1)+" / "+qs.length;document.getElementById("gameScore").textContent="⭐ अंक: "+score;box.innerHTML="";let h=document.createElement("h3");h.textContent=qs[p][1];box.appendChild(h);let opts=document.createElement("div");opts.className="game-options";qs[p][2].forEach((v,n)=>{let b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.onclick=()=>answer(n);opts.appendChild(b)});box.appendChild(opts);let f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f)}
+function answer(n){if(locked)return;locked=true;let q=qs[p],f=document.getElementById("gameFeedback");if(n===q[3]){score++;f.textContent="✅ सही उत्तर! "+q[4];f.classList.add("is-correct")}else{f.textContent="❌ सही उत्तर: "+q[2][q[3]]+". "+q[4];f.classList.add("is-wrong")}document.getElementById("gameScore").textContent="⭐ अंक: "+score;let b=document.createElement("button");b.className="cta game-next";b.textContent=p===qs.length-1?"परिणाम देखें":"अगला प्रश्न";b.onclick=()=>{if(p<qs.length-1){p++;draw()}else finish()};box.appendChild(b)}
+function finish(){let pct=Math.round(score/qs.length*100);document.getElementById("gameProgress").textContent="अभ्यास पूरा";box.innerHTML="<h3>🎉 अभ्यास पूरा!</h3><p>"+score+" / "+qs.length+" अंक • "+pct+"%</p><p>अध्याय शीर्षक NCERT Exploring Society भाग 1 और 2 की सूची से मिलाए गए हैं। प्रत्येक अध्याय का यह एक प्रारंभिक प्रश्न है।</p>";let b=document.createElement("button");b.className="cta";b.textContent="🔁 दोबारा खेलें";b.onclick=()=>btn.click();box.appendChild(b)}draw();
+},true);
+})();
+</script>
+
 </body>
 </html>
