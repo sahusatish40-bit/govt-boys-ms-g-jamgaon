@@ -1796,5 +1796,60 @@ function finish(){let pct=Math.round(score/qs.length*100);document.getElementByI
 })();
 </script>
 
+
+<script>
+/* Class 6 Poorvi and Deepakam: NCERT-aligned chapter selectors */
+(function(){
+const eng=[
+["Fables and Folk Tales",[
+["What is the main purpose of a fable?",["To teach a lesson","To give weather news","To list numbers","To describe a machine"],0,"Fables commonly communicate a moral through a story."],
+["Which word means the lesson of a story?",["Moral","Setting","Character","Dialogue"],0,"The moral is the lesson or message of a story."],
+["A story's characters are—",["The people or animals in it","Its page numbers","Its punctuation marks","Its chapter list"],0,"Characters are the people or animals who take part in a story."]]],
+["Friendship",[
+["A good friend is usually—",["Kind and trustworthy","Selfish","Dishonest","Unhelpful"],0,"Kindness and trust help build friendship."],
+["What should we do when a friend needs help?",["Help them when we can","Make fun of them","Ignore them","Spread rumours"],0,"Helping friends shows care and support."],
+["The word ‘trust’ means—",["Belief in someone","Anger","Fear","Confusion"],0,"Trust is confidence that someone is honest and reliable."]]],
+["Nurturing Nature",[
+["Which action helps protect nature?",["Planting trees","Wasting water","Littering","Cutting forests"],0,"Planting trees supports the environment."],
+["Neem is known for its—",["Useful traditional properties","Metal leaves","Plastic roots","Artificial flowers"],0,"Neem is valued for several traditional uses."],
+["Why should we save water?",["Fresh water is precious","Water is unlimited","Plants do not need it","It cannot be reused"],0,"Fresh water is essential and must be used carefully."]]],
+["Sports and Wellness",[
+["Regular exercise helps us stay—",["Healthy and active","Always sleepy","Unhealthy","Weak"],0,"Exercise supports physical and mental well-being."],
+["Yoga includes—",["Postures and breathing","Only running","Only eating","Only sleeping"],0,"Yoga includes postures, breathing and attention."],
+["In a team game, players should—",["Cooperate","Ignore teammates","Break rules","Refuse to share"],0,"Teamwork requires cooperation and fair play."]]],
+["Culture and Tradition",[
+["Culture may include—",["Language, art, food and festivals","Only machines","Only roads","Only numbers"],0,"Culture includes shared traditions and forms of expression."],
+["India is known for—",["Cultural diversity","Only one language","No regional traditions","No festivals"],0,"India has many languages, arts and traditions."],
+["A memorial helps people—",["Remember important people or events","Measure distance","Grow crops","Store water"],0,"A memorial is made to remember people or events."]]]
+];
+const san=[
+["वयं वर्णमालां पठामः","संस्कृत वर्णमालायां स्वराः के?",["अ, आ, इ, ई","क, ख, ग, घ","ट, ठ, ड, ढ","प, फ, ब, भ"],0,"अ, आ, इ, ई स्वरवर्णाः सन्ति।"],
+["संयुक्त-व्यञ्जनानि","‘क्ष’ कस्य उदाहरणम्?",["संयुक्तव्यञ्जनम्","स्वरः","अव्ययम्","संख्या"],0,"‘क्ष’ संयुक्तव्यञ्जनस्य उदाहरणम्।"],
+["एषः कः? एषा का? एतत् किम्?","‘एषः’ कस्य लिङ्गस्य रूपम्?",["पुल्लिङ्गम्","स्त्रीलिङ्गम्","नपुंसकलिङ्गम्","बहुवचनम्"],0,"‘एषः’ पुल्लिङ्गे एकवचनस्य निर्देशवाचकम्।"],
+["अहं च त्वं च","‘अहम्’ इत्यस्य अर्थः कः?",["मैं","तुम","वह","वे"],0,"‘अहम्’ का अर्थ ‘मैं’ है।"],
+["सङ्ख्यागणना ननु सरला","‘पञ्च’ इत्यस्य संख्या का?",["5","3","7","10"],0,"‘पञ्च’ का अर्थ पाँच है।"],
+["अहं प्रातः उत्तिष्ठामि","‘प्रातः’ इत्यस्य अर्थः कः?",["सुबह","रात्रि","सायंकाल","मध्याह्न"],0,"‘प्रातः’ का अर्थ सुबह है।"],
+["शूराः वयं धीराः वयम्","‘शूराः’ शब्दस्य अर्थः कः?",["वीराः","भीरवः","आलसिनः","दुःखिताः"],0,"‘शूराः’ का अर्थ वीर या साहसी है।"],
+["सः एव महान् चित्रकारः","‘चित्रकारः’ कः?",["चित्र बनाने वाला","गायकः","कृषकः","लेखकः"],0,"चित्रकारः चित्र बनाता है।"],
+["अतिथिदेवो भव","‘अतिथिः’ इत्यस्य अर्थः कः?",["मेहमान","शिक्षक","मित्र","छात्र"],0,"‘अतिथि’ का अर्थ मेहमान है।"],
+["बुद्धिः सर्वार्थसाधिका","‘बुद्धिः’ इत्यस्य अर्थः कः?",["बुद्धि","जल","पुस्तक","वृक्ष"],0,"‘बुद्धिः’ का अर्थ बुद्धि या समझ है।"],
+["यः जानाति सः पण्डितः","‘पण्डितः’ कः?",["विद्वान्","क्रीडकः","सेवकः","बालकः"],0,"‘पण्डितः’ का अर्थ विद्वान व्यक्ति है।"],
+["त्वम् आपणं गच्छ","‘आपणम्’ इत्यस्य अर्थः कः?",["दुकान/बाजार","विद्यालय","उद्यान","गृह"],0,"‘आपणम्’ का अर्थ दुकान या बाजार है।"],
+["पृथिव्यां त्रीणि रत्नानि","‘पृथिव्याम्’ इत्यस्य अर्थः कः?",["पृथ्वी पर","आकाश में","जल में","वन में"],0,"‘पृथिव्याम्’ का अर्थ पृथ्वी पर है।"],
+["आलस्यं हि मनुष्याणां शरीरस्थः महान् रिपुः","‘आलस्यम्’ इत्यस्य अर्थः कः?",["आलस्य","परिश्रम","साहस","ज्ञान"],0,"‘आलस्यम्’ का अर्थ आलस्य है।"],
+["माधवस्य प्रियम् अङ्गम्","‘अङ्गम्’ इत्यस्य अर्थः कः?",["शरीर का अंग","वृक्ष","पुष्प","पुस्तक"],0,"‘अङ्गम्’ का अर्थ शरीर का अंग है।"],
+["वृक्षाः सत्पुरुषाः इव","‘वृक्षाः’ इत्यस्य एकवचनं किम्?",["वृक्षः","वृक्षम्","वृक्षे","वृक्षौ"],0,"‘वृक्षाः’ बहुवचन है; एकवचन ‘वृक्षः’ है।"]
+];
+const c=document.getElementById("gameClass"),s=document.getElementById("gameSubject"),l=document.getElementById("gameLevel"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");if(!c||!s||!l||!ch||!btn)return;
+function fill(){if(c.value!=="6")return;if(s.value==="english"){ch.innerHTML='<option value="all">सभी 5 Units</option>'+eng.map((u,i)=>'<option value="'+i+'">'+u[0]+'</option>').join("");document.getElementById("gameBookNames").textContent="कक्षा 6 • Poorvi • 5 Units";}else if(s.value==="sanskrit"){ch.innerHTML='<option value="all">सभी 16 पाठ</option>'+san.map((u,i)=>'<option value="'+i+'">'+(i+1)+". "+u[0]+'</option>').join("");document.getElementById("gameBookNames").textContent="कक्षा 6 • Deepakam • 16 पाठ";}}
+c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
+btn.addEventListener("click",function(e){if(c.value!=="6"||(s.value!=="english"&&s.value!=="sanskrit"))return;e.preventDefault();e.stopImmediatePropagation();let qs;if(s.value==="english"){let ids=ch.value==="all"?eng.map((_,i)=>i):[+ch.value],lv=Math.max(0,["easy","medium","hard"].indexOf(l.value));qs=ids.map(i=>eng[i][1][lv]);}else{let ids=ch.value==="all"?san.map((_,i)=>i):[+ch.value];qs=ids.map(i=>[san[i][1],san[i][2],san[i][3],san[i][4]]);}let p=0,score=0,locked=false,box=document.getElementById("learningGameCard");
+function draw(){locked=false;document.getElementById("gameProgress").textContent="प्रश्न "+(p+1)+" / "+qs.length;document.getElementById("gameScore").textContent="⭐ अंक: "+score;box.innerHTML="";let h=document.createElement("h3");h.textContent=qs[p][0];box.appendChild(h);let opts=document.createElement("div");opts.className="game-options";qs[p][1].forEach((v,n)=>{let b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.onclick=()=>answer(n);opts.appendChild(b)});box.appendChild(opts);let f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f)}
+function answer(n){if(locked)return;locked=true;let q=qs[p],f=document.getElementById("gameFeedback");if(n===q[2]){score++;f.textContent="✅ सही उत्तर! "+q[3];f.classList.add("is-correct")}else{f.textContent="❌ सही उत्तर: "+q[1][q[2]]+". "+q[3];f.classList.add("is-wrong")}document.getElementById("gameScore").textContent="⭐ अंक: "+score;let b=document.createElement("button");b.className="cta game-next";b.textContent=p===qs.length-1?"परिणाम देखें":"अगला प्रश्न";b.onclick=()=>{if(p<qs.length-1){p++;draw()}else finish()};box.appendChild(b)}
+function finish(){let pct=Math.round(score/qs.length*100);document.getElementById("gameProgress").textContent="अभ्यास पूरा";box.innerHTML="<h3>🎉 अभ्यास पूरा!</h3><p>"+score+" / "+qs.length+" अंक • "+pct+"%</p><p>पाठ/इकाई शीर्षक NCERT सूची के अनुसार हैं; ये प्रारंभिक भाषा-अभ्यास प्रश्न हैं।</p>";let b=document.createElement("button");b.className="cta";b.textContent="🔁 दोबारा खेलें";b.onclick=()=>btn.click();box.appendChild(b)}draw();
+},true);
+})();
+</script>
+
 </body>
 </html>
