@@ -299,6 +299,12 @@ style="width:85px;height:85px;object-fit:contain;">
     <p class="game-source-links"><a href="https://ncert.nic.in/textbook.php" target="_blank" rel="noopener">NCERT आधिकारिक पुस्तकें देखें ↗</a> <a href="https://scert.cg.gov.in/pdf/textbook-2024-25/textbook-2024-25.htm" target="_blank" rel="noopener">SCERT छत्तीसगढ़ कक्षा 8 पुस्तकें देखें ↗</a></p>
     <small>पुस्तक लिंक आधिकारिक पोर्टल पर खुलेंगे। वर्तमान प्रश्न अभ्यास हेतु हैं; अध्यायवार प्रश्न संबंधित अध्याय-सामग्री की पुष्टि के बाद जोड़े जाएँगे।</small>
   </div>
+  <div class="game-book-source" id="officialGameBooks">
+ <strong>📖 आधिकारिक पाठ्यपुस्तकें खोलें</strong>
+ <p>कक्षा 6वीं–7वीं: NCERT हिंदी माध्यम | कक्षा 8वीं: छत्तीसगढ़ SCERT हिंदी माध्यम</p>
+ <p class="game-source-links"><a href="https://ncert.nic.in/textbook.php" target="_blank" rel="noopener">NCERT कक्षा 6–7 पुस्तकें ↗</a> <a href="https://scert.cg.gov.in/pdf/textbook-2024-25/textbook-2024-25.htm" target="_blank" rel="noopener">CG SCERT कक्षा 8 पुस्तकें ↗</a></p>
+ <small>ये आधिकारिक पोर्टल हैं। पुस्तक/अध्याय का चयन वहाँ कक्षा और विषय चुनकर करें।</small>
+ </div>
   <div class="game-scorebar"><span id="gameProgress">प्रश्न 1 / 5</span><strong id="gameScore">⭐ अंक: 0</strong></div>
   <div id="learningGameCard" class="learning-game-card" aria-live="polite">
     <div class="game-welcome-icon">🧠</div><h3>आज कुछ नया सीखें!</h3>
@@ -546,5 +552,28 @@ CHHATTISGARH
 })();
 </script>
 
+<script>
+(function(){
+ const data=[["आकाश दर्शन","खगोल विज्ञान किसका अध्ययन करता है?",["आकाशीय पिंडों का","मिट्टी का","ध्वनि का","पौधों का"],0,"खगोल विज्ञान आकाशीय पिंडों और ब्रह्मांड का अध्ययन है।"],["संश्लेषित रेशे और प्लास्टिक","नायलॉन किस प्रकार का रेशा है?",["संश्लेषित","प्राकृतिक","पादप रेशा","पशु रेशा"],0,"नायलॉन मानव निर्मित संश्लेषित रेशा है।"],["वायु","वायु में सर्वाधिक मात्रा किस गैस की है?",["नाइट्रोजन","ऑक्सीजन","कार्बन डाइऑक्साइड","हाइड्रोजन"],0,"वायु में लगभग 78% नाइट्रोजन होती है।"],["रासायनिक अभिक्रियाएँ – कब और कैसी-कैसी","लोहे में जंग लगना किसका उदाहरण है?",["रासायनिक परिवर्तन","भौतिक परिवर्तन","गलन","वाष्पीकरण"],0,"जंग बनने पर नया पदार्थ बनता है।"],["धातुएँ और अधातुएँ","सामान्य ताप पर द्रव धातु कौन-सी है?",["पारा","लोहा","ताँबा","एल्युमिनियम"],0,"पारा सामान्य ताप पर द्रव अवस्था में रहता है।"],["कार्बन","कार्बन का रासायनिक संकेत क्या है?",["C","Ca","Co","Cr"],0,"कार्बन का संकेत C है।"],["शरीर की रचनात्मक एवं कार्यात्मक इकाई–कोशिका","जीवों की मूल संरचनात्मक इकाई क्या है?",["कोशिका","ऊतक","अंग","अंग-तंत्र"],0,"कोशिका जीवन की मूल संरचनात्मक एवं कार्यात्मक इकाई है।"],["सूक्ष्मजीव–एक अद्भुत संसार","दही जमाने में कौन-सा जीवाणु सहायक होता है?",["लैक्टोबैसिलस","अमीबा","प्लाज्मोडियम","विषाणु"],0,"लैक्टोबैसिलस दूध को दही में बदलने में मदद करता है।"],["प्रकाश का अपवर्तन","प्रकाश का एक माध्यम से दूसरे माध्यम में मुड़ना क्या कहलाता है?",["अपवर्तन","परावर्तन","विक्षेपण","अवशोषण"],0,"माध्यम बदलने पर प्रकाश की दिशा बदलना अपवर्तन है।"],["ध्वनि","ध्वनि किससे उत्पन्न होती है?",["कंपन","छाया","चुंबक","गंध"],0,"ध्वनि कंपन से उत्पन्न होती है।"],["विद्युत धारा के रासायनिक प्रभाव","विद्युत लेपन में किसका उपयोग होता है?",["विद्युत धारा","केवल ऊष्मा","ध्वनि","प्रकाश"],0,"विद्युत धारा द्वारा धातु की परत चढ़ाना विद्युत लेपन है।"],["ऊर्जा के स्रोत","नवीकरणीय ऊर्जा स्रोत कौन-सा है?",["सौर ऊर्जा","कोयला","पेट्रोलियम","प्राकृतिक गैस"],0,"सौर ऊर्जा लगातार उपलब्ध होने वाला नवीकरणीय स्रोत है।"],["खाद्य उत्पादन एवं प्रबंधन","धान सामान्यतः किस मौसम की फसल है?",["खरीफ","रबी","जायद","शीत"],0,"धान खरीफ मौसम की प्रमुख फसल है।"],["घर्षण","घर्षण बल किसका विरोध करता है?",["सापेक्ष गति","प्रकाश","ताप","ध्वनि"],0,"घर्षण संपर्क सतहों के बीच सापेक्ष गति का विरोध करता है।"],["कितना भोजन, कैसा भोजन","संतुलित आहार में क्या होता है?",["सभी पोषक तत्व उचित मात्रा में","केवल वसा","केवल शर्करा","केवल प्रोटीन"],0,"संतुलित आहार में सभी आवश्यक पोषक तत्व उचित मात्रा में होते हैं।"],["कुछ सामान्य रोग","मलेरिया किसके काटने से फैलता है?",["संक्रमित मादा एनोफिलीज मच्छर","मक्खी","मधुमक्खी","तितली"],0,"मलेरिया संक्रमित मादा एनोफिलीज मच्छर से फैलता है।"],["किशोरावस्था","किशोरावस्था के अनेक शारीरिक परिवर्तन किसके कारण होते हैं?",["हार्मोन","केवल पानी","ध्वनि","प्रकाश"],0,"किशोरावस्था में हार्मोन शारीरिक परिवर्तनों को नियंत्रित करते हैं।"]];
+ const $=id=>document.getElementById(id);
+ const cls=$("gameClass"),sub=$("gameSubject"),chap=$("gameChapter"),start=$("startLearningGame"),card=$("learningGameCard");
+ if(!cls||!sub||!chap||!start||!card)return;
+ const labels=()=>{chap.innerHTML='<option value="general">सामान्य अभ्यास</option>';
+ if(cls.value==="8"&&sub.value==="science"){data.forEach((d,i)=>{const o=document.createElement("option");o.value=String(i);o.textContent="अध्याय "+(i+1)+" : "+d[0];chap.appendChild(o);});}
+ };
+ cls.addEventListener("change",()=>setTimeout(labels,0));sub.addEventListener("change",()=>setTimeout(labels,0));
+ labels();
+ let qs=[],idx=0,score=0,locked=false;
+ function show(){locked=false;const q=qs[idx];card.innerHTML="";$("gameProgress").textContent="प्रश्न "+(idx+1)+" / "+qs.length;$("gameScore").textContent="⭐ अंक: "+score;
+ const h=document.createElement("h3");h.className="game-question";h.textContent=q[0];card.appendChild(h);
+ const opts=document.createElement("div");opts.className="game-options";q[1].forEach((v,n)=>{const b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.addEventListener("click",()=>answer(n));opts.appendChild(b)});card.appendChild(opts);
+ const f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";card.appendChild(f);}
+ function answer(n){if(locked)return;locked=true;const q=qs[idx],f=$("gameFeedback");if(n===q[2]){score++;f.textContent="✅ सही उत्तर! "+q[3];f.classList.add("is-correct")}else{f.textContent="❌ सही उत्तर: "+q[1][q[2]]+". "+q[3];f.classList.add("is-wrong")}$("gameScore").textContent="⭐ अंक: "+score;
+ const b=document.createElement("button");b.type="button";b.className="cta game-next";b.textContent=idx===qs.length-1?"परिणाम देखें":"अगला प्रश्न";b.onclick=()=>{if(idx<qs.length-1){idx++;show()}else finish()};card.appendChild(b);}
+ function finish(){const p=Math.round(score/qs.length*100);$("gameProgress").textContent="खेल पूरा हुआ";card.innerHTML="<h3>🎉 अभ्यास पूरा हुआ!</h3><p>"+score+" / "+qs.length+" अंक • "+p+"%</p><p>"+(p>=80?"बहुत अच्छा!":p>=50?"अच्छा प्रयास!":"फिर से अभ्यास करें।")+"</p>";const b=document.createElement("button");b.className="cta";b.textContent="🔁 दोबारा खेलें";b.onclick=()=>run();card.appendChild(b);}
+ function run(){const d=data[Number(chap.value)];qs=[[d[1],d[2],d[3],d[4]]];idx=0;score=0;show();}
+ start.addEventListener("click",e=>{if(cls.value==="8"&&sub.value==="science"&&chap.value!=="general"){e.preventDefault();e.stopImmediatePropagation();run();}},true);
+})();
+</script>
 </body>
 </html>
