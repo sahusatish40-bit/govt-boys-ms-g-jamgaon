@@ -847,5 +847,65 @@ btn.addEventListener("click",function(e){if(c.value!=="8"||s.value!=="english"||
 })();
 </script>
 
+
+<script>
+/* Class 6 NCERT Ganita Prakash: chapter-wise three-level practice */
+(function(){
+ const data=[
+ ["गणित में पैटर्न",[
+ ["अगली संख्या चुनें: 2, 4, 6, 8, __",["9","10","11","12"],1,"हर बार 2 जोड़ा गया है; अगली संख्या 10 है।"],
+ ["नियम ×3 हो तो 7 के बाद कौन-सी संख्या आएगी?",["18","20","21","24"],2,"7 × 3 = 21."],
+ ["1, 4, 9, 16 के बाद अगली वर्ग संख्या है—",["20","24","25","36"],2,"ये 1², 2², 3², 4² हैं; अगली 5² = 25 है।"]]],
+ ["रेखाएँ और कोण",[
+ ["समकोण का माप कितना होता है?",["45°","90°","180°","360°"],1,"समकोण 90° का होता है।"],
+ ["एक सरल कोण का माप है—",["90°","120°","180°","270°"],2,"सरल कोण 180° का होता है।"],
+ ["यदि कोण 35° है, तो उसका पूरक कोण होगा—",["45°","55°","65°","145°"],1,"पूरक कोणों का योग 90° होता है; 90°−35°=55°।"]]],
+ ["संख्याओं का खेल",[
+ ["सबसे छोटी चार अंकों की संख्या है—",["999","1000","1001","1111"],1,"चार अंकों की सबसे छोटी संख्या 1000 है।"],
+ ["48 का गुणनखंड कौन-सा है?",["5","7","8","11"],2,"48 ÷ 8 = 6, इसलिए 8 गुणनखंड है।"],
+ ["18 और 24 का महत्तम समापवर्तक है—",["3","6","9","12"],1,"18 और 24 दोनों को 6 विभाजित करता है; इससे बड़ा समान गुणनखंड नहीं है।"]]],
+ ["आँकड़ों का प्रबंधन और प्रस्तुतिकरण",[
+ ["आँकड़ों को चित्रों द्वारा दिखाने का तरीका है—",["चित्रालेख","गुणा","भाग","कोण"],0,"चित्रालेख में चित्र/चिह्नों से आँकड़े दिखाए जाते हैं।"],
+ ["बारंबारता का अर्थ है—",["कितनी बार घटना हुई","कुल लंबाई","वस्तु का रंग","कोण का माप"],0,"किसी मान के आने की संख्या उसकी बारंबारता है।"],
+ ["यदि 5, 7, 7, 9 में सबसे अधिक बार आने वाला मान पूछा जाए, तो उत्तर है—",["5","7","9","सभी समान"],1,"7 दो बार आया है; यह बहुलक है।"]]],
+ ["अभाज्य समय",[
+ ["सबसे छोटी अभाज्य संख्या है—",["0","1","2","3"],2,"2 सबसे छोटी अभाज्य संख्या है।"],
+ ["इनमें अभाज्य संख्या कौन-सी है?",["9","15","17","21"],2,"17 के केवल दो गुणनखंड 1 और 17 हैं।"],
+ ["30 का अभाज्य गुणनखंडन है—",["2×3×5","2×15","3×10","1×30"],0,"30 = 2 × 3 × 5; सभी अभाज्य हैं।"]]],
+ ["परिमाप और क्षेत्रफल",[
+ ["4 cm भुजा वाले वर्ग का परिमाप है—",["8 cm","12 cm","16 cm","20 cm"],2,"वर्ग का परिमाप = 4 × भुजा = 16 cm."],
+ ["5 cm लंबाई और 3 cm चौड़ाई वाले आयत का क्षेत्रफल है—",["8 cm²","15 cm²","16 cm²","30 cm²"],1,"क्षेत्रफल = लंबाई × चौड़ाई = 5 × 3 = 15 cm²."],
+ ["8 cm भुजा वाले वर्ग का क्षेत्रफल है—",["16 cm²","32 cm²","64 cm²","80 cm²"],2,"वर्ग का क्षेत्रफल = भुजा × भुजा = 64 cm²."]]],
+ ["भिन्न",[
+ ["1/2 के बराबर भिन्न है—",["2/3","2/4","3/5","1/3"],1,"1/2 को 2 से गुणा करने पर 2/4 मिलता है।"],
+ ["3/8 + 2/8 = ?",["1/8","5/8","5/16","6/8"],1,"हर समान है, इसलिए अंश जोड़ें: 3+2=5।"],
+ ["5/6 − 1/3 = ?",["1/6","2/6","1/2","4/3"],2,"1/3 = 2/6; अतः 5/6−2/6=3/6=1/2।"]]],
+ ["रचनाओं के साथ खेलना",[
+ ["रेखाखंड की लंबाई मापने का उपकरण है—",["पटरी","घड़ी","थर्मामीटर","कंपास"],0,"पटरी से रेखाखंड की लंबाई मापते हैं।"],
+ ["वृत्त बनाने के लिए सामान्यतः उपयोग होता है—",["परकार","कोणमापी","अबेकस","तराजू"],0,"परकार से निश्चित त्रिज्या का वृत्त बनाया जाता है।"],
+ ["कोण मापने का उपकरण है—",["कोणमापी","परकार","पटरी","कैलकुलेटर"],0,"कोणमापी से कोण का माप लिया जाता है।"]]],
+ ["सममिति",[
+ ["ऐसी आकृति जिसे दो समान भागों में बाँटा जा सके, उसमें हो सकती है—",["सममिति","असमानता ही","घनत्व","परिमाप"],0,"सममित आकृति में प्रतिबिंबित भाग मेल खाते हैं।"],
+ ["वर्ग में सममिति रेखाओं की संख्या है—",["1","2","3","4"],3,"वर्ग में कुल चार सममिति रेखाएँ होती हैं।"],
+ ["समबाहु त्रिभुज में सममिति रेखाएँ होती हैं—",["1","2","3","4"],2,"समबाहु त्रिभुज में तीन सममिति रेखाएँ होती हैं।"]]],
+ ["शून्य के दूसरी ओर",[
+ ["−3 और 2 में बड़ी संख्या है—",["−3","2","दोनों बराबर","तुलना संभव नहीं"],1,"संख्या रेखा पर 2, −3 के दाईं ओर है।"],
+ ["−5 का विपरीत (योगात्मक प्रतिलोम) है—",["−5","0","5","10"],2,"−5 + 5 = 0, इसलिए विपरीत 5 है।"],
+ ["−2, 0, 3 को बढ़ते क्रम में लिखें—",["3,0,−2","−2,0,3","0,−2,3","−2,3,0"],1,"संख्या रेखा पर बाएँ से दाएँ −2, 0, 3 आते हैं।"]]]
+ ];
+ const cls=document.getElementById("gameClass"),sub=document.getElementById("gameSubject"),lev=document.getElementById("gameLevel"),chapter=document.getElementById("gameChapter"),start=document.getElementById("startLearningGame");
+ if(!cls||!sub||!lev||!chapter||!start)return;
+ const fill=()=>{if(cls.value!=="6"||sub.value!=="maths")return;chapter.innerHTML='<option value="all">सभी अध्याय</option>'+data.map((d,i)=>'<option value="'+i+'">'+(i+1)+'. '+d[0]+'</option>').join("");document.getElementById("gameBookNames").textContent="कक्षा 6वीं • NCERT गणित प्रकाश • 10 अध्यायों का अभ्यास";};
+ cls.addEventListener("change",fill);sub.addEventListener("change",fill);fill();
+ start.addEventListener("click",function(e){if(cls.value!=="6"||sub.value!=="maths")return;e.preventDefault();e.stopImmediatePropagation();
+ const ix=chapter.value==="all"?data.map((_,i)=>i):[Number(chapter.value)],lv=Math.max(0,["easy","medium","hard"].indexOf(lev.value)),qs=ix.map(i=>data[i][1][lv]);let p=0,score=0,locked=false;const box=document.getElementById("learningGameCard");
+ function draw(){locked=false;document.getElementById("gameProgress").textContent="प्रश्न "+(p+1)+" / "+qs.length;document.getElementById("gameScore").textContent="⭐ अंक: "+score;box.innerHTML="";const h=document.createElement("h3");h.textContent=qs[p][0];box.appendChild(h);const opts=document.createElement("div");opts.className="game-options";qs[p][1].forEach((v,i)=>{const b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+i)+". "+v;b.onclick=()=>ans(i);opts.appendChild(b)});box.appendChild(opts);const f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f)}
+ function ans(n){if(locked)return;locked=true;const q=qs[p],f=document.getElementById("gameFeedback");if(n===q[2]){score++;f.textContent="✅ सही उत्तर! "+q[3];f.classList.add("is-correct")}else{f.textContent="❌ सही उत्तर: "+q[1][q[2]]+". "+q[3];f.classList.add("is-wrong")}document.getElementById("gameScore").textContent="⭐ अंक: "+score;const b=document.createElement("button");b.className="cta game-next";b.textContent=p===qs.length-1?"परिणाम देखें":"अगला प्रश्न";b.onclick=()=>{if(p<qs.length-1){p++;draw()}else finish()};box.appendChild(b)}
+ function finish(){const pct=Math.round(score/qs.length*100);document.getElementById("gameProgress").textContent="खेल पूरा हुआ";box.innerHTML="<h3>🎉 अभ्यास पूरा!</h3><p>"+score+" / "+qs.length+" अंक • "+pct+"%</p><p>"+(pct>=80?"बहुत अच्छा!":pct>=50?"अच्छा प्रयास!":"फिर से अभ्यास करें।")+"</p>";const b=document.createElement("button");b.className="cta";b.textContent="🔁 दोबारा खेलें";b.onclick=()=>start.click();box.appendChild(b)}
+ draw();
+ },true);
+})();
+</script>
+
 </body>
 </html>
