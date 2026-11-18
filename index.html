@@ -1851,5 +1851,25 @@ function finish(){let pct=Math.round(score/qs.length*100);document.getElementByI
 })();
 </script>
 
+
+<script>
+/* Class 8 Chhattisgarh Bharti: chapter list verified from SCERT 2024-25 textbook contents */
+(function(){
+const data=[
+["नई उषा","कविता"],["एक नई शुरुआत","कहानी"],["अब्राहम लिंकन का पत्र","पत्र"],["पचराही","निबंध"],["इब्राहीम गार्दी","कहानी"],["जो मैं नहीं बन सका","व्यंग्य"],["दीदी की डायरी","डायरी"],["एक साँस आजादी के","कविता"],["साहस के पैर","कहानी"],["प्रवास","निबंध"],["हमारा छत्तीसगढ़","कविता"],["अपने बीज के पीरा","कहानी"],["विजयबेला","एकांकी"],["आतिथ्य","आत्मकथा"],["मनुज को खोज निकालो","कविता"],["बरसात के पानी ले भू-जळ संग्रहण","निबंध"],["तृतीय लिंग का बोध","निबंध"],["ब्रज माधुरी","कविता"],["कटुक वचन मत बोल","निबंध"],["मिनी महात्मा","कहानी"],["सिरखावन","कविता"],["हिरोशिमा की पीड़ा","कविता"],["यातायात सुरक्षा (सड़क सूचना चिन्ह)","सूचनात्मक सामग्री"]];
+const c=document.getElementById("gameClass"),s=document.getElementById("gameSubject"),l=document.getElementById("gameLevel"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");if(!c||!s||!l||!ch||!btn)return;
+function fill(){if(c.value!=="8")return;let opt=[...s.options].find(o=>o.value==="hindi8");if(!opt){opt=document.createElement("option");opt.value="hindi8";opt.textContent="हिंदी • छत्तीसगढ़ भारती (अध्यायवार)";s.appendChild(opt);}if(s.value==="hindi8"){ch.innerHTML='<option value="all">सभी 23 पाठ</option>'+data.map((u,i)=>'<option value="'+i+'">'+(i+1)+'. '+u[0]+'</option>').join("");document.getElementById("gameBookNames").textContent="कक्षा 8 • छत्तीसगढ़ भारती • SCERT 2024-25 विषय-सूची";}}
+c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
+btn.addEventListener("click",function(e){if(c.value!=="8"||s.value!=="hindi8")return;e.preventDefault();e.stopImmediatePropagation();let ids=ch.value==="all"?data.map((_,i)=>i):[+ch.value],qs=ids.map(i=>{let d=data[i];return ["‘"+d[0]+"’ पाठ की विधा क्या है?",[d[1],"कहानी","निबंध","कविता"].filter((v,j,a)=>a.indexOf(v)===j).slice(0,4),0,"SCERT कक्षा 8 छत्तीसगढ़ भारती की विषय-सूची में इस पाठ की विधा ‘"+d[1]+"’ दी गई है।"];});
+/* Ensure four distinct choices and correct index */
+qs=ids.map(i=>{let g=data[i][1],opts=[g,...["कहानी","कविता","निबंध","पत्र","डायरी","व्यंग्य","एकांकी","आत्मकथा","सूचनात्मक सामग्री"].filter(x=>x!==g).slice(0,3)];return ["‘"+data[i][0]+"’ पाठ की विधा क्या है?",opts,0,"SCERT की विषय-सूची में इस पाठ की विधा ‘"+g+"’ दी गई है।"];});
+let p=0,score=0,locked=false,box=document.getElementById("learningGameCard");
+function draw(){locked=false;document.getElementById("gameProgress").textContent="प्रश्न "+(p+1)+" / "+qs.length;document.getElementById("gameScore").textContent="⭐ अंक: "+score;box.innerHTML="";let h=document.createElement("h3");h.textContent=qs[p][0];box.appendChild(h);let opts=document.createElement("div");opts.className="game-options";qs[p][1].forEach((v,n)=>{let b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.onclick=()=>answer(n);opts.appendChild(b)});box.appendChild(opts);let f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f)}
+function answer(n){if(locked)return;locked=true;let q=qs[p],f=document.getElementById("gameFeedback");if(n===q[2]){score++;f.textContent="✅ सही उत्तर! "+q[3];f.classList.add("is-correct")}else{f.textContent="❌ सही उत्तर: "+q[1][q[2]]+". "+q[3];f.classList.add("is-wrong")}document.getElementById("gameScore").textContent="⭐ अंक: "+score;let b=document.createElement("button");b.className="cta game-next";b.textContent=p===qs.length-1?"परिणाम देखें":"अगला प्रश्न";b.onclick=()=>{if(p<qs.length-1){p++;draw()}else finish()};box.appendChild(b)}
+function finish(){let pct=Math.round(score/qs.length*100);document.getElementById("gameProgress").textContent="अभ्यास पूरा";box.innerHTML="<h3>🎉 अभ्यास पूरा!</h3><p>"+score+" / "+qs.length+" अंक • "+pct+"%</p><p>यह अभ्यास SCERT की विषय-सूची में दिए गए पाठ-शीर्षक और विधा पर आधारित है; पाठ की विस्तृत समझ के प्रश्न अलग से जोड़े जाएंगे।</p>";let b=document.createElement("button");b.className="cta";b.textContent="🔁 दोबारा खेलें";b.onclick=()=>btn.click();box.appendChild(b)}draw();
+},true);
+})();
+</script>
+
 </body>
 </html>
