@@ -575,5 +575,49 @@ CHHATTISGARH
  start.addEventListener("click",e=>{if(cls.value==="8"&&sub.value==="science"&&chap.value!=="general"){e.preventDefault();e.stopImmediatePropagation();run();}},true);
 })();
 </script>
+<script>
+(function(){
+ const chapterQuiz=[
+ ["आकाश दर्शन","सौरमंडल का केंद्र कौन है?",["सूर्य","पृथ्वी","चंद्रमा","मंगल"],0,"सूर्य सौरमंडल का केंद्र है।"],
+ ["संश्लेषित रेशे और प्लास्टिक","नायलॉन किस प्रकार का रेशा है?",["संश्लेषित","प्राकृतिक","पशुजन्य","खनिज"],0,"नायलॉन मानव निर्मित संश्लेषित रेशा है।"],
+ ["वायु","वायु में सबसे अधिक मात्रा किस गैस की होती है?",["नाइट्रोजन","ऑक्सीजन","कार्बन डाइऑक्साइड","हाइड्रोजन"],0,"वायु में लगभग 78% नाइट्रोजन होती है।"],
+ ["रासायनिक अभिक्रियाएँ – कब और कैसी-कैसी","लोहे पर जंग लगना किस प्रकार का परिवर्तन है?",["रासायनिक","भौतिक","अस्थायी","आकार परिवर्तन"],0,"जंग बनने पर नया पदार्थ बनता है।"],
+ ["धातुएँ और अधातुएँ","कमरे के ताप पर द्रव धातु कौन-सी है?",["पारा","लोहा","ताँबा","चाँदी"],0,"पारा सामान्य ताप पर द्रव अवस्था में रहता है।"],
+ ["कार्बन","कार्बन का रासायनिक संकेत क्या है?",["C","Ca","Co","Cr"],0,"कार्बन का संकेत C है।"],
+ ["शरीर की रचनात्मक एवं कार्यात्मक इकाई–कोशिका","जीवों की मूल संरचनात्मक एवं कार्यात्मक इकाई क्या है?",["कोशिका","ऊतक","अंग","अंग-तंत्र"],0,"कोशिका जीवन की मूल इकाई है।"],
+ ["सूक्ष्मजीव–एक अद्भुत संसार","दही जमाने में कौन-सा जीवाणु सहायक होता है?",["लैक्टोबैसिलस","अमीबा","प्लाज्मोडियम","विषाणु"],0,"लैक्टोबैसिलस दूध को दही में बदलने में मदद करता है।"],
+ ["प्रकाश का अपवर्तन","प्रकाश का एक माध्यम से दूसरे माध्यम में मुड़ना क्या कहलाता है?",["अपवर्तन","परावर्तन","विक्षेपण","अवशोषण"],0,"माध्यम बदलने पर प्रकाश की दिशा बदलना अपवर्तन है।"],
+ ["ध्वनि","ध्वनि किसके कारण उत्पन्न होती है?",["कंपन","छाया","गंध","चुंबक"],0,"ध्वनि कंपन से उत्पन्न होती है।"],
+ ["विद्युत धारा के रासायनिक प्रभाव","विद्युत लेपन में किसका उपयोग होता है?",["विद्युत धारा","केवल प्रकाश","ध्वनि","गुरुत्व"],0,"विद्युत धारा से वस्तु पर धातु की परत चढ़ाई जा सकती है।"],
+ ["ऊर्जा के स्रोत","नवीकरणीय ऊर्जा स्रोत कौन-सा है?",["सौर ऊर्जा","कोयला","पेट्रोलियम","प्राकृतिक गैस"],0,"सौर ऊर्जा पुनः उपलब्ध होने वाला स्रोत है।"],
+ ["खाद्य उत्पादन एवं प्रबंधन","धान सामान्यतः किस मौसम की फसल है?",["खरीफ","रबी","जायद","शीत"],0,"धान खरीफ मौसम की प्रमुख फसल है।"],
+ ["घर्षण","घर्षण बल किसका विरोध करता है?",["सापेक्ष गति","प्रकाश","ध्वनि","ताप"],0,"घर्षण संपर्क सतहों के बीच सापेक्ष गति का विरोध करता है।"],
+ ["कितना भोजन, कैसा भोजन","संतुलित आहार में क्या होता है?",["सभी पोषक तत्व उचित मात्रा में","केवल वसा","केवल शर्करा","केवल नमक"],0,"संतुलित आहार में सभी आवश्यक पोषक तत्व उचित मात्रा में होते हैं।"],
+ ["कुछ सामान्य रोग","मलेरिया किससे फैलता है?",["संक्रमित मादा एनोफिलीज मच्छर","घरेलू मक्खी","मधुमक्खी","तितली"],0,"मलेरिया संक्रमित मादा एनोफिलीज मच्छर से फैलता है।"],
+ ["किशोरावस्था","किशोरावस्था के अनेक शारीरिक परिवर्तन किसके कारण होते हैं?",["हार्मोन","केवल जल","प्रकाश","ध्वनि"],0,"किशोरावस्था के परिवर्तन हार्मोन द्वारा नियंत्रित होते हैं।"]
+ ];
+ const $=id=>document.getElementById(id),c=$("gameClass"),s=$("gameSubject"),ch=$("gameChapter"),btn=$("startLearningGame"),box=$("learningGameCard");
+ if(!c||!s||!ch||!btn||!box)return;
+ const originalLabel=ch.previousElementSibling;
+ if(originalLabel&&originalLabel.tagName==="LABEL")originalLabel.textContent="अध्याय / अभ्यास चुनें";
+ function fill(){
+  ch.innerHTML='<option value="general">सामान्य अभ्यास</option>';
+  if(c.value==="8"&&s.value==="science"){
+   chapterQuiz.forEach((q,i)=>{let o=document.createElement("option");o.value=String(i);o.textContent="अध्याय "+(i+1)+" — "+q[0];ch.appendChild(o)});
+  }
+ }
+ c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
+ let q=null,answered=false,score=0;
+ function launch(){
+  q=chapterQuiz[Number(ch.value)];answered=false;score=0;
+  $("gameProgress").textContent="कक्षा 8 • विज्ञान • अध्याय "+(Number(ch.value)+1);
+  $("gameScore").textContent="⭐ अंक: 0";box.innerHTML="";
+  let h=document.createElement("h3");h.className="game-question";h.textContent=q[1];box.appendChild(h);
+  let opts=document.createElement("div");opts.className="game-options";
+  q[2].forEach((v,i)=>{let b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+i)+". "+v;b.onclick=()=>{if(answered)return;answered=true;let f=document.createElement("p");f.className="game-feedback "+(i===q[3]?"is-correct":"is-wrong");f.textContent=(i===q[3]?"✅ सही उत्तर! ":"❌ सही उत्तर: "+q[2][q[3]]+". ")+q[4];box.appendChild(f);if(i===q[3]){score=1;$("gameScore").textContent="⭐ अंक: 1 / 1"}let again=document.createElement("button");again.className="cta";again.textContent="दूसरा अध्याय चुनें";again.onclick=()=>{fill();ch.focus()};box.appendChild(again)};opts.appendChild(b)});box.appendChild(opts);
+ }
+ btn.addEventListener("click",function(e){if(c.value==="8"&&s.value==="science"&&ch.value!=="general"){e.preventDefault();e.stopImmediatePropagation();launch()}},true);
+})();
+</script>
 </body>
 </html>
