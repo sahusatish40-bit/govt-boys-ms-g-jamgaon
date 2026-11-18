@@ -722,5 +722,40 @@ c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
 btn.addEventListener("click",function(e){if(c.value!=="8"||s.value!=="maths"||ch.value==="general")return;e.preventDefault();e.stopImmediatePropagation();const q=data[Number(ch.value)];box.innerHTML="";$("gameProgress").textContent="कक्षा 8 • गणित • अध्याय "+(Number(ch.value)+1);$("gameScore").textContent="⭐ अंक: 0 / 1";const h=document.createElement("h3");h.className="game-question";h.textContent=q[1];box.appendChild(h);const opts=document.createElement("div");opts.className="game-options";q[2].forEach((v,i)=>{const b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+i)+". "+v;b.onclick=()=>{opts.querySelectorAll("button").forEach(x=>x.disabled=true);const ok=i===q[3];$("gameScore").textContent="⭐ अंक: "+(ok?1:0)+" / 1";const f=document.createElement("p");f.className="game-feedback "+(ok?"is-correct":"is-wrong");f.textContent=(ok?"✅ सही उत्तर! ":"❌ सही उत्तर: "+q[2][q[3]]+". ")+q[4];box.appendChild(f);};opts.appendChild(b)});box.appendChild(opts);},true);
 })();
 </script>
+<script>
+(function(){
+"use strict";
+const lessons=[
+["Water's for...","What is the main topic suggested by the title?",["Water","Mountains","Space","Machines"],0,"The title points to water as the topic. Check the lesson for its full message."],
+["The Shoemaker and the Elves","Who is named in the title?",["A shoemaker and elves","A farmer and birds","A king and soldiers","A doctor and nurse"],0,"The title names a shoemaker and elves."],
+["Measure for Measure","Which word in the title means to find size or amount?",["Measure","For","The","None"],0,"‘Measure’ means to find the size, amount or degree."],
+["The Tree that Never Stopped Giving","What does the title suggest the tree does?",["Keeps giving","Keeps walking","Keeps singing","Keeps flying"],0,"The title suggests continuous giving."],
+["Alice in Wonderland","Who is named in the title?",["Alice","Wonder","A queen","A rabbit"],0,"Alice is the central named character in the title."],
+["From a Railway Carriage","What kind of vehicle is mentioned?",["Railway carriage","Ship","Aeroplane","Bus"],0,"A railway carriage is a coach of a train."],
+["Everyday Heroes","What does ‘everyday’ mean?",["Ordinary daily life","Only festivals","Ancient times","Future years"],0,"‘Everyday’ means ordinary or happening daily."],
+["At School","Where does the title place the scene?",["School","Market","Forest","Station"],0,"The title places the setting at school."],
+["Beats in Memoir","Which word is closest in meaning to ‘memoir’?",["Personal memories","Recipe","Map","Timetable"],0,"A memoir is a record of personal memories or experiences."],
+["A Place Fit for Gods to Marry","Which word in the title refers to a location?",["Place","Gods","Marry","Fit"],0,"‘Place’ refers to a location."],
+["Sympathy","What does ‘sympathy’ mean?",["Understanding another's suffering","Anger","Competition","Pride"],0,"Sympathy means care or concern for another person's difficulty."],
+["Children Ask Kalam","Who asks questions in the title?",["Children","Teachers","Farmers","Players"],0,"The title says children ask Kalam."],
+["Sayani","Which type of word is ‘Sayani’ in the title?",["A name/title","A number","A punctuation mark","A verb tense"],0,"‘Sayani’ is presented as the lesson title; read the text for its context."],
+["Craze","Which word is closest in meaning to ‘craze’?",["Strong enthusiasm","Silence","Sleep","Fear"],0,"A craze is a strong or widespread enthusiasm."],
+["The Bird-man of India","Which subject is named in the title?",["Birds","Rivers","Mountains","Stars"],0,"The title refers to a person associated with birds."],
+["The Mountain and the Squirrel","Which two things are named?",["Mountain and squirrel","River and fish","Tree and bird","Sun and moon"],0,"The title names a mountain and a squirrel."],
+["Nothing but the Target","Which word means the goal aimed at?",["Target","Nothing","But","The"],0,"A target is an aim or goal."],
+["Dancing On","Which activity is named in the title?",["Dancing","Painting","Swimming","Reading"],0,"The title refers to dancing."],
+["Dear Daddy-Long-Legs","Which form of writing does ‘Dear…’ often begin?",["A letter","A recipe","A map","A timetable"],0,"‘Dear…’ is a common greeting at the beginning of a letter."],
+["Fog","What is fog?",["A cloud of tiny water droplets near the ground","A type of rock","A strong wind","A kind of soil"],0,"Fog is a cloud of tiny water droplets near the ground."],
+["Flavours of Thailand","Which country is named?",["Thailand","India","Japan","Nepal"],0,"Thailand is named in the lesson title."],
+["The Photograph","What does a photograph capture?",["An image","A sound","A smell","A taste"],0,"A photograph records an image."],
+["Where the Mind is Without Fear","Which quality is mentioned in the title?",["Fearlessness","Jealousy","Laziness","Greed"],0,"The title expresses a wish for a mind free from fear."]
+];
+const $=id=>document.getElementById(id),c=$("gameClass"),s=$("gameSubject"),ch=$("gameChapter"),btn=$("startLearningGame"),box=$("learningGameCard");
+if(!c||!s||!ch||!btn||!box)return;
+function fill(){ch.innerHTML='<option value="general">सामान्य अभ्यास</option>';if(c.value==="8"&&s.value==="english")lessons.forEach((d,i)=>{const o=document.createElement("option");o.value=String(i);o.textContent="Lesson "+(i+1)+" — "+d[0];ch.appendChild(o)});}
+c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
+btn.addEventListener("click",function(e){if(c.value!=="8"||s.value!=="english"||ch.value==="general")return;e.preventDefault();e.stopImmediatePropagation();const d=lessons[Number(ch.value)];box.innerHTML="";$("gameProgress").textContent="Class 8 • English Reader • Lesson "+(Number(ch.value)+1);$("gameScore").textContent="⭐ Score: 0 / 1";const h=document.createElement("h3");h.className="game-question";h.textContent=d[1];box.appendChild(h);const opts=document.createElement("div");opts.className="game-options";d[2].forEach((v,i)=>{const b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+i)+". "+v;b.onclick=()=>{opts.querySelectorAll("button").forEach(x=>x.disabled=true);const ok=i===d[3];$("gameScore").textContent="⭐ Score: "+(ok?1:0)+" / 1";const f=document.createElement("p");f.className="game-feedback "+(ok?"is-correct":"is-wrong");f.textContent=(ok?"✅ Correct! ":"❌ Correct answer: "+d[2][d[3]]+". ")+d[4];box.appendChild(f);const note=document.createElement("p");note.textContent="यह शीर्षक/शब्दार्थ आधारित प्रारंभिक अभ्यास है; पाठ की विस्तृत समझ के प्रश्न आगे जोड़े जाएँगे।";box.appendChild(note)};opts.appendChild(b)});box.appendChild(opts);},true);
+})();
+</script>
 </body>
 </html>
