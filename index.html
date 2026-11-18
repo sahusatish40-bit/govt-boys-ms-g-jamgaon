@@ -1681,5 +1681,62 @@ function finish(){let pct=Math.round(score/qs.length*100);document.getElementByI
 })();
 </script>
 
+
+<script>
+/* Class 6 Ganita Prakash chapter practice */
+(function(){
+const units=[
+["1. Patterns in Mathematics",[
+["2, 4, 6, 8, __ में अगली संख्या क्या होगी?",["10","11","12","14"],0,"हर बार 2 जोड़ा जा रहा है।"],
+["त्रिभुजाकार संख्या क्रम 1, 3, 6, 10, __ में अगली संख्या?",["15","14","16","20"],0,"अगली त्रिभुजाकार संख्या 10+5=15 है।"],
+["किस आकृति में घूर्णन सममिति का क्रम 4 होता है?",["वर्ग","आयत","समबाहु त्रिभुज","असम चतुर्भुज"],0,"वर्ग 90° के प्रत्येक घूर्णन पर अपने ऊपर आ जाता है।"]]],
+["2. Lines and Angles",[
+["समकोण कितने अंश का होता है?",["90°","45°","180°","360°"],0,"समकोण का माप 90° होता है।"],
+["एक सरल कोण का माप कितना है?",["180°","90°","60°","360°"],0,"सरल कोण 180° का होता है।"],
+["दो रेखाएँ जो कभी नहीं मिलतीं, कहलाती हैं—",["समांतर रेखाएँ","लंबवत रेखाएँ","प्रतिच्छेदी रेखाएँ","वक्र रेखाएँ"],0,"एक ही तल में समान दूरी पर रहने वाली रेखाएँ समांतर होती हैं।"]]],
+["3. Number Play",[
+["सबसे छोटी तीन अंकों की संख्या कौन-सी है?",["100","101","999","10"],0,"तीन अंकों की सबसे छोटी संख्या 100 है।"],
+["345 में 4 का स्थानीय मान क्या है?",["40","4","400","45"],0,"4 दहाई के स्थान पर है, इसलिए स्थानीय मान 40 है।"],
+["किस संख्या को 2 से विभाजित किया जा सकता है?",["जिनका इकाई अंक 0,2,4,6,8 हो","जिसका इकाई अंक 1 हो","हर विषम संख्या","केवल अभाज्य संख्या"],0,"सम संख्याओं का इकाई अंक 0, 2, 4, 6 या 8 होता है।"]]],
+["4. Data Handling and Presentation",[
+["आँकड़ों को चित्रों द्वारा दिखाने का तरीका क्या कहलाता है?",["चित्रालेख","गुणा","भाग","मापन"],0,"चित्रालेख में चित्रों/चिह्नों से आँकड़े दिखाए जाते हैं।"],
+["बार ग्राफ में आँकड़े किससे दिखाए जाते हैं?",["आयताकार पट्टियों से","केवल वृत्त से","केवल शब्दों से","रेखाओं के नाम से"],0,"बार ग्राफ में पट्टियों की ऊँचाई/लंबाई आँकड़े बताती है।"],
+["यदि एक चित्र 5 विद्यार्थियों को दर्शाता है, तो 3 चित्र कितने विद्यार्थियों को दर्शाएँगे?",["15","8","10","20"],0,"3×5=15 विद्यार्थी।"]]],
+["5. Prime Time",[
+["सबसे छोटी अभाज्य संख्या कौन-सी है?",["2","1","0","3"],0,"2 सबसे छोटी अभाज्य संख्या है और एकमात्र सम अभाज्य संख्या है।"],
+["12 के गुणनखंडों में कौन-सा शामिल है?",["3","5","7","11"],0,"12 को 3 से विभाजित किया जा सकता है; 3 इसका गुणनखंड है।"],
+["इनमें से कौन-सी संख्या अभाज्य है?",["13","15","21","27"],0,"13 के केवल दो गुणनखंड 1 और 13 हैं।"]]],
+["6. Perimeter and Area",[
+["वर्ग का परिमाप किससे मिलता है?",["4 × भुजा","भुजा × भुजा","2 × भुजा","भुजा + 2"],0,"वर्ग की चारों बराबर भुजाओं का योग 4×भुजा है।"],
+["आयत का क्षेत्रफल क्या है?",["लंबाई × चौड़ाई","2 × (लंबाई+चौड़ाई)","4 × भुजा","लंबाई + चौड़ाई"],0,"आयत का क्षेत्रफल लंबाई और चौड़ाई का गुणनफल है।"],
+["5 cm भुजा वाले वर्ग का परिमाप कितना होगा?",["20 cm","25 cm","10 cm","15 cm"],0,"परिमाप=4×5=20 cm।"]]],
+["7. Fractions",[
+["एक-आधा किस भिन्न से दर्शाते हैं?",["1/2","1/3","2/3","1/4"],0,"एक पूरे के दो बराबर भागों में एक भाग 1/2 है।"],
+["2/4 के बराबर भिन्न कौन-सी है?",["1/2","1/3","3/4","2/3"],0,"2/4 को 2 से भाग देने पर 1/2 मिलता है।"],
+["3/5 में अंश कौन-सा है?",["3","5","8","2"],0,"भिन्न में ऊपर की संख्या अंश कहलाती है।"]]],
+["8. Playing with Constructions",[
+["वृत्त बनाने के लिए किस उपकरण का उपयोग होता है?",["परकार","पटरी मात्र","कोणमापक मात्र","तराजू"],0,"परकार से निश्चित त्रिज्या का वृत्त बनाया जाता है।"],
+["रेखाखंड की लंबाई मापने के लिए क्या उपयोग करते हैं?",["स्केल","कंपास","घड़ी","थर्मामीटर"],0,"स्केल पर सेंटीमीटर/मिलीमीटर के निशान होते हैं।"],
+["कोण मापने के लिए कौन-सा उपकरण उपयोगी है?",["कोणमापक","परकार","मीटर टेप","कैलकुलेटर"],0,"कोणमापक से कोण का माप डिग्री में लेते हैं।"]]],
+["9. Symmetry",[
+["वर्ग में सममिति की कितनी रेखाएँ होती हैं?",["4","2","3","1"],0,"वर्ग में 4 सममिति रेखाएँ होती हैं।"],
+["जिस आकृति को आधा मोड़ने पर दोनों भाग मिलें, उसमें क्या होता है?",["रेखीय सममिति","क्षेत्रफल शून्य","कोई कोण नहीं","केवल घूर्णन"],0,"दोनों आधे भागों का मिलना रेखीय सममिति दर्शाता है।"],
+["समबाहु त्रिभुज में सममिति की कितनी रेखाएँ होती हैं?",["3","1","2","4"],0,"समबाहु त्रिभुज में प्रत्येक शीर्ष से विपरीत भुजा के मध्य तक एक सममिति रेखा होती है।"]]],
+["10. The Other Side of Zero",[
+["0 से 3 कम संख्या कौन-सी है?",["-3","3","0","-2"],0,"शून्य से बाईं ओर तीन कदम -3 होता है।"],
+["संख्या रेखा पर -2 और 2 में कौन बड़ा है?",["2","-2","दोनों बराबर","कह नहीं सकते"],0,"संख्या रेखा पर दाईं ओर की संख्या बड़ी होती है।"],
+["-5 का विपरीत पूर्णांक कौन-सा है?",["5","-5","0","-10"],0,"किसी संख्या का विपरीत उसके योगात्मक प्रतिलोम के बराबर होता है; -5 का विपरीत 5 है।"]]]
+];
+const c=document.getElementById("gameClass"),s=document.getElementById("gameSubject"),l=document.getElementById("gameLevel"),ch=document.getElementById("gameChapter"),btn=document.getElementById("startLearningGame");if(!c||!s||!l||!ch||!btn)return;
+function fill(){if(c.value!=="6"||s.value!=="maths")return;ch.innerHTML='<option value="all">सभी 10 अध्याय</option>'+units.map((u,i)=>'<option value="'+i+'">'+u[0]+'</option>').join("");document.getElementById("gameBookNames").textContent="कक्षा 6वीं • गणित प्रकाश / Ganita Prakash • अध्यायवार अभ्यास";}
+c.addEventListener("change",fill);s.addEventListener("change",fill);fill();
+btn.addEventListener("click",function(e){if(c.value!=="6"||s.value!=="maths")return;e.preventDefault();e.stopImmediatePropagation();const ids=ch.value==="all"?units.map((_,i)=>i):[+ch.value],lv=Math.max(0,["easy","medium","hard"].indexOf(l.value)),qs=ids.map(i=>units[i][1][lv]);let p=0,score=0,locked=false,box=document.getElementById("learningGameCard");
+function draw(){locked=false;document.getElementById("gameProgress").textContent="प्रश्न "+(p+1)+" / "+qs.length;document.getElementById("gameScore").textContent="⭐ अंक: "+score;box.innerHTML="";let h=document.createElement("h3");h.textContent=qs[p][0];box.appendChild(h);let opts=document.createElement("div");opts.className="game-options";qs[p][1].forEach((v,n)=>{let b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+v;b.onclick=()=>answer(n);opts.appendChild(b)});box.appendChild(opts);let f=document.createElement("p");f.id="gameFeedback";f.className="game-feedback";box.appendChild(f)}
+function answer(n){if(locked)return;locked=true;let q=qs[p],f=document.getElementById("gameFeedback");if(n===q[2]){score++;f.textContent="✅ सही उत्तर! "+q[3];f.classList.add("is-correct")}else{f.textContent="❌ सही उत्तर: "+q[1][q[2]]+". "+q[3];f.classList.add("is-wrong")}document.getElementById("gameScore").textContent="⭐ अंक: "+score;let b=document.createElement("button");b.className="cta game-next";b.textContent=p===qs.length-1?"परिणाम देखें":"अगला प्रश्न";b.onclick=()=>{if(p<qs.length-1){p++;draw()}else finish()};box.appendChild(b)}
+function finish(){let pct=Math.round(score/qs.length*100);document.getElementById("gameProgress").textContent="अभ्यास पूरा";box.innerHTML="<h3>🎉 अभ्यास पूरा!</h3><p>"+score+" / "+qs.length+" अंक • "+pct+"%</p><p>अध्याय शीर्षक NCERT सूची के अनुसार हैं; यह प्रत्येक अध्याय का प्रारंभिक अभ्यास सेट है।</p>";let b=document.createElement("button");b.className="cta";b.textContent="🔁 दोबारा खेलें";b.onclick=()=>btn.click();box.appendChild(b)}draw();
+},true);
+})();
+</script>
+
 </body>
 </html>
