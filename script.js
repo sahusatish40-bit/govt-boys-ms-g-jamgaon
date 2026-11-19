@@ -1425,7 +1425,10 @@ async function loadMonthlyAttendance() {
   show(attendanceReportMessage, "मासिक रजिस्टर तैयार हो रहा है...");
   attendanceReportBox.innerHTML = "";
   try {
-    const snap = await db.collection("attendance").get();
+    const snap = await db.collection("attendance")
+      .where("date", ">=", month + "-01")
+      .where("date", "<=", month + "-31")
+      .get();
     const sessions = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
       .filter(item => String(item.className) === className &&
         typeof item.date === "string" && item.date.startsWith(month))
