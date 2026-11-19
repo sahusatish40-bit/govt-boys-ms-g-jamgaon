@@ -53,12 +53,37 @@ function begin(){
  if(extraMode&&extraMode.value==="timed")startClock();
 }
 function draw(){
- locked=false;const item=round[index];
+ locked=false;const item=round[index],m=mode.value;
  progress.textContent="प्रश्न "+(index+1)+" / "+round.length;points.textContent="⭐ "+score+" अंक";
- board.innerHTML='<div class="game-subject-tag">'+(mode.value==="math"?"गणित मिशन":mode.value==="science"?"विज्ञान चैलेंज":"शब्द-ज्ञान")+' • कक्षा '+cls.value+'वीं</div><div class="arcade-question"></div><div class="arcade-options"></div>';
- board.querySelector(".arcade-question").textContent=item.q;
+ const names={math:"गणित मिशन",science:"विज्ञान चैलेंज",words:"शब्द-ज्ञान",picture:"चित्र पहचानो",puzzle:"शब्द पहेली"};
+ board.innerHTML='<div class="game-subject-tag">'+names[m]+' • कक्षा '+cls.value+'वीं</div><div class="arcade-question"></div><div class="arcade-options"></div>';
+ if(m==="puzzle"){
+   const clue=item.q.replace(/^शब्द पहेली:\s*/,"").replace(/। सही शब्द चुनिए।$/,"");
+   board.querySelector(".arcade-question").textContent="🔎 संकेत: "+clue;
+   const letters=shuffle(Array.from(item.answer)).join(" · ");
+   const tiles=document.createElement("div");tiles.className="puzzle-letters";tiles.textContent=letters;board.appendChild(tiles);
+   const input=document.createElement("input");input.type="text";input.id="puzzleAnswer";input.className="puzzle-input";input.placeholder="अपना उत्तर यहाँ लिखें";input.autocomplete="off";input.setAttribute("aria-label","शब्द का उत्तर लिखें");board.appendChild(input);
+   const check=document.createElement("button");check.type="button";check.className="cta";check.textContent="उत्तर जाँचें";check.addEventListener("click",()=>checkPuzzle());board.appendChild(check);
+   input.addEventListener("keydown",e=>{if(e.key==="Enter")checkPuzzle();});
+   return;
+ }
+ if(m==="picture"){
+   const q=item.q.replace("इस चित्र में क्या दिखाया गया है? ","");
+   const art=document.createElement("div");art.className="picture-display";art.textContent=q;board.insertBefore(art,board.querySelector(".arcade-question"));
+   board.querySelector(".arcade-question").textContent="चित्र को देखकर सही नाम चुनिए।";
+ }else board.querySelector(".arcade-question").textContent=item.q;
  const opts=board.querySelector(".arcade-options");
- item.opts.forEach((v)=>{const b=document.createElement("button");b.type="button";b.className="arcade-option";b.textContent=v;b.addEventListener("click",()=>answer(v,b));opts.appendChild(b);});
+ item.opts.forEach(v=>{const b=document.createElement("button");b.type="button";b.className="arcade-option";b.textContent=v;b.addEventListener("click",()=>answer(v,b));opts.appendChild(b);});
+}
+function checkPuzzle(){
+ if(locked)return;const input=$("puzzleAnswer");if(!input)return;
+ const typed=input.value.trim().replace(/\s+/g,"").toLocaleLowerCase("hi");
+ const expected=round[index].answer.trim().replace(/\s+/g,"").toLocaleLowerCase("hi");
+ locked=true;const ok=typed===expected;if(ok)score+=10;
+ input.disabled=true;const btn=board.querySelector(".cta");if(btn)btn.disabled=true;
+ const f=document.createElement("p");f.className="arcade-feedback "+(ok?"good":"bad");f.textContent=ok?"✅ बिल्कुल सही! +10 अंक।":"❌ सही शब्द: "+round[index].answer;
+ board.appendChild(f);points.textContent="⭐ "+score+" अंक";
+ const next=document.createElement("button");next.type="button";next.className="cta";next.textContent=index===round.length-1?"🏁 परिणाम देखें":"अगली पहेली ➜";next.addEventListener("click",()=>{if(index<round.length-1){index++;draw();}else finish();});board.appendChild(next);
 }
 function answer(value,chosen){
  if(locked||seconds<=0)return;locked=true;const item=round[index],ok=value===item.answer;
