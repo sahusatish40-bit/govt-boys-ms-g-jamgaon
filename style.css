@@ -1279,3 +1279,25 @@ button:focus-visible,.cta:focus-visible,input:focus-visible,select:focus-visible
 #adminTools [id^="admin"],#adminTools #birthdayManagement,#adminTools #teacherManagement{scroll-margin-top:18px}
 @media(max-width:900px){.admin-stat-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:600px){.admin-dashboard{padding:15px;border-radius:17px}.admin-dashboard-head h3{font-size:19px}.admin-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.admin-stat{padding:11px 9px;gap:8px}.admin-stat>span{flex-basis:32px;width:32px;height:32px;font-size:17px}.admin-stat strong{font-size:22px}.admin-stat small{font-size:10px}.admin-stat em{font-size:9px}.admin-quick-links a{font-size:11px;padding:8px 10px}}
+
+
+/* Responsive phased-upgrade roadmap */
+.admin-dashboard-date{margin:10px 0 14px;color:var(--muted);font-size:13px;font-weight:700}
+.admin-roadmap{margin:16px 0 6px;padding:18px;border:1px solid #dce8ef;border-radius:18px;background:linear-gradient(145deg,#fff,#f2f8fb)}
+.admin-roadmap-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.admin-roadmap-heading h4{margin:5px 0;font-size:19px;color:var(--navy)}
+.admin-roadmap-heading p{margin:4px 0;color:var(--muted);font-size:12px}
+.admin-roadmap-progress{flex:none;padding:7px 11px;border-radius:999px;background:#e2f3ee;color:#176b58;font-size:12px;font-weight:800}
+.admin-roadmap-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.admin-roadmap-list li{display:flex;align-items:center;gap:10px;min-width:0;padding:10px;border:1px solid #e3ebf0;border-radius:12px;background:#fff}
+.admin-roadmap-list li>span{display:grid;place-items:center;flex:none;width:30px;height:30px;border-radius:9px;background:#edf2f6;color:#536b7c;font-size:11px;font-weight:900}
+.admin-roadmap-list li div{display:flex;flex-direction:column;gap:3px;min-width:0}
+.admin-roadmap-list li strong{font-size:12px;color:#213d54}
+.admin-roadmap-list li small{font-size:10px;line-height:1.35;color:#718393}
+.admin-roadmap-list li em{margin-left:auto;flex:none;font-size:10px;font-style:normal;color:#16805e;font-weight:800}
+.admin-roadmap-list li.is-done{border-color:#bfe4d5;background:#f4fbf7}
+.admin-roadmap-list li.is-done>span{background:#d8f2e5;color:#16704f}
+.admin-roadmap-list li.is-next{border-color:#f0d49b;background:#fffaf0}
+.admin-roadmap-list li.is-next>span{background:#ffedc8;color:#8b5a08}
+.admin-roadmap-list li.is-next em{color:#9a6508}
+@media(max-width:650px){.admin-roadmap{padding:13px;border-radius:14px}.admin-roadmap-heading{gap:8px}.admin-roadmap-heading h4{font-size:16px}.admin-roadmap-heading p{font-size:11px}.admin-roadmap-progress{font-size:10px;padding:6px 8px}.admin-roadmap-list{grid-template-columns:1fr;gap:7px}.admin-roadmap-list li{padding:9px}.admin-roadmap-list li strong{font-size:12px}.admin-roadmap-list li small{font-size:10px}}
