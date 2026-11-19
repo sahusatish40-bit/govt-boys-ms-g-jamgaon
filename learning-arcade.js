@@ -5,6 +5,36 @@ const $=id=>document.getElementById(id);
 const mode=$("arcadeMode"),cls=$("arcadeClass"),startBtn=$("arcadeStart"),board=$("arcadeBoard"),progress=$("arcadeProgress"),points=$("arcadePoints");
 if(!mode||!cls||!startBtn||!board)return;
 let round=[],index=0,score=0,locked=false;
+let activeStudent="",attemptSaved=false;
+const SCORE_KEY="gjamgaon_arcade_scores_v1";
+function readScores(){try{return JSON.parse(localStorage.getItem(SCORE_KEY)||"[]");}catch(e){return [];}}
+function gameLabel(m){return ({math:"गणित मिशन",science:"विज्ञान चैलेंज",words:"शब्द-ज्ञान",picture:"चित्र पहचानो",match:"सही जोड़ी मिलाओ",puzzle:"शब्द पहेली"})[m]||m;}
+function saveAttempt(){if(attemptSaved||!activeStudent)return;attemptSaved=true;const max=mode.value==="match"?expectedPairs*10:50;const row={name:activeStudent,class:cls.value,game:mode.value,gameName:gameLabel(mode.value),score:score,max:max,percent:Math.round(score/max*100),playedAt:new Date().toISOString()};const rows=readScores();rows.push(row);try{localStorage.setItem(SCORE_KEY,JSON.stringify(rows));}catch(e){console.warn("Score save failed",e);}}
+function renderTeacherReport(){
+ const root=$("arcadeTeacherReport");if(!root)return;root.innerHTML="";
+ const rows=readScores();const h=document.createElement("h3");h.textContent="📊 गेम-वार विद्यार्थी प्रदर्शन रिपोर्ट";root.appendChild(h);
+ const note=document.createElement("p");note.className="report-note";note.textContent="यह रिपोर्ट इसी ब्राउज़र/डिवाइस में सेव हुए प्रयासों पर आधारित है।";root.appendChild(note);
+ if(!rows.length){const p=document.createElement("p");p.textContent="अभी कोई स्कोर सेव नहीं है। विद्यार्थी के नाम से गेम पूरा होने पर रिपोर्ट यहाँ दिखेगी।";root.appendChild(p);return;}
+ const filter=document.createElement("select");filter.className="report-filter";filter.innerHTML="<option value='all'>सभी कक्षाएँ</option><option value='6'>कक्षा 6वीं</option><option value='7'>कक्षा 7वीं</option><option value='8'>कक्षा 8वीं</option>";root.appendChild(filter);
+ const summary=document.createElement("div");summary.className="report-table-wrap";root.appendChild(summary);
+ const recent=document.createElement("div");recent.className="report-table-wrap";root.appendChild(recent);
+ function draw(){
+  const data=rows.filter(r=>filter.value==="all"||r.class===filter.value);summary.innerHTML="";recent.innerHTML="";
+  const sh=document.createElement("h4");sh.textContent="खेल के अनुसार सारांश";summary.appendChild(sh);
+  const t=document.createElement("table");t.className="arcade-report-table";const hr=document.createElement("tr");
+  ["खेल","प्रयास","औसत अंक (%)","सर्वश्रेष्ठ (%)"].forEach(v=>{const x=document.createElement("th");x.textContent=v;hr.appendChild(x);});t.appendChild(hr);
+  ["math","science","words","picture","match","puzzle"].forEach(g=>{const a=data.filter(r=>r.game===g);if(!a.length)return;const tr=document.createElement("tr");[gameLabel(g),a.length,Math.round(a.reduce((n,r)=>n+r.percent,0)/a.length)+"%",Math.max(...a.map(r=>r.percent))+"%"].forEach(v=>{const td=document.createElement("td");td.textContent=v;tr.appendChild(td);});t.appendChild(tr);});summary.appendChild(t);
+  const rh=document.createElement("h4");rh.textContent="हाल के विद्यार्थी प्रयास";recent.appendChild(rh);
+  const rt=document.createElement("table");rt.className="arcade-report-table";const rr=document.createElement("tr");
+  ["विद्यार्थी","कक्षा","खेल","स्कोर","दिनांक"].forEach(v=>{const th=document.createElement("th");th.textContent=v;rr.appendChild(th);});rt.appendChild(rr);
+  data.slice().reverse().slice(0,100).forEach(r=>{const tr=document.createElement("tr");[r.name,r.class+"वीं",r.gameName,r.score+"/"+r.max+" ("+r.percent+"%)",new Date(r.playedAt).toLocaleString("hi-IN")].forEach(v=>{const td=document.createElement("td");td.textContent=v;tr.appendChild(td);});rt.appendChild(tr);});recent.appendChild(rt);
+ }
+ filter.addEventListener("change",draw);draw();
+ const actions=document.createElement("div");actions.className="report-actions";
+ const csv=document.createElement("button");csv.type="button";csv.className="cta";csv.textContent="⬇️ CSV रिपोर्ट डाउनलोड";
+ csv.addEventListener("click",()=>{const data=rows.filter(r=>filter.value==="all"||r.class===filter.value);const lines=[["विद्यार्थी","कक्षा","खेल","अंक","कुल अंक","प्रतिशत","दिनांक"],...data.map(r=>[r.name,r.class,r.gameName,r.score,r.max,r.percent,new Date(r.playedAt).toLocaleString("en-IN")])];const body="\uFEFF"+lines.map(row=>row.map(v=>String(v).replace(/"/g,'""')).map(v=>'"'+v+'"').join(",")).join("\r\n");const url=URL.createObjectURL(new Blob([body],{type:"text/csv;charset=utf-8"}));const a=document.createElement("a");a.href=url;a.download="learning-games-report.csv";a.click();URL.revokeObjectURL(url);});actions.appendChild(csv);
+ const clear=document.createElement("button");clear.type="button";clear.className="report-clear";clear.textContent="सभी रिकॉर्ड मिटाएँ";clear.addEventListener("click",()=>{if(confirm("क्या आप इस डिवाइस के सभी गेम स्कोर रिकॉर्ड मिटाना चाहते हैं?")){localStorage.removeItem(SCORE_KEY);renderTeacherReport();}});actions.appendChild(clear);root.appendChild(actions);
+}
 const shuffle=a=>a.map(x=>[Math.random(),x]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]);
 const make=(q,correct,wrong,why)=>{const opts=shuffle([String(correct),...wrong.map(String)]);return {q,opts,answer:String(correct),why};};
 const science={
@@ -45,7 +75,7 @@ function mathQuestion(c){
 }
 function fromTuple(t){return make(t[0],t[1],t[2],t[3]);}
 function begin(){
- stopClock();const c=cls.value,m=mode.value;
+ stopClock();const ni=$("arcadeStudentName");const nm=(ni&&ni.value||"").trim();if(!nm){alert("कृपया पहले विद्यार्थी का नाम लिखें।");if(ni)ni.focus();return;}activeStudent=nm;attemptSaved=false;const c=cls.value,m=mode.value;
  if(m==="picture"||m==="match"||m==="puzzle"){beginExtra();return;}
  if(m==="math")round=Array.from({length:5},()=>mathQuestion(c));
  else round=shuffle((m==="science"?science:words)[c]).slice(0,5).map(fromTuple);
@@ -93,7 +123,7 @@ function answer(value,chosen){
  const next=document.createElement("button");next.type="button";next.className="cta";next.textContent=index===round.length-1?"🏁 परिणाम देखें":"अगला प्रश्न ➜";next.addEventListener("click",()=>{if(index<round.length-1){index++;draw();}else finish();});board.appendChild(next);points.textContent="⭐ "+score+" अंक";
 }
 function finish(){
- stopClock();
+ stopClock();saveAttempt();
  const pct=Math.round(score/50*100);progress.textContent="राउंड पूरा हुआ";board.innerHTML='<div class="arcade-result">🏆 '+score+' / 50 अंक</div><h4>'+pct+'% सफलता</h4><p>'+(pct>=80?"शानदार प्रदर्शन! आपकी तैयारी बहुत अच्छी है।":pct>=50?"अच्छा प्रयास! थोड़ा और अभ्यास करें।":"कोई बात नहीं—फिर से खेलें और अपना रिकॉर्ड सुधारें।")+'</p><button type="button" class="cta" id="arcadeAgain">🔁 नया राउंड खेलें</button>';
  $("arcadeAgain").addEventListener("click",begin);
 }
@@ -105,7 +135,7 @@ let clock=null,seconds=60,matchCount=0,expectedPairs=5;
 function stopClock(){if(clock){clearInterval(clock);clock=null;}}
 function startClock(){stopClock();seconds=60;showClock();clock=setInterval(()=>{seconds--;showClock();if(seconds<=0){stopClock();timedEnd();}},1000);}
 function showClock(){progress.textContent="⏱️ शेष समय "+seconds+" सेकंड";}
-function timedEnd(){board.querySelectorAll("button").forEach(b=>b.disabled=true);board.innerHTML="<div class=\"arcade-result\">⏰ समय पूरा!</div><h4>"+score+" अंक</h4><p>समय के भीतर हल किए गए प्रश्नों का स्कोर।</p><button class=\"cta\" id=\"arcadeAgain\" type=\"button\">🔁 फिर खेलें</button>";$("arcadeAgain").addEventListener("click",begin);}
+function timedEnd(){saveAttempt();board.querySelectorAll("button").forEach(b=>b.disabled=true);board.innerHTML="<div class=\"arcade-result\">⏰ समय पूरा!</div><h4>"+score+" अंक</h4><p>समय के भीतर हल किए गए प्रश्नों का स्कोर।</p><button class=\"cta\" id=\"arcadeAgain\" type=\"button\">🔁 फिर खेलें</button>";$("arcadeAgain").addEventListener("click",begin);}
 const cyclePools={};
 function takeFresh(key,source,count){
  let remaining=cyclePools[key];
@@ -133,6 +163,7 @@ function startMatch(){
  else{feedback.textContent="यह जोड़ी सही नहीं है। फिर प्रयास करें।";setTimeout(()=>{one.button.textContent="❔";b.textContent="❔";one.button.classList.remove("revealed");b.classList.remove("revealed");first=null;busy=false;},700);}
  });grid.appendChild(b);});progress.textContent=expectedPairs+" जोड़ियाँ मिलाएँ";points.textContent="⭐ 0 अंक";
 }
-function finishMatch(){board.innerHTML="<div class=\"arcade-result\">🏆 शानदार!</div><h4>"+score+" / "+(expectedPairs*10)+" अंक</h4><p>आपने सभी "+expectedPairs+" जोड़ियाँ सही मिलाईं।</p><button type=\"button\" class=\"cta\" id=\"arcadeAgain\">🔁 नया राउंड</button>";$("arcadeAgain").addEventListener("click",begin);progress.textContent="खेल पूरा हुआ";}
+function finishMatch(){saveAttempt();board.innerHTML="<div class=\"arcade-result\">🏆 शानदार!</div><h4>"+score+" / "+(expectedPairs*10)+" अंक</h4><p>आपने सभी "+expectedPairs+" जोड़ियाँ सही मिलाईं।</p><button type=\"button\" class=\"cta\" id=\"arcadeAgain\">🔁 नया राउंड</button>";$("arcadeAgain").addEventListener("click",begin);progress.textContent="खेल पूरा हुआ";}
+const reportToggle=$("arcadeReportToggle");if(reportToggle)reportToggle.addEventListener("click",()=>{const panel=$("arcadeTeacherReport");if(!panel)return;panel.hidden=!panel.hidden;reportToggle.textContent=panel.hidden?"📊 शिक्षक रिपोर्ट देखें":"📊 रिपोर्ट छिपाएँ";if(!panel.hidden)renderTeacherReport();});
 startBtn.addEventListener("click",begin);
 })();
