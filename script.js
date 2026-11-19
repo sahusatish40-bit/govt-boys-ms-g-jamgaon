@@ -239,35 +239,32 @@ await loadFirebase(
             <option value="8">कक्षा 8वीं</option>
           </select>
 
-          <div id="studentList"></div>
+          <details class="admin-compact-list">
+            <summary><span>🎓 पूरी विद्यार्थी सूची देखें</span><small id="studentListCount">सूची खोलें</small></summary>
+            <div id="studentList" class="admin-list-content"></div>
+          </details>
 
 <hr>
 <section id="privateStudentDetails">
-  <h3>🔒 निजी विद्यार्थी विवरण (केवल मुख्य Admin)</h3>
-
-  <button id="loadPrivateStudents" type="button">
-    निजी विवरण देखें
-  </button>
-
-  <div style="margin:12px 0">
-    <label>विद्यार्थी खोजें</label>
-    <input
-      type="search"
-      id="privateStudentSearch"
-      placeholder="विद्यार्थी का नाम लिखें"
-    >
-
-    <label>कक्षा चुनें</label>
-    <select id="privateClassFilter">
-      <option value="all">सभी कक्षाएँ</option>
-      <option value="6">कक्षा 6वीं</option>
-      <option value="7">कक्षा 7वीं</option>
-      <option value="8">कक्षा 8वीं</option>
-    </select>
-  </div>
-
-  <p id="privateStudentMessage"></p>
-  <div id="privateStudentList"></div>
+  <details class="admin-compact-list">
+    <summary><span>🔒 निजी विद्यार्थी विवरण (केवल मुख्य Admin)</span><small>विवरण खोलें</small></summary>
+    <div class="admin-list-content">
+      <button id="loadPrivateStudents" type="button">निजी विवरण देखें</button>
+      <div style="margin:12px 0">
+        <label>विद्यार्थी खोजें</label>
+        <input type="search" id="privateStudentSearch" placeholder="विद्यार्थी का नाम लिखें">
+        <label>कक्षा चुनें</label>
+        <select id="privateClassFilter">
+          <option value="all">सभी कक्षाएँ</option>
+          <option value="6">कक्षा 6वीं</option>
+          <option value="7">कक्षा 7वीं</option>
+          <option value="8">कक्षा 8वीं</option>
+        </select>
+      </div>
+      <p id="privateStudentMessage"></p>
+      <div id="privateStudentList"></div>
+    </div>
+  </details>
 </section>
 <hr>
 
@@ -322,8 +319,10 @@ await loadFirebase(
   <p id="birthdayMessage"></p>
   <button id="syncStudentBirthdays" type="button">🎂 विद्यार्थियों की DOB से कार्ड अपडेट करें</button>
   <p id="syncBirthdayMessage"></p>
-  <h3>जन्मदिन सूची</h3>
-  <div id="adminBirthdayList"></div>
+  <details class="admin-compact-list">
+    <summary><span>🎂 जन्मदिन की पूरी सूची देखें</span><small id="adminBirthdayCount">सूची खोलें</small></summary>
+    <div id="adminBirthdayList" class="admin-list-content"></div>
+  </details>
 </section>
 <hr>
 
@@ -665,6 +664,8 @@ const studentSearch = el("studentSearch");
       }
 
       if (adminBirthdayList) {
+        const birthdayCountLabel = el("adminBirthdayCount");
+        if (birthdayCountLabel) birthdayCountLabel.textContent = items.length + " रिकॉर्ड";
         adminBirthdayList.innerHTML = "";
         if (!items.length) adminBirthdayList.textContent = "अभी कोई जन्मदिन दर्ज नहीं है।";
         items.sort((a,b)=>(a.name||"").localeCompare(b.name||"")).forEach(person => {
@@ -958,6 +959,8 @@ const list = students.filter(s => {
   return classMatch && searchMatch;
 });
 
+      const studentCountLabel = el("studentListCount");
+      if (studentCountLabel) studentCountLabel.textContent = list.length + " विद्यार्थी";
       if (!list.length) {
         studentList.textContent =
           "इस कक्षा में विद्यार्थी उपलब्ध नहीं हैं।";
