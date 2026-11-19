@@ -150,7 +150,7 @@
       ev.preventDefault(); ev.stopPropagation(); ev.stopImmediatePropagation();
       const selected=bank[chapter.value], box=$("learningGameCard");
       if(!selected) { box.innerHTML="<h3>पहले पाठ चुनें</h3><p>कक्षा 8वीं हिंदी में उपलब्ध पाठों में से एक पाठ चुनकर अभ्यास शुरू करें।</p>"; return; }
-      const pool=(selected.levels[level.value]||selected.levels.easy).slice();
+      const pool=(selected.levels[level.value]||selected.levels.easy).map(q=>({...q,o:q.o.slice()}));
       const shuffled=arr=>{for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;};
       const set=shuffled(pool).slice(0,5);
       set.forEach(q=>{const pairs=shuffled(q.o.map((v,i)=>({v,i})));q.o=pairs.map(p=>p.v);q.a=pairs.findIndex(p=>p.i===q.a);});
@@ -158,15 +158,17 @@
       function render(){
         locked=false; $("gameProgress").textContent="प्रश्न "+(index+1)+" / "+set.length;
         $("gameScore").textContent="⭐ अंक: "+score+" / "+set.length;
-        const q=set[index]; box.innerHTML='<div class="game-welcome-icon">📖</div><h3>पाठ: '+selected.title+'</h3><p class="game-question">'+q.q+'</p><div class="game-options" id="qbOptions"></div><p id="qbFeedback" class="game-feedback" aria-live="polite"></p>';
+        const q=set[index]; box.innerHTML='<div class="game-welcome-icon">📖</div><h3>पाठ: '+selected.title+'</h3><p class="game-question">'+q.q+'</p><div class="game-options" id="qbOptions"></div><p id="qbFeedback" class="game-feedback" aria-live="polite"></p><button type="button" id="qbNext" class="cta game-next" disabled>पहले उत्तर चुनें</button>';
         q.o.forEach((choice,n)=>{const b=document.createElement("button");b.type="button";b.className="game-option";b.textContent=String.fromCharCode(65+n)+". "+choice;b.addEventListener("click",()=>answer(n));$("qbOptions").appendChild(b);});
+        $("qbNext").addEventListener("click",()=>{if(!locked)return;if(index<set.length-1){index++;render();}else finish();});
       }
       function answer(n){
         if(locked)return; locked=true; const q=set[index], ok=n===q.a;
         if(ok)score++;
         const f=$("qbFeedback"); f.textContent=(ok?"✅ सही उत्तर! ":"❌ सही उत्तर: "+q.o[q.a]+". ")+q.e; f.classList.add(ok?"is-correct":"is-wrong");
         $("gameScore").textContent="⭐ अंक: "+score+" / "+set.length;
-        const next=document.createElement("button");next.className="cta game-next";next.textContent=index===set.length-1?"परिणाम देखें":"अगला प्रश्न";next.addEventListener("click",()=>{if(index<set.length-1){index++;render();}else finish();});box.appendChild(next);
+        box.querySelectorAll(".game-option").forEach(b=>b.disabled=true);
+        const next=$("qbNext");next.disabled=false;next.textContent=index===set.length-1?"परिणाम देखें":"अगला प्रश्न";
       }
       function finish(){
         const pct=Math.round(score/set.length*100);
