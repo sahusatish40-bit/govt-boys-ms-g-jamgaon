@@ -2147,5 +2147,6 @@ function answer(n){if(locked)return;locked=true;let q=qs[p],f=document.getElemen
 function finish(){let pct=Math.round(score/qs.length*100);document.getElementById("gameProgress").textContent="अभ्यास पूरा";box.innerHTML="<h3>अभ्यास पूरा!</h3><p>"+score+" / "+qs.length+" अंक • "+pct+"%</p><p>झलक/पाठ के नाम SCERT सहायक वाचन की विषय-सूची से लिए गए हैं।</p>";let b=document.createElement("button");b.className="cta";b.textContent="दोबारा खेलें";b.onclick=()=>btn.click();box.appendChild(b);}
 draw();},true);
 })();
-</script></body>
+</script><script src="question-bank-v2.js?v=1"></script>
+</body>
 </html>
