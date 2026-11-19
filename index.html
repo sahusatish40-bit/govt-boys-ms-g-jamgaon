@@ -387,7 +387,7 @@ style="width:85px;height:85px;object-fit:contain;">
       </div>
       <p><b>प्रश्न जोड़ें</b> — प्रश्न और अंक भरें। उत्तर लिखना वैकल्पिक है; उत्तरमाला प्रिंट में अलग आएगी।</p>
       <div id="wsQuestionList">
-        <div class="ws-question-row"><label>प्रश्न 1<textarea class="ws-q" rows="2" placeholder="यहाँ प्रश्न लिखें"></textarea></label><label>अंक<input class="ws-marks" type="number" min="1" value="1"></label><label>उत्तर (वैकल्पिक)<textarea class="ws-a" rows="2" placeholder="उत्तर / संकेत"></textarea></label></div>
+        <div class="ws-question-row"><label>प्रश्न 1<textarea class="ws-q" rows="2" placeholder="यहाँ प्रश्न लिखें"></textarea></label><label>प्रकार<select class="ws-type"><option>लघु उत्तरीय</option><option>वस्तुनिष्ठ (MCQ)</option><option>अति लघु उत्तरीय</option><option>दीर्घ उत्तरीय</option><option>परियोजना / गतिविधि</option><option>रिक्त स्थान</option><option>सही / गलत</option></select></label><label>अंक<input class="ws-marks" type="number" min="1" value="1"></label><label>उत्तर (वैकल्पिक)<textarea class="ws-a" rows="2" placeholder="उत्तर / संकेत"></textarea></label></div>
       </div>
       <div class="worksheet-actions"><button type="button" class="cta" id="wsAddQuestion">＋ प्रश्न जोड़ें</button><button type="button" class="cta" id="wsPrint">🖨️ वर्कशीट प्रिंट / PDF</button></div>
       <small>प्रिंट विकल्प में ब्राउज़र के Print संवाद से “Save as PDF” चुन सकते हैं। यह निर्माता किसी भी विषय के लिए खाली प्रश्न-प्रविष्टि देता है; प्रश्नों की शुद्धता शिक्षक द्वारा जाँची जाएगी।</small>
@@ -396,10 +396,10 @@ style="width:85px;height:85px;object-fit:contain;">
   <style>
     .worksheet-meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:14px 0}
     .worksheet-meta-grid label,.ws-question-row label{display:flex;flex-direction:column;gap:6px;font-weight:600}
-    .worksheet-meta-grid input,.worksheet-meta-grid select,.ws-question-row textarea,.ws-question-row input{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:9px;font:inherit;background:#fff;color:#172033}
-    .ws-question-row{display:grid;grid-template-columns:minmax(0,3fr) 90px minmax(0,2fr);gap:10px;padding:12px 0;border-bottom:1px solid #e2e8f0}
+    .worksheet-meta-grid input,.worksheet-meta-grid select,.ws-question-row textarea,.ws-question-row input,.ws-question-row select{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:9px;font:inherit;background:#fff;color:#172033}
+    .ws-question-row{display:grid;grid-template-columns:minmax(0,3fr) minmax(130px,1.3fr) 75px minmax(0,2fr);gap:10px;padding:12px 0;border-bottom:1px solid #e2e8f0}
     .worksheet-actions{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
-    @media(max-width:560px){.ws-question-row{grid-template-columns:1fr 75px}.ws-question-row label:last-child{grid-column:1/-1}}
+    @media(max-width:560px){.ws-question-row{grid-template-columns:1fr 1fr}.ws-question-row label:first-child,.ws-question-row label:last-child{grid-column:1/-1}}
   </style>
   <script>
   (function(){
@@ -407,9 +407,9 @@ style="width:85px;height:85px;object-fit:contain;">
     if(!list||!add||!print)return;
     let count=1;
     function esc(v){return String(v||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
-    add.addEventListener("click",()=>{count++;const row=document.createElement("div");row.className="ws-question-row";row.innerHTML='<label>प्रश्न '+count+'<textarea class="ws-q" rows="2" placeholder="यहाँ प्रश्न लिखें"></textarea></label><label>अंक<input class="ws-marks" type="number" min="1" value="1"></label><label>उत्तर (वैकल्पिक)<textarea class="ws-a" rows="2" placeholder="उत्तर / संकेत"></textarea></label>';list.appendChild(row);});
+    add.addEventListener("click",()=>{count++;const row=document.createElement("div");row.className="ws-question-row";row.innerHTML='<label>प्रश्न '+count+'<textarea class="ws-q" rows="2" placeholder="यहाँ प्रश्न लिखें"></textarea></label><label>प्रकार<select class="ws-type"><option>लघु उत्तरीय</option><option>वस्तुनिष्ठ (MCQ)</option><option>अति लघु उत्तरीय</option><option>दीर्घ उत्तरीय</option><option>परियोजना / गतिविधि</option><option>रिक्त स्थान</option><option>सही / गलत</option></select></label><label>अंक<input class="ws-marks" type="number" min="1" value="1"></label><label>उत्तर (वैकल्पिक)<textarea class="ws-a" rows="2" placeholder="उत्तर / संकेत"></textarea></label>';list.appendChild(row);});
     print.addEventListener("click",()=>{
-      const questions=[...list.querySelectorAll(".ws-question-row")].map((r)=>({q:r.querySelector(".ws-q").value.trim(),m:Math.max(0,Number(r.querySelector(".ws-marks").value)||0),a:r.querySelector(".ws-a").value.trim()})).filter(x=>x.q);
+      const questions=[...list.querySelectorAll(".ws-question-row")].map((r)=>({q:r.querySelector(".ws-q").value.trim(),type:r.querySelector(".ws-type").value,m:Math.max(0,Number(r.querySelector(".ws-marks").value)||0),a:r.querySelector(".ws-a").value.trim()})).filter(x=>x.q);
       if(!questions.length){alert("कृपया कम-से-कम एक प्रश्न लिखें।");return;}
       const total=questions.reduce((n,x)=>n+x.m,0);
       const answerKey=questions.some(x=>x.a)?'<h3>शिक्षक हेतु उत्तरमाला</h3>'+questions.map((x,i)=>x.a?'<p><b>'+(i+1)+'.</b> '+esc(x.a)+'</p>':'').join(""):'';
