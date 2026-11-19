@@ -338,6 +338,15 @@ style="width:85px;height:85px;object-fit:contain;">
     <div class="game-welcome-icon">🧠</div><h3>आज कुछ नया सीखें!</h3>
     <p>कक्षा, विषय और कठिनाई स्तर चुनकर “खेल शुरू करें” दबाएँ। प्रश्नों के उत्तर चुनें, सही उत्तर और व्याख्या देखें तथा अपना स्कोर जाँचें।</p>
   </div>
+  <div class="game-worksheet-panel" style="margin:18px 0;padding:16px;border:1px solid #d8e2f0;border-radius:14px;background:#f7faff">
+    <h3 style="margin:0 0 8px">📝 प्रिंट करने योग्य अभ्यास वर्कशीट</h3>
+    <p style="margin:0 0 12px">उपलब्ध सत्यापित अध्याय-आधारित प्रश्नों से विद्यार्थी अभ्यास-पत्र तैयार करें। अभी यह सुविधा कक्षा 8वीं हिंदी के उपलब्ध पायलट पाठों के लिए सक्रिय है।</p>
+    <label for="worksheetStudentName">विद्यार्थी का नाम</label>
+    <input id="worksheetStudentName" type="text" maxlength="60" placeholder="विद्यार्थी का नाम लिखें" style="display:block;width:100%;max-width:420px;margin:5px 0 12px;padding:10px;border:1px solid #cbd5e1;border-radius:8px">
+    <label style="display:flex;gap:8px;align-items:center;margin:8px 0 12px"><input id="worksheetAnswerKey" type="checkbox"> शिक्षक प्रति में उत्तर कुंजी भी शामिल करें</label>
+    <button type="button" id="printLearningWorksheet" class="cta">🖨️ वर्कशीट प्रिंट / PDF</button>
+    <small id="worksheetAvailability" style="display:block;margin-top:8px">कक्षा 8वीं + हिंदी + उपलब्ध पाठ चुनने पर वर्कशीट तैयार होगी।</small>
+  </div>
   <p class="games-note">नोट: सामान्य अभ्यास बैंक और उपलब्ध अध्याय-आधारित क्विज़ अलग-अलग हैं। जहाँ किसी अध्याय का सत्यापित प्रश्न-संग्रह उपलब्ध नहीं है, वहाँ सामान्य अभ्यास ही दिखेगा; उसे अध्याय-विशेष प्रश्न न समझें।</p>
 
   <div id="miniLearningArcade" class="mini-arcade">
