@@ -1196,3 +1196,60 @@ button:focus-visible,.cta:focus-visible,input:focus-visible,select:focus-visible
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
 }
+
+
+/* Admin panel: compact, collapsible long lists */
+.admin-compact-list{
+  display:block;
+  margin:13px 0 18px;
+  border:1px solid #dce7ee;
+  border-radius:15px;
+  background:linear-gradient(135deg,#fff,#f5f9fc);
+  box-shadow:0 6px 18px rgba(16,43,70,.05);
+  overflow:hidden;
+}
+.admin-compact-list>summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:7px 12px;
+  padding:14px 16px;
+  color:#173b60;
+  font-weight:800;
+  cursor:pointer;
+  list-style:none;
+  background:linear-gradient(100deg,#edf6fa,#fff7e7);
+}
+.admin-compact-list>summary::-webkit-details-marker{display:none}
+.admin-compact-list>summary:after{content:"＋";margin-left:auto;color:#176b87;font-size:20px}
+.admin-compact-list[open]>summary:after{content:"−"}
+.admin-compact-list>summary small{color:#687b8c;font-size:12px;font-weight:500}
+.admin-compact-list .admin-list-content{max-width:100%}
+.admin-compact-list #studentList,
+.admin-compact-list #privateStudentList,
+.admin-compact-list #adminBirthdayList{
+  max-height:390px;
+  overflow:auto;
+  overscroll-behavior:contain;
+}
+.admin-compact-list #studentList table{min-width:720px}
+.admin-compact-list #studentList th,
+.admin-compact-list #studentList td{
+  padding:9px 10px;
+  border-bottom:1px solid #e6edf2;
+  text-align:left;
+  white-space:nowrap;
+}
+.admin-compact-list #studentList th{
+  position:sticky;top:0;z-index:1;
+  background:#eaf3f8;color:#173b60;
+}
+.admin-compact-list .birthday-admin-row{min-height:48px;border-bottom:1px solid #e8eef2}
+@media(max-width:600px){
+  .admin-compact-list>summary{padding:12px}
+  .admin-compact-list>summary small{width:100%;padding-right:24px}
+  .admin-compact-list #studentList,
+  .admin-compact-list #privateStudentList,
+  .admin-compact-list #adminBirthdayList{max-height:330px}
+}
