@@ -843,7 +843,7 @@ const studentSearch = el("studentSearch");
         const w = window.open("", "_blank");
         if (!w) return alert("कृपया इस वेबसाइट के लिए पॉप-अप की अनुमति दें।");
         const safeName = String(person.name || "").replace(/[&<>"]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
-        w.document.write("<!doctype html><html lang='hi'><meta charset='utf-8'><title>Birthday Card</title><style>body{font-family:Arial,sans-serif;background:#fff7e9;display:grid;place-items:center;min-height:95vh}.card{max-width:650px;margin:25px;padding:45px;text-align:center;border:8px double #d6a83d;border-radius:28px;background:linear-gradient(145deg,#fff,#fff1d6);color:#173b60}.emoji{font-size:58px}.name{font-size:36px;color:#b83270}.school{margin-top:30px;font-weight:bold}</style><div class='card'><div class='emoji'>🎂🎈🎉</div><h1>Happy Birthday!</h1><div class='name'>"+safeName+"</div><h2>"+(person.role || "")+"</h2><p>"+(person.detail || "")+"</p><p>आपका जीवन खुशियों, स्वास्थ्य और सफलता से भरा रहे।</p><div class='school'>शासकीय उच्चतर माध्यमिक विद्यालय जी-जामगाँव (बालक माध्य.)</div></div><script>window.onload=function(){window.print()}<\\/script></html>");
+        w.document.write("<!doctype html><html lang='hi'><meta charset='utf-8'><title>Birthday Card</title><style>body{font-family:Arial,sans-serif;background:#fff7e9;display:grid;place-items:center;min-height:95vh}.card{max-width:650px;margin:25px;padding:45px;text-align:center;border:8px double #d6a83d;border-radius:28px;background:linear-gradient(145deg,#fff,#fff1d6);color:#173b60}.emoji{font-size:58px}.name{font-size:36px;color:#b83270}.school{margin-top:30px;font-weight:bold}</style><div class='card'><div class='emoji'>🎂🎈🎉</div><h1>Happy Birthday!</h1><div class='name'>"+safeName+"</div><h2>"+(person.role || "")+"</h2><p>"+(person.detail || "")+"</p><p>आपका जीवन खुशियों, स्वास्थ्य और सफलता से भरा रहे।</p><div class='school'>शासकीय उच्चतर माध्यमिक विद्यालय जी-जामगाँव (बालक माध्य.)</div></div><script>window.onload=function(){window.print()}<\/script></html>");
         w.document.close();
       };
       actions.append(share, print);
@@ -1419,7 +1419,7 @@ async function loadMonthlyAttendance() {
   }
   const month = attendanceMonthInput.value;
   const className = el("attendanceReportClass").value;
-  if (!/^\\d{4}-\\d{2}$/.test(month)) {
+  if (!/^\d{4}-\d{2}$/.test(month)) {
     return show(attendanceReportMessage, "माह चुनें।");
   }
   show(attendanceReportMessage, "मासिक रजिस्टर तैयार हो रहा है...");
