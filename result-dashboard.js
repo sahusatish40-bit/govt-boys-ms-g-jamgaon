@@ -93,6 +93,26 @@
         percent >= 41 ? "C" :
         percent >= 33 ? "D" : "E";
 
+      const examProgress = Object.entries(student.exams || {}).map(([examName, examMarks]) => {
+        const validMarks = Array.isArray(examMarks) ? examMarks : [];
+        const progressObtained = validMarks.reduce((sum, item) => {
+          const total = item.total ?? (Number(item.theory || 0) + Number(item.practical || 0));
+          return sum + (Number(total) || 0);
+        }, 0);
+        const progressMaximum = validMarks.reduce((sum, item) =>
+          sum + (Number(item.theoryMax) || 0) + (Number(item.practicalMax) || 0), 0);
+        const progressPercent = progressMaximum ? progressObtained / progressMaximum * 100 : 0;
+        const progressGrade =
+          progressPercent >= 91 ? "A+" :
+          progressPercent >= 81 ? "A" :
+          progressPercent >= 71 ? "B+" :
+          progressPercent >= 61 ? "B" :
+          progressPercent >= 51 ? "C+" :
+          progressPercent >= 41 ? "C" :
+          progressPercent >= 33 ? "D" : "E";
+        return { examName, progressObtained, progressMaximum, progressPercent, progressGrade };
+      }).filter(item => item.progressMaximum > 0);
+
       personalOutput.innerHTML = `
         <div class="report-card" style="background:#fff;color:#172554;border:3px double #24558a;padding:22px;margin:15px 0;border-radius:8px;font-family:Arial,sans-serif">
           
@@ -134,6 +154,34 @@
             <b>कुल प्राप्तांक:</b> ${obtained} / ${maximum}<br>
             <b>प्राप्त प्रतिशत:</b> ${percent}%<br>
             <b>समग्र ग्रेड:</b> ${overallGrade}
+          </div>
+
+          <div style="margin-top:18px;padding:12px;border:1px solid #cbd5e1;border-radius:8px">
+            <h3 style="margin:0 0 10px;color:#174a80;font-size:16px">परीक्षा-वार प्रगति तुलना</h3>
+            <p style="font-size:11px;margin:0 0 10px;color:#475569">विद्यार्थी के उपलब्ध परीक्षा रिकॉर्ड के आधार पर</p>
+            <div style="overflow-x:auto">
+              <table style="width:100%;border-collapse:collapse;font-size:11px">
+                <tr style="background:#e5efff">
+                  <th style="border:1px solid #94a3b8;padding:6px">परीक्षा</th>
+                  <th style="border:1px solid #94a3b8;padding:6px">प्राप्तांक</th>
+                  <th style="border:1px solid #94a3b8;padding:6px">प्रतिशत</th>
+                  <th style="border:1px solid #94a3b8;padding:6px">ग्रेड</th>
+                </tr>
+                ${examProgress.map(item => `
+                  <tr>
+                    <td style="border:1px solid #cbd5e1;padding:6px">${item.examName}</td>
+                    <td style="border:1px solid #cbd5e1;padding:6px;text-align:center">${item.progressObtained}/${item.progressMaximum}</td>
+                    <td style="border:1px solid #cbd5e1;padding:6px;text-align:center">
+                      ${item.progressPercent.toFixed(2)}%
+                      <div style="height:6px;background:#e2e8f0;border-radius:5px;margin-top:4px;overflow:hidden">
+                        <div style="height:6px;width:${Math.max(0,Math.min(100,item.progressPercent))}%;background:#2878d0"></div>
+                      </div>
+                    </td>
+                    <td style="border:1px solid #cbd5e1;padding:6px;text-align:center">${item.progressGrade}</td>
+                  </tr>
+                `).join("")}
+              </table>
+            </div>
           </div>
 
           <div style="display:flex;justify-content:space-between;gap:15px;margin-top:65px;text-align:center;font-size:12px">
