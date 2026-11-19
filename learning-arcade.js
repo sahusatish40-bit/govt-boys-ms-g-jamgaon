@@ -133,6 +133,6 @@ function startMatch(){
  else{feedback.textContent="यह जोड़ी सही नहीं है। फिर प्रयास करें।";setTimeout(()=>{one.button.textContent="❔";b.textContent="❔";one.button.classList.remove("revealed");b.classList.remove("revealed");first=null;busy=false;},700);}
  });grid.appendChild(b);});progress.textContent=expectedPairs+" जोड़ियाँ मिलाएँ";points.textContent="⭐ 0 अंक";
 }
-function finishMatch(){board.innerHTML="<div class=\"arcade-result\">🏆 शानदार!</div><h4>50 / 50 अंक</h4><p>आपने सभी पाँच जोड़ियाँ सही मिलाईं।</p><button type=\"button\" class=\"cta\" id=\"arcadeAgain\">🔁 नया राउंड</button>";$("arcadeAgain").addEventListener("click",begin);progress.textContent="खेल पूरा हुआ";}
+function finishMatch(){board.innerHTML="<div class=\"arcade-result\">🏆 शानदार!</div><h4>"+score+" / "+(expectedPairs*10)+" अंक</h4><p>आपने सभी "+expectedPairs+" जोड़ियाँ सही मिलाईं।</p><button type=\"button\" class=\"cta\" id=\"arcadeAgain\">🔁 नया राउंड</button>";$("arcadeAgain").addEventListener("click",begin);progress.textContent="खेल पूरा हुआ";}
 startBtn.addEventListener("click",begin);
 })();
