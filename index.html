@@ -339,6 +339,7 @@ style="width:85px;height:85px;object-fit:contain;">
 
   <div id="miniLearningArcade" class="mini-arcade">
     <div class="arcade-heading"><span>🏆 EXTRA CHALLENGES</span><h3>मिनी लर्निंग गेम्स</h3><p>क्विज़ के साथ-साथ गणित, विज्ञान और शब्द-ज्ञान के छोटे खेल भी खेलें।</p></div>
+    <div class="arcade-student-entry"><label for="arcadeStudentName">विद्यार्थी का नाम</label><input id="arcadeStudentName" type="text" maxlength="60" placeholder="अपना पूरा नाम लिखें" autocomplete="name"></div>
     <div class="arcade-controls">
       <label for="arcadeMode">खेल चुनें</label>
       <select id="arcadeMode">
@@ -359,6 +360,8 @@ style="width:85px;height:85px;object-fit:contain;">
     <div id="arcadeBoard" class="arcade-board" aria-live="polite">
       <div class="arcade-welcome">🎯<h4>अपना मिशन चुनिए!</h4><p>हर सही उत्तर पर अंक मिलेंगे। हर बार नए प्रश्न और गणित के नए सवाल मिलेंगे।</p></div>
     </div>
+    <div class="arcade-report-launch"><button type="button" class="cta" id="arcadeReportToggle">📊 शिक्षक रिपोर्ट देखें</button></div>
+    <div id="arcadeTeacherReport" class="arcade-teacher-report" hidden></div>
   </div>
 </section>
 
@@ -522,7 +525,7 @@ CHHATTISGARH
 </script>
 
 <script src="script.js?v=36"></script>
-<script src="learning-arcade.js?v=4"></script>
+<script src="learning-arcade.js?v=5"></script>
 <script src="student-results.js?v=1"></script>
 <script src="result-dashboard.js?v=3"></script>
 
