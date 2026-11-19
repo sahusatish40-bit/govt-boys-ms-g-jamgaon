@@ -109,6 +109,7 @@ style="width:85px;height:85px;object-fit:contain;">
 <div class="resource-box">
 <h3>📚 डिजिटल अध्ययन सामग्री</h3>
 
+<details class="site-folder"><summary><span class="folder-summary-icon">📂</span><span><strong>डिजिटल अध्ययन सामग्री</strong><small>कक्षा 6–8 के नोट्स, PDF, Grammar, Spoken English और अभ्यास सामग्री</small></span><span class="folder-count">सभी सामग्री</span></summary>
 <div class="cards">
   <article class="card">
     <h3>कक्षा 6वीं</h3>
@@ -159,6 +160,7 @@ style="width:85px;height:85px;object-fit:contain;">
     <a href="nmmse/">अभ्यास शुरू करें</a>
   </article>
 </div>
+</details>
 </div>
 </section>
 
@@ -182,10 +184,11 @@ style="width:85px;height:85px;object-fit:contain;">
     <p>हमारे विद्यालय के प्यारे विद्यार्थियों और समर्पित शिक्षकगण को जन्मदिन की हार्दिक बधाई।</p>
   </div>
   <div id="birthdayToday" class="birthday-today"></div>
-  <h3 class="birthday-subtitle">🎈 आने वाले जन्मदिन</h3>
+  <details class="site-folder birthday-folder"><summary><span class="folder-summary-icon">🎂</span><span><strong>आने वाले जन्मदिन</strong><small>विद्यालय परिवार के आगामी जन्मदिन देखें</small></span><span class="folder-count">सूची खोलें</span></summary>
   <div id="birthdayList" class="birthday-grid">
     <p>जन्मदिन की जानकारी लोड हो रही है...</p>
   </div>
+</details>
 </section>
 
 
@@ -293,12 +296,15 @@ style="width:85px;height:85px;object-fit:contain;">
     <select id="gameChapter"><option value="general">सामान्य अभ्यास</option></select>
     <button type="button" id="startLearningGame" class="cta">🎯 खेल शुरू करें</button>
   </div>
-  <div id="gameBookSource" class="game-book-source">
+  <details class="site-folder game-folder"><summary><span class="folder-summary-icon">📚</span><span><strong>आपकी कक्षा की पाठ्यपुस्तकें</strong><small>चयनित कक्षा के पुस्तक स्रोत और आधिकारिक लिंक</small></span><span class="folder-count">लिंक</span></summary>
+<div id="gameBookSource" class="game-book-source">
     <strong>📚 आपकी कक्षा की पाठ्यपुस्तकें</strong>
     <p id="gameBookNames">कक्षा 6वीं: NCERT नई हिंदी माध्यम पुस्तकें — मल्हार, Poorvi, दीपकम्, गणित प्रकाश, जिज्ञासा और समाज का अध्ययन।</p>
     <p class="game-source-links"><a href="https://ncert.nic.in/textbook.php" target="_blank" rel="noopener">NCERT आधिकारिक पुस्तकें देखें ↗</a> <a href="https://scert.cg.gov.in/pdf/textbook-2024-25/textbook-2024-25.htm" target="_blank" rel="noopener">SCERT छत्तीसगढ़ कक्षा 8 पुस्तकें देखें ↗</a></p>
     <small>पुस्तक लिंक आधिकारिक पोर्टल पर खुलेंगे। वर्तमान प्रश्न अभ्यास हेतु हैं; अध्यायवार प्रश्न संबंधित अध्याय-सामग्री की पुष्टि के बाद जोड़े जाएँगे।</small>
   </div>
+  </details>
+  <details class="site-folder game-folder"><summary><span class="folder-summary-icon">📖</span><span><strong>आधिकारिक पाठ्यपुस्तकें</strong><small>NCERT कक्षा 6–7 और CG SCERT कक्षा 8 की पुस्तकें</small></span><span class="folder-count">सभी पुस्तकें</span></summary>
   <div class="game-book-source" id="officialGameBooks">
  <strong>📚 आधिकारिक पाठ्यपुस्तकें — सीधे खोलें</strong>
  <p><b>कक्षा 6वीं और 7वीं — NCERT हिंदी माध्यम</b></p>
@@ -331,6 +337,7 @@ style="width:85px;height:85px;object-fit:contain;">
 <p><a href="https://ncert.nic.in/textbook.php" target="_blank" rel="noopener">NCERT की कक्षा 6वीं–7वीं पुस्तकें ↗</a> · <a href="https://scert.cg.gov.in/pdf/textbook-2024-25/textbook-2024-25.htm" target="_blank" rel="noopener">CG SCERT पुस्तकें ↗</a></p>
 <small>नोट: SCERT प्रश्न बैंक कक्षा 6–8 के लिए हैं; NCERT/SCERT की संबंधित पाठ्यपुस्तक के अध्याय से मिलान करके अभ्यास करें।</small>
 </div>
+</details>
 <div class="game-scorebar"><span id="gameProgress">प्रश्न 1 / 5</span><strong id="gameScore">⭐ अंक: 0</strong></div>
   <div id="learningGameCard" class="learning-game-card" aria-live="polite">
     <div class="game-welcome-icon">🧠</div><h3>आज कुछ नया सीखें!</h3>
