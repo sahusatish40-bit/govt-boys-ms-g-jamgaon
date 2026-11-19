@@ -123,6 +123,8 @@
     }
   };
   Object.keys(extra).forEach(id => Object.keys(extra[id]).forEach(level => bank[id].levels[level].push(...extra[id][level])));
+  // Share only this verified pilot bank with the teacher worksheet builder.
+  window.GJClass8HindiQuestionBank = bank;
 
   const $ = id => document.getElementById(id);
   function init() {
