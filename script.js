@@ -156,7 +156,7 @@ await loadFirebase(
               <article class="admin-stat"><span>🎂</span><div><small>जन्मदिन रिकॉर्ड</small><strong id="dashBirthdays">—</strong><em>जन्मदिन कार्ड</em></div></article>
               <article class="admin-stat"><span>📢</span><div><small>विद्यालय सूचनाएँ</small><strong id="dashNotices">—</strong><em>सूचना बोर्ड</em></div></article>
             </div>
-            <div class="admin-quick-area"><strong>⚡ Quick Management</strong><div class="admin-quick-links"><a href="#adminNoticeManagement">📢 सूचना</a><a href="#adminEventManagement">📅 कार्यक्रम</a><a href="#adminStudentManagement">🎓 विद्यार्थी</a><a href="#birthdayManagement">🎂 जन्मदिन</a><a href="#teacherManagement">👨‍🏫 शिक्षक</a><a href="#adminExamManagement">📝 परीक्षा</a><a href="#creativityAdmin">🌟 रचनात्मकता</a><a href="#adminGalleryManagement">🖼️ गैलरी</a></div></div>
+            <div class="admin-quick-area"><strong>⚡ Quick Management</strong><div class="admin-quick-links"><a href="#adminNoticeManagement">📢 सूचना</a><a href="#adminEventManagement">📅 कार्यक्रम</a><a href="#adminStudentManagement">🎓 विद्यार्थी</a><a href="#digitalAttendance">📅 उपस्थिति</a><a href="#birthdayManagement">🎂 जन्मदिन</a><a href="#teacherManagement">👨‍🏫 शिक्षक</a><a href="#adminExamManagement">📝 परीक्षा</a><a href="#creativityAdmin">🌟 रचनात्मकता</a><a href="#adminGalleryManagement">🖼️ गैलरी</a></div></div>
             <p id="adminDashboardMessage" class="admin-dashboard-message" aria-live="polite">डैशबोर्ड का डेटा लोड हो रहा है…</p>
             <p id="adminDashboardDate" class="admin-dashboard-date"></p>
             <section class="admin-roadmap" aria-label="School Sathi सुविधा विस्तार योजना">
@@ -164,8 +164,8 @@ await loadFirebase(
               <ol class="admin-roadmap-list">
                 <li class="is-done"><span>01</span><div><strong>Advanced Admin Panel</strong><small>डैशबोर्ड, त्वरित प्रबंधन और मोबाइल नेविगेशन</small></div><em>पूरा</em></li>
                 <li class="is-done"><span>02</span><div><strong>Student Digital Profile</strong><small>फोटो लिंक, रोल नंबर, अभिभावक और विद्यार्थी विवरण</small></div><em>पूरा</em></li>
-                <li><span>03</span><div><strong>Digital Attendance</strong><small>दैनिक उपस्थिति, मासिक रजिस्टर और सारांश</small></div></li>
-                <li><span>04</span><div><strong>Smart Report Card</strong><small>अंक, प्रतिशत, ग्रेड और प्रिंट योग्य रिपोर्ट</small></div></li>
+                <li><span>03</span><div><strong>Smart Report Card</strong><small>विषयवार अंक, ग्रेड, परीक्षा-वार प्रगति और प्रिंट योग्य रिपोर्ट</small></div></li>
+                <li><span>04</span><div><strong>Digital Attendance</strong><small>दैनिक उपस्थिति, मासिक रजिस्टर, अनुपस्थिति सूची और सारांश</small></div></li>
                 <li><span>05</span><div><strong>Smart Learning Zone</strong><small>क्विज, अभ्यास सेट, वर्कशीट और प्रश्न बैंक</small></div></li>
                 <li><span>06</span><div><strong>Notice & Event Center</strong><small>सूचना, कार्यक्रम और महत्वपूर्ण घोषणाएँ</small></div></li>
                 <li><span>07</span><div><strong>Digital Library</strong><small>ई-पुस्तकें, PDF और विषयवार अध्ययन सामग्री</small></div></li>
@@ -277,6 +277,41 @@ await loadFirebase(
           </details>
 
 <hr>
+<section id="digitalAttendance" class="attendance-module">
+  <h3>📅 Digital Attendance — दैनिक उपस्थिति</h3>
+  <p>कक्षा और तारीख चुनकर उपस्थिति दर्ज करें। सेव करने पर उसी तारीख का रिकॉर्ड अपडेट होगा।</p>
+  <div class="attendance-controls">
+    <label for="attendanceDate">उपस्थिति की तारीख</label>
+    <input id="attendanceDate" type="date">
+    <label for="attendanceClass">कक्षा</label>
+    <select id="attendanceClass">
+      <option value="6">कक्षा 6वीं</option>
+      <option value="7">कक्षा 7वीं</option>
+      <option value="8">कक्षा 8वीं</option>
+    </select>
+    <button id="loadAttendance" type="button">विद्यार्थी सूची लोड करें</button>
+    <button id="allPresentAttendance" type="button" class="secondary">सभी उपस्थित</button>
+    <button id="allAbsentAttendance" type="button" class="secondary">सभी अनुपस्थित</button>
+  </div>
+  <p id="attendanceMessage" aria-live="polite"></p>
+  <div id="attendanceRoster" style="overflow-x:auto"></div>
+  <button id="saveAttendance" type="button" disabled>💾 उपस्थिति सेव करें</button>
+  <hr>
+  <h3>📊 मासिक उपस्थिति रजिस्टर</h3>
+  <label for="attendanceMonth">माह चुनें</label>
+  <input id="attendanceMonth" type="month">
+  <label for="attendanceReportClass">कक्षा</label>
+  <select id="attendanceReportClass">
+    <option value="6">कक्षा 6वीं</option>
+    <option value="7">कक्षा 7वीं</option>
+    <option value="8">कक्षा 8वीं</option>
+  </select>
+  <button id="loadAttendanceReport" type="button">मासिक रिपोर्ट देखें</button>
+  <p id="attendanceReportMessage" aria-live="polite"></p>
+  <div id="attendanceReport" style="overflow-x:auto"></div>
+</section>
+<hr>
+
 <section id="privateStudentDetails">
   <details class="admin-compact-list">
     <summary><span>🔒 निजी विद्यार्थी विवरण (केवल मुख्य Admin)</span><small>विवरण खोलें</small></summary>
@@ -808,7 +843,7 @@ const studentSearch = el("studentSearch");
         const w = window.open("", "_blank");
         if (!w) return alert("कृपया इस वेबसाइट के लिए पॉप-अप की अनुमति दें।");
         const safeName = String(person.name || "").replace(/[&<>"]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
-        w.document.write("<!doctype html><html lang='hi'><meta charset='utf-8'><title>Birthday Card</title><style>body{font-family:Arial,sans-serif;background:#fff7e9;display:grid;place-items:center;min-height:95vh}.card{max-width:650px;margin:25px;padding:45px;text-align:center;border:8px double #d6a83d;border-radius:28px;background:linear-gradient(145deg,#fff,#fff1d6);color:#173b60}.emoji{font-size:58px}.name{font-size:36px;color:#b83270}.school{margin-top:30px;font-weight:bold}</style><div class='card'><div class='emoji'>🎂🎈🎉</div><h1>Happy Birthday!</h1><div class='name'>"+safeName+"</div><h2>"+(person.role || "")+"</h2><p>"+(person.detail || "")+"</p><p>आपका जीवन खुशियों, स्वास्थ्य और सफलता से भरा रहे।</p><div class='school'>शासकीय उच्चतर माध्यमिक विद्यालय जी-जामगाँव (बालक माध्य.)</div></div><script>window.onload=function(){window.print()}<\\/script></html>");
+        w.document.write("<!doctype html><html lang='hi'><meta charset='utf-8'><title>Birthday Card</title><style>body{font-family:Arial,sans-serif;background:#fff7e9;display:grid;place-items:center;min-height:95vh}.card{max-width:650px;margin:25px;padding:45px;text-align:center;border:8px double #d6a83d;border-radius:28px;background:linear-gradient(145deg,#fff,#fff1d6);color:#173b60}.emoji{font-size:58px}.name{font-size:36px;color:#b83270}.school{margin-top:30px;font-weight:bold}</style><div class='card'><div class='emoji'>🎂🎈🎉</div><h1>Happy Birthday!</h1><div class='name'>"+safeName+"</div><h2>"+(person.role || "")+"</h2><p>"+(person.detail || "")+"</p><p>आपका जीवन खुशियों, स्वास्थ्य और सफलता से भरा रहे।</p><div class='school'>शासकीय उच्चतर माध्यमिक विद्यालय जी-जामगाँव (बालक माध्य.)</div></div><script>window.onload=function(){window.print()}<\/script></html>");
         w.document.close();
       };
       actions.append(share, print);
@@ -1205,7 +1240,307 @@ const list = students.filter(s => {
     }
 
     studentFilter.addEventListener("change", renderStudents);
+
 studentSearch?.addEventListener("input", renderStudents);
+
+// Digital Attendance: daily class register and month-wise summary.
+const attendanceDateInput = el("attendanceDate");
+const attendanceClassInput = el("attendanceClass");
+const attendanceRosterBox = el("attendanceRoster");
+const attendanceMessage = el("attendanceMessage");
+const attendanceSaveButton = el("saveAttendance");
+const attendanceMonthInput = el("attendanceMonth");
+const attendanceReportBox = el("attendanceReport");
+const attendanceReportMessage = el("attendanceReportMessage");
+let attendanceRoster = [];
+
+function localDateString(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return y + "-" + m + "-" + d;
+}
+if (attendanceDateInput) attendanceDateInput.value = localDateString(new Date());
+if (attendanceMonthInput) attendanceMonthInput.value = localDateString(new Date()).slice(0, 7);
+
+function attendanceDocId(className, date) {
+  return className + "_" + date;
+}
+
+function renderAttendanceRoster() {
+  if (!attendanceRosterBox) return;
+  attendanceRosterBox.innerHTML = "";
+  if (!attendanceRoster.length) {
+    attendanceRosterBox.textContent = "इस कक्षा में विद्यार्थी उपलब्ध नहीं हैं।";
+    attendanceSaveButton.disabled = true;
+    return;
+  }
+  const table = document.createElement("table");
+  table.style.cssText = "width:100%;min-width:420px;border-collapse:collapse";
+  const header = document.createElement("tr");
+  ["रोल नंबर", "विद्यार्थी का नाम", "उपस्थिति"].forEach(label => {
+    const th = document.createElement("th");
+    th.textContent = label;
+    th.style.cssText = "padding:9px;border:1px solid #cbd5e1;background:#eef4ff";
+    header.appendChild(th);
+  });
+  table.appendChild(header);
+  attendanceRoster.forEach(student => {
+    const tr = document.createElement("tr");
+    [student.rollNo || "—", student.name || "—"].forEach(value => {
+      const td = document.createElement("td");
+      td.textContent = value;
+      td.style.cssText = "padding:8px;border:1px solid #cbd5e1";
+      tr.appendChild(td);
+    });
+    const td = document.createElement("td");
+    td.style.cssText = "padding:6px;border:1px solid #cbd5e1";
+    const select = document.createElement("select");
+    select.dataset.studentId = student.id;
+    select.style.cssText = "min-width:125px;padding:7px";
+    [["P", "उपस्थित"], ["A", "अनुपस्थित"]].forEach(([value, label]) => {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = label;
+      select.appendChild(option);
+    });
+    select.value = student.status || "P";
+    td.appendChild(select);
+    tr.appendChild(td);
+    table.appendChild(tr);
+  });
+  attendanceRosterBox.appendChild(table);
+  attendanceSaveButton.disabled = false;
+}
+
+async function loadDailyAttendance() {
+  if (!auth.currentUser || auth.currentUser.uid !== ADMIN_UID) {
+    show(attendanceMessage, "केवल अधिकृत Admin उपस्थिति दर्ज कर सकता है।");
+    return;
+  }
+  const className = attendanceClassInput.value;
+  const date = attendanceDateInput.value;
+  if (!date) return show(attendanceMessage, "तारीख चुनें।");
+  const classStudents = students.filter(student => String(student.className) === className);
+  if (!classStudents.length) {
+    attendanceRoster = [];
+    renderAttendanceRoster();
+    return show(attendanceMessage, "इस कक्षा की विद्यार्थी सूची उपलब्ध नहीं है।");
+  }
+  show(attendanceMessage, "उपस्थिति रिकॉर्ड लोड हो रहा है...");
+  attendanceRosterBox.textContent = "लोड हो रहा है...";
+  attendanceSaveButton.disabled = true;
+  try {
+    const snap = await db.collection("attendance").doc(attendanceDocId(className, date)).get();
+    const saved = snap.exists ? (snap.data().records || {}) : {};
+    attendanceRoster = classStudents.map(student => ({
+      id: student.id,
+      name: student.name,
+      rollNo: student.rollNo,
+      status: saved[student.id]?.status || "P"
+    }));
+    renderAttendanceRoster();
+    const present = attendanceRoster.filter(item => item.status === "P").length;
+    const absent = attendanceRoster.length - present;
+    show(attendanceMessage, date + " | कक्षा " + className + " | कुल " +
+      attendanceRoster.length + " | उपस्थित " + present + " | अनुपस्थित " + absent +
+      (snap.exists ? " | पहले से सेव रिकॉर्ड लोड हुआ।" : " | नया रिकॉर्ड — कृपया जाँचकर सेव करें।"));
+  } catch (error) {
+    attendanceRoster = [];
+    renderAttendanceRoster();
+    show(attendanceMessage, "उपस्थिति लोड नहीं हुई: " + error.message);
+  }
+}
+
+el("loadAttendance")?.addEventListener("click", loadDailyAttendance);
+attendanceClassInput?.addEventListener("change", loadDailyAttendance);
+attendanceDateInput?.addEventListener("change", loadDailyAttendance);
+el("allPresentAttendance")?.addEventListener("click", () => {
+  attendanceRoster.forEach(student => student.status = "P");
+  renderAttendanceRoster();
+});
+el("allAbsentAttendance")?.addEventListener("click", () => {
+  attendanceRoster.forEach(student => student.status = "A");
+  renderAttendanceRoster();
+});
+
+attendanceSaveButton?.addEventListener("click", async () => {
+  if (!auth.currentUser || auth.currentUser.uid !== ADMIN_UID) {
+    return show(attendanceMessage, "केवल अधिकृत Admin रिकॉर्ड सेव कर सकता है।");
+  }
+  const date = attendanceDateInput.value;
+  const className = attendanceClassInput.value;
+  if (!date || !attendanceRoster.length) {
+    return show(attendanceMessage, "पहले तारीख और विद्यार्थी सूची चुनें।");
+  }
+  const selects = attendanceRosterBox.querySelectorAll("select[data-student-id]");
+  const records = {};
+  selects.forEach(select => {
+    const student = attendanceRoster.find(item => item.id === select.dataset.studentId);
+    if (student) records[student.id] = {
+      studentId: student.id,
+      name: student.name || "",
+      rollNo: String(student.rollNo || ""),
+      status: select.value === "A" ? "A" : "P"
+    };
+  });
+  if (Object.keys(records).length !== attendanceRoster.length) {
+    return show(attendanceMessage, "सभी विद्यार्थियों की उपस्थिति जाँचें।");
+  }
+  attendanceSaveButton.disabled = true;
+  show(attendanceMessage, "उपस्थिति सेव हो रही है...");
+  try {
+    await db.collection("attendance").doc(attendanceDocId(className, date)).set({
+      date,
+      className,
+      records,
+      totalStudents: attendanceRoster.length,
+      presentCount: Object.values(records).filter(item => item.status === "P").length,
+      absentCount: Object.values(records).filter(item => item.status === "A").length,
+      updatedBy: auth.currentUser.uid,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    attendanceRoster.forEach(student => {
+      student.status = records[student.id].status;
+    });
+    const present = Object.values(records).filter(item => item.status === "P").length;
+    show(attendanceMessage, "उपस्थिति सेव हो गई। उपस्थित: " + present +
+      " | अनुपस्थित: " + (attendanceRoster.length - present));
+  } catch (error) {
+    show(attendanceMessage, "सेव नहीं हुआ: " + error.message);
+  } finally {
+    attendanceSaveButton.disabled = false;
+  }
+});
+
+async function loadMonthlyAttendance() {
+  if (!auth.currentUser || auth.currentUser.uid !== ADMIN_UID) {
+    return show(attendanceReportMessage, "केवल अधिकृत Admin रिपोर्ट देख सकता है।");
+  }
+  const month = attendanceMonthInput.value;
+  const className = el("attendanceReportClass").value;
+  if (!/^\d{4}-\d{2}$/.test(month)) {
+    return show(attendanceReportMessage, "माह चुनें।");
+  }
+  show(attendanceReportMessage, "मासिक रजिस्टर तैयार हो रहा है...");
+  attendanceReportBox.innerHTML = "";
+  try {
+    const snap = await db.collection("attendance")
+      .where("date", ">=", month + "-01")
+      .where("date", "<=", month + "-31")
+      .get();
+    const sessions = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+      .filter(item => String(item.className) === className &&
+        typeof item.date === "string" && item.date.startsWith(month))
+      .sort((a, b) => a.date.localeCompare(b.date));
+    const classStudents = students.filter(student => String(student.className) === className);
+    const totalDays = sessions.length;
+    const totalPossible = sessions.reduce((sum, item) => sum + Object.keys(item.records || {}).length, 0);
+    const totalPresent = sessions.reduce((sum, item) =>
+      sum + Object.values(item.records || {}).filter(record => record.status === "P").length, 0);
+    const totalAbsent = totalPossible - totalPresent;
+    const overallPercent = totalPossible ? totalPresent / totalPossible * 100 : 0;
+
+    const summary = document.createElement("p");
+    summary.textContent = "कक्षा " + className + " | " + month +
+      " | दर्ज कार्यदिवस: " + totalDays + " | कुल उपस्थितियाँ: " + totalPresent +
+      " | अनुपस्थितियाँ: " + totalAbsent + " | औसत उपस्थिति: " + overallPercent.toFixed(2) + "%";
+    attendanceReportBox.appendChild(summary);
+
+    const table = document.createElement("table");
+    table.style.cssText = "width:100%;min-width:560px;border-collapse:collapse";
+    const header = document.createElement("tr");
+    ["रोल नं.", "विद्यार्थी", "उपस्थित दिन", "अनुपस्थित दिन", "उपस्थिति %"].forEach(label => {
+      const th = document.createElement("th");
+      th.textContent = label;
+      th.style.cssText = "padding:8px;border:1px solid #cbd5e1;background:#eef4ff";
+      header.appendChild(th);
+    });
+    table.appendChild(header);
+
+    const studentSummaries = classStudents.map(student => {
+      let present = 0, absent = 0;
+      sessions.forEach(session => {
+        const record = session.records?.[student.id];
+        if (record?.status === "P") present++;
+        else if (record?.status === "A") absent++;
+      });
+      const markedDays = present + absent;
+      return {
+        student,
+        present,
+        absent,
+        percent: markedDays ? present / markedDays * 100 : 0
+      };
+    });
+    studentSummaries.sort((a, b) =>
+      String(a.student.rollNo || "").localeCompare(String(b.student.rollNo || ""), undefined, {numeric:true})
+    );
+    studentSummaries.forEach(item => {
+      const tr = document.createElement("tr");
+      [
+        item.student.rollNo || "—",
+        item.student.name || "—",
+        item.present,
+        item.absent,
+        item.percent.toFixed(2) + "%"
+      ].forEach(value => {
+        const td = document.createElement("td");
+        td.textContent = value;
+        td.style.cssText = "padding:7px;border:1px solid #cbd5e1;text-align:center";
+        tr.appendChild(td);
+      });
+      table.appendChild(tr);
+    });
+    attendanceReportBox.appendChild(table);
+
+    const absentHeading = document.createElement("h4");
+    absentHeading.textContent = "अनुपस्थित विद्यार्थियों की तारीखवार सूची";
+    attendanceReportBox.appendChild(absentHeading);
+    const absentList = document.createElement("div");
+    if (!sessions.some(session => Object.values(session.records || {}).some(record => record.status === "A"))) {
+      absentList.textContent = "इस माह दर्ज रिकॉर्ड में कोई अनुपस्थित विद्यार्थी नहीं है।";
+    } else {
+      sessions.forEach(session => {
+        const absentNames = Object.values(session.records || {})
+          .filter(record => record.status === "A")
+          .map(record => (record.rollNo ? record.rollNo + " — " : "") + record.name);
+        if (absentNames.length) {
+          const line = document.createElement("p");
+          line.textContent = session.date + ": " + absentNames.join(", ");
+          absentList.appendChild(line);
+        }
+      });
+    }
+    attendanceReportBox.appendChild(absentList);
+
+    const printButton = document.createElement("button");
+    printButton.type = "button";
+    printButton.textContent = "🖨️ मासिक रजिस्टर प्रिंट / PDF";
+    printButton.onclick = () => {
+      const win = window.open("", "_blank");
+      if (!win) return alert("प्रिंट विंडो खोलने के लिए Pop-up अनुमति दें।");
+      const reportHtml = attendanceReportBox.innerHTML;
+      win.document.write("<!doctype html><html><head><meta charset='UTF-8'><title>मासिक उपस्थिति रजिस्टर</title>" +
+        "<style>body{font-family:Arial,sans-serif;padding:18px}h2,p{text-align:center}table{width:100%;border-collapse:collapse}" +
+        "th,td{border:1px solid #555;padding:6px;text-align:center;font-size:12px}h3,h4{margin-top:20px}</style></head><body>" +
+        "<h2>शासकीय उच्चतर माध्यमिक विद्यालय जी- जामगाँव (बालक माध्य.)</h2>" +
+        "<p>वि.ख. कुरुद, जिला धमतरी (छ.ग.)</p><h3>मासिक उपस्थिति रजिस्टर</h3>" +
+        reportHtml + "<script>window.onload=function(){window.print()}<\\/script></body></html>");
+      win.document.close();
+    };
+    attendanceReportBox.appendChild(printButton);
+    show(attendanceReportMessage, totalDays
+      ? "रिपोर्ट तैयार है। " + classStudents.length + " विद्यार्थी और " + totalDays + " दर्ज कार्यदिवस।"
+      : "इस माह की उपस्थिति अभी दर्ज नहीं है। विद्यार्थी सूची दिखाई गई है।");
+  } catch (error) {
+    show(attendanceReportMessage, "रिपोर्ट लोड नहीं हुई: " + error.message);
+  }
+}
+el("loadAttendanceReport")?.addEventListener("click", loadMonthlyAttendance);
+el("attendanceReportClass")?.addEventListener("change", loadMonthlyAttendance);
+el("attendanceMonth")?.addEventListener("change", loadMonthlyAttendance);
+
 
 // मुख्य Admin के लिए निजी विद्यार्थी विवरण
 let privateStudentRecords = [];
