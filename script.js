@@ -160,10 +160,10 @@ await loadFirebase(
             <p id="adminDashboardMessage" class="admin-dashboard-message" aria-live="polite">डैशबोर्ड का डेटा लोड हो रहा है…</p>
             <p id="adminDashboardDate" class="admin-dashboard-date"></p>
             <section class="admin-roadmap" aria-label="School Sathi सुविधा विस्तार योजना">
-              <div class="admin-roadmap-heading"><div><span class="admin-eyebrow">10-STEP SCHOOL SAATHI UPGRADE</span><h4>🚀 वेबसाइट विकास योजना</h4><p>मौजूदा सुविधाएँ सुरक्षित रखते हुए एक-एक चरण में विस्तार</p></div><span class="admin-roadmap-progress">चरण 1 / 10</span></div>
+              <div class="admin-roadmap-heading"><div><span class="admin-eyebrow">10-STEP SCHOOL SAATHI UPGRADE</span><h4>🚀 वेबसाइट विकास योजना</h4><p>मौजूदा सुविधाएँ सुरक्षित रखते हुए एक-एक चरण में विस्तार</p></div><span class="admin-roadmap-progress">चरण 2 / 10</span></div>
               <ol class="admin-roadmap-list">
-                <li class="is-done"><span>01</span><div><strong>Advanced Admin Panel</strong><small>डैशबोर्ड, त्वरित प्रबंधन और मोबाइल नेविगेशन</small></div><em>शुरुआत</em></li>
-                <li class="is-next"><span>02</span><div><strong>Student Digital Profile</strong><small>फोटो, रोल नंबर, अभिभावक और शैक्षणिक विवरण</small></div><em>अगला</em></li>
+                <li class="is-done"><span>01</span><div><strong>Advanced Admin Panel</strong><small>डैशबोर्ड, त्वरित प्रबंधन और मोबाइल नेविगेशन</small></div><em>पूरा</em></li>
+                <li class="is-done"><span>02</span><div><strong>Student Digital Profile</strong><small>फोटो लिंक, रोल नंबर, अभिभावक और विद्यार्थी विवरण</small></div><em>पूरा</em></li>
                 <li><span>03</span><div><strong>Digital Attendance</strong><small>दैनिक उपस्थिति, मासिक रजिस्टर और सारांश</small></div></li>
                 <li><span>04</span><div><strong>Smart Report Card</strong><small>अंक, प्रतिशत, ग्रेड और प्रिंट योग्य रिपोर्ट</small></div></li>
                 <li><span>05</span><div><strong>Smart Learning Zone</strong><small>क्विज, अभ्यास सेट, वर्कशीट और प्रश्न बैंक</small></div></li>
@@ -254,6 +254,9 @@ await loadFirebase(
           <input id="studentMobile" type="tel"
             inputmode="numeric" maxlength="15"
             placeholder="अभिभावक का मोबाइल नंबर">
+
+          <label>विद्यार्थी फोटो लिंक (वैकल्पिक)</label>
+          <input id="studentPhotoUrl" type="url" maxlength="500" placeholder="https://... फोटो का लिंक">
 
           <button id="saveStudent" type="button">विद्यार्थी जोड़ें</button>
           <p id="studentMessage"></p>
@@ -1082,7 +1085,8 @@ const list = students.filter(s => {
             ["guardianName", "अभिभावक का नाम", s.guardianName || ""],
             ["dob", "जन्मतिथि (YYYY-MM-DD)", s.dob || ""],
             ["address", "पूरा पता", s.address || ""],
-            ["mobile", "मोबाइल नंबर", s.mobile || ""]
+            ["mobile", "मोबाइल नंबर", s.mobile || ""],
+            ["photoUrl", "विद्यार्थी फोटो लिंक", s.photoUrl || ""]
           ];
 
           const v = {};
@@ -1135,7 +1139,32 @@ const list = students.filter(s => {
           }
         };
 
-        td.append(edit, del);
+        const profile = document.createElement("details");
+        profile.className = "student-profile-details";
+        const profileSummary = document.createElement("summary");
+        profileSummary.textContent = "प्रोफाइल देखें";
+        profile.appendChild(profileSummary);
+        const profileBody = document.createElement("div");
+        profileBody.className = "student-profile-body";
+        if (s.photoUrl && /^https:\/\//i.test(s.photoUrl)) {
+          const photo = document.createElement("img");
+          photo.src = s.photoUrl;
+          photo.alt = s.name || "विद्यार्थी फोटो";
+          photo.loading = "lazy";
+          photo.referrerPolicy = "no-referrer";
+          photo.className = "student-profile-photo";
+          profileBody.appendChild(photo);
+        }
+        const profileTitle = document.createElement("strong");
+        profileTitle.textContent = (s.name || "विद्यार्थी") + " · कक्षा " + s.className + " · रोल नं. " + s.rollNo;
+        profileBody.appendChild(profileTitle);
+        [["अभिभावक",s.guardianName],["जन्मतिथि",s.dob],["मोबाइल",s.mobile],["पता",s.address]].forEach(([label,value]) => {
+          const line = document.createElement("p");
+          line.textContent = label + ": " + (value || "—");
+          profileBody.appendChild(line);
+        });
+        profile.appendChild(profileBody);
+        td.append(edit, del, profile);
         tr.appendChild(td);
         table.appendChild(tr);
       });
@@ -2406,6 +2435,7 @@ el("addEvent").onclick = async () => {
           dob: el("studentDob").value,
           address: el("studentAddress").value.trim(),
           mobile: el("studentMobile").value.trim(),
+          photoUrl: el("studentPhotoUrl").value.trim(),
           createdBy: auth.currentUser.uid,
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
@@ -2416,7 +2446,8 @@ el("addEvent").onclick = async () => {
           "guardianName",
           "studentDob",
           "studentAddress",
-          "studentMobile"
+          "studentMobile",
+          "studentPhotoUrl"
         ].forEach(id => el(id).value = "");
 
         show(studentMessage, "विद्यार्थी जोड़ दिया गया।");
