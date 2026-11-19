@@ -981,3 +981,16 @@ footer span {
 .birthday-folder .birthday-grid{padding:4px 14px 16px}
 .game-folder{margin:12px 0}
 @media(max-width:520px){.site-folder>summary{padding:13px 12px;gap:9px}.folder-summary-icon{flex-basis:36px;height:36px;font-size:19px}.site-folder>summary strong{font-size:14px}.site-folder>summary small{font-size:11px}.folder-count{font-size:10px;padding:5px 7px}}
+
+
+/* Mini Learning Arcade */
+.mini-arcade{max-width:900px;margin:30px auto 8px;padding:clamp(18px,3vw,28px);border:1px solid #dce8f5;border-radius:24px;background:linear-gradient(135deg,#fff9ed,#f0f7ff);box-shadow:0 12px 30px rgba(30,55,85,.08)}
+.arcade-heading{text-align:center}.arcade-heading>span{font-size:11px;letter-spacing:2px;font-weight:800;color:#9a641d}.arcade-heading h3{margin:7px 0;color:#18375d;font-size:clamp(22px,4vw,29px)}.arcade-heading p{color:#5b6c80;line-height:1.6}
+.arcade-controls{display:grid;grid-template-columns:auto minmax(130px,1fr) auto minmax(90px,.6fr) auto;align-items:center;gap:10px;margin:20px 0}
+.arcade-controls label{font-weight:700;color:#29415f}.arcade-controls select{min-width:0;padding:11px;border:1px solid #cbd9e8;border-radius:10px;background:#fff;color:#203b5c;font:inherit}
+.arcade-status{display:flex;justify-content:space-between;gap:12px;max-width:760px;margin:0 auto 12px;color:#29415f;font-weight:700}
+.arcade-board{max-width:760px;min-height:205px;margin:auto;padding:clamp(18px,3vw,26px);border:1px solid #e0e9f4;border-radius:18px;background:#fff;text-align:center}
+.arcade-welcome{padding:20px 5px;color:#53657b;line-height:1.65}.arcade-welcome:first-line{font-size:36px}.arcade-board h4{margin:8px 0 14px;color:#18375d;font-size:21px}.arcade-question{font-size:19px;font-weight:750;line-height:1.55;color:#203b5c;margin:12px 0 20px}
+.arcade-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.arcade-option{padding:13px;border:1px solid #d8e2ef;border-radius:12px;background:#f8fbff;color:#233b5d;font:inherit;font-weight:650;cursor:pointer}.arcade-option:hover:not(:disabled){background:#edf5ff;border-color:#5486c4}.arcade-option:disabled{opacity:1}.arcade-option.is-right{background:#e4f8eb;border-color:#35a765;color:#176538}.arcade-option.is-wrong{background:#fff0ed;border-color:#dc7666;color:#9d3025}
+.arcade-feedback{margin:14px 0 0;padding:12px;border-radius:10px;line-height:1.55}.arcade-feedback.good{background:#eaf8ef;color:#176538}.arcade-feedback.bad{background:#fff2ee;color:#923c30}.arcade-board .cta{margin-top:15px}.arcade-result{font-size:27px;font-weight:800;color:#1c568c}
+@media(max-width:650px){.arcade-controls{grid-template-columns:1fr 1fr}.arcade-controls label{grid-column:auto}.arcade-controls select{width:100%}.arcade-controls .cta{grid-column:1/-1;width:100%}.arcade-options{grid-template-columns:1fr}.arcade-status{font-size:13px}}
