@@ -45,10 +45,12 @@ function mathQuestion(c){
 }
 function fromTuple(t){return make(t[0],t[1],t[2],t[3]);}
 function begin(){
- const c=cls.value,m=mode.value;
+ stopClock();const c=cls.value,m=mode.value;
+ if(m==="picture"||m==="match"||m==="puzzle"){beginExtra();return;}
  if(m==="math")round=Array.from({length:5},()=>mathQuestion(c));
  else round=shuffle((m==="science"?science:words)[c]).slice(0,5).map(fromTuple);
  index=0;score=0;draw();
+ if(extraMode&&extraMode.value==="timed")startClock();
 }
 function draw(){
  locked=false;const item=round[index];
@@ -59,15 +61,45 @@ function draw(){
  item.opts.forEach((v)=>{const b=document.createElement("button");b.type="button";b.className="arcade-option";b.textContent=v;b.addEventListener("click",()=>answer(v,b));opts.appendChild(b);});
 }
 function answer(value,chosen){
- if(locked)return;locked=true;const item=round[index],ok=value===item.answer;
+ if(locked||seconds<=0)return;locked=true;const item=round[index],ok=value===item.answer;
  if(ok)score+=10;
  board.querySelectorAll(".arcade-option").forEach(b=>{b.disabled=true;if(b.textContent===item.answer)b.classList.add("is-right");else if(b===chosen)b.classList.add("is-wrong");});
  const f=document.createElement("p");f.className="arcade-feedback "+(ok?"good":"bad");f.textContent=(ok?"✅ बहुत बढ़िया! +10 अंक। ":"❌ सही उत्तर: "+item.answer+"। ")+item.why;board.appendChild(f);
  const next=document.createElement("button");next.type="button";next.className="cta";next.textContent=index===round.length-1?"🏁 परिणाम देखें":"अगला प्रश्न ➜";next.addEventListener("click",()=>{if(index<round.length-1){index++;draw();}else finish();});board.appendChild(next);points.textContent="⭐ "+score+" अंक";
 }
 function finish(){
+ stopClock();
  const pct=Math.round(score/50*100);progress.textContent="राउंड पूरा हुआ";board.innerHTML='<div class="arcade-result">🏆 '+score+' / 50 अंक</div><h4>'+pct+'% सफलता</h4><p>'+(pct>=80?"शानदार प्रदर्शन! आपकी तैयारी बहुत अच्छी है।":pct>=50?"अच्छा प्रयास! थोड़ा और अभ्यास करें।":"कोई बात नहीं—फिर से खेलें और अपना रिकॉर्ड सुधारें।")+'</p><button type="button" class="cta" id="arcadeAgain">🔁 नया राउंड खेलें</button>';
  $("arcadeAgain").addEventListener("click",begin);
 }
+/* Extra arcade modes */
+const extraMode=$("arcadeExtraMode");
+const pictureBank=[["🌻","सूरजमुखी"],["🐘","हाथी"],["🚲","साइकिल"],["🍎","सेब"],["🌙","चंद्रमा"],["🏏","बल्ला"],["📚","पुस्तक"],["🌳","पेड़"],["🐟","मछली"],["🚂","रेलगाड़ी"]];
+const puzzleBank=[["विद्यालय","जहाँ विद्यार्थी पढ़ने जाते हैं"],["पुस्तकालय","जहाँ पुस्तकें पढ़ने और लेने को मिलती हैं"],["पर्यावरण","हमारे चारों ओर का प्राकृतिक और सामाजिक परिवेश"],["स्वतंत्रता","अपने निर्णय स्वयं लेने की आजादी"],["गणित","संख्याओं और आकृतियों का अध्ययन"],["विज्ञान","प्रकृति और घटनाओं को प्रमाण से समझने का विषय"],["अनुशासन","नियमों का पालन करने की अच्छी आदत"],["मित्रता","दोस्तों के बीच प्रेम और विश्वास का संबंध"]];
+let clock=null,seconds=60,matchCount=0;
+function stopClock(){if(clock){clearInterval(clock);clock=null;}}
+function startClock(){stopClock();seconds=60;showClock();clock=setInterval(()=>{seconds--;showClock();if(seconds<=0){stopClock();timedEnd();}},1000);}
+function showClock(){progress.textContent="⏱️ शेष समय "+seconds+" सेकंड";}
+function timedEnd(){board.querySelectorAll("button").forEach(b=>b.disabled=true);board.innerHTML="<div class=\"arcade-result\">⏰ समय पूरा!</div><h4>"+score+" अंक</h4><p>समय के भीतर हल किए गए प्रश्नों का स्कोर।</p><button class=\"cta\" id=\"arcadeAgain\" type=\"button\">🔁 फिर खेलें</button>";$("arcadeAgain").addEventListener("click",begin);}
+function beginExtra(){
+ const m=mode.value;
+ if(m==="match"){startMatch();return;}
+ if(m==="picture")round=shuffle(pictureBank).slice(0,5).map(p=>make("इस चित्र में क्या दिखाया गया है? "+p[0],p[1],shuffle(pictureBank.filter(x=>x[1]!==p[1]).map(x=>x[1])).slice(0,3),"चित्र को ध्यान से देखकर उसका नाम पहचानें।"));
+ else round=shuffle(puzzleBank).slice(0,5).map(p=>make("शब्द पहेली: "+p[1]+"। सही शब्द चुनिए।",p[0],shuffle(puzzleBank.filter(x=>x[0]!==p[0]).map(x=>x[0])).slice(0,3),"संकेत में दिए गए अर्थ पर ध्यान दें।"));
+ index=0;score=0;draw();if(extraMode&&extraMode.value==="timed")startClock();
+}
+function startMatch(){
+ stopClock();score=0;matchCount=0;const chosen=shuffle(pictureBank).slice(0,5);
+ const cards=shuffle(chosen.flatMap((p,i)=>[{id:i,label:p[0]+" "+p[1],kind:"picture"},{id:i,label:p[1],kind:"word"}]));
+ board.innerHTML="<div class=\"game-subject-tag\">🧩 सही जोड़ी मिलाओ</div><p class=\"arcade-question\">एक चित्र और उसका सही नाम मिलाइए।</p><div class=\"match-grid\"></div><p id=\"matchFeedback\" class=\"arcade-feedback\">दो कार्ड चुनिए।</p>";
+ const grid=board.querySelector(".match-grid");let first=null,busy=false;
+ cards.forEach(card=>{const b=document.createElement("button");b.type="button";b.className="match-card";b.textContent="❔";b.addEventListener("click",()=>{
+ if(busy||b.disabled||b===first)return;b.textContent=card.label;b.classList.add("revealed");
+ if(!first){first={button:b,card};return;}busy=true;const one=first;const ok=one.card.id===card.id&&one.card.kind!==card.kind;const feedback=$("matchFeedback");
+ if(ok){one.button.disabled=true;b.disabled=true;one.button.classList.add("matched");b.classList.add("matched");matchCount++;score+=10;feedback.textContent="✅ सही जोड़ी! "+matchCount+"/5";points.textContent="⭐ "+score+" अंक";first=null;busy=false;if(matchCount===5)finishMatch();}
+ else{feedback.textContent="यह जोड़ी सही नहीं है। फिर प्रयास करें।";setTimeout(()=>{one.button.textContent="❔";b.textContent="❔";one.button.classList.remove("revealed");b.classList.remove("revealed");first=null;busy=false;},700);}
+ });grid.appendChild(b);});progress.textContent="5 जोड़ियाँ मिलाएँ";points.textContent="⭐ 0 अंक";
+}
+function finishMatch(){board.innerHTML="<div class=\"arcade-result\">🏆 शानदार!</div><h4>50 / 50 अंक</h4><p>आपने सभी पाँच जोड़ियाँ सही मिलाईं।</p><button type=\"button\" class=\"cta\" id=\"arcadeAgain\">🔁 नया राउंड</button>";$("arcadeAgain").addEventListener("click",begin);progress.textContent="खेल पूरा हुआ";}
 startBtn.addEventListener("click",begin);
 })();
