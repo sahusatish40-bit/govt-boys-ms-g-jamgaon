@@ -1301,3 +1301,12 @@ button:focus-visible,.cta:focus-visible,input:focus-visible,select:focus-visible
 .admin-roadmap-list li.is-next>span{background:#ffedc8;color:#8b5a08}
 .admin-roadmap-list li.is-next em{color:#9a6508}
 @media(max-width:650px){.admin-roadmap{padding:13px;border-radius:14px}.admin-roadmap-heading{gap:8px}.admin-roadmap-heading h4{font-size:16px}.admin-roadmap-heading p{font-size:11px}.admin-roadmap-progress{font-size:10px;padding:6px 8px}.admin-roadmap-list{grid-template-columns:1fr;gap:7px}.admin-roadmap-list li{padding:9px}.admin-roadmap-list li strong{font-size:12px}.admin-roadmap-list li small{font-size:10px}}
+
+/* Student digital profile - mobile friendly */
+.student-profile-details{margin-top:8px;text-align:left;font-size:12px}
+.student-profile-details>summary{display:inline-flex;align-items:center;cursor:pointer;padding:7px 10px;border-radius:9px;background:#eaf4f8;color:#14536b;font-weight:800;list-style:none}
+.student-profile-details>summary::-webkit-details-marker{display:none}
+.student-profile-body{margin-top:8px;padding:12px;border:1px solid #dce8ef;border-radius:12px;background:#f8fbfd;min-width:180px;max-width:300px;overflow-wrap:anywhere}
+.student-profile-body p{margin:6px 0;color:#526879}
+.student-profile-photo{display:block;width:76px;height:76px;object-fit:cover;border-radius:50%;margin:0 0 10px;border:3px solid #fff;box-shadow:0 2px 10px #173b5422}
+@media(max-width:650px){.student-profile-body{max-width:100%;min-width:0}.student-profile-details>summary{padding:8px 10px}}
