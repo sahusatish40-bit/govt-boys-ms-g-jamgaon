@@ -62,6 +62,30 @@ service cloud.firestore {
         && request.auth.uid == 'Y79AJ2xs8mTjaWepHml1lA74fj83';
     }
 
+    // Admin-managed teacher records.
+    match /teachers/{teacherId} {
+      allow read, create, update, delete: if request.auth != null
+        && request.auth.uid == 'Y79AJ2xs8mTjaWepHml1lA74fj83';
+    }
+
+    // Exams and their marks are restricted to the designated school admin.
+    match /exams/{examId} {
+      allow read, create, update, delete: if request.auth != null
+        && request.auth.uid == 'Y79AJ2xs8mTjaWepHml1lA74fj83';
+
+      match /marks/{markId} {
+        allow read, create, update, delete: if request.auth != null
+          && request.auth.uid == 'Y79AJ2xs8mTjaWepHml1lA74fj83';
+      }
+    }
+
+    // Notices are publicly readable; only the designated admin can manage them.
+    match /notices/{noticeId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null
+        && request.auth.uid == 'Y79AJ2xs8mTjaWepHml1lA74fj83';
+    }
+
     match /birthdays/{birthdayId} {
       allow read: if true;
       allow create, update, delete: if request.auth != null
