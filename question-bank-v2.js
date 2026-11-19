@@ -174,8 +174,17 @@
         const pct=Math.round(score/set.length*100);
         $("gameProgress").textContent="अभ्यास पूरा";
         box.innerHTML='<div class="game-welcome-icon">🏆</div><h3>अभ्यास पूरा!</h3><p>पाठ: '+selected.title+'</p><p><strong>'+score+' / '+set.length+' अंक • '+pct+'%</strong></p><p>'+ (pct>=80?"बहुत अच्छा! आपकी समझ मजबूत है।":pct>=50?"अच्छा प्रयास! गलत उत्तरों की व्याख्या दोबारा पढ़ें।":"पाठ को फिर से पढ़ें और दोबारा अभ्यास करें।")+'</p>';
+        const print=document.createElement("button");print.type="button";print.className="cta";print.textContent="🖨️ वर्कशीट प्रिंट / PDF";print.addEventListener("click",()=>{
+          const rows=set.map((q,i)=>'<section class="q"><p><b>प्रश्न '+(i+1)+'.</b> '+escapeHtml(q.q)+'</p><ol type="A">'+q.o.map(v=>'<li>'+escapeHtml(v)+'</li>').join("")+'</ol></section>').join("");
+          const key=set.map((q,i)=>(i+1)+". "+String.fromCharCode(65+q.a)).join(" &nbsp; | &nbsp; ");
+          const w=window.open("","_blank","width=900,height=700");
+          if(!w){alert("वर्कशीट खोलने के लिए पॉप-अप अनुमति दें।");return;}
+          w.document.write('<!doctype html><html lang="hi"><head><meta charset="utf-8"><title>अभ्यास वर्कशीट</title><style>body{font-family:Arial,sans-serif;max-width:800px;margin:24px auto;padding:20px;color:#111}h1,h2{text-align:center} .meta{display:flex;justify-content:space-between;border-bottom:1px solid #777;padding:10px 0}.q{margin:22px 0;page-break-inside:avoid}li{margin:7px 0}.key{border-top:1px dashed #777;margin-top:28px;padding-top:12px}@media print{button{display:none}body{margin:0;padding:10mm}}</style></head><body><h1>शासकीय उच्चतर माध्यमिक विद्यालय जी- जामगाँव</h1><h2>अभ्यास वर्कशीट — कक्षा 8वीं हिंदी</h2><div class="meta"><span>पाठ: '+escapeHtml(selected.title)+'</span><span>स्तर: '+escapeHtml(level.options[level.selectedIndex].text)+'</span></div><p>विद्यार्थी का नाम: ____________________ &nbsp; दिनांक: __________ &nbsp; प्राप्तांक: ____ / '+set.length+'</p>'+rows+'<div class="key"><b>शिक्षक हेतु उत्तरमाला:</b><p>'+key+'</p></div><p><button onclick="window.print()">प्रिंट / PDF सेव करें</button></p></body></html>');
+          w.document.close();
+        });box.appendChild(print);
         const again=document.createElement("button");again.className="cta";again.textContent="नया प्रश्न सेट लेकर पुनः परीक्षा";again.addEventListener("click",()=>{document.getElementById("startLearningGame").click();});box.appendChild(again);
       }
+      function escapeHtml(value){return String(value).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));}
       render();
     },true);
   }
