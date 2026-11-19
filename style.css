@@ -1253,3 +1253,29 @@ button:focus-visible,.cta:focus-visible,input:focus-visible,select:focus-visible
   .admin-compact-list #privateStudentList,
   .admin-compact-list #adminBirthdayList{max-height:330px}
 }
+
+
+/* PROFESSIONAL ADMIN DASHBOARD */
+.admin-dashboard{margin:18px 0 28px;padding:22px;border:1px solid #dce8ef;border-radius:22px;background:linear-gradient(145deg,#f4f9fc,#edf7f5 65%,#fff8e9);box-shadow:0 12px 30px #102b4610}
+.admin-dashboard-head{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:18px}
+.admin-dashboard-head h3{margin:5px 0;color:#102b46;font-size:23px}
+.admin-dashboard-head p{margin:0;color:#617486;font-size:13px}
+.admin-eyebrow{font-size:10px;font-weight:800;letter-spacing:1.5px;color:#1c8b83}
+.admin-refresh{white-space:nowrap;background:#102b46;color:#fff;border:0;border-radius:12px;padding:10px 14px;font-weight:800;cursor:pointer}
+.admin-refresh:disabled{opacity:.55;cursor:wait}
+.admin-stat-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px}
+.admin-stat{display:flex;align-items:center;gap:11px;min-width:0;padding:15px 12px;background:#fff;border:1px solid #e2ebef;border-radius:15px;box-shadow:0 5px 16px #102b4609}
+.admin-stat>span{display:grid;place-items:center;flex:0 0 38px;width:38px;height:38px;border-radius:12px;background:#eaf5f3;font-size:20px}
+.admin-stat div{min-width:0;display:flex;flex-direction:column;gap:3px}
+.admin-stat small{font-size:11px;color:#617486;font-weight:700}
+.admin-stat strong{font-size:25px;line-height:1.1;color:#102b46}
+.admin-stat em{font-size:10px;color:#8494a1;font-style:normal;white-space:nowrap}
+.admin-quick-area{margin-top:18px;padding:15px;background:#ffffffc9;border:1px solid #e2ebef;border-radius:15px}
+.admin-quick-area>strong{display:block;margin-bottom:11px;color:#102b46;font-size:14px}
+.admin-quick-links{display:flex;flex-wrap:wrap;gap:8px}
+.admin-quick-links a{display:inline-flex;align-items:center;padding:9px 12px;border:1px solid #dce8ed;border-radius:10px;background:#fff;color:#176b87;text-decoration:none;font-size:12px;font-weight:800;transition:.2s}
+.admin-quick-links a:hover{background:#176b87;color:#fff;border-color:#176b87;transform:translateY(-2px)}
+.admin-dashboard-message{margin:10px 2px 0!important;font-size:11px!important;color:#718494!important}
+#adminTools [id^="admin"],#adminTools #birthdayManagement,#adminTools #teacherManagement{scroll-margin-top:18px}
+@media(max-width:900px){.admin-stat-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){.admin-dashboard{padding:15px;border-radius:17px}.admin-dashboard-head h3{font-size:19px}.admin-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.admin-stat{padding:11px 9px;gap:8px}.admin-stat>span{flex-basis:32px;width:32px;height:32px;font-size:17px}.admin-stat strong{font-size:22px}.admin-stat small{font-size:10px}.admin-stat em{font-size:9px}.admin-quick-links a{font-size:11px;padding:8px 10px}}
