@@ -375,6 +375,51 @@ style="width:85px;height:85px;object-fit:contain;">
     <div class="arcade-report-launch"><button type="button" class="cta" id="arcadeReportToggle">📊 शिक्षक रिपोर्ट देखें</button></div>
     <div id="arcadeTeacherReport" class="arcade-teacher-report" hidden></div>
   </div>
+
+  <details class="site-folder game-folder" id="teacherWorksheetMaker" open>
+    <summary><span class="folder-summary-icon">📝</span><span><strong>शिक्षक वर्कशीट निर्माता</strong><small>किसी भी कक्षा और विषय के लिए प्रश्नपत्र बनाएं और PDF प्रिंट करें</small></span><span class="folder-count">नया</span></summary>
+    <div class="game-book-source worksheet-maker">
+      <div class="worksheet-meta-grid">
+        <label>कक्षा<select id="wsClass"><option>कक्षा 6वीं</option><option>कक्षा 7वीं</option><option>कक्षा 8वीं</option></select></label>
+        <label>विषय<input id="wsSubject" type="text" placeholder="जैसे — गणित / हिंदी"></label>
+        <label>वर्कशीट / परीक्षा शीर्षक<input id="wsTitle" type="text" value="अभ्यास वर्कशीट"></label>
+        <label>समय<input id="wsTime" type="text" placeholder="जैसे — 30 मिनट"></label>
+      </div>
+      <p><b>प्रश्न जोड़ें</b> — प्रश्न और अंक भरें। उत्तर लिखना वैकल्पिक है; उत्तरमाला प्रिंट में अलग आएगी।</p>
+      <div id="wsQuestionList">
+        <div class="ws-question-row"><label>प्रश्न 1<textarea class="ws-q" rows="2" placeholder="यहाँ प्रश्न लिखें"></textarea></label><label>अंक<input class="ws-marks" type="number" min="1" value="1"></label><label>उत्तर (वैकल्पिक)<textarea class="ws-a" rows="2" placeholder="उत्तर / संकेत"></textarea></label></div>
+      </div>
+      <div class="worksheet-actions"><button type="button" class="cta" id="wsAddQuestion">＋ प्रश्न जोड़ें</button><button type="button" class="cta" id="wsPrint">🖨️ वर्कशीट प्रिंट / PDF</button></div>
+      <small>प्रिंट विकल्प में ब्राउज़र के Print संवाद से “Save as PDF” चुन सकते हैं। यह निर्माता किसी भी विषय के लिए खाली प्रश्न-प्रविष्टि देता है; प्रश्नों की शुद्धता शिक्षक द्वारा जाँची जाएगी।</small>
+    </div>
+  </details>
+  <style>
+    .worksheet-meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:14px 0}
+    .worksheet-meta-grid label,.ws-question-row label{display:flex;flex-direction:column;gap:6px;font-weight:600}
+    .worksheet-meta-grid input,.worksheet-meta-grid select,.ws-question-row textarea,.ws-question-row input{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:9px;font:inherit;background:#fff;color:#172033}
+    .ws-question-row{display:grid;grid-template-columns:minmax(0,3fr) 90px minmax(0,2fr);gap:10px;padding:12px 0;border-bottom:1px solid #e2e8f0}
+    .worksheet-actions{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+    @media(max-width:560px){.ws-question-row{grid-template-columns:1fr 75px}.ws-question-row label:last-child{grid-column:1/-1}}
+  </style>
+  <script>
+  (function(){
+    const list=document.getElementById("wsQuestionList"),add=document.getElementById("wsAddQuestion"),print=document.getElementById("wsPrint");
+    if(!list||!add||!print)return;
+    let count=1;
+    function esc(v){return String(v||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+    add.addEventListener("click",()=>{count++;const row=document.createElement("div");row.className="ws-question-row";row.innerHTML='<label>प्रश्न '+count+'<textarea class="ws-q" rows="2" placeholder="यहाँ प्रश्न लिखें"></textarea></label><label>अंक<input class="ws-marks" type="number" min="1" value="1"></label><label>उत्तर (वैकल्पिक)<textarea class="ws-a" rows="2" placeholder="उत्तर / संकेत"></textarea></label>';list.appendChild(row);});
+    print.addEventListener("click",()=>{
+      const questions=[...list.querySelectorAll(".ws-question-row")].map((r)=>({q:r.querySelector(".ws-q").value.trim(),m:Math.max(0,Number(r.querySelector(".ws-marks").value)||0),a:r.querySelector(".ws-a").value.trim()})).filter(x=>x.q);
+      if(!questions.length){alert("कृपया कम-से-कम एक प्रश्न लिखें।");return;}
+      const total=questions.reduce((n,x)=>n+x.m,0);
+      const answerKey=questions.some(x=>x.a)?'<h3>शिक्षक हेतु उत्तरमाला</h3>'+questions.map((x,i)=>x.a?'<p><b>'+(i+1)+'.</b> '+esc(x.a)+'</p>':'').join(""):'';
+      const body=questions.map((x,i)=>'<div class="q"><p><b>प्रश्न '+(i+1)+'.</b> '+esc(x.q)+' <span>('+x.m+' अंक)</span></p><div class="answer-space"></div></div>').join("");
+      const w=window.open("","_blank","width=900,height=750");if(!w){alert("वर्कशीट खोलने के लिए पॉप-अप अनुमति दें।");return;}
+      w.document.write('<!doctype html><html lang="hi"><head><meta charset="utf-8"><title>'+esc(document.getElementById("wsTitle").value)+'</title><style>body{font-family:Arial,sans-serif;max-width:850px;margin:20px auto;padding:22px;color:#111}h1,h2{text-align:center;margin:7px}.school{text-align:center;font-weight:bold}.meta{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-block:1px solid #777;padding:10px 0;margin:15px 0}.q{margin:22px 0;page-break-inside:avoid}.q span{white-space:nowrap}.answer-space{min-height:35px;border-bottom:1px dotted #aaa;margin-top:8px}.key{border-top:2px dashed #777;margin-top:30px;padding-top:12px}button{padding:10px 16px}@media print{button{display:none}body{margin:0 auto;padding:8mm}}</style></head><body><p class="school">शासकीय उच्चतर माध्यमिक विद्यालय जी- जामगाँव (बालक माध्य.)</p><h1>'+esc(document.getElementById("wsTitle").value||"अभ्यास वर्कशीट")+'</h1><h2>'+esc(document.getElementById("wsClass").value)+' — '+esc(document.getElementById("wsSubject").value||"विषय")+'</h2><div class="meta"><span>विद्यार्थी का नाम: ____________________</span><span>दिनांक: __________</span><span>समय: '+esc(document.getElementById("wsTime").value||"________")+'</span><span>पूर्णांक: '+total+'</span></div>'+body+answerKey+'<p><button onclick="window.print()">प्रिंट / PDF सेव करें</button></p></body></html>');
+      w.document.close();
+    });
+  })();
+  </script>
 </section>
 
 <section id="notice" class="section tinted">
