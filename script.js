@@ -147,24 +147,37 @@ await loadFirebase(
 
         <div id="adminTools" hidden style="display:none!important">
           <h3>Admin Dashboard</h3>
+          <section id="adminDashboard" class="admin-dashboard">
+            <div class="admin-dashboard-head"><div><span class="admin-eyebrow">SCHOOL MANAGEMENT</span><h3>📊 विद्यालय डैशबोर्ड</h3><p>सत्र 2026–27 का त्वरित विवरण</p></div><button id="refreshAdminDashboard" type="button" class="admin-refresh">↻ Refresh</button></div>
+            <div class="admin-stat-grid">
+              <article class="admin-stat"><span>🎓</span><div><small>कुल विद्यार्थी</small><strong id="dashStudents">—</strong><em id="dashClassBreakdown">कक्षा 6: — · 7: — · 8: —</em></div></article>
+              <article class="admin-stat"><span>👨‍🏫</span><div><small>कुल शिक्षक</small><strong id="dashTeachers">—</strong><em>शिक्षक सूची</em></div></article>
+              <article class="admin-stat"><span>📝</span><div><small>कुल परीक्षाएँ</small><strong id="dashExams">—</strong><em>परीक्षा प्रबंधन</em></div></article>
+              <article class="admin-stat"><span>🎂</span><div><small>जन्मदिन रिकॉर्ड</small><strong id="dashBirthdays">—</strong><em>जन्मदिन कार्ड</em></div></article>
+              <article class="admin-stat"><span>📢</span><div><small>विद्यालय सूचनाएँ</small><strong id="dashNotices">—</strong><em>सूचना बोर्ड</em></div></article>
+            </div>
+            <div class="admin-quick-area"><strong>⚡ Quick Management</strong><div class="admin-quick-links"><a href="#adminNoticeManagement">📢 सूचना</a><a href="#adminEventManagement">📅 कार्यक्रम</a><a href="#adminStudentManagement">🎓 विद्यार्थी</a><a href="#birthdayManagement">🎂 जन्मदिन</a><a href="#teacherManagement">👨‍🏫 शिक्षक</a><a href="#adminExamManagement">📝 परीक्षा</a><a href="#creativityAdmin">🌟 रचनात्मकता</a><a href="#adminGalleryManagement">🖼️ गैलरी</a></div></div>
+            <p id="adminDashboardMessage" class="admin-dashboard-message" aria-live="polite">डैशबोर्ड का डेटा लोड हो रहा है…</p>
+          </section>
+
           <button id="logoutBtn" type="button">Logout</button>
           <hr>
 
        <hr>
-<h3>🖼️ Gallery Management</h3>
+<h3 id="adminGalleryManagement">🖼️ Gallery Management</h3>
 <p>विद्यालय की तस्वीरों का प्रबंधन</p>
 
 <div id="adminGalleryList">
   <p>Gallery लोड हो रही है...</p>
 </div>
 <hr>
-          <h3>नई विद्यालयीन सूचना</h3>
+          <h3 id="adminNoticeManagement">नई विद्यालयीन सूचना</h3>
           <input id="noticeInput" maxlength="180" placeholder="सूचना लिखें">
           <button id="addNotice" type="button">Publish Notice</button>
           <p id="adminMessage"></p>
           
 <hr>
-<h3>📅 विद्यालय कार्यक्रम प्रबंधन</h3>
+<h3 id="adminEventManagement">📅 विद्यालय कार्यक्रम प्रबंधन</h3>
 <p>नया कार्यक्रम जोड़ें</p>
 
 <label>कार्यक्रम का नाम *</label>
@@ -196,7 +209,7 @@ await loadFirebase(
 
           <hr>
 
-          <h3>विद्यार्थी प्रबंधन (केवल एडमिन)</h3>
+          <h3 id="adminStudentManagement">विद्यार्थी प्रबंधन (केवल एडमिन)</h3>
 
           <label>विद्यार्थी का नाम *</label>
           <input id="studentName" maxlength="80" placeholder="पूरा नाम">
@@ -360,7 +373,7 @@ await loadFirebase(
 </section>
           <hr>
 
-          <section>
+          <section id="adminExamManagement">
             <h3>परीक्षा प्रबंधन (सत्र 2026–27)</h3>
 
             <label>परीक्षा का नाम *</label>
@@ -413,6 +426,43 @@ await loadFirebase(
     };
     
 
+
+
+async function refreshAdminDashboard() {
+  const message = document.getElementById("adminDashboardMessage");
+  const button = document.getElementById("refreshAdminDashboard");
+  if (auth.currentUser?.uid !== ADMIN_UID) return;
+  if (button) button.disabled = true;
+  if (message) message.textContent = "डैशबोर्ड अपडेट हो रहा है…";
+  try {
+    const [studentSnap, teacherSnap, examSnap, birthdaySnap, noticeSnap] = await Promise.all([
+      db.collection("students").get(), db.collection("teachers").get(),
+      db.collection("exams").get(), db.collection("birthdays").get(),
+      db.collection("notices").get()
+    ]);
+    const classCounts = { "6": 0, "7": 0, "8": 0 };
+    studentSnap.docs.forEach(doc => {
+      const cls = String(doc.data().className || "");
+      if (Object.prototype.hasOwnProperty.call(classCounts, cls)) classCounts[cls]++;
+    });
+    const setCount = (id, value) => {
+      const node = document.getElementById(id);
+      if (node) node.textContent = String(value);
+    };
+    setCount("dashStudents", studentSnap.size);
+    setCount("dashTeachers", teacherSnap.size);
+    setCount("dashExams", examSnap.size);
+    setCount("dashBirthdays", birthdaySnap.size);
+    setCount("dashNotices", noticeSnap.size);
+    const breakdown = document.getElementById("dashClassBreakdown");
+    if (breakdown) breakdown.textContent = "कक्षा 6: " + classCounts["6"] + " · 7: " + classCounts["7"] + " · 8: " + classCounts["8"];
+    if (message) message.textContent = "✓ जानकारी सफलतापूर्वक अपडेट हुई";
+  } catch (error) {
+    if (message) message.textContent = "डैशबोर्ड डेटा लोड नहीं हुआ: " + error.message;
+  } finally {
+    if (button) button.disabled = false;
+  }
+}
 
 async function loadAdminGallery() {
   const box = document.getElementById("adminGalleryList");
@@ -515,6 +565,8 @@ async function loadAdminGallery() {
   }
 }
 
+
+    el("refreshAdminDashboard")?.addEventListener("click", refreshAdminDashboard);
 
     const loginBox = el("loginBox");
     const adminTools = el("adminTools");
@@ -2359,6 +2411,7 @@ el("addEvent").onclick = async () => {
 beginTeacherFeed();
 beginCreativityAdmin();
 loadAdminGallery();
+refreshAdminDashboard();
 await loadExams();
 
       } else {
