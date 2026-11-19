@@ -336,6 +336,25 @@ style="width:85px;height:85px;object-fit:contain;">
     <p>कक्षा, विषय और कठिनाई स्तर चुनकर “खेल शुरू करें” दबाएँ। प्रश्नों के उत्तर चुनें, सही उत्तर और व्याख्या देखें तथा अपना स्कोर जाँचें।</p>
   </div>
   <p class="games-note">नोट: सामान्य अभ्यास बैंक और उपलब्ध अध्याय-आधारित क्विज़ अलग-अलग हैं। जहाँ किसी अध्याय का सत्यापित प्रश्न-संग्रह उपलब्ध नहीं है, वहाँ सामान्य अभ्यास ही दिखेगा; उसे अध्याय-विशेष प्रश्न न समझें।</p>
+
+  <div id="miniLearningArcade" class="mini-arcade">
+    <div class="arcade-heading"><span>🏆 EXTRA CHALLENGES</span><h3>मिनी लर्निंग गेम्स</h3><p>क्विज़ के साथ-साथ गणित, विज्ञान और शब्द-ज्ञान के छोटे खेल भी खेलें।</p></div>
+    <div class="arcade-controls">
+      <label for="arcadeMode">खेल चुनें</label>
+      <select id="arcadeMode">
+        <option value="math">➗ गणित मिशन</option>
+        <option value="science">🔬 विज्ञान चैलेंज</option>
+        <option value="words">🔤 शब्द-ज्ञान</option>
+      </select>
+      <label for="arcadeClass">कक्षा</label>
+      <select id="arcadeClass"><option value="6">6वीं</option><option value="7">7वीं</option><option value="8">8वीं</option></select>
+      <button type="button" class="cta" id="arcadeStart">🚀 खेल शुरू करें</button>
+    </div>
+    <div class="arcade-status"><span id="arcadeProgress">5 प्रश्नों का छोटा राउंड</span><strong id="arcadePoints">⭐ 0 अंक</strong></div>
+    <div id="arcadeBoard" class="arcade-board" aria-live="polite">
+      <div class="arcade-welcome">🎯<h4>अपना मिशन चुनिए!</h4><p>हर सही उत्तर पर अंक मिलेंगे। हर बार नए प्रश्न और गणित के नए सवाल मिलेंगे।</p></div>
+    </div>
+  </div>
 </section>
 
 <section id="notice" class="section tinted">
@@ -498,6 +517,7 @@ CHHATTISGARH
 </script>
 
 <script src="script.js?v=36"></script>
+<script src="learning-arcade.js?v=1"></script>
 <script src="student-results.js?v=1"></script>
 <script src="result-dashboard.js?v=3"></script>
 
