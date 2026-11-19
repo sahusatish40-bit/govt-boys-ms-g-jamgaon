@@ -160,13 +160,13 @@ await loadFirebase(
             <p id="adminDashboardMessage" class="admin-dashboard-message" aria-live="polite">डैशबोर्ड का डेटा लोड हो रहा है…</p>
             <p id="adminDashboardDate" class="admin-dashboard-date"></p>
             <section class="admin-roadmap" aria-label="School Sathi सुविधा विस्तार योजना">
-              <div class="admin-roadmap-heading"><div><span class="admin-eyebrow">10-STEP SCHOOL SAATHI UPGRADE</span><h4>🚀 वेबसाइट विकास योजना</h4><p>तैयार सुविधाओं को खोलने के लिए चरण पर टैप करें</p></div><span class="admin-roadmap-progress">4 / 10 सुविधाएँ उपलब्ध</span></div>
+              <div class="admin-roadmap-heading"><div><span class="admin-eyebrow">10-STEP SCHOOL SAATHI UPGRADE</span><h4>🚀 वेबसाइट विकास योजना</h4><p>तैयार सुविधाओं को खोलने के लिए चरण पर टैप करें</p></div><span class="admin-roadmap-progress">5 / 10 चरण शुरू</span></div>
               <ol class="admin-roadmap-list">
                 <li class="is-done"><span>01</span><div><a href="#adminDashboard" class="roadmap-step-link"><strong>Advanced Admin Panel</strong><small>डैशबोर्ड, त्वरित प्रबंधन और मोबाइल नेविगेशन</small></a></div><em>खोलें</em></li>
                 <li class="is-done"><span>02</span><div><a href="#adminStudentManagement" class="roadmap-step-link"><strong>Student Digital Profile</strong><small>फोटो लिंक, रोल नंबर, अभिभावक और विद्यार्थी विवरण</small></a></div><em>खोलें</em></li>
                 <li class="is-ready"><span>03</span><div><a href="#student-result" class="roadmap-step-link"><strong>Smart Report Card</strong><small>विषयवार अंक, ग्रेड, परीक्षा-वार प्रगति और प्रिंट योग्य रिपोर्ट</small></a></div><em>खोलें</em></li>
                 <li class="is-ready"><span>04</span><div><a href="#digitalAttendance" class="roadmap-step-link"><strong>Digital Attendance</strong><small>दैनिक उपस्थिति, मासिक रजिस्टर, अनुपस्थिति सूची और सारांश</small></a></div><em>खोलें</em></li>
-                <li class="is-planned"><span>05</span><div><strong>Smart Learning Zone</strong><small>क्विज, अभ्यास सेट, वर्कशीट और प्रश्न बैंक</small></div><em>निर्माणाधीन</em></li>
+                <li class="is-ready"><span>05</span><div><a href="#learning-games" class="roadmap-step-link"><strong>Smart Learning Zone</strong><small>इंटरैक्टिव क्विज, लर्निंग गेम्स और उपलब्ध प्रश्न बैंक</small></a></div><em>प्रारंभिक उपलब्ध</em></li>
                 <li class="is-planned"><span>06</span><div><strong>Notice & Event Center</strong><small>सूचना, कार्यक्रम और महत्वपूर्ण घोषणाएँ</small></div><em>निर्माणाधीन</em></li>
                 <li class="is-planned"><span>07</span><div><strong>Digital Library</strong><small>ई-पुस्तकें, PDF और विषयवार अध्ययन सामग्री</small></div><em>निर्माणाधीन</em></li>
                 <li class="is-planned"><span>08</span><div><strong>Teacher Corner</strong><small>पाठ योजना, शिक्षक डायरी और गतिविधि रिकॉर्ड</small></div><em>निर्माणाधीन</em></li>
