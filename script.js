@@ -158,6 +158,22 @@ await loadFirebase(
             </div>
             <div class="admin-quick-area"><strong>⚡ Quick Management</strong><div class="admin-quick-links"><a href="#adminNoticeManagement">📢 सूचना</a><a href="#adminEventManagement">📅 कार्यक्रम</a><a href="#adminStudentManagement">🎓 विद्यार्थी</a><a href="#birthdayManagement">🎂 जन्मदिन</a><a href="#teacherManagement">👨‍🏫 शिक्षक</a><a href="#adminExamManagement">📝 परीक्षा</a><a href="#creativityAdmin">🌟 रचनात्मकता</a><a href="#adminGalleryManagement">🖼️ गैलरी</a></div></div>
             <p id="adminDashboardMessage" class="admin-dashboard-message" aria-live="polite">डैशबोर्ड का डेटा लोड हो रहा है…</p>
+            <p id="adminDashboardDate" class="admin-dashboard-date"></p>
+            <section class="admin-roadmap" aria-label="School Sathi सुविधा विस्तार योजना">
+              <div class="admin-roadmap-heading"><div><span class="admin-eyebrow">10-STEP SCHOOL SAATHI UPGRADE</span><h4>🚀 वेबसाइट विकास योजना</h4><p>मौजूदा सुविधाएँ सुरक्षित रखते हुए एक-एक चरण में विस्तार</p></div><span class="admin-roadmap-progress">चरण 1 / 10</span></div>
+              <ol class="admin-roadmap-list">
+                <li class="is-done"><span>01</span><div><strong>Advanced Admin Panel</strong><small>डैशबोर्ड, त्वरित प्रबंधन और मोबाइल नेविगेशन</small></div><em>शुरुआत</em></li>
+                <li class="is-next"><span>02</span><div><strong>Student Digital Profile</strong><small>फोटो, रोल नंबर, अभिभावक और शैक्षणिक विवरण</small></div><em>अगला</em></li>
+                <li><span>03</span><div><strong>Digital Attendance</strong><small>दैनिक उपस्थिति, मासिक रजिस्टर और सारांश</small></div></li>
+                <li><span>04</span><div><strong>Smart Report Card</strong><small>अंक, प्रतिशत, ग्रेड और प्रिंट योग्य रिपोर्ट</small></div></li>
+                <li><span>05</span><div><strong>Smart Learning Zone</strong><small>क्विज, अभ्यास सेट, वर्कशीट और प्रश्न बैंक</small></div></li>
+                <li><span>06</span><div><strong>Notice & Event Center</strong><small>सूचना, कार्यक्रम और महत्वपूर्ण घोषणाएँ</small></div></li>
+                <li><span>07</span><div><strong>Digital Library</strong><small>ई-पुस्तकें, PDF और विषयवार अध्ययन सामग्री</small></div></li>
+                <li><span>08</span><div><strong>Teacher Corner</strong><small>पाठ योजना, शिक्षक डायरी और गतिविधि रिकॉर्ड</small></div></li>
+                <li><span>09</span><div><strong>Security & Backup</strong><small>भूमिका आधारित पहुँच, बैकअप और गतिविधि लॉग</small></div></li>
+                <li><span>10</span><div><strong>Mobile App / PWA</strong><small>इंस्टॉल सुविधा, तेज मोबाइल अनुभव और ऑफलाइन सामग्री</small></div></li>
+              </ol>
+            </section>
           </section>
 
           <button id="logoutBtn" type="button">Logout</button>
@@ -427,6 +443,14 @@ await loadFirebase(
     
 
 
+
+function updateAdminDashboardDate() {
+  const node = document.getElementById("adminDashboardDate");
+  if (!node) return;
+  node.textContent = "आज की तारीख: " + new Date().toLocaleDateString("hi-IN", {
+    weekday: "long", year: "numeric", month: "long", day: "numeric"
+  });
+}
 
 async function refreshAdminDashboard() {
   const message = document.getElementById("adminDashboardMessage");
@@ -2411,6 +2435,7 @@ el("addEvent").onclick = async () => {
 beginTeacherFeed();
 beginCreativityAdmin();
 loadAdminGallery();
+updateAdminDashboardDate();
 refreshAdminDashboard();
 await loadExams();
 
