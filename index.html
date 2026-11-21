@@ -2287,5 +2287,14 @@ function finish(){let pct=Math.round(score/qs.length*100);document.getElementByI
 draw();},true);
 })();
 </script><script src="question-bank-v2.js?v=6"></script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("./sw.js").catch(function (error) {
+      console.warn("Offline support registration failed:", error);
+    });
+  });
+}
+</script>
 </body>
 </html>
