@@ -24,7 +24,18 @@
 <div class="panel"><div class="row"><div><h2>शिक्षक कार्यक्षेत्र</h2><p class="muted">पाठ योजना, शिक्षक डायरी और गतिविधि रिकॉर्ड</p></div><button id="lockCorner" class="secondary">बंद करें</button></div><p class="muted">विद्यालय: जी-जामगाँव · सत्र 2026–27</p></div>
 <div class="grid">
 <section class="panel"><h3>📘 पाठ योजना</h3><label>कक्षा</label><select id="lpClass" class="input"><option>6वीं</option><option>7वीं</option><option>8वीं</option></select><label>विषय</label><input id="lpSubject" class="input" placeholder="विषय"><label>पाठ / इकाई</label><input id="lpLesson" class="input" placeholder="पाठ का नाम"><label>सीखने के प्रतिफल एवं गतिविधि</label><textarea id="lpNotes" class="input" rows="4" placeholder="उद्देश्य, गतिविधि, मूल्यांकन..."></textarea><button id="savePlan">पाठ योजना सेव करें</button></section>
-<section class="panel"><h3>📝 शिक्षक दैनिक डायरी</h3><label>तारीख</label><input id="diaryDate" type="date" class="input"><label>कक्षा / विषय</label><input id="diaryClass" class="input" placeholder="जैसे 7वीं – अंग्रेजी"><label>आज पढ़ाया गया पाठ / कार्य</label><textarea id="diaryNotes" class="input" rows="4" placeholder="आज का शिक्षण कार्य..."></textarea><button id="saveDiary">डायरी सेव करें</button></section>
+<section class="panel"><h3>📝 शिक्षक दैनिक डायरी – स्मार्ट चयन</h3>
+<label>तारीख</label><input id="diaryDate" type="date" class="input">
+<label>कक्षा चुनें</label><select id="diaryGrade" class="input"><option value="6वीं">6वीं</option><option value="7वीं">7वीं</option><option value="8वीं">8वीं</option></select>
+<label>विषय चुनें</label><select id="diarySubject" class="input"></select>
+<label>पाठ्यपुस्तक / पुस्तक</label><input id="diaryBook" class="input" readonly>
+<label>अध्याय संख्या</label><select id="diaryChapter" class="input"></select>
+<label>पाठ / अध्याय का नाम (पुस्तक से मिलान करके भरें)</label><input id="diaryLesson" class="input" placeholder="अध्याय का नाम">
+<label>पीरियड</label><select id="diaryPeriod" class="input"><option>प्रथम पीरियड</option><option>द्वितीय पीरियड</option><option>तृतीय पीरियड</option><option>चतुर्थ पीरियड</option><option>पंचम पीरियड</option><option>षष्ठम पीरियड</option><option>सप्तम पीरियड</option><option>अष्टम पीरियड</option></select>
+<label>शिक्षण गतिविधि</label><select id="diaryActivity" class="input"><option>पूर्वज्ञान जाँच एवं चर्चा</option><option>पाठ वाचन / आदर्श वाचन</option><option>व्याख्या एवं प्रश्नोत्तर</option><option>समूह कार्य एवं प्रस्तुतीकरण</option><option>लेखन एवं अभ्यास कार्य</option><option>प्रयोग / गतिविधि आधारित शिक्षण</option><option>कार्यपत्रक एवं अभ्यास</option><option>मौखिक / लिखित मूल्यांकन</option><option>पुनरावृत्ति एवं उपचारात्मक शिक्षण</option></select>
+<label>गृहकार्य</label><input id="diaryHomework" class="input" placeholder="गृहकार्य (वैकल्पिक)">
+<label>अतिरिक्त टिप्पणी (वैकल्पिक)</label><textarea id="diaryNotes" class="input" rows="3" placeholder="विशेष टिप्पणी..."></textarea>
+<button id="saveDiary">डायरी सेव करें</button></section>
 <section class="panel"><h3>🌟 गतिविधि रिकॉर्ड</h3><label>गतिविधि का नाम</label><input id="actTitle" class="input" placeholder="जैसे पहाड़ा पठन गतिविधि"><label>तारीख एवं कक्षा</label><input id="actMeta" class="input" placeholder="तारीख – कक्षा"><label>विवरण / उपलब्धि</label><textarea id="actNotes" class="input" rows="3" placeholder="गतिविधि का संक्षिप्त विवरण..."></textarea><button id="saveActivity">गतिविधि सेव करें</button></section>
 </div>
 <section class="panel"><div class="row"><div><h2>📂 मेरे रिकॉर्ड</h2><p class="muted">इस ब्राउज़र/डिवाइस में सेव रिकॉर्ड</p></div><button id="exportData" class="secondary">JSON बैकअप डाउनलोड</button></div><div id="records"></div><p id="syncStatus" class="status" role="status">क्लाउड कनेक्शन की प्रतीक्षा…</p><p class="muted">रिकॉर्ड Firebase क्लाउड में सिंक होंगे। UDISE कोड साझा प्रवेश कोड है, इसलिए यहाँ गोपनीय विद्यार्थी/परीक्षा डेटा न रखें।</section>
@@ -57,6 +68,25 @@ $("openCorner").addEventListener("click",open);
 $("schoolCode").addEventListener("keydown",e=>{if(e.key==="Enter")open()});
 $("lockCorner").addEventListener("click",()=>{if(unsubscribe){unsubscribe();unsubscribe=null}cloudReady=false;$("workspace").classList.add("hidden");$("gate").classList.remove("hidden");$("schoolCode").value=""});
 $("diaryDate").value=new Date().toISOString().slice(0,10);
+const diaryBooks={
+ "6वीं":[["अंग्रेजी","Poorvi I"],["हिंदी","मल्हार I"],["संस्कृत","दीपकम I"],["गणित","गणित प्रकाश I"],["विज्ञान","जिज्ञासा I"],["सामाजिक विज्ञान","समाज का अध्ययन: भारत और उसके आगे I"],["कला","कृति I"],["व्यावसायिक शिक्षा","कौशल बोध I"],["शारीरिक शिक्षा","खेल यात्रा I"]],
+ "7वीं":[["अंग्रेजी","Poorvi II"],["हिंदी","मल्हार II"],["संस्कृत","दीपकम II"],["गणित","गणित प्रकाश II"],["विज्ञान","जिज्ञासा II"],["सामाजिक विज्ञान","समाज का अध्ययन: भारत और उसके आगे II"],["कला","कृति II"],["व्यावसायिक शिक्षा","कौशल बोध II"],["शारीरिक शिक्षा","खेल यात्रा II"]],
+ "8वीं":[["हिंदी","छत्तीसगढ़ SCERT – हिंदी"],["अंग्रेजी","छत्तीसगढ़ SCERT – अंग्रेजी"],["संस्कृत","छत्तीसगढ़ SCERT – संस्कृत"],["गणित","छत्तीसगढ़ SCERT – गणित"],["विज्ञान","छत्तीसगढ़ SCERT – विज्ञान"],["सामाजिक विज्ञान","छत्तीसगढ़ SCERT – सामाजिक विज्ञान"]]
+};
+function refreshDiarySubjects(){
+ const grade=$("diaryGrade").value, list=diaryBooks[grade]||[];
+ $("diarySubject").innerHTML=list.map(x=>'<option value="'+escapeHtml(x[0])+'">'+escapeHtml(x[0])+'</option>').join("");
+ refreshDiaryBook();
+}
+function refreshDiaryBook(){
+ const grade=$("diaryGrade").value, subject=$("diarySubject").value;
+ const item=(diaryBooks[grade]||[]).find(x=>x[0]===subject);
+ $("diaryBook").value=item?item[1]:"";
+ $("diaryChapter").innerHTML=Array.from({length:20},(_,i)=>'<option value="'+(i+1)+'">अध्याय / पाठ '+(i+1)+'</option>').join("");
+}
+$("diaryGrade").addEventListener("change",refreshDiarySubjects);
+$("diarySubject").addEventListener("change",refreshDiaryBook);
+refreshDiarySubjects();
 function render(){const groups=[["पाठ योजनाएँ","plans"],["दैनिक डायरी","diary"],["गतिविधियाँ","activities"]];let html="";groups.forEach(([title,kind])=>{const a=read(keys[kind]);html+='<h3>'+title+' ('+a.length+')</h3>';if(!a.length){html+='<p class="muted">अभी कोई रिकॉर्ड नहीं।</p>';return}a.forEach((v,i)=>{const detail=Object.entries(v).filter(([k])=>k!=="notes").map(([k,x])=>x).join(" · ");html+='<article class="entry"><strong>'+escapeHtml(v.title||v.className||"रिकॉर्ड")+'</strong><br><small>'+escapeHtml(detail)+'</small><p>'+escapeHtml(v.notes||"")+'</p><button class="danger" data-del="'+kind+'" data-index="'+i+'">हटाएँ</button></article>'})});$("records").innerHTML=html;$("records").querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>deleteRecord(b.dataset.del,Number(b.dataset.index)))}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 async function connectCloud(){
@@ -99,7 +129,7 @@ async function deleteRecord(kind,index){
  if(db&&cloudReady){try{const found=cloudRecords.find(x=>x.kind===kind&&JSON.stringify(x.payload)===JSON.stringify(target));if(found)await db.collection("teacher_corner").doc(SCHOOL_CODE).collection("records").doc(found.id).delete();setStatus("रिकॉर्ड हटाया गया")}catch(e){setStatus("क्लाउड से रिकॉर्ड नहीं हट पाया: "+e.message,true)}}
 }
 $("savePlan").onclick=()=>{const v={date:new Date().toISOString().slice(0,10),className:$("lpClass").value,subject:$("lpSubject").value.trim(),title:$("lpLesson").value.trim(),notes:$("lpNotes").value.trim()};if(!v.subject||!v.title){alert("विषय और पाठ का नाम भरें।");return}saveRecord("plans",v);$("lpSubject").value=$("lpLesson").value=$("lpNotes").value="";};
-$("saveDiary").onclick=()=>{const v={date:$("diaryDate").value,className:$("diaryClass").value.trim(),notes:$("diaryNotes").value.trim()};if(!v.date||!v.className||!v.notes){alert("तारीख, कक्षा/विषय और विवरण भरें।");return}saveRecord("diary",v);$("diaryNotes").value="";};
+$("saveDiary").onclick=()=>{const grade=$("diaryGrade").value,subject=$("diarySubject").value,chapter=$("diaryChapter").value,lesson=$("diaryLesson").value.trim(),activity=$("diaryActivity").value,period=$("diaryPeriod").value,homework=$("diaryHomework").value.trim(),extra=$("diaryNotes").value.trim();if(!lesson){alert("कृपया पाठ / अध्याय का नाम भरें।");return}const v={date:$("diaryDate").value,className:grade+" – "+subject,book:$("diaryBook").value,chapter:"अध्याय / पाठ "+chapter,title:lesson,period,activity,homework,notes:[activity,extra].filter(Boolean).join(" · ")};if(!v.date){alert("तारीख चुनें।");return}saveRecord("diary",v);$("diaryLesson").value=$("diaryHomework").value=$("diaryNotes").value="";};
 $("saveActivity").onclick=()=>{const v={title:$("actTitle").value.trim(),meta:$("actMeta").value.trim(),notes:$("actNotes").value.trim()};if(!v.title||!v.notes){alert("गतिविधि का नाम और विवरण भरें।");return}saveRecord("activities",v);$("actTitle").value=$("actMeta").value=$("actNotes").value="";};
 $("exportData").onclick=()=>{const data=allLocal();const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="school-sathi-teacher-backup.json";a.click();URL.revokeObjectURL(a.href)};
 })();
