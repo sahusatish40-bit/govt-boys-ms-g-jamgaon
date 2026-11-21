@@ -71,11 +71,20 @@ async function connectCloud(){
    if(snap.empty){
     const old=allLocal();const batch=db.batch();let count=0;
     Object.entries(old).forEach(([kind,items])=>items.forEach(payload=>{const ref=col.doc();batch.set(ref,{kind,payload,createdAt:Date.now(),updatedAt:Date.now()});count++}));
-    if(count){await batch.commit();setStatus("पुराने रिकॉर्ड क्लाउड में भेजे जा रहे हैं…");return}
+    if(count){
+      setStatus("पुराने रिकॉर्ड क्लाउड में भेजे जा रहे हैं…");
+      try {
+        await batch.commit();
+        setStatus("पुराने रिकॉर्ड भेज दिए गए हैं; क्लाउड पुष्टि की प्रतीक्षा…");
+      } catch (migrationError) {
+        setStatus("पुराने रिकॉर्ड क्लाउड में नहीं भेजे जा सके: "+migrationError.code+" · "+migrationError.message,true);
+      }
+      return;
+    }
    }
    ["plans","diary","activities"].forEach(kind=>writeLocal(kind,cloudRecords.filter(x=>x.kind===kind).map(x=>x.payload)));
    render();setStatus("✓ Firebase क्लाउड से जुड़ा है · रिकॉर्ड ऑनलाइन सिंक हो रहे हैं");
-  },err=>{cloudReady=false;setStatus("क्लाउड नियम/कनेक्शन की जाँच जरूरी: "+err.message,true)});
+  },err=>{cloudReady=false;setStatus("क्लाउड नियम/कनेक्शन की जाँच जरूरी: "+(err.code||"")+" · "+err.message,true)});
  }catch(err){cloudReady=false;setStatus("Firebase कनेक्शन नहीं हुआ: "+err.message+" · फिलहाल स्थानीय रिकॉर्ड उपलब्ध हैं",true)}
 }
 async function saveRecord(kind,payload){
