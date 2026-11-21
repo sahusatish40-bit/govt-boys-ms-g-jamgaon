@@ -68,6 +68,14 @@ service cloud.firestore {
         && request.auth.uid == 'Y79AJ2xs8mTjaWepHml1lA74fj83';
     }
 
+    // Public teacher cards expose only approved profile fields.
+    // The public website can read; only the designated admin can publish/update.
+    match /teachers_public/{teacherId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null
+        && request.auth.uid == 'Y79AJ2xs8mTjaWepHml1lA74fj83';
+    }
+
     // Exams and their marks are restricted to the designated school admin.
     match /exams/{examId} {
       allow read, create, update, delete: if request.auth != null
