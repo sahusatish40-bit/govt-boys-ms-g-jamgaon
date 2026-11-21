@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#102b46">
+<link rel="manifest" href="manifest.webmanifest">
 <meta name="description" content="Govt. Boys MS G-Jamgaon, Kurud, Dhamtari, Chhattisgarh">
 <title>Govt. Boys MS G-Jamgaon | Official School Website</title>
 <link rel="stylesheet" href="style.css">
@@ -458,7 +460,13 @@ style="width:85px;height:85px;object-fit:contain;">
       const answerKey=questions.some(x=>x.a)?'<h3>शिक्षक हेतु उत्तरमाला</h3>'+questions.map((x,i)=>x.a?'<p><b>'+(i+1)+'.</b> '+esc(x.a)+'</p>':'').join(""):'';
       const body=questions.map((x,i)=>'<div class="q"><p><b>प्रश्न '+(i+1)+'. ('+esc(x.type)+')</b> '+esc(x.q)+' <span>('+x.m+' अंक)</span></p>'+(x.type==="वस्तुनिष्ठ (MCQ)"?'<ol class="opts" type="A">'+x.opts.map(o=>'<li>'+esc(o||"__________")+'</li>').join("")+'</ol>':'<div class="answer-space"></div>')+'</div>').join("");
       const w=window.open("","_blank","width=900,height=750");if(!w){alert("वर्कशीट खोलने के लिए पॉप-अप अनुमति दें।");return;}
-      w.document.write('<!doctype html><html lang="hi"><head><meta charset="utf-8"><title>'+esc(document.getElementById("wsTitle").value)+'</title><style>body{font-family:Arial,sans-serif;max-width:850px;margin:20px auto;padding:22px;color:#111}h1,h2{text-align:center;margin:7px}.school{text-align:center;font-weight:bold}.meta{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-block:1px solid #777;padding:10px 0;margin:15px 0}.q{margin:22px 0;page-break-inside:avoid}.q span{white-space:nowrap}.answer-space{min-height:35px;border-bottom:1px dotted #aaa;margin-top:8px}.key{border-top:2px dashed #777;margin-top:30px;padding-top:12px}button{padding:10px 16px}@media print{button{display:none}body{margin:0 auto;padding:8mm}}</style></head><body><p class="school">शासकीय उच्चतर माध्यमिक विद्यालय जी- जामगाँव (बालक माध्य.)</p><h1>'+esc(document.getElementById("wsTitle").value||"अभ्यास वर्कशीट")+'</h1><h2>'+esc(document.getElementById("wsClass").value)+' — '+esc(document.getElementById("wsSubject").value||"विषय")+'</h2><div class="meta"><span>विद्यार्थी का नाम: ____________________</span><span>दिनांक: __________</span><span>समय: '+esc(document.getElementById("wsTime").value||"________")+'</span><span>पूर्णांक: '+total+'</span></div>'+body+answerKey+'<p><button onclick="window.print()">प्रिंट / PDF सेव करें</button></p></body></html>');
+      w.document.write('<!doctype html><html lang="hi"><head><meta charset="utf-8"><title>'+esc(document.getElementById("wsTitle").value)+'</title><style>body{font-family:Arial,sans-serif;max-width:850px;margin:20px auto;padding:22px;color:#111}h1,h2{text-align:center;margin:7px}.school{text-align:center;font-weight:bold}.meta{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-block:1px solid #777;padding:10px 0;margin:15px 0}.q{margin:22px 0;page-break-inside:avoid}.q span{white-space:nowrap}.answer-space{min-height:35px;border-bottom:1px dotted #aaa;margin-top:8px}.key{border-top:2px dashed #777;margin-top:30px;padding-top:12px}button{padding:10px 16px}@media print{button{display:none}body{margin:0 auto;padding:8mm}}</style></head><body><p class="school">शासकीय उच्चतर माध्यमिक विद्यालय जी- जामगाँव (बालक माध्य.)</p><h1>'+esc(document.getElementById("wsTitle").value||"अभ्यास वर्कशीट")+'</h1><h2>'+esc(document.getElementById("wsClass").value)+' — '+esc(document.getElementById("wsSubject").value||"विषय")+'</h2><div class="meta"><span>विद्यार्थी का नाम: ____________________</span><span>दिनांक: __________</span><span>समय: '+esc(document.getElementById("wsTime").value||"________")+'</span><span>पूर्णांक: '+total+'</span></div>'+body+answerKey+'<p><button onclick="window.print()">प्रिंट / PDF सेव करें</button></p>
+<script>
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(error => console.warn("School Sathi offline support could not start:", error)));
+}
+</script>
+</body></html>');
       w.document.close();
     });
   })();
