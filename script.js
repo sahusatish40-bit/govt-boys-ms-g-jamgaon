@@ -427,6 +427,20 @@ await loadFirebase(
 </section>
           <hr>
 
+          <hr>
+          <section id="schoolBackupPanel" class="admin-backup-panel">
+            <h3>🛡️ Security & Backup Center</h3>
+            <p>विद्यालय के महत्वपूर्ण Firestore रिकॉर्ड का JSON बैकअप डाउनलोड करें और आवश्यकता पड़ने पर उसी बैकअप से डेटा वापस जोड़ें।</p>
+            <div class="backup-actions">
+              <button id="downloadSchoolBackup" type="button">⬇️ पूरा Backup डाउनलोड करें</button>
+              <label for="restoreSchoolBackupFile">Backup JSON फ़ाइल चुनें</label>
+              <input id="restoreSchoolBackupFile" type="file" accept=".json,application/json">
+              <button id="restoreSchoolBackup" type="button" disabled>♻️ Backup से Restore करें</button>
+            </div>
+            <p id="schoolBackupMessage" aria-live="polite"></p>
+            <small>सुरक्षा: यह सुविधा केवल मुख्य Admin के लिए है। Restore मौजूदा दस्तावेज़ों को समान ID पर अपडेट/जोड़ता है; यह अन्य रिकॉर्ड नहीं मिटाता। बैकअप फ़ाइल सुरक्षित स्थान पर रखें। इसमें विद्यार्थियों की निजी जानकारी हो सकती है।</small>
+          </section>
+          <hr>
           <section id="adminExamManagement">
             <h3>परीक्षा प्रबंधन (सत्र 2026–27)</h3>
 
@@ -478,6 +492,167 @@ await loadFirebase(
     const show = (n, m) => {
       if (n) n.textContent = m;
     };
+    
+    // Admin-only JSON backup and additive restore for school records.
+    const backupCollections = [
+      "students", "students_public", "students_private", "attendance",
+      "teachers", "exams", "notices", "events", "birthdays",
+      "creativity_submissions", "nmmse_results"
+    ];
+    const backupMessage = el("schoolBackupMessage");
+    let selectedRestoreFile = null;
+
+    function encodeBackupValue(value) {
+      if (value instanceof firebase.firestore.Timestamp) {
+        return { __schoolSathiType: "timestamp", value: value.toDate().toISOString() };
+      }
+      if (value instanceof Date) {
+        return { __schoolSathiType: "date", value: value.toISOString() };
+      }
+      if (Array.isArray(value)) return value.map(encodeBackupValue);
+      if (value && typeof value === "object") {
+        const out = {};
+        Object.keys(value).forEach(key => out[key] = encodeBackupValue(value[key]));
+        return out;
+      }
+      return value;
+    }
+
+    function decodeBackupValue(value) {
+      if (Array.isArray(value)) return value.map(decodeBackupValue);
+      if (value && typeof value === "object") {
+        if (value.__schoolSathiType === "timestamp") {
+          return firebase.firestore.Timestamp.fromDate(new Date(value.value));
+        }
+        if (value.__schoolSathiType === "date") return new Date(value.value);
+        const out = {};
+        Object.keys(value).forEach(key => out[key] = decodeBackupValue(value[key]));
+        return out;
+      }
+      return value;
+    }
+
+    async function collectSchoolBackup() {
+      const backup = {
+        format: "school-sathi-firestore-backup",
+        version: 1,
+        school: "शासकीय उच्चतर माध्यमिक विद्यालय जी- जामगाँव (बालक माध्य.)",
+        createdAt: new Date().toISOString(),
+        collections: {}
+      };
+      for (const name of backupCollections) {
+        const snap = await db.collection(name).get();
+        backup.collections[name] = snap.docs.map(doc => ({
+          id: doc.id,
+          data: encodeBackupValue(doc.data())
+        }));
+      }
+      const examSnap = await db.collection("exams").get();
+      backup.subcollections = { examMarks: {} };
+      for (const examDoc of examSnap.docs) {
+        const marksSnap = await db.collection("exams").doc(examDoc.id)
+          .collection("marks").get();
+        backup.subcollections.examMarks[examDoc.id] = marksSnap.docs.map(doc => ({
+          id: doc.id,
+          data: encodeBackupValue(doc.data())
+        }));
+      }
+      return backup;
+    }
+
+    el("downloadSchoolBackup")?.addEventListener("click", async () => {
+      if (auth.currentUser?.uid !== ADMIN_UID) {
+        return show(backupMessage, "केवल मुख्य Admin बैकअप बना सकता है।");
+      }
+      const button = el("downloadSchoolBackup");
+      button.disabled = true;
+      show(backupMessage, "सभी संग्रहों का बैकअप तैयार हो रहा है…");
+      try {
+        const backup = await collectSchoolBackup();
+        const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "School-Sathi-Backup-" + new Date().toISOString().slice(0,10) + ".json";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+        const total = Object.values(backup.collections).reduce((sum, rows) => sum + rows.length, 0);
+        show(backupMessage, "✓ Backup डाउनलोड हो गया। मुख्य संग्रहों में " + total + " रिकॉर्ड और परीक्षा अंक भी शामिल हैं।");
+      } catch (error) {
+        show(backupMessage, "Backup नहीं बन पाया: " + error.message);
+      } finally {
+        button.disabled = false;
+      }
+    });
+
+    el("restoreSchoolBackupFile")?.addEventListener("change", event => {
+      selectedRestoreFile = event.target.files?.[0] || null;
+      el("restoreSchoolBackup").disabled = !selectedRestoreFile;
+      show(backupMessage, selectedRestoreFile ? "फ़ाइल चुनी गई: " + selectedRestoreFile.name + " — Restore से पहले जाँचें।" : "");
+    });
+
+    el("restoreSchoolBackup")?.addEventListener("click", async () => {
+      if (auth.currentUser?.uid !== ADMIN_UID) {
+        return show(backupMessage, "केवल मुख्य Admin Restore कर सकता है।");
+      }
+      if (!selectedRestoreFile) return show(backupMessage, "पहले Backup JSON फ़ाइल चुनें।");
+      if (!confirm("Restore मौजूदा रिकॉर्डों को समान ID पर अपडेट/जोड़ सकता है। यह अन्य रिकॉर्ड नहीं मिटाएगा। क्या आगे बढ़ें?")) return;
+      const button = el("restoreSchoolBackup");
+      button.disabled = true;
+      show(backupMessage, "Backup फ़ाइल जाँची जा रही है…");
+      try {
+        const backup = JSON.parse(await selectedRestoreFile.text());
+        if (backup.format !== "school-sathi-firestore-backup" || backup.version !== 1 ||
+            !backup.collections || typeof backup.collections !== "object") {
+          throw new Error("यह School Sathi का मान्य Backup JSON नहीं है।");
+        }
+        let batch = db.batch();
+        let writes = 0;
+        let restored = 0;
+        async function commitBatchIfNeeded(force = false) {
+          if (writes >= 400 || (force && writes > 0)) {
+            await batch.commit();
+            batch = db.batch();
+            writes = 0;
+          }
+        }
+        for (const name of backupCollections) {
+          const rows = backup.collections[name] || [];
+          if (!Array.isArray(rows)) throw new Error(name + " संग्रह का प्रारूप गलत है।");
+          for (const row of rows) {
+            if (!row || typeof row.id !== "string" || !row.id || !row.data || typeof row.data !== "object") {
+              throw new Error(name + " में एक रिकॉर्ड अमान्य है।");
+            }
+            batch.set(db.collection(name).doc(row.id), decodeBackupValue(row.data));
+            writes++;
+            restored++;
+            await commitBatchIfNeeded();
+          }
+        }
+        const markGroups = backup.subcollections?.examMarks || {};
+        for (const [examId, rows] of Object.entries(markGroups)) {
+          if (!Array.isArray(rows)) throw new Error("परीक्षा अंक रिकॉर्ड का प्रारूप गलत है।");
+          for (const row of rows) {
+            if (!row || typeof row.id !== "string" || !row.id || !row.data || typeof row.data !== "object") {
+              throw new Error("परीक्षा अंक में एक रिकॉर्ड अमान्य है।");
+            }
+            batch.set(db.collection("exams").doc(examId).collection("marks").doc(row.id), decodeBackupValue(row.data));
+            writes++;
+            restored++;
+            await commitBatchIfNeeded();
+          }
+        }
+        if (writes > 0) await batch.commit();
+        show(backupMessage, "✓ Restore पूरा हुआ। " + restored + " रिकॉर्ड जोड़े/अपडेट किए गए। पेज को Refresh करें।");
+      } catch (error) {
+        show(backupMessage, "Restore पूरा नहीं हुआ: " + error.message + " कृपया Admin access और Firestore rules जाँचें।");
+      } finally {
+        button.disabled = false;
+      }
+    });
+
     
 
 
