@@ -1,7 +1,7 @@
 {
-  "name": "School Sathi – G-Jamgaon",
-  "short_name": "School Sathi",
-  "description": "शासकीय उच्चतर माध्यमिक विद्यालय जी-जामगाँव का डिजिटल शैक्षणिक मंच",
+  "name": "School Sathi – शासकीय उच्चतर माध्यमिक विद्यालय जी-जामगाँव (बालक माध्य.)",
+  "short_name": "School Sathi G-Jamgaon",
+  "description": "शासकीय उच्चतर माध्यमिक विद्यालय जी-जामगाँव (बालक माध्य.), वि.ख. कुरुद, जिला धमतरी (छ.ग.) का डिजिटल शैक्षणिक मंच",
   "lang": "hi",
   "start_url": "./index.html",
   "scope": "./",
