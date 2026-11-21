@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#123d59">
+<title>Teacher Corner | School Sathi</title>
+<style>
+:root{font-family:system-ui,"Noto Sans Devanagari",sans-serif;color:#17364a;background:#f3f8fb}*{box-sizing:border-box}body{margin:0}.top{background:linear-gradient(120deg,#123d59,#087e78);color:#fff;padding:24px 16px;text-align:center}.top a{color:#fff}.wrap{max-width:850px;margin:22px auto;padding:0 14px}.panel{background:#fff;border:1px solid #dce8ee;border-radius:18px;padding:20px;margin:14px 0;box-shadow:0 8px 24px #123d5910}.gate{max-width:480px;margin:28px auto;text-align:center}.input,textarea,select{width:100%;padding:12px;border:1px solid #cbd9e2;border-radius:10px;font:inherit;margin:6px 0 12px;background:#fff}button,.btn{border:0;border-radius:10px;background:#087e78;color:#fff;padding:11px 16px;font:inherit;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}button.secondary{background:#eaf2f6;color:#17364a}.muted{color:#657987;font-size:14px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.item{border:1px solid #e1ebef;border-radius:12px;padding:14px}.item h3{margin:0 0 8px}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.row>*{flex:1}.hidden{display:none!important}.entry{border-top:1px solid #e5edf1;padding:12px 0}.entry small{color:#718391}.danger{background:#a83d3d}.status{font-weight:700;color:#087e78;min-height:24px}
+</style>
+</head>
+<body>
+<header class="top"><h1>👩‍🏫 Teacher Corner</h1><p>शासकीय उच्चतर माध्यमिक विद्यालय जी- जामगाँव (बालक माध्य.)</p><a href="index.html">← मुख्य वेबसाइट पर वापस जाएँ</a></header>
+<main class="wrap">
+<section id="gate" class="panel gate">
+<h2>विद्यालय UDISE+ कोड दर्ज करें</h2>
+<p class="muted">सही विद्यालय कोड दर्ज करने पर Teacher Corner खुलेगा।</p>
+<label for="schoolCode">11 अंकों का UDISE+ कोड</label>
+<input class="input" id="schoolCode" inputmode="numeric" maxlength="11" placeholder="विद्यालय का DISE कोड" autocomplete="off">
+<button id="openCorner">Teacher Corner खोलें</button>
+<p id="gateMessage" class="status" role="status"></p>
+</section>
+<section id="workspace" class="hidden">
+<div class="panel"><div class="row"><div><h2>शिक्षक कार्यक्षेत्र</h2><p class="muted">पाठ योजना, शिक्षक डायरी और गतिविधि रिकॉर्ड</p></div><button id="lockCorner" class="secondary">बंद करें</button></div><p class="muted">विद्यालय: जी-जामगाँव · सत्र 2026–27</p></div>
+<div class="grid">
+<section class="panel"><h3>📘 पाठ योजना</h3><label>कक्षा</label><select id="lpClass" class="input"><option>6वीं</option><option>7वीं</option><option>8वीं</option></select><label>विषय</label><input id="lpSubject" class="input" placeholder="विषय"><label>पाठ / इकाई</label><input id="lpLesson" class="input" placeholder="पाठ का नाम"><label>सीखने के प्रतिफल एवं गतिविधि</label><textarea id="lpNotes" class="input" rows="4" placeholder="उद्देश्य, गतिविधि, मूल्यांकन..."></textarea><button id="savePlan">पाठ योजना सेव करें</button></section>
+<section class="panel"><h3>📝 शिक्षक दैनिक डायरी</h3><label>तारीख</label><input id="diaryDate" type="date" class="input"><label>कक्षा / विषय</label><input id="diaryClass" class="input" placeholder="जैसे 7वीं – अंग्रेजी"><label>आज पढ़ाया गया पाठ / कार्य</label><textarea id="diaryNotes" class="input" rows="4" placeholder="आज का शिक्षण कार्य..."></textarea><button id="saveDiary">डायरी सेव करें</button></section>
+<section class="panel"><h3>🌟 गतिविधि रिकॉर्ड</h3><label>गतिविधि का नाम</label><input id="actTitle" class="input" placeholder="जैसे पहाड़ा पठन गतिविधि"><label>तारीख एवं कक्षा</label><input id="actMeta" class="input" placeholder="तारीख – कक्षा"><label>विवरण / उपलब्धि</label><textarea id="actNotes" class="input" rows="3" placeholder="गतिविधि का संक्षिप्त विवरण..."></textarea><button id="saveActivity">गतिविधि सेव करें</button></section>
+</div>
+<section class="panel"><div class="row"><div><h2>📂 मेरे रिकॉर्ड</h2><p class="muted">इस ब्राउज़र/डिवाइस में सेव रिकॉर्ड</p></div><button id="exportData" class="secondary">JSON बैकअप डाउनलोड</button></div><div id="records"></div><p class="muted">नोट: अभी रिकॉर्ड इसी डिवाइस के ब्राउज़र में सेव होते हैं। यह क्लाउड सिंक या सुरक्षित शिक्षक पहचान प्रणाली नहीं है। दूसरे मोबाइल/ब्राउज़र में रिकॉर्ड अपने-आप नहीं आएँगे।</p></section>
+</section>
+</main>
+<script>
+(function(){
+const SCHOOL_CODE="22130305808";
+const $=id=>document.getElementById(id);
+const keys={plans:"ss_teacher_plans_v1",diary:"ss_teacher_diary_v1",activities:"ss_teacher_activities_v1"};
+function read(k){try{return JSON.parse(localStorage.getItem(k)||"[]")}catch(e){return[]}}
+function write(k,v){localStorage.setItem(k,JSON.stringify(v));render()}
+function open(){if($("schoolCode").value.trim()!==SCHOOL_CODE){$("gateMessage").textContent="कोड सही नहीं है। कृपया 11 अंकों का विद्यालय UDISE+ कोड जाँचें।";return}$("gate").classList.add("hidden");$("workspace").classList.remove("hidden");$("gateMessage").textContent="";render()}
+$("openCorner").addEventListener("click",open);
+$("schoolCode").addEventListener("keydown",e=>{if(e.key==="Enter")open()});
+$("lockCorner").addEventListener("click",()=>{$("workspace").classList.add("hidden");$("gate").classList.remove("hidden");$("schoolCode").value=""});
+$("diaryDate").value=new Date().toISOString().slice(0,10);
+$("savePlan").onclick=()=>{const v={date:new Date().toISOString().slice(0,10),className:$("lpClass").value,subject:$("lpSubject").value.trim(),title:$("lpLesson").value.trim(),notes:$("lpNotes").value.trim()};if(!v.subject||!v.title){alert("विषय और पाठ का नाम भरें।");return}write(keys.plans,[v,...read(keys.plans)]);$("lpSubject").value=$("lpLesson").value=$("lpNotes").value="";};
+$("saveDiary").onclick=()=>{const v={date:$("diaryDate").value,className:$("diaryClass").value.trim(),notes:$("diaryNotes").value.trim()};if(!v.date||!v.className||!v.notes){alert("तारीख, कक्षा/विषय और विवरण भरें।");return}write(keys.diary,[v,...read(keys.diary)]);$("diaryNotes").value="";};
+$("saveActivity").onclick=()=>{const v={title:$("actTitle").value.trim(),meta:$("actMeta").value.trim(),notes:$("actNotes").value.trim()};if(!v.title||!v.notes){alert("गतिविधि का नाम और विवरण भरें।");return}write(keys.activities,[v,...read(keys.activities)]);$("actTitle").value=$("actMeta").value=$("actNotes").value="";};
+function render(){const groups=[["पाठ योजनाएँ",keys.plans],["दैनिक डायरी",keys.diary],["गतिविधियाँ",keys.activities]];let html="";groups.forEach(([title,key])=>{const a=read(key);html+='<h3>'+title+' ('+a.length+')</h3>';if(!a.length){html+='<p class="muted">अभी कोई रिकॉर्ड नहीं।</p>';return}a.forEach((v,i)=>{const detail=Object.entries(v).filter(([k])=>k!=="notes").map(([k,x])=>x).join(" · ");html+='<article class="entry"><strong>'+escapeHtml(v.title||v.className||"रिकॉर्ड")+'</strong><br><small>'+escapeHtml(detail)+'</small><p>'+escapeHtml(v.notes||"")+'</p><button class="danger" data-del="'+key+'" data-index="'+i+'">हटाएँ</button></article>'})});$("records").innerHTML=html;$("records").querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{if(!confirm("क्या यह रिकॉर्ड हटाना है?"))return;const a=read(b.dataset.del);a.splice(Number(b.dataset.index),1);localStorage.setItem(b.dataset.del,JSON.stringify(a));render()})}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+$("exportData").onclick=()=>{const data={plans:read(keys.plans),diary:read(keys.diary),activities:read(keys.activities)};const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="school-sathi-teacher-backup.json";a.click();URL.revokeObjectURL(a.href)};
+})();
+</script>
+</body>
+</html>
