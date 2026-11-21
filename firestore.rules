@@ -133,5 +133,27 @@ service cloud.firestore {
         && request.auth.uid == 'Y79AJ2xs8mTjaWepHml1lA74fj83';
     }
 
+    // Teacher Corner: anonymous sessions can access only school teacher-work records.
+    // UDISE is a shared school identifier, not a private credential; do not store student-sensitive data here.
+    match /teacher_corner/{schoolCode}/records/{recordId} {
+      allow read: if request.auth != null
+        && request.auth.token.firebase.sign_in_provider == 'anonymous'
+        && schoolCode == '22130305808';
+      allow create: if request.auth != null
+        && request.auth.token.firebase.sign_in_provider == 'anonymous'
+        && schoolCode == '22130305808'
+        && request.resource.data.keys().hasOnly(['kind', 'payload', 'createdAt', 'updatedAt'])
+        && request.resource.data.keys().hasAll(['kind', 'payload', 'createdAt', 'updatedAt'])
+        && request.resource.data.kind in ['plans', 'diary', 'activities']
+        && request.resource.data.payload is map
+        && request.resource.data.payload.keys().hasOnly(['date', 'className', 'subject', 'title', 'notes', 'meta'])
+        && request.resource.data.createdAt is int
+        && request.resource.data.updatedAt is int;
+      allow update: if false;
+      allow delete: if request.auth != null
+        && request.auth.token.firebase.sign_in_provider == 'anonymous'
+        && schoolCode == '22130305808';
+    }
+
   }
 }
