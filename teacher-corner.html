@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#123d59">
 <title>Teacher Corner | School Sathi</title>
 <style>
-:root{font-family:system-ui,"Noto Sans Devanagari",sans-serif;color:#17364a;background:#f3f8fb}*{box-sizing:border-box}body{margin:0}.top{background:linear-gradient(120deg,#123d59,#087e78);color:#fff;padding:24px 16px;text-align:center}.top a{color:#fff}.wrap{max-width:850px;margin:22px auto;padding:0 14px}.panel{background:#fff;border:1px solid #dce8ee;border-radius:18px;padding:20px;margin:14px 0;box-shadow:0 8px 24px #123d5910}.gate{max-width:480px;margin:28px auto;text-align:center}.input,textarea,select{width:100%;padding:12px;border:1px solid #cbd9e2;border-radius:10px;font:inherit;margin:6px 0 12px;background:#fff}button,.btn{border:0;border-radius:10px;background:#087e78;color:#fff;padding:11px 16px;font:inherit;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}button.secondary{background:#eaf2f6;color:#17364a}.muted{color:#657987;font-size:14px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.item{border:1px solid #e1ebef;border-radius:12px;padding:14px}.item h3{margin:0 0 8px}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.row>*{flex:1}.hidden{display:none!important}.entry{border-top:1px solid #e5edf1;padding:12px 0}.entry small{color:#718391}.danger{background:#a83d3d}.status{font-weight:700;color:#087e78;min-height:24px}
+:root{font-family:system-ui,"Noto Sans Devanagari",sans-serif;color:#17364a;background:#f3f8fb}*{box-sizing:border-box}body{margin:0}.top{background:linear-gradient(120deg,#123d59,#087e78);color:#fff;padding:24px 16px;text-align:center}.top a{color:#fff}.wrap{max-width:850px;margin:22px auto;padding:0 14px}.panel{background:#fff;border:1px solid #dce8ee;border-radius:18px;padding:20px;margin:14px 0;box-shadow:0 8px 24px #123d5910}.gate{max-width:480px;margin:28px auto;text-align:center}.input,textarea,select{width:100%;padding:12px;border:1px solid #cbd9e2;border-radius:10px;font:inherit;margin:6px 0 12px;background:#fff}button,.btn{border:0;border-radius:10px;background:#087e78;color:#fff;padding:11px 16px;font:inherit;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}button.secondary{background:#eaf2f6;color:#17364a}.muted{color:#657987;font-size:14px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.item{border:1px solid #e1ebef;border-radius:12px;padding:14px}.item h3{margin:0 0 8px}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.row>*{flex:1}.hidden{display:none!important}.entry{border-top:1px solid #e5edf1;padding:12px 0}.entry small{color:#718391}.danger{background:#a83d3d}.status{font-weight:700;color:#087e78;min-height:24px}.plan-language{background:linear-gradient(90deg,#e5f5f3,#eef3ff);border-radius:10px;padding:10px 12px;color:#087e78;font-weight:700;margin:10px 0}.panel textarea{border-left:4px solid #8bbdb8;line-height:1.55}.panel textarea:focus,.panel select:focus,.panel input:focus{outline:2px solid #77bdb5;border-color:#087e78}
 </style>
 </head>
 <body>
@@ -30,14 +30,14 @@
 <label>अध्याय संख्या</label><select id="lpChapter" class="input"></select>
 <label>अध्याय / पाठ का सही नाम</label><input id="lpLesson" class="input" placeholder="पुस्तक के अनुसार अध्याय का नाम लिखें">
 <button type="button" id="generatePlan" class="secondary">✨ पूरी पाठ योजना तैयार करें</button>
-<p class="muted">जनरेट की गई योजना संपादन योग्य होगी। अध्याय का वास्तविक शीर्षक पुस्तक से मिलाकर भरें।</p>
-<label>सीखने के प्रतिफल (Learning Outcomes)</label><textarea id="lpOutcomes" class="input" rows="3"></textarea>
-<label>दक्षताएँ एवं कौशल (NEP 2020)</label><textarea id="lpCompetencies" class="input" rows="3"></textarea>
-<label>पूर्वज्ञान एवं शिक्षण सामग्री</label><textarea id="lpResources" class="input" rows="3"></textarea>
-<label>शिक्षण प्रक्रिया एवं गतिविधियाँ</label><textarea id="lpActivities" class="input" rows="4"></textarea>
-<label>समझ जाँच / मूल्यांकन</label><textarea id="lpAssessment" class="input" rows="3"></textarea>
-<label>गृहकार्य एवं उपचारात्मक कार्य</label><textarea id="lpHomework" class="input" rows="3"></textarea>
-<label>पूरा पाठ योजना विवरण (सेव करते समय साथ रहेगा)</label><textarea id="lpNotes" class="input" rows="3" placeholder="अतिरिक्त टिप्पणी..."></textarea>
+<p id="planLanguage" class="plan-language">विषय आधारित पाठ योजना · हिंदी माध्यम</p>
+<label id="lblOutcomes">सीखने के प्रतिफल (Learning Outcomes)</label><textarea id="lpOutcomes" class="input" rows="3"></textarea>
+<label id="lblCompetencies">दक्षताएँ एवं कौशल (NEP 2020)</label><textarea id="lpCompetencies" class="input" rows="3"></textarea>
+<label id="lblResources">पूर्वज्ञान एवं शिक्षण सामग्री</label><textarea id="lpResources" class="input" rows="3"></textarea>
+<label id="lblActivities">शिक्षण प्रक्रिया एवं गतिविधियाँ</label><textarea id="lpActivities" class="input" rows="4"></textarea>
+<label id="lblAssessment">समझ जाँच / मूल्यांकन</label><textarea id="lpAssessment" class="input" rows="3"></textarea>
+<label id="lblHomework">गृहकार्य एवं उपचारात्मक कार्य</label><textarea id="lpHomework" class="input" rows="3"></textarea>
+<label id="lblNotes">अतिरिक्त टिप्पणी</label><textarea id="lpNotes" class="input" rows="3" placeholder="अतिरिक्त टिप्पणी..."></textarea>
 <button id="savePlan">पाठ योजना सेव करें</button></section>
 <section class="panel"><h3>📝 शिक्षक दैनिक डायरी – स्मार्ट चयन</h3>
 <label>तारीख</label><input id="diaryDate" type="date" class="input">
@@ -123,14 +123,81 @@ $("lpSubject").addEventListener("change",refreshPlanBook);
 refreshPlanSubjects();
 $("generatePlan").addEventListener("click",()=>{
  const grade=$("lpClass").value,subject=$("lpSubject").value,book=$("lpBook").value,chapter=$("lpChapter").value,title=$("lpLesson").value.trim()||("अध्याय / पाठ "+chapter);
+ const english=subject==="अंग्रेजी";
+ const templates={
+ "अंग्रेजी":{
+ outcomes:"Students will be able to:\n• identify the central idea and key details of the lesson.\n• read the text with appropriate pronunciation, fluency and expression.\n• use new vocabulary in meaningful sentences.\n• express ideas through speaking and writing.",
+ competencies:"• Reading comprehension and critical thinking\n• Listening and speaking\n• Vocabulary and grammatical awareness\n• Creative writing and communication",
+ resources:"Previous knowledge: Begin with 2–3 questions related to the theme.\nTeaching-learning materials: Textbook, word cards, pictures, board, audio/visual material where available.",
+ activities:"1. Warm-up: Show a picture or ask a theme-based question.\n2. Pre-reading: Predict the topic from the title and illustrations.\n3. Model reading: Teacher reads aloud with correct pronunciation and expression.\n4. Guided practice: Students read in pairs and identify key words.\n5. Language focus: Explore vocabulary, sentence patterns and usage from the text.\n6. Production: Students perform a role-play, discussion or short writing task.",
+ assessment:"• Ask literal and inferential comprehension questions.\n• Check pronunciation and reading fluency.\n• Ask students to use 3 new words in sentences.\n• Assess a short oral or written response using a simple rubric.",
+ homework:"Read the lesson aloud at home.\nWrite 5 new words with meanings and make original sentences.\nComplete the textbook exercise relevant to the lesson."
+ },
+ "गणित":{
+ outcomes:"विद्यार्थी अवधारणा को समझकर उदाहरणों में लागू कर सकेंगे।\nविद्यार्थी गणितीय भाषा, प्रतीकों और निरूपण का सही उपयोग कर सकेंगे।\nविद्यार्थी समस्या के समाधान के चरण स्पष्ट कर सकेंगे।",
+ competencies:"तार्किक चिंतन · समस्या समाधान · गणितीय संप्रेषण · पैटर्न पहचान · दैनिक जीवन में अनुप्रयोग",
+ resources:"पूर्वज्ञान: पिछली अवधारणा पर छोटे मौखिक प्रश्न।\nसामग्री: संख्या कार्ड, स्थानीय वस्तुएँ, माप उपकरण, ज्यामितीय आकृतियाँ और श्यामपट्ट।",
+ activities:"1. दैनिक जीवन की समस्या से विषय प्रवेश।\n2. ठोस वस्तुओं/चित्रों से अवधारणा का अन्वेषण।\n3. शिक्षक द्वारा चरणबद्ध उदाहरण।\n4. जोड़ी में समस्या समाधान और रणनीतियों की तुलना।\n5. विद्यार्थियों द्वारा स्वयं प्रश्न बनाना और हल प्रस्तुत करना।",
+ assessment:"एक मौखिक अवधारणा प्रश्न, दो अभ्यास प्रश्न और एक जीवन-आधारित समस्या।\nसमाधान की प्रक्रिया, तर्क और उत्तर की शुद्धता का अवलोकन।",
+ homework:"पाठ्यपुस्तक के चयनित प्रश्न हल करें।\nघर/समुदाय से संबंधित एक गणितीय उदाहरण खोजकर लिखें।"
+ },
+ "विज्ञान":{
+ outcomes:"विद्यार्थी वैज्ञानिक अवधारणा का वर्णन कर सकेंगे।\nअवलोकन, तुलना और प्रमाण के आधार पर निष्कर्ष निकाल सकेंगे।\nसीखी गई अवधारणा को दैनिक जीवन से जोड़ सकेंगे।",
+ competencies:"वैज्ञानिक दृष्टिकोण · जिज्ञासा · अवलोकन · प्रयोग एवं जाँच · प्रमाण आधारित तर्क · पर्यावरणीय जागरूकता",
+ resources:"पूर्वज्ञान: घटना/चित्र/वस्तु दिखाकर प्रश्न पूछें।\nसामग्री: पाठ्यपुस्तक, स्थानीय एवं सुरक्षित सामग्री, चार्ट और अवलोकन पत्रक।",
+ activities:"1. जिज्ञासा जगाने वाला प्रश्न प्रस्तुत करें।\n2. विद्यार्थी अनुमान/परिकल्पना बताएँ।\n3. सुरक्षित प्रदर्शन या समूह गतिविधि कराएँ।\n4. अवलोकन दर्ज कराएँ और परिणामों पर चर्चा करें।\n5. वैज्ञानिक निष्कर्ष को पाठ से जोड़ें।",
+ assessment:"अवलोकन आधारित प्रश्न, कारण बताइए, एक अनुप्रयोग प्रश्न और समूह कार्य का मूल्यांकन।",
+ homework:"घर/परिवेश में संबंधित घटना का अवलोकन करें और 3–4 वाक्यों में लिखें।"
+ },
+ "सामाजिक विज्ञान":{
+ outcomes:"विद्यार्थी घटना/स्थान/संस्था के मुख्य पहलुओं की व्याख्या कर सकेंगे।\nमानचित्र, समयरेखा, चित्र या स्रोत से सूचना प्राप्त कर सकेंगे।\nविभिन्न दृष्टिकोणों की तुलना कर तर्कपूर्ण निष्कर्ष देंगे।",
+ competencies:"ऐतिहासिक एवं भौगोलिक समझ · नागरिक चेतना · स्रोत विश्लेषण · मानचित्र कौशल · आलोचनात्मक चिंतन",
+ resources:"पूर्वज्ञान: स्थानीय समाज/स्थान/घटना से जुड़े प्रश्न।\nसामग्री: मानचित्र, समयरेखा, चित्र, समाचार अंश और पाठ्यपुस्तक।",
+ activities:"1. चित्र/मानचित्र/स्थानीय उदाहरण से चर्चा शुरू करें।\n2. स्रोत का अवलोकन कर तथ्य पहचानें।\n3. समूहों में कारण-परिणाम या तुलना गतिविधि।\n4. मानचित्र/समयरेखा/चार्ट पर प्रस्तुति।\n5. वर्तमान जीवन से संबंध स्थापित करें।",
+ assessment:"स्रोत आधारित प्रश्न, मानचित्र/समयरेखा कार्य, कारण-परिणाम और विचार-आधारित उत्तर।",
+ homework:"पाठ से संबंधित एक मानचित्र/समयरेखा/तुलना तालिका तैयार करें।"
+ },
+ "हिंदी":{
+ outcomes:"विद्यार्थी पाठ का भाव एवं मुख्य विचार समझ सकेंगे।\nशुद्ध उच्चारण के साथ वाचन तथा विचारों की मौखिक/लिखित अभिव्यक्ति कर सकेंगे।\nनए शब्दों का अर्थ समझकर वाक्यों में प्रयोग कर सकेंगे।",
+ competencies:"भाषा कौशल · पठन-बोध · शब्द-भंडार · सृजनात्मक लेखन · अभिव्यक्ति एवं संवाद",
+ resources:"पूर्वज्ञान: शीर्षक/चित्र के आधार पर अनुमान और चर्चा।\nसामग्री: पाठ्यपुस्तक, शब्द कार्ड, चित्र और श्यामपट्ट।",
+ activities:"1. आदर्श वाचन एवं भावपूर्ण पाठ-पठन।\n2. कठिन शब्दों का अर्थ और वाक्य प्रयोग।\n3. जोड़ी/समूह में प्रश्नोत्तर एवं चर्चा।\n4. पात्र/घटना/भाव का विश्लेषण।\n5. अनुच्छेद, संवाद या रचनात्मक लेखन।",
+ assessment:"वाचन, शब्दार्थ, पाठ-बोध के प्रश्न तथा 4–5 वाक्यों की अभिव्यक्ति का मूल्यांकन।",
+ homework:"पाठ का सार अपने शब्दों में लिखें और पाँच नए शब्दों के वाक्य बनाएँ।"
+ },
+ "संस्कृत":{
+ outcomes:"विद्यार्थी पाठ/श्लोक का शुद्ध उच्चारण कर सकेंगे।\nसरल संस्कृत शब्दों एवं वाक्यों का अर्थ समझ सकेंगे।\nसीखे गए शब्दरूप/धातुरूप/व्याकरण का प्रयोग कर सकेंगे।",
+ competencies:"श्रवण एवं वाचन · शब्दार्थ बोध · व्याकरणिक समझ · शुद्ध उच्चारण · भाषा प्रयोग",
+ resources:"पूर्वज्ञान: परिचित संस्कृत शब्दों का स्मरण।\nसामग्री: पाठ्यपुस्तक, शब्द-पत्र, श्लोक-पाठ और श्यामपट्ट।",
+ activities:"1. शिक्षक द्वारा आदर्श उच्चारण।\n2. सामूहिक एवं व्यक्तिगत वाचन।\n3. शब्दार्थ और अन्वय/भावार्थ पर चर्चा।\n4. व्याकरणिक बिंदु की उदाहरण सहित पहचान।\n5. सरल वाक्य निर्माण एवं मौखिक अभ्यास।",
+ assessment:"उच्चारण, शब्दार्थ, रिक्त स्थान, सरल अनुवाद और वाक्य निर्माण।",
+ homework:"पाठ के चुने हुए शब्दार्थ याद करें और पाँच सरल वाक्य लिखें।"
+ }
+ };
+ const t=templates[subject]||{
+ outcomes:"विद्यार्थी पाठ के मुख्य विचार/तथ्यों को समझकर उदाहरणों में लागू कर सकेंगे।\nसीखी गई जानकारी को अपने शब्दों में प्रस्तुत कर सकेंगे।\nसहयोग से कार्य पूरा कर सकेंगे।",
+ competencies:"विषयगत समझ एवं अनुप्रयोग · रचनात्मकता · आलोचनात्मक चिंतन · संचार एवं सहयोग",
+ resources:"पूर्वज्ञान: पिछले पाठ से जुड़े 2–3 प्रश्न।\nसामग्री: पाठ्यपुस्तक, श्यामपट्ट, चित्र/चार्ट तथा स्थानीय सामग्री।",
+ activities:"1. रोचक प्रश्न/चित्र से विषय प्रवेश।\n2. व्यक्तिगत चिंतन और जोड़ी में चर्चा।\n3. शिक्षक द्वारा उदाहरण सहित अवधारणा स्पष्ट करना।\n4. समूह गतिविधि/अभ्यास और प्रस्तुतीकरण।\n5. दैनिक जीवन से संबंध स्थापित करना।",
+ assessment:"मौखिक प्रश्नोत्तर, अवधारणा आधारित लघु प्रश्न और एक अनुप्रयोग कार्य।",
+ homework:"पाठ्यपुस्तक के संबंधित अभ्यास करें और विषय से जुड़ा एक स्थानीय उदाहरण लिखें।"
+ };
  $("lpLesson").value=title;
- $("lpOutcomes").value="विद्यार्थी इस पाठ के मुख्य विचारों/तथ्यों को समझ सकेंगे।\nविद्यार्थी सीखी गई अवधारणाओं को उदाहरणों एवं दैनिक जीवन की स्थितियों से जोड़ सकेंगे।\nविद्यार्थी अपने शब्दों में उत्तर/प्रस्तुति दे सकेंगे।";
- $("lpCompetencies").value="विषयगत समझ एवं अनुप्रयोग\nआलोचनात्मक चिंतन एवं समस्या समाधान\nसंचार, सहयोग एवं रचनात्मक अभिव्यक्ति";
- $("lpResources").value="पूर्वज्ञान: पिछले पाठ से जुड़े 2–3 मौखिक प्रश्न।\nशिक्षण सामग्री: पाठ्यपुस्तक, श्यामपट्ट, चित्र/चार्ट तथा उपलब्ध स्थानीय सामग्री।";
- $("lpActivities").value="1. प्रस्तावना: रोचक प्रश्न/चित्र/स्थानीय उदाहरण से विषय प्रवेश।\n2. अन्वेषण: विद्यार्थियों से अनुमान, चर्चा एवं समूह में विचार साझा कराना।\n3. अवधारणा निर्माण: शिक्षक द्वारा उदाहरण सहित सरल व्याख्या एवं पाठ वाचन।\n4. अनुप्रयोग: जोड़ी/समूह कार्य, अभ्यास या गतिविधि।\n5. प्रस्तुतीकरण: विद्यार्थी अपने निष्कर्ष कक्षा में साझा करें।";
- $("lpAssessment").value="मौखिक प्रश्नोत्तर: पाठ के मुख्य विचार क्या हैं?\nअवधारणा आधारित 2 लघु प्रश्न।\nएक अनुप्रयोग/जीवन से जुड़ा प्रश्न तथा अवलोकन आधारित मूल्यांकन।";
- $("lpHomework").value="पाठ से संबंधित अभ्यास प्रश्न हल करें।\nअपने आसपास से पाठ से जुड़ा एक उदाहरण खोजकर लिखें।\nआवश्यकतानुसार कठिनाई वाले विद्यार्थियों को सरल पुनरावृत्ति कार्य दें।";
- $("lpNotes").value="कक्षा: "+grade+" | विषय: "+subject+" | पुस्तक: "+book+" | अध्याय: "+chapter+" – "+title+"\nपाठ योजना NEP 2020 की दक्षता-आधारित एवं गतिविधि-आधारित शिक्षण रूपरेखा पर तैयार की गई है। इसे अध्याय की वास्तविक विषयवस्तु के अनुसार संपादित करें।";
+ $("lpOutcomes").value=t.outcomes;
+ $("lpCompetencies").value=t.competencies;
+ $("lpResources").value=t.resources;
+ $("lpActivities").value=t.activities;
+ $("lpAssessment").value=t.assessment;
+ $("lpHomework").value=t.homework;
+ $("lpNotes").value=(english?"Class: ":"कक्षा: ")+grade+" | "+(english?"Subject: ":"विषय: ")+subject+" | "+(english?"Textbook: ":"पुस्तक: ")+book+" | "+(english?"Chapter: ":"अध्याय: ")+chapter+" – "+title+"\n"+(english?"Competency-based lesson plan aligned with NEP 2020. Edit the subject content to match the exact textbook chapter.":"NEP 2020 की दक्षता-आधारित एवं गतिविधि-आधारित शिक्षण रूपरेखा। वास्तविक अध्याय की विषयवस्तु के अनुसार संपादित करें।");
+ $("planLanguage").textContent=english?"English lesson plan · English language":"विषय आधारित पाठ योजना · हिंदी माध्यम";
+});
+$("lpSubject").addEventListener("change",()=>{
+ const english=$("lpSubject").value==="अंग्रेजी";
+ const labels=english?["Learning Outcomes","Competencies & Skills (NEP 2020)","Previous Knowledge & Teaching Resources","Teaching-Learning Process & Activities","Assessment / Check for Understanding","Homework & Remedial Support","Additional Notes","Generate Lesson Plan","Save Lesson Plan"]:["सीखने के प्रतिफल (Learning Outcomes)","दक्षताएँ एवं कौशल (NEP 2020)","पूर्वज्ञान एवं शिक्षण सामग्री","शिक्षण प्रक्रिया एवं गतिविधियाँ","समझ जाँच / मूल्यांकन","गृहकार्य एवं उपचारात्मक कार्य","अतिरिक्त टिप्पणी","पूरी पाठ योजना तैयार करें","पाठ योजना सेव करें"];
+ const ids=["lblOutcomes","lblCompetencies","lblResources","lblActivities","lblAssessment","lblHomework","lblNotes","generatePlan","savePlan"];
+ ids.forEach((id,i)=>{const el=$(id);if(el)el.textContent=labels[i]});
+ document.documentElement.lang=english?"en":"hi";
 });
 function render(){const groups=[["पाठ योजनाएँ","plans"],["दैनिक डायरी","diary"],["गतिविधियाँ","activities"]];let html="";groups.forEach(([title,kind])=>{const a=read(keys[kind]);html+='<h3>'+title+' ('+a.length+')</h3>';if(!a.length){html+='<p class="muted">अभी कोई रिकॉर्ड नहीं।</p>';return}a.forEach((v,i)=>{const detail=Object.entries(v).filter(([k])=>k!=="notes").map(([k,x])=>x).join(" · ");html+='<article class="entry"><strong>'+escapeHtml(v.title||v.className||"रिकॉर्ड")+'</strong><br><small>'+escapeHtml(detail)+'</small><p>'+escapeHtml(v.notes||"")+'</p><button class="danger" data-del="'+kind+'" data-index="'+i+'">हटाएँ</button></article>'})});$("records").innerHTML=html;$("records").querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>deleteRecord(b.dataset.del,Number(b.dataset.index)))}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
