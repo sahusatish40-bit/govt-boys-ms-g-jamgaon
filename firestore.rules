@@ -79,6 +79,13 @@ service cloud.firestore {
       }
     }
 
+    // Upcoming school events are public; only the designated admin can manage them.
+    match /events/{eventId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null
+        && request.auth.uid == 'Y79AJ2xs8mTjaWepHml1lA74fj83';
+    }
+
     // Notices are publicly readable; only the designated admin can manage them.
     match /notices/{noticeId} {
       allow read: if true;
@@ -146,7 +153,7 @@ service cloud.firestore {
         && request.resource.data.keys().hasAll(['kind', 'payload', 'createdAt', 'updatedAt'])
         && request.resource.data.kind in ['plans', 'diary', 'activities']
         && request.resource.data.payload is map
-        && request.resource.data.payload.keys().hasOnly(['date', 'className', 'subject', 'title', 'notes', 'meta'])
+        && request.resource.data.payload.keys().hasOnly(['date', 'className', 'subject', 'title', 'notes', 'meta', 'teacherName', 'book', 'chapter', 'outcomes', 'competencies', 'resources', 'activities', 'assessment', 'homework', 'period', 'activity'])
         && request.resource.data.createdAt is int
         && request.resource.data.updatedAt is int;
       allow update: if false;
