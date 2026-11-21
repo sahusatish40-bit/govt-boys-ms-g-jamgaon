@@ -122,66 +122,67 @@ $("lpClass").addEventListener("change",refreshPlanSubjects);
 $("lpSubject").addEventListener("change",refreshPlanBook);
 refreshPlanSubjects();
 $("printPlan").addEventListener("click",()=>window.print());
+$("printPlan").addEventListener("click",()=>window.print());
 $("generatePlan").addEventListener("click",()=>{
  const grade=$("lpClass").value,subject=$("lpSubject").value,book=$("lpBook").value,chapter=$("lpChapter").value,title=$("lpLesson").value.trim()||("अध्याय / पाठ "+chapter);
  const english=subject==="अंग्रेजी";
  const templates={
  "अंग्रेजी":{
- outcomes:"Students will be able to:\n• identify the central idea and key details of the lesson.\n• read the text with appropriate pronunciation, fluency and expression.\n• use new vocabulary in meaningful sentences.\n• express ideas through speaking and writing.",
- competencies:"• Reading comprehension and critical thinking\n• Listening and speaking\n• Vocabulary and grammatical awareness\n• Creative writing and communication",
- resources:"Previous knowledge: Begin with 2–3 questions related to the theme.\nTeaching-learning materials: Textbook, word cards, pictures, board, audio/visual material where available.",
- activities:"1. Warm-up: Show a picture or ask a theme-based question.\n2. Pre-reading: Predict the topic from the title and illustrations.\n3. Model reading: Teacher reads aloud with correct pronunciation and expression.\n4. Guided practice: Students read in pairs and identify key words.\n5. Language focus: Explore vocabulary, sentence patterns and usage from the text.\n6. Production: Students perform a role-play, discussion or short writing task.",
- assessment:"• Ask literal and inferential comprehension questions.\n• Check pronunciation and reading fluency.\n• Ask students to use 3 new words in sentences.\n• Assess a short oral or written response using a simple rubric.",
- homework:"Read the lesson aloud at home.\nWrite 5 new words with meanings and make original sentences.\nComplete the textbook exercise relevant to the lesson."
- },
- "गणित":{
- outcomes:"विद्यार्थी अवधारणा को समझकर उदाहरणों में लागू कर सकेंगे।\nविद्यार्थी गणितीय भाषा, प्रतीकों और निरूपण का सही उपयोग कर सकेंगे।\nविद्यार्थी समस्या के समाधान के चरण स्पष्ट कर सकेंगे।",
- competencies:"तार्किक चिंतन · समस्या समाधान · गणितीय संप्रेषण · पैटर्न पहचान · दैनिक जीवन में अनुप्रयोग",
- resources:"पूर्वज्ञान: पिछली अवधारणा पर छोटे मौखिक प्रश्न।\nसामग्री: संख्या कार्ड, स्थानीय वस्तुएँ, माप उपकरण, ज्यामितीय आकृतियाँ और श्यामपट्ट।",
- activities:"1. दैनिक जीवन की समस्या से विषय प्रवेश।\n2. ठोस वस्तुओं/चित्रों से अवधारणा का अन्वेषण।\n3. शिक्षक द्वारा चरणबद्ध उदाहरण।\n4. जोड़ी में समस्या समाधान और रणनीतियों की तुलना।\n5. विद्यार्थियों द्वारा स्वयं प्रश्न बनाना और हल प्रस्तुत करना।",
- assessment:"एक मौखिक अवधारणा प्रश्न, दो अभ्यास प्रश्न और एक जीवन-आधारित समस्या।\nसमाधान की प्रक्रिया, तर्क और उत्तर की शुद्धता का अवलोकन।",
- homework:"पाठ्यपुस्तक के चयनित प्रश्न हल करें।\nघर/समुदाय से संबंधित एक गणितीय उदाहरण खोजकर लिखें।"
- },
- "विज्ञान":{
- outcomes:"विद्यार्थी वैज्ञानिक अवधारणा का वर्णन कर सकेंगे।\nअवलोकन, तुलना और प्रमाण के आधार पर निष्कर्ष निकाल सकेंगे।\nसीखी गई अवधारणा को दैनिक जीवन से जोड़ सकेंगे।",
- competencies:"वैज्ञानिक दृष्टिकोण · जिज्ञासा · अवलोकन · प्रयोग एवं जाँच · प्रमाण आधारित तर्क · पर्यावरणीय जागरूकता",
- resources:"पूर्वज्ञान: घटना/चित्र/वस्तु दिखाकर प्रश्न पूछें।\nसामग्री: पाठ्यपुस्तक, स्थानीय एवं सुरक्षित सामग्री, चार्ट और अवलोकन पत्रक।",
- activities:"1. जिज्ञासा जगाने वाला प्रश्न प्रस्तुत करें।\n2. विद्यार्थी अनुमान/परिकल्पना बताएँ।\n3. सुरक्षित प्रदर्शन या समूह गतिविधि कराएँ।\n4. अवलोकन दर्ज कराएँ और परिणामों पर चर्चा करें।\n5. वैज्ञानिक निष्कर्ष को पाठ से जोड़ें।",
- assessment:"अवलोकन आधारित प्रश्न, कारण बताइए, एक अनुप्रयोग प्रश्न और समूह कार्य का मूल्यांकन।",
- homework:"घर/परिवेश में संबंधित घटना का अवलोकन करें और 3–4 वाक्यों में लिखें।"
- },
- "सामाजिक विज्ञान":{
- outcomes:"विद्यार्थी घटना/स्थान/संस्था के मुख्य पहलुओं की व्याख्या कर सकेंगे।\nमानचित्र, समयरेखा, चित्र या स्रोत से सूचना प्राप्त कर सकेंगे।\nविभिन्न दृष्टिकोणों की तुलना कर तर्कपूर्ण निष्कर्ष देंगे।",
- competencies:"ऐतिहासिक एवं भौगोलिक समझ · नागरिक चेतना · स्रोत विश्लेषण · मानचित्र कौशल · आलोचनात्मक चिंतन",
- resources:"पूर्वज्ञान: स्थानीय समाज/स्थान/घटना से जुड़े प्रश्न।\nसामग्री: मानचित्र, समयरेखा, चित्र, समाचार अंश और पाठ्यपुस्तक।",
- activities:"1. चित्र/मानचित्र/स्थानीय उदाहरण से चर्चा शुरू करें।\n2. स्रोत का अवलोकन कर तथ्य पहचानें।\n3. समूहों में कारण-परिणाम या तुलना गतिविधि।\n4. मानचित्र/समयरेखा/चार्ट पर प्रस्तुति।\n5. वर्तमान जीवन से संबंध स्थापित करें।",
- assessment:"स्रोत आधारित प्रश्न, मानचित्र/समयरेखा कार्य, कारण-परिणाम और विचार-आधारित उत्तर।",
- homework:"पाठ से संबंधित एक मानचित्र/समयरेखा/तुलना तालिका तैयार करें।"
+ outcomes:"Students will be able to identify the central idea and key details; read with appropriate pronunciation, fluency and expression; use new vocabulary in meaningful sentences; and express ideas through speaking and writing.",
+ competencies:"Reading comprehension · Listening and speaking · Vocabulary development · Critical thinking · Creative writing",
+ resources:"Previous knowledge: 2–3 theme-based questions.\nTeaching-learning materials: Textbook, word cards, picture prompts, board and audio/visual material where available.",
+ activities:"1. Warm-up: Show a picture and predict the lesson theme.\n2. Pre-reading: Discuss the title and illustrations.\n3. Model reading: Teacher reads aloud with expression.\n4. Pair reading: Students read and identify key words.\n5. Fun task: Role-play, word detective or picture-story sequence.\n6. Production: Students present a short dialogue or paragraph.",
+ assessment:"Comprehension questions · Reading fluency checklist · Use 3 new words in sentences · Short oral/written response.",
+ homework:"Read the lesson aloud. Write 5 new words with meanings and original sentences. Complete the related textbook exercise."
  },
  "हिंदी":{
- outcomes:"विद्यार्थी पाठ का भाव एवं मुख्य विचार समझ सकेंगे।\nशुद्ध उच्चारण के साथ वाचन तथा विचारों की मौखिक/लिखित अभिव्यक्ति कर सकेंगे।\nनए शब्दों का अर्थ समझकर वाक्यों में प्रयोग कर सकेंगे।",
- competencies:"भाषा कौशल · पठन-बोध · शब्द-भंडार · सृजनात्मक लेखन · अभिव्यक्ति एवं संवाद",
- resources:"पूर्वज्ञान: शीर्षक/चित्र के आधार पर अनुमान और चर्चा।\nसामग्री: पाठ्यपुस्तक, शब्द कार्ड, चित्र और श्यामपट्ट।",
- activities:"1. आदर्श वाचन एवं भावपूर्ण पाठ-पठन।\n2. कठिन शब्दों का अर्थ और वाक्य प्रयोग।\n3. जोड़ी/समूह में प्रश्नोत्तर एवं चर्चा।\n4. पात्र/घटना/भाव का विश्लेषण।\n5. अनुच्छेद, संवाद या रचनात्मक लेखन।",
- assessment:"वाचन, शब्दार्थ, पाठ-बोध के प्रश्न तथा 4–5 वाक्यों की अभिव्यक्ति का मूल्यांकन।",
- homework:"पाठ का सार अपने शब्दों में लिखें और पाँच नए शब्दों के वाक्य बनाएँ।"
+ outcomes:"विद्यार्थी पाठ का भाव एवं मुख्य विचार समझेंगे, शुद्ध वाचन करेंगे तथा अपने विचार मौखिक और लिखित रूप में व्यक्त करेंगे।",
+ competencies:"पठन-बोध · शब्द-भंडार · सृजनात्मक लेखन · संवाद एवं अभिव्यक्ति",
+ resources:"पाठ्यपुस्तक, चित्र, शब्द कार्ड, श्यामपट्ट और स्थानीय उदाहरण।",
+ activities:"1. चित्र देखकर अनुमान लगाएँ।\n2. आदर्श एवं सामूहिक वाचन।\n3. शब्दार्थ खोज खेल।\n4. पात्र-अभिनय/संवाद प्रस्तुति।\n5. समूह में चित्र-कथा या सार लेखन।",
+ assessment:"वाचन, शब्दार्थ, पाठ-बोध प्रश्न और 4–5 वाक्यों की अभिव्यक्ति।",
+ homework:"पाठ का सार लिखें और पाँच नए शब्दों के वाक्य बनाएँ।"
+ },
+ "गणित":{
+ outcomes:"विद्यार्थी गणितीय अवधारणा समझेंगे, उचित रणनीति से समस्या हल करेंगे और दैनिक जीवन में गणित का उपयोग करेंगे।",
+ competencies:"तार्किक चिंतन · समस्या समाधान · गणितीय संप्रेषण · पैटर्न पहचान",
+ resources:"संख्या/आकृति कार्ड, स्थानीय वस्तुएँ, माप उपकरण, ज्यामितीय आकृतियाँ।",
+ activities:"1. दैनिक जीवन की समस्या से शुरुआत।\n2. ठोस वस्तुओं से अवधारणा खोजें।\n3. शिक्षक द्वारा उदाहरण।\n4. गणित बाजार/संख्या खोज खेल।\n5. जोड़ी में चुनौती प्रश्न और समाधान प्रस्तुति।",
+ assessment:"दो अभ्यास प्रश्न, एक अनुप्रयोग प्रश्न तथा समाधान प्रक्रिया का अवलोकन।",
+ homework:"पाठ्यपुस्तक के चयनित प्रश्न हल करें और एक दैनिक जीवन का उदाहरण लिखें।"
+ },
+ "विज्ञान":{
+ outcomes:"विद्यार्थी वैज्ञानिक अवधारणा समझेंगे, अवलोकन एवं प्रमाण के आधार पर निष्कर्ष निकालेंगे और दैनिक जीवन से संबंध जोड़ेंगे।",
+ competencies:"जिज्ञासा · अवलोकन · प्रयोग · प्रमाण आधारित तर्क · वैज्ञानिक दृष्टिकोण",
+ resources:"पाठ्यपुस्तक, सुरक्षित स्थानीय सामग्री, चित्र/चार्ट और अवलोकन पत्रक।",
+ activities:"1. जिज्ञासा जगाने वाला चित्र/प्रश्न।\n2. विद्यार्थी अनुमान बताएँ।\n3. सुरक्षित छोटा प्रयोग/प्रदर्शन।\n4. समूह में अवलोकन लिखें।\n5. मॉडल चुनौती और निष्कर्ष साझा करें।",
+ assessment:"अवलोकन प्रश्न, कारण बताइए, अनुप्रयोग प्रश्न और समूह गतिविधि का मूल्यांकन।",
+ homework:"घर/परिवेश में संबंधित घटना का अवलोकन कर 3–4 वाक्य लिखें।"
+ },
+ "सामाजिक विज्ञान":{
+ outcomes:"विद्यार्थी घटना/स्थान/संस्था की व्याख्या करेंगे, मानचित्र/समयरेखा/स्रोत से सूचना लेंगे और तर्कपूर्ण निष्कर्ष देंगे।",
+ competencies:"ऐतिहासिक एवं भौगोलिक समझ · नागरिक चेतना · स्रोत विश्लेषण · मानचित्र कौशल",
+ resources:"मानचित्र, समयरेखा कार्ड, चित्र, समाचार अंश और पाठ्यपुस्तक।",
+ activities:"1. चित्र/मानचित्र से चर्चा।\n2. स्रोत से तथ्य पहचानें।\n3. टाइमलाइन दौड़/मैप मास्टर खेल।\n4. समूह में कारण-परिणाम चर्चा।\n5. भूमिका-अभिनय और प्रस्तुति।",
+ assessment:"स्रोत आधारित प्रश्न, मानचित्र कार्य, कारण-परिणाम और विचार आधारित उत्तर।",
+ homework:"एक मानचित्र/समयरेखा/तुलना तालिका तैयार करें।"
  },
  "संस्कृत":{
- outcomes:"विद्यार्थी पाठ/श्लोक का शुद्ध उच्चारण कर सकेंगे।\nसरल संस्कृत शब्दों एवं वाक्यों का अर्थ समझ सकेंगे।\nसीखे गए शब्दरूप/धातुरूप/व्याकरण का प्रयोग कर सकेंगे।",
- competencies:"श्रवण एवं वाचन · शब्दार्थ बोध · व्याकरणिक समझ · शुद्ध उच्चारण · भाषा प्रयोग",
- resources:"पूर्वज्ञान: परिचित संस्कृत शब्दों का स्मरण।\nसामग्री: पाठ्यपुस्तक, शब्द-पत्र, श्लोक-पाठ और श्यामपट्ट।",
- activities:"1. शिक्षक द्वारा आदर्श उच्चारण।\n2. सामूहिक एवं व्यक्तिगत वाचन।\n3. शब्दार्थ और अन्वय/भावार्थ पर चर्चा।\n4. व्याकरणिक बिंदु की उदाहरण सहित पहचान।\n5. सरल वाक्य निर्माण एवं मौखिक अभ्यास।",
+ outcomes:"विद्यार्थी शुद्ध उच्चारण करेंगे, सरल शब्दों एवं वाक्यों का अर्थ समझेंगे और सीखे व्याकरण का प्रयोग करेंगे।",
+ competencies:"श्रवण · वाचन · शब्दार्थ बोध · व्याकरणिक समझ · भाषा प्रयोग",
+ resources:"पाठ्यपुस्तक, शब्द-पत्र, चित्र कार्ड और श्यामपट्ट।",
+ activities:"1. आदर्श उच्चारण।\n2. सामूहिक वाचन।\n3. शब्द-चित्र मिलान खेल।\n4. जोड़ी में सरल संस्कृत संवाद।\n5. श्लोक/वाक्य का भाव अभिनय।",
  assessment:"उच्चारण, शब्दार्थ, रिक्त स्थान, सरल अनुवाद और वाक्य निर्माण।",
- homework:"पाठ के चुने हुए शब्दार्थ याद करें और पाँच सरल वाक्य लिखें।"
+ homework:"चुने हुए शब्दार्थ याद करें और पाँच सरल वाक्य लिखें।"
  }
  };
  const t=templates[subject]||{
- outcomes:"विद्यार्थी पाठ के मुख्य विचार/तथ्यों को समझकर उदाहरणों में लागू कर सकेंगे।\nसीखी गई जानकारी को अपने शब्दों में प्रस्तुत कर सकेंगे।\nसहयोग से कार्य पूरा कर सकेंगे।",
- competencies:"विषयगत समझ एवं अनुप्रयोग · रचनात्मकता · आलोचनात्मक चिंतन · संचार एवं सहयोग",
- resources:"पूर्वज्ञान: पिछले पाठ से जुड़े 2–3 प्रश्न।\nसामग्री: पाठ्यपुस्तक, श्यामपट्ट, चित्र/चार्ट तथा स्थानीय सामग्री।",
- activities:"1. रोचक प्रश्न/चित्र से विषय प्रवेश।\n2. व्यक्तिगत चिंतन और जोड़ी में चर्चा।\n3. शिक्षक द्वारा उदाहरण सहित अवधारणा स्पष्ट करना।\n4. समूह गतिविधि/अभ्यास और प्रस्तुतीकरण।\n5. दैनिक जीवन से संबंध स्थापित करना।",
- assessment:"मौखिक प्रश्नोत्तर, अवधारणा आधारित लघु प्रश्न और एक अनुप्रयोग कार्य।",
- homework:"पाठ्यपुस्तक के संबंधित अभ्यास करें और विषय से जुड़ा एक स्थानीय उदाहरण लिखें।"
+ outcomes:"विद्यार्थी पाठ के मुख्य विचार समझेंगे, उदाहरणों में लागू करेंगे और अपने शब्दों में प्रस्तुत करेंगे।",
+ competencies:"विषयगत समझ · अनुप्रयोग · रचनात्मकता · आलोचनात्मक चिंतन · सहयोग",
+ resources:"पाठ्यपुस्तक, श्यामपट्ट, चित्र/चार्ट और स्थानीय सामग्री।",
+ activities:"1. रोचक प्रश्न/चित्र से विषय प्रवेश।\n2. जोड़ी में चर्चा।\n3. उदाहरण सहित अवधारणा स्पष्ट करें।\n4. समूह गतिविधि एवं प्रस्तुतीकरण।\n5. टीम क्विज़ से पुनरावृत्ति।",
+ assessment:"मौखिक प्रश्नोत्तर, लघु प्रश्न और एक अनुप्रयोग कार्य।",
+ homework:"पाठ्यपुस्तक अभ्यास करें और विषय से जुड़ा स्थानीय उदाहरण लिखें।"
  };
  $("lpLesson").value=title;
  $("lpOutcomes").value=t.outcomes;
@@ -190,33 +191,35 @@ $("generatePlan").addEventListener("click",()=>{
  $("lpActivities").value=t.activities;
  $("lpAssessment").value=t.assessment;
  $("lpHomework").value=t.homework;
- const activitySets={
- "अंग्रेजी":[["🎭","Role-play Theatre","Students act out a scene or dialogue from the lesson using expression and new vocabulary."],["🕵️","Word Detective","Teams find 5 interesting words, guess meanings from context and use them in new sentences."],["🖼️","Picture Story Chain","Groups arrange picture cards in story order and narrate the sequence in English."]],
- "हिंदी":[["🎭","पात्र बनो","विद्यार्थी पाठ के पात्रों का अभिनय करके संवाद बोलें।"],["🖼️","चित्र से कहानी","चित्र देखकर पाठ की घटना/भाव से जुड़ी छोटी कहानी बनाएँ।"],["🎤","शब्द मंच","नए शब्दों से वाक्य, तुकबंदी या छोटी कविता बनाएँ।"]],
- "गणित":[["🔢","संख्या खोज अभियान","कक्षा में संख्या/आकृति कार्ड छिपाएँ; विद्यार्थी संकेतों से सही उत्तर खोजें।"],["🛍️","गणित बाजार","नकली खरीदारी से जोड़, घटाव, गुणा, भाग या प्रतिशत का अभ्यास करें।"],["🧩","आकृति निर्माता","कागज की आकृतियों/माचिस की तीलियों से पैटर्न और ज्यामितीय रूप बनाएँ।"]],
- "विज्ञान":[["🔬","छोटा वैज्ञानिक","सुरक्षित सामग्री से छोटा अवलोकन/प्रयोग करें और अनुमान लिखें।"],["🌱","प्रकृति जासूस","आसपास की वस्तुओं/पौधों का अवलोकन कर वर्गीकरण चार्ट बनाएँ।"],["💡","मॉडल चुनौती","समूह पाठ की अवधारणा का सरल मॉडल या चित्र बनाकर समझाएँ।"]],
- "सामाजिक विज्ञान":[["🗺️","मैप मास्टर","मानचित्र पर स्थान/नदी/राज्य/ऐतिहासिक स्थल पहचानकर चिह्नित करें।"],["⏳","टाइमलाइन दौड़","घटनाओं के कार्ड सही कालक्रम में लगाएँ और कारण बताएं।"],["🗣️","भूमिका संसद","समूह ऐतिहासिक/नागरिक भूमिका निभाकर विषय पर चर्चा करें।"]],
- "संस्कृत":[["🎴","शब्द-चित्र मिलान","संस्कृत शब्द कार्ड को सही चित्र और अर्थ से मिलाएँ।"],["🗣️","संस्कृत संवाद","जोड़ी में सरल संस्कृत वाक्यों से अभिवादन/परिचय करें।"],["🎭","श्लोक अभिनय","श्लोक/वाक्य का भाव अभिनय और हाव-भाव से प्रस्तुत करें।"]]
- };
- const generic=[["🧠","सोचो–जोड़ी बनाओ","पहले स्वयं सोचें, फिर साथी से चर्चा कर उत्तर साझा करें।"],["🖼️","चित्र संकेत चुनौती","चित्र/प्रतीक देखकर पाठ के मुख्य विचार पहचानें।"],["🏆","टीम क्विज़","समूहों में छोटे प्रश्नों का उत्तर देकर अंक अर्जित करें।"]];
- const cards=activitySets[subject]||generic;
+ const cards=subject==="अंग्रेजी"?[
+ ["🎭","Role-play Theatre","Act out a scene or dialogue from the lesson."],
+ ["🕵️","Word Detective","Find new words, infer meanings and use them in sentences."],
+ ["🖼️","Picture Story Chain","Arrange picture cards and narrate the story in English."]]:
+ subject==="गणित"?[
+ ["🔢","संख्या खोज","संकेतों से संख्या/आकृति कार्ड खोजें।"],
+ ["🛍️","गणित बाजार","खरीद-बिक्री के खेल से गणना करें।"],
+ ["🧩","आकृति निर्माता","कागज से आकृतियाँ और पैटर्न बनाएँ।"]]:
+ subject==="विज्ञान"?[
+ ["🔬","छोटा वैज्ञानिक","सुरक्षित सामग्री से अवलोकन/प्रयोग करें।"],
+ ["🌱","प्रकृति जासूस","पौधों/वस्तुओं का वर्गीकरण करें।"],
+ ["💡","मॉडल चुनौती","समूह में अवधारणा का मॉडल बनाएँ।"]]:
+ subject==="सामाजिक विज्ञान"?[
+ ["🗺️","मैप मास्टर","मानचित्र पर स्थान खोजकर चिह्नित करें।"],
+ ["⏳","टाइमलाइन दौड़","घटनाओं को सही क्रम में लगाएँ।"],
+ ["🗣️","भूमिका संसद","भूमिका निभाकर विषय पर चर्चा करें।"]]:
+ subject==="संस्कृत"?[
+ ["🎴","शब्द-चित्र मिलान","शब्द कार्ड को चित्र और अर्थ से मिलाएँ।"],
+ ["🗣️","संस्कृत संवाद","जोड़ी में सरल संस्कृत संवाद करें।"],
+ ["🎭","श्लोक अभिनय","श्लोक का भाव अभिनय से दिखाएँ।"]]:
+ subject==="हिंदी"?[
+ ["🎭","पात्र बनो","पाठ के पात्रों का अभिनय करें।"],
+ ["🖼️","चित्र से कहानी","चित्र देखकर छोटी कहानी बनाएँ।"],
+ ["🎤","शब्द मंच","नए शब्दों से वाक्य/कविता बनाएँ।"]]:
+ [["🧠","सोचो–जोड़ी बनाओ","सोचें, साथी से चर्चा करें और उत्तर साझा करें।"],["🖼️","चित्र संकेत चुनौती","चित्र देखकर पाठ के विचार पहचानें।"],["🏆","टीम क्विज़","समूह में प्रश्नों के उत्तर दें।"]];
  $("visualActivities").innerHTML=cards.map(x=>'<article class="activity-card"><div class="activity-art">'+x[0]+'</div><h4>'+escapeHtml(x[1])+'</h4><p>'+escapeHtml(x[2])+'</p></article>').join("");
  $("lblFunActivities").textContent=english?"🎨 Fun Activities & Visual Learning":"🎨 मज़ेदार गतिविधियाँ एवं चित्र-सहायता";
- $("funIntro").textContent=english?"Interactive, visual activities connected to the selected subject":"चुने गए विषय के अनुसार कक्षा में कराई जा सकने वाली गतिविधियाँ";
- $("lpNotes").value=(english?"Class: ":"कक्षा: ")+grade+" | "+(english?"Subject: ":"विषय: ")+subject+" | "+(english?"Textbook: ":"पुस्तक: ")+book+" | "+(english?"Chapter: ":"अध्याय: ")+chapter+" – "+title+"\  const activitySets={
- "अंग्रेजी":[["🎭","Role-play Theatre","Students act out a scene or dialogue from the lesson using expression and new vocabulary."],["🕵️","Word Detective","Teams find 5 interesting words, guess meanings from context and use them in new sentences."],["🖼️","Picture Story Chain","Groups arrange picture cards in story order and narrate the sequence in English."]],
- "हिंदी":[["🎭","पात्र बनो","विद्यार्थी पाठ के पात्रों का अभिनय करके संवाद बोलें।"],["🖼️","चित्र से कहानी","चित्र देखकर पाठ की घटना/भाव से जुड़ी छोटी कहानी बनाएँ।"],["🎤","शब्द मंच","नए शब्दों से वाक्य, तुकबंदी या छोटी कविता बनाएँ।"]],
- "गणित":[["🔢","संख्या खोज अभियान","कक्षा में संख्या/आकृति कार्ड छिपाएँ; विद्यार्थी संकेतों से सही उत्तर खोजें।"],["🛍️","गणित बाजार","नकली खरीदारी से जोड़, घटाव, गुणा, भाग या प्रतिशत का अभ्यास करें।"],["🧩","आकृति निर्माता","कागज की आकृतियों/माचिस की तीलियों से पैटर्न और ज्यामितीय रूप बनाएँ।"]],
- "विज्ञान":[["🔬","छोटा वैज्ञानिक","सुरक्षित सामग्री से छोटा अवलोकन/प्रयोग करें और अनुमान लिखें।"],["🌱","प्रकृति जासूस","आसपास की वस्तुओं/पौधों का अवलोकन कर वर्गीकरण चार्ट बनाएँ।"],["💡","मॉडल चुनौती","समूह पाठ की अवधारणा का सरल मॉडल या चित्र बनाकर समझाएँ।"]],
- "सामाजिक विज्ञान":[["🗺️","मैप मास्टर","मानचित्र पर स्थान/नदी/राज्य/ऐतिहासिक स्थल पहचानकर चिह्नित करें।"],["⏳","टाइमलाइन दौड़","घटनाओं के कार्ड सही कालक्रम में लगाएँ और कारण बताएं।"],["🗣️","भूमिका संसद","समूह ऐतिहासिक/नागरिक भूमिका निभाकर विषय पर चर्चा करें।"]],
- "संस्कृत":[["🎴","शब्द-चित्र मिलान","संस्कृत शब्द कार्ड को सही चित्र और अर्थ से मिलाएँ।"],["🗣️","संस्कृत संवाद","जोड़ी में सरल संस्कृत वाक्यों से अभिवादन/परिचय करें।"],["🎭","श्लोक अभिनय","श्लोक/वाक्य का भाव अभिनय और हाव-भाव से प्रस्तुत करें।"]]
- };
- const generic=[["🧠","सोचो–जोड़ी बनाओ","पहले स्वयं सोचें, फिर साथी से चर्चा कर उत्तर साझा करें।"],["🖼️","चित्र संकेत चुनौती","चित्र/प्रतीक देखकर पाठ के मुख्य विचार पहचानें।"],["🏆","टीम क्विज़","समूहों में छोटे प्रश्नों का उत्तर देकर अंक अर्जित करें।"]];
- const cards=activitySets[subject]||generic;
- $("visualActivities").innerHTML=cards.map(x=>'<article class="activity-card"><div class="activity-art">'+x[0]+'</div><h4>'+escapeHtml(x[1])+'</h4><p>'+escapeHtml(x[2])+'</p></article>').join("");
- $("lblFunActivities").textContent=english?"🎨 Fun Activities & Visual Learning":"🎨 मज़ेदार गतिविधियाँ एवं चित्र-सहायता";
- $("funIntro").textContent=english?"Interactive, visual activities connected to the selected subject":"चुने गए विषय के अनुसार कक्षा में कराई जा सकने वाली गतिविधियाँ";
-\nn"+(english?"Competency-based lesson plan aligned with NEP 2020. Edit the subject content to match the exact textbook chapter.":"NEP 2020 की दक्षता-आधारित एवं गतिविधि-आधारित शिक्षण रूपरेखा। वास्तविक अध्याय की विषयवस्तु के अनुसार संपादित करें।");
+ $("funIntro").textContent=english?"Interactive activities for the selected subject":"चुने गए विषय के अनुसार गतिविधियाँ";
+ $("lpNotes").value=(english?"Class: ":"कक्षा: ")+grade+" | "+(english?"Subject: ":"विषय: ")+subject+" | "+(english?"Textbook: ":"पुस्तक: ")+book+" | "+(english?"Chapter: ":"अध्याय: ")+chapter+" – "+title+"\n"+(english?"NEP 2020 competency-based lesson plan. Adapt details to the exact textbook chapter.":"NEP 2020 आधारित दक्षता-आधारित पाठ योजना। वास्तविक अध्याय के अनुसार संपादित करें।");
  $("planLanguage").textContent=english?"English lesson plan · English language":"विषय आधारित पाठ योजना · हिंदी माध्यम";
 });
 $("lpSubject").addEventListener("change",()=>{
