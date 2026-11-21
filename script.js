@@ -160,18 +160,18 @@ await loadFirebase(
             <p id="adminDashboardMessage" class="admin-dashboard-message" aria-live="polite">डैशबोर्ड का डेटा लोड हो रहा है…</p>
             <p id="adminDashboardDate" class="admin-dashboard-date"></p>
             <section class="admin-roadmap" aria-label="School Sathi सुविधा विस्तार योजना">
-              <div class="admin-roadmap-heading"><div><span class="admin-eyebrow">10-STEP SCHOOL SAATHI UPGRADE</span><h4>🚀 वेबसाइट विकास योजना</h4><p>तैयार सुविधाओं को खोलने के लिए चरण पर टैप करें</p></div><span class="admin-roadmap-progress">5 / 10 चरण शुरू</span></div>
+              <div class="admin-roadmap-heading"><div><span class="admin-eyebrow">10-STEP SCHOOL SAATHI UPGRADE</span><h4>🚀 वेबसाइट विकास योजना</h4><p>तैयार सुविधाओं को खोलने के लिए चरण पर टैप करें</p></div><span class="admin-roadmap-progress">8 / 10 चरण पूर्ण / उपलब्ध</span></div>
               <ol class="admin-roadmap-list">
                 <li class="is-done"><span>01</span><div><a href="#adminDashboard" class="roadmap-step-link"><strong>Advanced Admin Panel</strong><small>डैशबोर्ड, त्वरित प्रबंधन और मोबाइल नेविगेशन</small></a></div><em>खोलें</em></li>
                 <li class="is-done"><span>02</span><div><a href="#adminStudentManagement" class="roadmap-step-link"><strong>Student Digital Profile</strong><small>फोटो लिंक, रोल नंबर, अभिभावक और विद्यार्थी विवरण</small></a></div><em>खोलें</em></li>
                 <li class="is-ready"><span>03</span><div><a href="#student-result" class="roadmap-step-link"><strong>Smart Report Card</strong><small>विषयवार अंक, ग्रेड, परीक्षा-वार प्रगति और प्रिंट योग्य रिपोर्ट</small></a></div><em>खोलें</em></li>
-                <li class="is-ready"><span>04</span><div><a href="#digitalAttendance" class="roadmap-step-link"><strong>Digital Attendance</strong><small>दैनिक उपस्थिति, मासिक रजिस्टर, अनुपस्थिति सूची और सारांश</small></a></div><em>खोलें</em></li>
-                <li class="is-ready"><span>05</span><div><a href="#learning-games" class="roadmap-step-link"><strong>Smart Learning Zone</strong><small>इंटरैक्टिव क्विज, लर्निंग गेम्स और उपलब्ध प्रश्न बैंक</small></a></div><em>प्रारंभिक उपलब्ध</em></li>
-                <li class="is-planned"><span>06</span><div><strong>Notice & Event Center</strong><small>सूचना, कार्यक्रम और महत्वपूर्ण घोषणाएँ</small></div><em>निर्माणाधीन</em></li>
-                <li class="is-planned"><span>07</span><div><strong>Digital Library</strong><small>ई-पुस्तकें, PDF और विषयवार अध्ययन सामग्री</small></div><em>निर्माणाधीन</em></li>
-                <li class="is-planned"><span>08</span><div><strong>Teacher Corner</strong><small>पाठ योजना, शिक्षक डायरी और गतिविधि रिकॉर्ड</small></div><em>निर्माणाधीन</em></li>
-                <li class="is-planned"><span>09</span><div><strong>Security & Backup</strong><small>भूमिका आधारित पहुँच, बैकअप और गतिविधि लॉग</small></div><em>निर्माणाधीन</em></li>
-                <li class="is-planned"><span>10</span><div><strong>Mobile App / PWA</strong><small>इंस्टॉल सुविधा, तेज मोबाइल अनुभव और ऑफलाइन सामग्री</small></div><em>निर्माणाधीन</em></li>
+                <li class="is-done"><span>04</span><div><a href="#digitalAttendance" class="roadmap-step-link"><strong>Digital Attendance</strong><small>दैनिक उपस्थिति एवं मासिक रजिस्टर</small></a></div><em>उपलब्ध</em></li>
+                <li class="is-ready"><span>05</span><div><a href="#learning-games" class="roadmap-step-link"><strong>Smart Learning Zone</strong><small>लर्निंग गेम्स और प्रश्न बैंक उपलब्ध; अध्यायवार विविध प्रश्नों का विस्तार जारी</small></a></div><em>विस्तार जारी</em></li>
+                <li class="is-done"><span>06</span><div><a href="#notice" class="roadmap-step-link"><strong>Notice & Event Center</strong><small>सूचना पटल, आगामी कार्यक्रम और एडमिन प्रकाशन</small></a></div><em>उपलब्ध</em></li>
+                <li class="is-done"><span>07</span><div><a href="#resources" class="roadmap-step-link"><strong>Digital Library</strong><small>कक्षा-वार अध्ययन सामग्री, SCERT/NCERT पुस्तक लिंक और Grammar</small></a></div><em>उपलब्ध</em></li>
+                <li class="is-done"><span>08</span><div><a href="teacher-corner.html" class="roadmap-step-link"><strong>Teacher Corner</strong><small>Smart Lesson Plan, दैनिक डायरी, गतिविधि रिकॉर्ड और Sync</small></a></div><em>उपलब्ध</em></li>
+                <li class="is-planned"><span>09</span><div><strong>Security & Backup</strong><small>नियमों की समीक्षा, सुरक्षित बैकअप/रीस्टोर और ऑडिट लॉग का काम बाकी</small></div><em>शेष कार्य</em></li>
+                <li class="is-done"><span>10</span><div><strong>Mobile App / PWA</strong><small>इंस्टॉल योग्य वेब ऐप और सेव किए गए पेजों का ऑफलाइन shell</small></div><em>उपलब्ध</em></li>
               </ol>
             </section>
           </section>
