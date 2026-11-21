@@ -23,7 +23,22 @@
 <section id="workspace" class="hidden">
 <div class="panel"><div class="row"><div><h2>शिक्षक कार्यक्षेत्र</h2><p class="muted">पाठ योजना, शिक्षक डायरी और गतिविधि रिकॉर्ड</p></div><button id="lockCorner" class="secondary">बंद करें</button></div><p class="muted">विद्यालय: जी-जामगाँव · सत्र 2026–27</p></div>
 <div class="grid">
-<section class="panel"><h3>📘 पाठ योजना</h3><label>कक्षा</label><select id="lpClass" class="input"><option>6वीं</option><option>7वीं</option><option>8वीं</option></select><label>विषय</label><input id="lpSubject" class="input" placeholder="विषय"><label>पाठ / इकाई</label><input id="lpLesson" class="input" placeholder="पाठ का नाम"><label>सीखने के प्रतिफल एवं गतिविधि</label><textarea id="lpNotes" class="input" rows="4" placeholder="उद्देश्य, गतिविधि, मूल्यांकन..."></textarea><button id="savePlan">पाठ योजना सेव करें</button></section>
+<section class="panel"><h3>📘 स्मार्ट पाठ योजना जनरेटर</h3>
+<label>कक्षा</label><select id="lpClass" class="input"><option>6वीं</option><option>7वीं</option><option>8वीं</option></select>
+<label>विषय</label><select id="lpSubject" class="input"></select>
+<label>पुस्तक / पाठ्यक्रम</label><input id="lpBook" class="input" readonly>
+<label>अध्याय संख्या</label><select id="lpChapter" class="input"></select>
+<label>अध्याय / पाठ का सही नाम</label><input id="lpLesson" class="input" placeholder="पुस्तक के अनुसार अध्याय का नाम लिखें">
+<button type="button" id="generatePlan" class="secondary">✨ पूरी पाठ योजना तैयार करें</button>
+<p class="muted">जनरेट की गई योजना संपादन योग्य होगी। अध्याय का वास्तविक शीर्षक पुस्तक से मिलाकर भरें।</p>
+<label>सीखने के प्रतिफल (Learning Outcomes)</label><textarea id="lpOutcomes" class="input" rows="3"></textarea>
+<label>दक्षताएँ एवं कौशल (NEP 2020)</label><textarea id="lpCompetencies" class="input" rows="3"></textarea>
+<label>पूर्वज्ञान एवं शिक्षण सामग्री</label><textarea id="lpResources" class="input" rows="3"></textarea>
+<label>शिक्षण प्रक्रिया एवं गतिविधियाँ</label><textarea id="lpActivities" class="input" rows="4"></textarea>
+<label>समझ जाँच / मूल्यांकन</label><textarea id="lpAssessment" class="input" rows="3"></textarea>
+<label>गृहकार्य एवं उपचारात्मक कार्य</label><textarea id="lpHomework" class="input" rows="3"></textarea>
+<label>पूरा पाठ योजना विवरण (सेव करते समय साथ रहेगा)</label><textarea id="lpNotes" class="input" rows="3" placeholder="अतिरिक्त टिप्पणी..."></textarea>
+<button id="savePlan">पाठ योजना सेव करें</button></section>
 <section class="panel"><h3>📝 शिक्षक दैनिक डायरी – स्मार्ट चयन</h3>
 <label>तारीख</label><input id="diaryDate" type="date" class="input">
 <label>कक्षा चुनें</label><select id="diaryGrade" class="input"><option value="6वीं">6वीं</option><option value="7वीं">7वीं</option><option value="8वीं">8वीं</option></select>
@@ -87,6 +102,36 @@ function refreshDiaryBook(){
 $("diaryGrade").addEventListener("change",refreshDiarySubjects);
 $("diarySubject").addEventListener("change",refreshDiaryBook);
 refreshDiarySubjects();
+const lessonBooks={
+ "6वीं":[["हिंदी","NCERT – मल्हार"],["अंग्रेजी","NCERT – Poorvi"],["संस्कृत","NCERT – दीपकम"],["गणित","NCERT – गणित प्रकाश"],["विज्ञान","NCERT – जिज्ञासा"],["सामाजिक विज्ञान","NCERT – समाज का अध्ययन"],["कला","NCERT – कृति"],["खेल","NCERT – खेल यात्रा"],["कौशल शिक्षा","NCERT – कौशल बोध"]],
+ "7वीं":[["हिंदी","NCERT – मल्हार"],["अंग्रेजी","NCERT – Poorvi"],["संस्कृत","NCERT – दीपकम"],["गणित","NCERT – गणित प्रकाश"],["विज्ञान","NCERT – जिज्ञासा"],["सामाजिक विज्ञान","NCERT – समाज का अध्ययन"],["कला","NCERT – कृति"],["खेल","NCERT – खेल यात्रा"],["कौशल शिक्षा","NCERT – कौशल बोध"]],
+ "8वीं":[["हिंदी","छत्तीसगढ़ SCERT – हिंदी"],["अंग्रेजी","छत्तीसगढ़ SCERT – अंग्रेजी"],["संस्कृत","छत्तीसगढ़ SCERT – संस्कृत"],["गणित","छत्तीसगढ़ SCERT – गणित"],["विज्ञान","छत्तीसगढ़ SCERT – विज्ञान"],["सामाजिक विज्ञान","छत्तीसगढ़ SCERT – सामाजिक विज्ञान"]]
+};
+function refreshPlanSubjects(){
+ const list=lessonBooks[$("lpClass").value]||[];
+ $("lpSubject").innerHTML=list.map(x=>'<option value="'+escapeHtml(x[0])+'">'+escapeHtml(x[0])+'</option>').join("");
+ refreshPlanBook();
+}
+function refreshPlanBook(){
+ const list=lessonBooks[$("lpClass").value]||[];
+ const item=list.find(x=>x[0]===$("lpSubject").value);
+ $("lpBook").value=item?item[1]:"";
+ $("lpChapter").innerHTML=Array.from({length:20},(_,i)=>'<option value="'+(i+1)+'">अध्याय / पाठ '+(i+1)+'</option>').join("");
+}
+$("lpClass").addEventListener("change",refreshPlanSubjects);
+$("lpSubject").addEventListener("change",refreshPlanBook);
+refreshPlanSubjects();
+$("generatePlan").addEventListener("click",()=>{
+ const grade=$("lpClass").value,subject=$("lpSubject").value,book=$("lpBook").value,chapter=$("lpChapter").value,title=$("lpLesson").value.trim()||("अध्याय / पाठ "+chapter);
+ $("lpLesson").value=title;
+ $("lpOutcomes").value="विद्यार्थी इस पाठ के मुख्य विचारों/तथ्यों को समझ सकेंगे।\nविद्यार्थी सीखी गई अवधारणाओं को उदाहरणों एवं दैनिक जीवन की स्थितियों से जोड़ सकेंगे।\nविद्यार्थी अपने शब्दों में उत्तर/प्रस्तुति दे सकेंगे।";
+ $("lpCompetencies").value="विषयगत समझ एवं अनुप्रयोग\nआलोचनात्मक चिंतन एवं समस्या समाधान\nसंचार, सहयोग एवं रचनात्मक अभिव्यक्ति";
+ $("lpResources").value="पूर्वज्ञान: पिछले पाठ से जुड़े 2–3 मौखिक प्रश्न।\nशिक्षण सामग्री: पाठ्यपुस्तक, श्यामपट्ट, चित्र/चार्ट तथा उपलब्ध स्थानीय सामग्री।";
+ $("lpActivities").value="1. प्रस्तावना: रोचक प्रश्न/चित्र/स्थानीय उदाहरण से विषय प्रवेश।\n2. अन्वेषण: विद्यार्थियों से अनुमान, चर्चा एवं समूह में विचार साझा कराना।\n3. अवधारणा निर्माण: शिक्षक द्वारा उदाहरण सहित सरल व्याख्या एवं पाठ वाचन।\n4. अनुप्रयोग: जोड़ी/समूह कार्य, अभ्यास या गतिविधि।\n5. प्रस्तुतीकरण: विद्यार्थी अपने निष्कर्ष कक्षा में साझा करें।";
+ $("lpAssessment").value="मौखिक प्रश्नोत्तर: पाठ के मुख्य विचार क्या हैं?\nअवधारणा आधारित 2 लघु प्रश्न।\nएक अनुप्रयोग/जीवन से जुड़ा प्रश्न तथा अवलोकन आधारित मूल्यांकन।";
+ $("lpHomework").value="पाठ से संबंधित अभ्यास प्रश्न हल करें।\nअपने आसपास से पाठ से जुड़ा एक उदाहरण खोजकर लिखें।\nआवश्यकतानुसार कठिनाई वाले विद्यार्थियों को सरल पुनरावृत्ति कार्य दें।";
+ $("lpNotes").value="कक्षा: "+grade+" | विषय: "+subject+" | पुस्तक: "+book+" | अध्याय: "+chapter+" – "+title+"\nपाठ योजना NEP 2020 की दक्षता-आधारित एवं गतिविधि-आधारित शिक्षण रूपरेखा पर तैयार की गई है। इसे अध्याय की वास्तविक विषयवस्तु के अनुसार संपादित करें।";
+});
 function render(){const groups=[["पाठ योजनाएँ","plans"],["दैनिक डायरी","diary"],["गतिविधियाँ","activities"]];let html="";groups.forEach(([title,kind])=>{const a=read(keys[kind]);html+='<h3>'+title+' ('+a.length+')</h3>';if(!a.length){html+='<p class="muted">अभी कोई रिकॉर्ड नहीं।</p>';return}a.forEach((v,i)=>{const detail=Object.entries(v).filter(([k])=>k!=="notes").map(([k,x])=>x).join(" · ");html+='<article class="entry"><strong>'+escapeHtml(v.title||v.className||"रिकॉर्ड")+'</strong><br><small>'+escapeHtml(detail)+'</small><p>'+escapeHtml(v.notes||"")+'</p><button class="danger" data-del="'+kind+'" data-index="'+i+'">हटाएँ</button></article>'})});$("records").innerHTML=html;$("records").querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>deleteRecord(b.dataset.del,Number(b.dataset.index)))}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 async function connectCloud(){
@@ -128,7 +173,7 @@ async function deleteRecord(kind,index){
  const arr=read(keys[kind]),target=arr[index];arr.splice(index,1);writeLocal(kind,arr);render();
  if(db&&cloudReady){try{const found=cloudRecords.find(x=>x.kind===kind&&JSON.stringify(x.payload)===JSON.stringify(target));if(found)await db.collection("teacher_corner").doc(SCHOOL_CODE).collection("records").doc(found.id).delete();setStatus("रिकॉर्ड हटाया गया")}catch(e){setStatus("क्लाउड से रिकॉर्ड नहीं हट पाया: "+e.message,true)}}
 }
-$("savePlan").onclick=()=>{const v={date:new Date().toISOString().slice(0,10),className:$("lpClass").value,subject:$("lpSubject").value.trim(),title:$("lpLesson").value.trim(),notes:$("lpNotes").value.trim()};if(!v.subject||!v.title){alert("विषय और पाठ का नाम भरें।");return}saveRecord("plans",v);$("lpSubject").value=$("lpLesson").value=$("lpNotes").value="";};
+$("savePlan").onclick=()=>{const v={date:new Date().toISOString().slice(0,10),className:$("lpClass").value,subject:$("lpSubject").value,book:$("lpBook").value,chapter:$("lpChapter").value,title:$("lpLesson").value.trim(),outcomes:$("lpOutcomes").value,competencies:$("lpCompetencies").value,resources:$("lpResources").value,activities:$("lpActivities").value,assessment:$("lpAssessment").value,homework:$("lpHomework").value,notes:$("lpNotes").value.trim()};if(!v.subject||!v.title||!v.outcomes){alert("विषय, अध्याय का नाम और पहले पाठ योजना तैयार करें।");return}saveRecord("plans",v);["lpLesson","lpOutcomes","lpCompetencies","lpResources","lpActivities","lpAssessment","lpHomework","lpNotes"].forEach(id=>$(id).value="");};
 $("saveDiary").onclick=()=>{const grade=$("diaryGrade").value,subject=$("diarySubject").value,chapter=$("diaryChapter").value,lesson=$("diaryLesson").value.trim(),activity=$("diaryActivity").value,period=$("diaryPeriod").value,homework=$("diaryHomework").value.trim(),extra=$("diaryNotes").value.trim();if(!lesson){alert("कृपया पाठ / अध्याय का नाम भरें।");return}const v={date:$("diaryDate").value,className:grade+" – "+subject,book:$("diaryBook").value,chapter:"अध्याय / पाठ "+chapter,title:lesson,period,activity,homework,notes:[activity,extra].filter(Boolean).join(" · ")};if(!v.date){alert("तारीख चुनें।");return}saveRecord("diary",v);$("diaryLesson").value=$("diaryHomework").value=$("diaryNotes").value="";};
 $("saveActivity").onclick=()=>{const v={title:$("actTitle").value.trim(),meta:$("actMeta").value.trim(),notes:$("actNotes").value.trim()};if(!v.title||!v.notes){alert("गतिविधि का नाम और विवरण भरें।");return}saveRecord("activities",v);$("actTitle").value=$("actMeta").value=$("actNotes").value="";};
 $("exportData").onclick=()=>{const data=allLocal();const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="school-sathi-teacher-backup.json";a.click();URL.revokeObjectURL(a.href)};
