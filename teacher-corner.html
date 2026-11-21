@@ -27,27 +27,72 @@
 <section class="panel"><h3>📝 शिक्षक दैनिक डायरी</h3><label>तारीख</label><input id="diaryDate" type="date" class="input"><label>कक्षा / विषय</label><input id="diaryClass" class="input" placeholder="जैसे 7वीं – अंग्रेजी"><label>आज पढ़ाया गया पाठ / कार्य</label><textarea id="diaryNotes" class="input" rows="4" placeholder="आज का शिक्षण कार्य..."></textarea><button id="saveDiary">डायरी सेव करें</button></section>
 <section class="panel"><h3>🌟 गतिविधि रिकॉर्ड</h3><label>गतिविधि का नाम</label><input id="actTitle" class="input" placeholder="जैसे पहाड़ा पठन गतिविधि"><label>तारीख एवं कक्षा</label><input id="actMeta" class="input" placeholder="तारीख – कक्षा"><label>विवरण / उपलब्धि</label><textarea id="actNotes" class="input" rows="3" placeholder="गतिविधि का संक्षिप्त विवरण..."></textarea><button id="saveActivity">गतिविधि सेव करें</button></section>
 </div>
-<section class="panel"><div class="row"><div><h2>📂 मेरे रिकॉर्ड</h2><p class="muted">इस ब्राउज़र/डिवाइस में सेव रिकॉर्ड</p></div><button id="exportData" class="secondary">JSON बैकअप डाउनलोड</button></div><div id="records"></div><p class="muted">नोट: अभी रिकॉर्ड इसी डिवाइस के ब्राउज़र में सेव होते हैं। यह क्लाउड सिंक या सुरक्षित शिक्षक पहचान प्रणाली नहीं है। दूसरे मोबाइल/ब्राउज़र में रिकॉर्ड अपने-आप नहीं आएँगे।</p></section>
+<section class="panel"><div class="row"><div><h2>📂 मेरे रिकॉर्ड</h2><p class="muted">इस ब्राउज़र/डिवाइस में सेव रिकॉर्ड</p></div><button id="exportData" class="secondary">JSON बैकअप डाउनलोड</button></div><div id="records"></div><p id="syncStatus" class="status" role="status">क्लाउड कनेक्शन की प्रतीक्षा…</p><p class="muted">रिकॉर्ड Firebase क्लाउड में सिंक होंगे। UDISE कोड साझा प्रवेश कोड है, इसलिए यहाँ गोपनीय विद्यार्थी/परीक्षा डेटा न रखें।</section>
 </section>
 </main>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 <script>
 (function(){
 const SCHOOL_CODE="22130305808";
+const firebaseConfig={
+ apiKey:"AIzaSyAGPlFFNCmQIj9ROjF9Ujj4C9a8Z5f9cQ",
+ authDomain:"govt-boys-ms-g-jamgaon.firebaseapp.com",
+ projectId:"govt-boys-ms-g-jamgaon",
+ storageBucket:"govt-boys-ms-g-jamgaon.firebasestorage.app",
+ messagingSenderId:"1076919620059",
+ appId:"1:1076919620059:web:b1c1bfcdb1d9e260d8d7fe",
+ measurementId:"G-7CCE542ZGG"
+};
 const $=id=>document.getElementById(id);
 const keys={plans:"ss_teacher_plans_v1",diary:"ss_teacher_diary_v1",activities:"ss_teacher_activities_v1"};
+let db=null, cloudReady=false, cloudRecords=[], unsubscribe=null;
 function read(k){try{return JSON.parse(localStorage.getItem(k)||"[]")}catch(e){return[]}}
-function write(k,v){localStorage.setItem(k,JSON.stringify(v));render()}
-function open(){if($("schoolCode").value.trim()!==SCHOOL_CODE){$("gateMessage").textContent="कोड सही नहीं है। कृपया 11 अंकों का विद्यालय UDISE+ कोड जाँचें।";return}$("gate").classList.add("hidden");$("workspace").classList.remove("hidden");$("gateMessage").textContent="";render()}
+function setStatus(msg,bad=false){$("syncStatus").textContent=msg;$("syncStatus").style.color=bad?"#a83d3d":"#087e78"}
+function allLocal(){return {plans:read(keys.plans),diary:read(keys.diary),activities:read(keys.activities)}}
+function writeLocal(kind,arr){localStorage.setItem(keys[kind],JSON.stringify(arr))}
+function open(){if($("schoolCode").value.trim()!==SCHOOL_CODE){$("gateMessage").textContent="कोड सही नहीं है। कृपया 11 अंकों का विद्यालय UDISE+ कोड जाँचें।";return}$("gate").classList.add("hidden");$("workspace").classList.remove("hidden");$("gateMessage").textContent="";render();connectCloud()}
 $("openCorner").addEventListener("click",open);
 $("schoolCode").addEventListener("keydown",e=>{if(e.key==="Enter")open()});
-$("lockCorner").addEventListener("click",()=>{$("workspace").classList.add("hidden");$("gate").classList.remove("hidden");$("schoolCode").value=""});
+$("lockCorner").addEventListener("click",()=>{if(unsubscribe){unsubscribe();unsubscribe=null}cloudReady=false;$("workspace").classList.add("hidden");$("gate").classList.remove("hidden");$("schoolCode").value=""});
 $("diaryDate").value=new Date().toISOString().slice(0,10);
-$("savePlan").onclick=()=>{const v={date:new Date().toISOString().slice(0,10),className:$("lpClass").value,subject:$("lpSubject").value.trim(),title:$("lpLesson").value.trim(),notes:$("lpNotes").value.trim()};if(!v.subject||!v.title){alert("विषय और पाठ का नाम भरें।");return}write(keys.plans,[v,...read(keys.plans)]);$("lpSubject").value=$("lpLesson").value=$("lpNotes").value="";};
-$("saveDiary").onclick=()=>{const v={date:$("diaryDate").value,className:$("diaryClass").value.trim(),notes:$("diaryNotes").value.trim()};if(!v.date||!v.className||!v.notes){alert("तारीख, कक्षा/विषय और विवरण भरें।");return}write(keys.diary,[v,...read(keys.diary)]);$("diaryNotes").value="";};
-$("saveActivity").onclick=()=>{const v={title:$("actTitle").value.trim(),meta:$("actMeta").value.trim(),notes:$("actNotes").value.trim()};if(!v.title||!v.notes){alert("गतिविधि का नाम और विवरण भरें।");return}write(keys.activities,[v,...read(keys.activities)]);$("actTitle").value=$("actMeta").value=$("actNotes").value="";};
-function render(){const groups=[["पाठ योजनाएँ",keys.plans],["दैनिक डायरी",keys.diary],["गतिविधियाँ",keys.activities]];let html="";groups.forEach(([title,key])=>{const a=read(key);html+='<h3>'+title+' ('+a.length+')</h3>';if(!a.length){html+='<p class="muted">अभी कोई रिकॉर्ड नहीं।</p>';return}a.forEach((v,i)=>{const detail=Object.entries(v).filter(([k])=>k!=="notes").map(([k,x])=>x).join(" · ");html+='<article class="entry"><strong>'+escapeHtml(v.title||v.className||"रिकॉर्ड")+'</strong><br><small>'+escapeHtml(detail)+'</small><p>'+escapeHtml(v.notes||"")+'</p><button class="danger" data-del="'+key+'" data-index="'+i+'">हटाएँ</button></article>'})});$("records").innerHTML=html;$("records").querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{if(!confirm("क्या यह रिकॉर्ड हटाना है?"))return;const a=read(b.dataset.del);a.splice(Number(b.dataset.index),1);localStorage.setItem(b.dataset.del,JSON.stringify(a));render()})}
+function render(){const groups=[["पाठ योजनाएँ","plans"],["दैनिक डायरी","diary"],["गतिविधियाँ","activities"]];let html="";groups.forEach(([title,kind])=>{const a=read(keys[kind]);html+='<h3>'+title+' ('+a.length+')</h3>';if(!a.length){html+='<p class="muted">अभी कोई रिकॉर्ड नहीं।</p>';return}a.forEach((v,i)=>{const detail=Object.entries(v).filter(([k])=>k!=="notes").map(([k,x])=>x).join(" · ");html+='<article class="entry"><strong>'+escapeHtml(v.title||v.className||"रिकॉर्ड")+'</strong><br><small>'+escapeHtml(detail)+'</small><p>'+escapeHtml(v.notes||"")+'</p><button class="danger" data-del="'+kind+'" data-index="'+i+'">हटाएँ</button></article>'})});$("records").innerHTML=html;$("records").querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>deleteRecord(b.dataset.del,Number(b.dataset.index)))}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-$("exportData").onclick=()=>{const data={plans:read(keys.plans),diary:read(keys.diary),activities:read(keys.activities)};const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="school-sathi-teacher-backup.json";a.click();URL.revokeObjectURL(a.href)};
+async function connectCloud(){
+ try{
+  if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
+  const auth=firebase.auth();db=firebase.firestore();
+  await auth.signInAnonymously();
+  const col=db.collection("teacher_corner").doc(SCHOOL_CODE).collection("records");
+  if(unsubscribe)unsubscribe();
+  unsubscribe=col.orderBy("updatedAt","desc").onSnapshot(async snap=>{
+   cloudReady=true;cloudRecords=snap.docs.map(d=>({id:d.id,...d.data()}));
+   if(snap.empty){
+    const old=allLocal();const batch=db.batch();let count=0;
+    Object.entries(old).forEach(([kind,items])=>items.forEach(payload=>{const ref=col.doc();batch.set(ref,{kind,payload,createdAt:Date.now(),updatedAt:Date.now()});count++}));
+    if(count){await batch.commit();setStatus("पुराने रिकॉर्ड क्लाउड में भेजे जा रहे हैं…");return}
+   }
+   ["plans","diary","activities"].forEach(kind=>writeLocal(kind,cloudRecords.filter(x=>x.kind===kind).map(x=>x.payload)));
+   render();setStatus("✓ Firebase क्लाउड से जुड़ा है · रिकॉर्ड ऑनलाइन सिंक हो रहे हैं");
+  },err=>{cloudReady=false;setStatus("क्लाउड नियम/कनेक्शन की जाँच जरूरी: "+err.message,true)});
+ }catch(err){cloudReady=false;setStatus("Firebase कनेक्शन नहीं हुआ: "+err.message+" · फिलहाल स्थानीय रिकॉर्ड उपलब्ध हैं",true)}
+}
+async function saveRecord(kind,payload){
+ const current=read(keys[kind]);writeLocal(kind,[payload,...current]);render();
+ if(!db||!cloudReady){setStatus("रिकॉर्ड इस डिवाइस में सेव हुआ; ऑनलाइन सिंक के लिए कनेक्शन प्रतीक्षा में है",true);return}
+ try{await db.collection("teacher_corner").doc(SCHOOL_CODE).collection("records").add({kind,payload,createdAt:Date.now(),updatedAt:Date.now()});setStatus("✓ रिकॉर्ड ऑनलाइन सेव हो गया")}
+ catch(e){setStatus("स्थानीय सेव सफल, क्लाउड सेव नहीं हुआ: "+e.message,true)}
+}
+async function deleteRecord(kind,index){
+ if(!confirm("क्या यह रिकॉर्ड हटाना है?"))return;
+ const arr=read(keys[kind]),target=arr[index];arr.splice(index,1);writeLocal(kind,arr);render();
+ if(db&&cloudReady){try{const found=cloudRecords.find(x=>x.kind===kind&&JSON.stringify(x.payload)===JSON.stringify(target));if(found)await db.collection("teacher_corner").doc(SCHOOL_CODE).collection("records").doc(found.id).delete();setStatus("रिकॉर्ड हटाया गया")}catch(e){setStatus("क्लाउड से रिकॉर्ड नहीं हट पाया: "+e.message,true)}}
+}
+$("savePlan").onclick=()=>{const v={date:new Date().toISOString().slice(0,10),className:$("lpClass").value,subject:$("lpSubject").value.trim(),title:$("lpLesson").value.trim(),notes:$("lpNotes").value.trim()};if(!v.subject||!v.title){alert("विषय और पाठ का नाम भरें।");return}saveRecord("plans",v);$("lpSubject").value=$("lpLesson").value=$("lpNotes").value="";};
+$("saveDiary").onclick=()=>{const v={date:$("diaryDate").value,className:$("diaryClass").value.trim(),notes:$("diaryNotes").value.trim()};if(!v.date||!v.className||!v.notes){alert("तारीख, कक्षा/विषय और विवरण भरें।");return}saveRecord("diary",v);$("diaryNotes").value="";};
+$("saveActivity").onclick=()=>{const v={title:$("actTitle").value.trim(),meta:$("actMeta").value.trim(),notes:$("actNotes").value.trim()};if(!v.title||!v.notes){alert("गतिविधि का नाम और विवरण भरें।");return}saveRecord("activities",v);$("actTitle").value=$("actMeta").value=$("actNotes").value="";};
+$("exportData").onclick=()=>{const data=allLocal();const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="school-sathi-teacher-backup.json";a.click();URL.revokeObjectURL(a.href)};
 })();
 </script>
 </body>
