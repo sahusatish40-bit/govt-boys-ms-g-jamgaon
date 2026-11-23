@@ -152,10 +152,10 @@ service cloud.firestore {
     // UDISE is a shared school identifier, not a private credential; do not store student-sensitive data here.
     match /teacher_corner/{schoolCode}/records/{recordId} {
       allow read: if request.auth != null
-        && request.auth.token.firebase.sign_in_provider == 'google.com'
+        && request.auth.token.firebase.sign_in_provider == 'anonymous'
         && schoolCode == '22130305808';
       allow create: if request.auth != null
-        && request.auth.token.firebase.sign_in_provider == 'google.com'
+        && request.auth.token.firebase.sign_in_provider == 'anonymous'
         && schoolCode == '22130305808'
         && request.resource.data.keys().hasOnly(['kind', 'payload', 'createdAt', 'updatedAt'])
         && request.resource.data.keys().hasAll(['kind', 'payload', 'createdAt', 'updatedAt'])
@@ -166,7 +166,7 @@ service cloud.firestore {
         && request.resource.data.updatedAt is int;
       allow update: if false;
       allow delete: if request.auth != null
-        && request.auth.token.firebase.sign_in_provider == 'google.com'
+        && request.auth.token.firebase.sign_in_provider == 'anonymous'
         && schoolCode == '22130305808';
     }
 
