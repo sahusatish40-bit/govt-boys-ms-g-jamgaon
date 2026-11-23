@@ -54,6 +54,26 @@
 <button id="saveDiary">डायरी सेव करें</button></section>
 <section class="panel"><h3>🌟 गतिविधि रिकॉर्ड</h3><label>गतिविधि का नाम</label><input id="actTitle" class="input" placeholder="जैसे पहाड़ा पठन गतिविधि"><label>तारीख एवं कक्षा</label><input id="actMeta" class="input" placeholder="तारीख – कक्षा"><label>विवरण / उपलब्धि</label><textarea id="actNotes" class="input" rows="3" placeholder="गतिविधि का संक्षिप्त विवरण..."></textarea><button id="saveActivity">गतिविधि सेव करें</button></section>
 </div>
+<section class="panel" id="ctetModule">
+<h2>🎓 CTET Mock Test (90 प्रश्न अभ्यास मोड)</h2>
+<p class="muted">Paper-I / Paper-II · 90 मिनट · हिंदी निर्देश · हर प्रयास में प्रश्नों का यादृच्छिक चयन</p>
+<div class="grid">
+<div><label for="ctetPaper">पेपर चुनें</label><select id="ctetPaper" class="input"><option value="I">Paper-I (कक्षा 1–5)</option><option value="II">Paper-II (कक्षा 6–8)</option></select></div>
+<div id="ctetGroupWrap" class="hidden"><label for="ctetGroup">Paper-II विषय समूह</label><select id="ctetGroup" class="input"><option value="maths">गणित एवं विज्ञान</option><option value="social">सामाजिक अध्ययन / सामाजिक विज्ञान</option></select></div>
+<div><label for="ctetLang1">Language-I</label><select id="ctetLang1" class="input"></select></div>
+<div><label for="ctetLang2">Language-II (Language-I से अलग)</label><select id="ctetLang2" class="input"></select></div>
+</div>
+<div class="row"><button id="ctetStart">Mock Test शुरू करें</button><span id="ctetBankStatus" class="muted">प्रश्न बैंक की जाँच…</span></div>
+<p class="muted">नोट: यह 90 प्रश्न / 90 मिनट का विशेष अभ्यास प्रारूप है, वास्तविक CTET परीक्षा प्रारूप नहीं। वास्तविक परीक्षा में प्रत्येक पेपर 150 प्रश्न / 150 अंक का होता है।</p>
+<div id="ctetExam" class="hidden">
+<div class="row"><strong id="ctetProgress">प्रश्न 1 / 90</strong><strong id="ctetTimer">90:00</strong><strong id="ctetAnswered">हल: 0</strong></div>
+<div id="ctetQuestion" class="item"></div>
+<div class="row"><button type="button" class="secondary" id="ctetPrev">पिछला</button><button type="button" class="secondary" id="ctetReview">समीक्षा हेतु चिन्हित करें</button><button type="button" id="ctetNext">अगला</button></div>
+<div id="ctetNav" class="row"></div>
+<button type="button" class="danger" id="ctetSubmit">टेस्ट जमा करें</button>
+</div>
+<div id="ctetResult" class="hidden"></div>
+</section>
 <section class="panel"><div class="row"><div><h2>📂 मेरे रिकॉर्ड</h2><p class="muted">इस ब्राउज़र/डिवाइस में सेव रिकॉर्ड</p></div><button id="exportData" class="secondary">JSON बैकअप डाउनलोड</button></div><div id="records"></div><div class="row sync-tools"><button type="button" id="checkSync" class="secondary">☁️ Sync Status जाँचें</button><span id="syncBadge" class="sync-badge">जाँच नहीं हुई</span></div><p id="syncStatus" class="status" role="status">क्लाउड कनेक्शन की प्रतीक्षा…</p><p class="muted">रिकॉर्ड Firebase क्लाउड में सिंक होंगे। UDISE कोड साझा प्रवेश कोड है, इसलिए यहाँ गोपनीय विद्यार्थी/परीक्षा डेटा न रखें।</section>
 </section>
 </main>
