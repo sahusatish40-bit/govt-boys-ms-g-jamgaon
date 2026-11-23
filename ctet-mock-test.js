@@ -5,12 +5,12 @@
 (function(){
 "use strict";
 const $=id=>document.getElementById(id);
-const languages=["असमिया","बंगाली","बोडो","डोगरी","अंग्रेज़ी","गोंडी","गुजराती","हिंदी","कन्नड़","कश्मीरी","कोंकणी","मैथिली","मलयालम","मणिपुरी","मराठी","मिज़ो","नेपाली","ओड़िया","पंजाबी","संस्कृत","संथाली","सिंधी","तमिल","तेलुगु","तिब्बती","उर्दू","खासी"];
-const langCodes=["03","04","21","22","01","—","06","02","07","23","24","25","09","10","11","12","13","14","15","16","26","27","17","18","19","20","08"];
+const languages=["अंग्रेज़ी","हिंदी","असमिया","बंगाली","गारो","गुजराती","कन्नड़","खासी","मलयालम","मणिपुरी","मराठी","मिज़ो","नेपाली","ओड़िया","पंजाबी","संस्कृत","तमिल","तेलुगु","तिब्बती","उर्दू","बोडो","डोगरी","कश्मीरी","कोंकणी","मैथिली","संथाली","सिंधी"];
+const langCodes=["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27"];
 const bank=()=>Array.isArray(window.CTET_QUESTION_BANK)?window.CTET_QUESTION_BANK:[];
 const paper=$("ctetPaper"),group=$("ctetGroup"),groupWrap=$("ctetGroupWrap"),l1=$("ctetLang1"),l2=$("ctetLang2"),start=$("ctetStart"),status=$("ctetBankStatus");
 if(!paper||!start)return;
-languages.forEach((name,i)=>{if(name==="गोंडी")return;const o1=new Option(name+" ("+langCodes[i]+")",name),o2=new Option(name+" ("+langCodes[i]+")",name);l1.add(o1);l2.add(o2)});
+languages.forEach((name,i)=>{const o1=new Option(name+" ("+langCodes[i]+")",name),o2=new Option(name+" ("+langCodes[i]+")",name);l1.add(o1);l2.add(o2)});
 l1.value="हिंदी";l2.value="अंग्रेज़ी";
 paper.addEventListener("change",()=>{groupWrap.classList.toggle("hidden",paper.value!=="II");refreshStatus()});
 [group,l1,l2].forEach(x=>x.addEventListener("change",refreshStatus));
