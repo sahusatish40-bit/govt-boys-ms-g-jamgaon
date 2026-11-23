@@ -55,17 +55,34 @@ function draw(){
  drawNav();
 }
 function drawNav(){const nav=$("ctetNav");nav.innerHTML="";questions.forEach((_,i)=>{const b=document.createElement("button");b.type="button";b.className="secondary";b.textContent=(i+1)+(review[i]?" ⚑":"")+(answers[i]!==undefined?" ✓":"");b.style.minWidth="42px";b.style.margin="3px";b.addEventListener("click",()=>{pos=i;draw()});nav.appendChild(b)})}
+function renderHistory(){
+ const box=$("ctetHistoryList");if(!box)return;
+ let history=[];try{history=JSON.parse(localStorage.getItem("ss_ctet_attempts_v1")||"[]")}catch(e){}
+ if(!history.length){box.textContent="अभी इस ब्राउज़र में कोई जमा किया हुआ परिणाम उपलब्ध नहीं है।";return}
+ box.innerHTML="";
+ history.slice(0,30).forEach(item=>{
+  const row=document.createElement("div");row.className="entry";
+  const title=document.createElement("strong");
+  const paperName=item.paper==="II"?"Paper-II":"Paper-I";
+  title.textContent="Mock Test "+(item.testNo||"—")+" · "+paperName+(item.paper==="II"?(item.group==="social"?" · सामाजिक अध्ययन":" · गणित एवं विज्ञान"):"");
+  const detail=document.createElement("p");
+  const date=item.date?new Date(item.date).toLocaleString("hi-IN"):"तिथि उपलब्ध नहीं";
+  detail.textContent=date+" · अंक: "+item.score+"/90 · सही: "+item.score+" · गलत: "+item.wrong+" · अनुत्तरित: "+item.unanswered;
+  const langs=document.createElement("small");langs.textContent="Language-I: "+(item.language1||"—")+" | Language-II: "+(item.language2||"—");
+  row.append(title,detail,langs);box.appendChild(row);
+ });
+}
 function finish(auto){if(finished)return;finished=true;if(tick)clearInterval(tick);let correct=0;questions.forEach((q,i)=>{if(answers[i]!==undefined&&q.options[answers[i]].correct)correct++});const wrong=Object.keys(answers).length-correct,unanswered=90-Object.keys(answers).length;
  $("ctetExam").classList.add("hidden");const r=$("ctetResult");r.classList.remove("hidden");r.innerHTML="";
  const h=document.createElement("h3");h.textContent="Mock Test "+currentTestNo+" · "+(auto?"समय पूरा — टेस्ट स्वतः जमा हुआ":"टेस्ट सफलतापूर्वक जमा हुआ");r.appendChild(h);
  const p=document.createElement("p");p.textContent="अंक: "+correct+" / 90 · सही: "+correct+" · गलत: "+wrong+" · अनुत्तरित: "+unanswered;r.appendChild(p);
  questions.forEach((q,i)=>{const d=document.createElement("div");d.className="entry";const chosen=answers[i];const isCorrect=chosen!==undefined&&q.options[chosen].correct;d.style.border="1px solid "+(isCorrect?"#b8e3c2": "#f0b5b5");d.style.borderLeft="6px solid "+(isCorrect?"#218838":"#dc3545");d.style.background=isCorrect?"#f0fff4":"#fff1f1";d.style.borderRadius="10px";d.style.padding="12px";d.style.margin="10px 0";const title=document.createElement("strong");title.style.color=isCorrect?"#176b36":"#b4232d";title.textContent=(i+1)+". "+q.q;const detail=document.createElement("p");detail.style.color=isCorrect?"#176b36":"#b4232d";detail.style.fontWeight="700";detail.textContent=(isCorrect?"✓ सही उत्तर":"✗ गलत उत्तर")+" · आपका उत्तर: "+(chosen===undefined?"नहीं दिया":q.options[chosen].v)+" | सही उत्तर: "+q.options.find(x=>x.correct).v;const ex=document.createElement("p");ex.className="muted";ex.textContent=q.explanation||"व्याख्या शीघ्र जोड़ी जाएगी।";d.append(title,detail,ex);r.appendChild(d)});
  const again=document.createElement("button");again.textContent="नया Mock Test";again.addEventListener("click",()=>{r.classList.add("hidden");start.disabled=false;refreshStatus()});r.prepend(again);
- try{const history=JSON.parse(localStorage.getItem("ss_ctet_attempts_v1")||"[]");history.unshift({date:new Date().toISOString(),testNo:currentTestNo,paper:paper.value,group:group.value,language1:l1.value,language2:l2.value,score:correct,wrong,unanswered});localStorage.setItem("ss_ctet_attempts_v1",JSON.stringify(history.slice(0,30)))}catch(e){}
+ try{const history=JSON.parse(localStorage.getItem("ss_ctet_attempts_v1")||"[]");history.unshift({date:new Date().toISOString(),testNo:currentTestNo,paper:paper.value,group:group.value,language1:l1.value,language2:l2.value,score:correct,wrong,unanswered});localStorage.setItem("ss_ctet_attempts_v1",JSON.stringify(history.slice(0,30)));renderHistory()}catch(e){}
 }
 $("ctetPrev").addEventListener("click",()=>{if(pos>0){pos--;draw()}});
 $("ctetNext").addEventListener("click",()=>{if(pos<89){pos++;draw()}});
 $("ctetReview").addEventListener("click",()=>{review[pos]=!review[pos];draw()});
 $("ctetSubmit").addEventListener("click",()=>{if(confirm("क्या आप टेस्ट जमा करना चाहते हैं?"))finish(false)});
-start.addEventListener("click",begin);refreshStatus();
+start.addEventListener("click",begin);refreshStatus();renderHistory();
 })();
