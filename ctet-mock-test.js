@@ -30,15 +30,18 @@ function refreshStatus(){
  start.disabled=!ready||l1.value===l2.value;
  if(l1.value===l2.value)status.textContent="Language-I और Language-II अलग-अलग चुनें।";
 }
-let questions=[],answers={},review={},pos=0,seconds=5400,tick=null,finished=false;
+let questions=[],answers={},review={},pos=0,seconds=5400,tick=null,finished=false,currentTestNo=0;
 function shuffle(a){const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+function seriesKey(){return "ss_ctet_series_"+paper.value+"_"+(paper.value==="II"?group.value:"all")+"_"+l1.value+"_"+l2.value}
+function nextTestNo(){try{return (Number(localStorage.getItem(seriesKey())||"0")+1)}catch(e){return 1}}
 function begin(){
  if(l1.value===l2.value){alert("Language-I और Language-II अलग चुनें।");return}
  const bs=buckets();if(!bs.every(b=>b.items.length>=b.count)){alert("चुने गए प्रत्येक खंड में निर्धारित प्रश्न पूरे नहीं हैं।");return}
  const pool=bs.flatMap(b=>shuffle(b.items).slice(0,b.count));
  questions=shuffle(pool).map(q=>({...q,options:shuffle(q.options.map((v,i)=>({v,correct:i===q.answer}))) }));
- answers={};review={};pos=0;seconds=5400;finished=false;
+ answers={};review={};pos=0;seconds=5400;finished=false;currentTestNo=nextTestNo();try{localStorage.setItem(seriesKey(),String(currentTestNo))}catch(e){}
  $("ctetResult").classList.add("hidden");$("ctetExam").classList.remove("hidden");start.disabled=true;
+ const testLabel=$("ctetTestNumber");if(testLabel)testLabel.textContent="Mock Test "+currentTestNo+" · क्रमांक "+currentTestNo;
  draw();tick=setInterval(()=>{seconds--;clock();if(seconds<=0)finish(true)},1000);
 }
 function clock(){$("ctetTimer").textContent=String(Math.floor(seconds/60)).padStart(2,"0")+":"+String(seconds%60).padStart(2,"0")}
@@ -54,11 +57,11 @@ function draw(){
 function drawNav(){const nav=$("ctetNav");nav.innerHTML="";questions.forEach((_,i)=>{const b=document.createElement("button");b.type="button";b.className="secondary";b.textContent=(i+1)+(review[i]?" ⚑":"")+(answers[i]!==undefined?" ✓":"");b.style.minWidth="42px";b.style.margin="3px";b.addEventListener("click",()=>{pos=i;draw()});nav.appendChild(b)})}
 function finish(auto){if(finished)return;finished=true;if(tick)clearInterval(tick);let correct=0;questions.forEach((q,i)=>{if(answers[i]!==undefined&&q.options[answers[i]].correct)correct++});const wrong=Object.keys(answers).length-correct,unanswered=90-Object.keys(answers).length;
  $("ctetExam").classList.add("hidden");const r=$("ctetResult");r.classList.remove("hidden");r.innerHTML="";
- const h=document.createElement("h3");h.textContent=auto?"समय पूरा — टेस्ट स्वतः जमा हुआ":"टेस्ट सफलतापूर्वक जमा हुआ";r.appendChild(h);
+ const h=document.createElement("h3");h.textContent="Mock Test "+currentTestNo+" · "+(auto?"समय पूरा — टेस्ट स्वतः जमा हुआ":"टेस्ट सफलतापूर्वक जमा हुआ");r.appendChild(h);
  const p=document.createElement("p");p.textContent="अंक: "+correct+" / 90 · सही: "+correct+" · गलत: "+wrong+" · अनुत्तरित: "+unanswered;r.appendChild(p);
  questions.forEach((q,i)=>{const d=document.createElement("div");d.className="entry";const title=document.createElement("strong");title.textContent=(i+1)+". "+q.q;const detail=document.createElement("p");detail.textContent="आपका उत्तर: "+(answers[i]===undefined?"नहीं दिया":q.options[answers[i]].v)+" | सही उत्तर: "+q.options.find(x=>x.correct).v;const ex=document.createElement("p");ex.className="muted";ex.textContent=q.explanation||"व्याख्या शीघ्र जोड़ी जाएगी।";d.append(title,detail,ex);r.appendChild(d)});
  const again=document.createElement("button");again.textContent="नया Mock Test";again.addEventListener("click",()=>{r.classList.add("hidden");start.disabled=false;refreshStatus()});r.prepend(again);
- try{const history=JSON.parse(localStorage.getItem("ss_ctet_attempts_v1")||"[]");history.unshift({date:new Date().toISOString(),paper:paper.value,group:group.value,score:correct,wrong,unanswered});localStorage.setItem("ss_ctet_attempts_v1",JSON.stringify(history.slice(0,30)))}catch(e){}
+ try{const history=JSON.parse(localStorage.getItem("ss_ctet_attempts_v1")||"[]");history.unshift({date:new Date().toISOString(),testNo:currentTestNo,paper:paper.value,group:group.value,language1:l1.value,language2:l2.value,score:correct,wrong,unanswered});localStorage.setItem("ss_ctet_attempts_v1",JSON.stringify(history.slice(0,30)))}catch(e){}
 }
 $("ctetPrev").addEventListener("click",()=>{if(pos>0){pos--;draw()}});
 $("ctetNext").addEventListener("click",()=>{if(pos<89){pos++;draw()}});
