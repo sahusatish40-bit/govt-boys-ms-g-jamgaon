@@ -17,7 +17,8 @@
 <section class="panel" id="ctetModule">
 <h2>🎓 CTET Mock Test (90 प्रश्न अभ्यास मोड)</h2>
 <p class="muted">Paper-I / Paper-II · 90 मिनट · हिंदी निर्देश · हर प्रयास में प्रश्नों का यादृच्छिक चयन</p>
-<div class="item"><label for="ctetCandidateName">विद्यार्थी का पूरा नाम</label><input id="ctetCandidateName" class="input" type="text" maxlength="80" placeholder="अपना नाम लिखें" autocomplete="name"></div>
+<div class="item"><div class="row"><button type="button" id="ctetGoogleLogin">Google से लॉगिन करें</button><button type="button" id="ctetGoogleLogout" class="secondary hidden">लॉगआउट</button></div><p class="muted">हर शिक्षक अपने Google खाते से लॉगिन करके दूसरे मोबाइल पर भी अपनी निजी अंकसूची देख सकता है।</p></div>
+<div class="item"><label for="ctetCandidateName">शिक्षक / अभ्यर्थी का पूरा नाम</label><input id="ctetCandidateName" class="input" type="text" maxlength="80" placeholder="अपना नाम लिखें" autocomplete="name"></div>
 <div class="grid">
 <div><label for="ctetPaper">पेपर चुनें</label><select id="ctetPaper" class="input"><option value="I">Paper-I (कक्षा 1–5)</option><option value="II">Paper-II (कक्षा 6–8)</option></select></div>
 <div id="ctetGroupWrap" class="hidden"><label for="ctetGroup">Paper-II विषय समूह</label><select id="ctetGroup" class="input"><option value="maths">गणित एवं विज्ञान</option><option value="social">सामाजिक अध्ययन / सामाजिक विज्ञान</option></select></div>
@@ -49,6 +50,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="ctet-question-bank.js?v=3"></script>
-<script src="ctet-mock-test.js?v=9"></script>
+<script src="ctet-mock-test.js?v=10"></script>
 </body>
 </html>
