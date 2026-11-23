@@ -152,10 +152,10 @@ service cloud.firestore {
     // UDISE is a shared school identifier, not a private credential; do not store student-sensitive data here.
     match /teacher_corner/{schoolCode}/records/{recordId} {
       allow read: if request.auth != null
-        && request.auth.token.firebase.sign_in_provider == 'anonymous'
+        && request.auth.token.firebase.sign_in_provider == 'google.com'
         && schoolCode == '22130305808';
       allow create: if request.auth != null
-        && request.auth.token.firebase.sign_in_provider == 'anonymous'
+        && request.auth.token.firebase.sign_in_provider == 'google.com'
         && schoolCode == '22130305808'
         && request.resource.data.keys().hasOnly(['kind', 'payload', 'createdAt', 'updatedAt'])
         && request.resource.data.keys().hasAll(['kind', 'payload', 'createdAt', 'updatedAt'])
@@ -166,18 +166,18 @@ service cloud.firestore {
         && request.resource.data.updatedAt is int;
       allow update: if false;
       allow delete: if request.auth != null
-        && request.auth.token.firebase.sign_in_provider == 'anonymous'
+        && request.auth.token.firebase.sign_in_provider == 'google.com'
         && schoolCode == '22130305808';
     }
 
 
-    // CTET Mock Test results: each anonymous browser session can access only its own private attempts.
+    // CTET Mock Test results: each Google-authenticated teacher account can access only its own private attempts.
     match /ctet_results/{userId}/attempts/{attemptId} {
       allow read: if request.auth != null
-        && request.auth.token.firebase.sign_in_provider == 'anonymous'
+        && request.auth.token.firebase.sign_in_provider == 'google.com'
         && request.auth.uid == userId;
       allow create: if request.auth != null
-        && request.auth.token.firebase.sign_in_provider == 'anonymous'
+        && request.auth.token.firebase.sign_in_provider == 'google.com'
         && request.auth.uid == userId
         && request.resource.data.keys().hasOnly([
           'date', 'studentName', 'paper', 'testNo', 'group',
