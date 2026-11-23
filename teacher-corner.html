@@ -326,5 +326,7 @@ $("saveActivity").onclick=()=>{const v={title:$("actTitle").value.trim(),meta:$(
 $("exportData").onclick=()=>{const data=allLocal();const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="school-sathi-teacher-backup.json";a.click();URL.revokeObjectURL(a.href)};
 })();
 </script>
+<script src="ctet-question-bank.js?v=1"></script>
+<script src="ctet-mock-test.js?v=1"></script>
 </body>
 </html>
