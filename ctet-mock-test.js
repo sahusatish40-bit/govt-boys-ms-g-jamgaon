@@ -88,11 +88,28 @@ function renderHistory(){
 }
 function finish(auto){if(finished)return;finished=true;if(tick)clearInterval(tick);let correct=0;questions.forEach((q,i)=>{if(answers[i]!==undefined&&q.options[answers[i]].correct)correct++});const wrong=Object.keys(answers).length-correct,unanswered=90-Object.keys(answers).length;
  $("ctetExam").classList.add("hidden");const r=$("ctetResult");r.classList.remove("hidden");r.innerHTML="";
- const h=document.createElement("h3");h.textContent="Mock Test "+currentTestNo+" · "+(auto?"समय पूरा — टेस्ट स्वतः जमा हुआ":"टेस्ट सफलतापूर्वक जमा हुआ");r.appendChild(h);
- const p=document.createElement("p");p.textContent="अंक: "+correct+" / 90 · सही: "+correct+" · गलत: "+wrong+" · अनुत्तरित: "+unanswered;r.appendChild(p);
+ const percentage=(correct/90)*100;
+ const eligible=percentage>=60;
+ const sheet=document.createElement("div");sheet.className="item";sheet.style.cssText="border:2px solid #087e78;border-radius:16px;padding:18px;margin:12px 0;background:#fbfefd";
+ const head=document.createElement("div");head.style.cssText="text-align:center;border-bottom:2px solid #d7e9e6;padding-bottom:10px;margin-bottom:12px";
+ const school=document.createElement("div");school.style.cssText="font-weight:800;color:#087e78;letter-spacing:.4px";school.textContent="SCHOOL SATHI · CTET PRACTICE";
+ const title=document.createElement("h2");title.style.margin="6px 0";title.textContent="अभ्यास परीक्षा अंकसूची";
+ const sub=document.createElement("div");sub.className="muted";sub.textContent="Mock Test "+currentTestNo+" · "+(auto?"समय पूरा — स्वतः जमा":"सफलतापूर्वक जमा");
+ head.append(school,title,sub);sheet.appendChild(head);
+ const meta=document.createElement("div");meta.className="grid";
+ const metaItems=[["परीक्षा","CTET Mock Test"],["पेपर",paper.value==="II"?"Paper-II (कक्षा 6–8)":"Paper-I (कक्षा 1–5)"],["विषय समूह",paper.value==="II"?(group.value==="social"?"सामाजिक अध्ययन":"गणित एवं विज्ञान"):"—"],["Language-I / II",l1.value+" / "+l2.value],["दिनांक एवं समय",new Date().toLocaleString("hi-IN")]];
+ metaItems.forEach(([k,v])=>{const cell=document.createElement("div");cell.className="item";cell.style.padding="9px";const label=document.createElement("small");label.className="muted";label.textContent=k;const value=document.createElement("div");value.style.fontWeight="700";value.textContent=v;cell.append(label,value);meta.appendChild(cell)});sheet.appendChild(meta);
+ const table=document.createElement("div");table.style.cssText="margin-top:14px;border:1px solid #dce8ee;border-radius:10px;overflow:hidden";
+ const rows=[["विवरण","प्राप्तांक / कुल"],["सही उत्तर",correct+" / 90"],["गलत उत्तर",wrong],["अनुत्तरित प्रश्न",unanswered],["कुल प्राप्तांक",correct+" / 90"],["प्रतिशत",percentage.toFixed(2)+"%"]];
+ rows.forEach((pair,i)=>{const row=document.createElement("div");row.style.cssText="display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border-bottom:1px solid #e6eef1;background:"+(i===0?"#eaf5f3":"#fff");const left=document.createElement(i===0?"strong":"span");left.textContent=pair[0];const right=document.createElement(i===0?"strong":"span");right.style.fontWeight="700";right.textContent=pair[1];row.append(left,right);table.appendChild(row)});sheet.appendChild(table);
+ const verdict=document.createElement("div");verdict.style.cssText="margin-top:14px;padding:14px;border-radius:12px;text-align:center;font-size:20px;font-weight:900;background:"+(eligible?"#e5f7eb":"#fff0e8")+";color:"+(eligible?"#176b36":"#a33a24");
+ verdict.textContent=eligible?"✓ ELIGIBLE":"✗ NOT ELIGIBLE";sheet.appendChild(verdict);
+ const note=document.createElement("p");note.className="muted";note.style.textAlign="center";note.textContent="पात्रता मानदंड: 60% (54/90 अंक) · यह केवल अभ्यास टेस्ट का परिणाम है, आधिकारिक CTET पात्रता प्रमाणपत्र नहीं।";sheet.appendChild(note);
+ r.appendChild(sheet);
+ const h=document.createElement("h3");h.textContent="प्रश्नों की उत्तर-समीक्षा";r.appendChild(h);
  questions.forEach((q,i)=>{const d=document.createElement("div");d.className="entry";const chosen=answers[i];const isCorrect=chosen!==undefined&&q.options[chosen].correct;d.style.border="1px solid "+(isCorrect?"#b8e3c2": "#f0b5b5");d.style.borderLeft="6px solid "+(isCorrect?"#218838":"#dc3545");d.style.background=isCorrect?"#f0fff4":"#fff1f1";d.style.borderRadius="10px";d.style.padding="12px";d.style.margin="10px 0";const title=document.createElement("strong");title.style.color=isCorrect?"#176b36":"#b4232d";title.textContent=(i+1)+". "+q.q;const detail=document.createElement("p");detail.style.color=isCorrect?"#176b36":"#b4232d";detail.style.fontWeight="700";detail.textContent=(isCorrect?"✓ सही उत्तर":"✗ गलत उत्तर")+" · आपका उत्तर: "+(chosen===undefined?"नहीं दिया":q.options[chosen].v)+" | सही उत्तर: "+q.options.find(x=>x.correct).v;const ex=document.createElement("p");ex.className="muted";ex.textContent=q.explanation||"व्याख्या शीघ्र जोड़ी जाएगी।";d.append(title,detail,ex);r.appendChild(d)});
  const again=document.createElement("button");again.textContent="नया Mock Test";again.addEventListener("click",()=>{r.classList.add("hidden");start.disabled=false;refreshStatus()});r.prepend(again);
- try{const history=JSON.parse(localStorage.getItem("ss_ctet_attempts_v1")||"[]");history.unshift({date:new Date().toISOString(),testNo:currentTestNo,paper:paper.value,group:group.value,language1:l1.value,language2:l2.value,score:correct,wrong,unanswered});localStorage.setItem("ss_ctet_attempts_v1",JSON.stringify(history.slice(0,30)));renderHistory()}catch(e){}
+ try{const history=JSON.parse(localStorage.getItem("ss_ctet_attempts_v1")||"[]");history.unshift({date:new Date().toISOString(),testNo:currentTestNo,paper:paper.value,group:group.value,language1:l1.value,language2:l2.value,score:correct,wrong,unanswered,percentage:Number(percentage.toFixed(2)),eligibility:eligible?"Eligible":"Not Eligible"});localStorage.setItem("ss_ctet_attempts_v1",JSON.stringify(history.slice(0,30)));renderHistory()}catch(e){}
 }
 $("ctetPrev").addEventListener("click",()=>{if(pos>0){pos--;draw()}});
 $("ctetNext").addEventListener("click",()=>{if(pos<89){pos++;draw()}});
