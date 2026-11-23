@@ -40,11 +40,15 @@
 
 <section class="panel" id="ctetHistory">
   <h2>📊 आपके पिछले Mock Test परिणाम</h2>
-  <p class="muted">इस मोबाइल और इसी ब्राउज़र में जमा किए गए पिछले 30 प्रयास यहाँ दिखाई देंगे।</p>
+  <p class="muted">आपके निजी प्रयास यहाँ दिखाई देंगे। दूसरे शिक्षकों के परिणाम आपको नहीं दिखेंगे।</p>
+  <p id="ctetCloudStatus" class="status" aria-live="polite">निजी परिणाम सेवा से जुड़ रहे हैं…</p>
   <div id="ctetHistoryList" class="muted">परिणाम लोड हो रहे हैं…</div>
 </section>
 </main>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="ctet-question-bank.js?v=3"></script>
-<script src="ctet-mock-test.js?v=8"></script>
+<script src="ctet-mock-test.js?v=9"></script>
 </body>
 </html>
