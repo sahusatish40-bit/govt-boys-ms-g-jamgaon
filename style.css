@@ -1310,3 +1310,62 @@ button:focus-visible,.cta:focus-visible,input:focus-visible,select:focus-visible
 .student-profile-body p{margin:6px 0;color:#526879}
 .student-profile-photo{display:block;width:76px;height:76px;object-fit:cover;border-radius:50%;margin:0 0 10px;border:3px solid #fff;box-shadow:0 2px 10px #173b5422}
 @media(max-width:650px){.student-profile-body{max-width:100%;min-width:0}.student-profile-details>summary{padding:8px 10px}}
+
+
+/* PROFESSIONAL FINISH - clean spacing, hierarchy and responsive cards */
+:root{
+  --navy:#102b46;
+  --blue:#176b87;
+  --teal:#1c8b83;
+  --gold:#e8b64f;
+  --ink:#183047;
+  --muted:#617486;
+  --paper:#f5f8fb;
+}
+body{background:#fbfcfe;color:var(--ink);line-height:1.65}
+.topbar{padding:9px clamp(16px,5vw,72px);font-size:12px;letter-spacing:.15px}
+.header{padding:22px clamp(16px,5vw,72px);gap:16px}
+.brand h1{letter-spacing:-.6px}
+.brand p{font-weight:700}
+.nav{gap:6px;padding:10px clamp(10px,3vw,40px);border-top:1px solid #eaf0f3;border-bottom:1px solid #e5edf2}
+.nav a{border-radius:999px;padding:10px 14px;font-size:12px}
+.nav a:focus-visible,.cta:focus-visible,button:focus-visible{outline:3px solid #e8b64f;outline-offset:3px}
+.section{padding:clamp(42px,5vw,68px) clamp(18px,8vw,112px)}
+.section-title{max-width:850px;margin-bottom:30px}
+.section-title span{display:inline-block;padding:5px 10px;border-radius:999px;background:#e8f4f3;letter-spacing:1.4px}
+.section-title h2{font-size:clamp(24px,3vw,33px);line-height:1.25;margin-top:12px}
+.section-title p{max-width:720px;color:var(--muted);line-height:1.8}
+.cards{gap:18px}
+.card{border:1px solid #e3ebf0;border-radius:18px;padding:24px;box-shadow:0 5px 20px #102b4608;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.card:hover{transform:translateY(-4px);border-color:#c9dfdf;box-shadow:0 14px 30px #102b4614}
+.card h3{font-size:18px;line-height:1.4;margin:12px 0 8px}
+.card p{line-height:1.75}
+.resource-box{border-radius:18px;padding:22px;border-color:#e2eaf0;box-shadow:0 8px 24px #102b4608}
+.site-folder{border:1px solid #e1eaf0!important;border-radius:15px!important;background:#fff!important;box-shadow:0 4px 16px #102b4608}
+.site-folder>summary{padding:16px!important}
+.site-folder[open]>summary{border-bottom:1px solid #e9eff3}
+#teacher-access{background:linear-gradient(145deg,#f4f8fb,#eef6f5)}
+#teacher-access .cards{grid-template-columns:repeat(2,minmax(0,1fr));max-width:900px}
+#teacher-access .card{position:relative;overflow:hidden;padding:26px;border-top:3px solid var(--teal)}
+#teacher-access .card:nth-child(2){border-top-color:var(--gold)}
+#teacher-access .card .cta{display:inline-flex;align-items:center;justify-content:center;border-radius:10px;padding:11px 16px;margin-top:10px}
+#teacher-access .card strong{color:var(--navy)}
+.stats{padding:22px clamp(18px,7vw,90px)}
+.stats div{padding:10px}
+footer{line-height:1.8}
+@media(max-width:700px){
+ .topbar{font-size:10px;padding:8px 12px}
+ .header{padding:14px 12px}
+ .nav{gap:4px;padding:8px 6px}
+ .nav a{font-size:11px;padding:8px 10px}
+ .section{padding:40px 16px}
+ .section-title{margin-bottom:22px}
+ .cards{gap:13px}
+ .card{padding:19px;border-radius:15px}
+ #teacher-access .cards{grid-template-columns:1fr}
+ #teacher-access .card{padding:20px}
+ .resource-box{padding:16px;align-items:flex-start}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+}
