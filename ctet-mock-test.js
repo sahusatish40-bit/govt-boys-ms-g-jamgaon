@@ -37,6 +37,7 @@ function shuffle(a){const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math
 function seriesKey(){return "ss_ctet_series_"+paper.value+"_"+(paper.value==="II"?group.value:"all")+"_"+l1.value+"_"+l2.value}
 function nextTestNo(){try{return (Number(localStorage.getItem(seriesKey())||"0")+1)}catch(e){return 1}}
 function begin(){
+ if(!ctetUid){alert("कृपया पहले अपने Google खाते से लॉगिन करें।");return}
  const studentName=candidateName?candidateName.value.trim():"";
  if(!studentName){alert("कृपया विद्यार्थी का पूरा नाम लिखें।");if(candidateName)candidateName.focus();return}
  activeStudentName=studentName;
@@ -77,18 +78,34 @@ function draw(){
 function drawNav(){const nav=$("ctetNav");nav.innerHTML="";questions.forEach((_,i)=>{const b=document.createElement("button");b.type="button";b.className="secondary";b.textContent=(i+1)+(review[i]?" ⚑":"")+(answers[i]!==undefined?" ✓":"");b.style.minWidth="42px";b.style.margin="3px";b.addEventListener("click",()=>{pos=i;draw()});nav.appendChild(b)})}
 function connectCloud(){
  try{
-  if(!window.firebase){const el=$("ctetCloudStatus");if(el)el.textContent="क्लाउड सेवा उपलब्ध नहीं; स्थानीय परिणाम चालू हैं।";return}
+  if(!window.firebase){const el=$("ctetCloudStatus");if(el)el.textContent="Firebase सेवा लोड नहीं हुई।";return}
   const config={apiKey:"AIzaSyAGPlqFFNCmQIj9ROjF9Ujj4C9a8Z5f9cQ",authDomain:"govt-boys-ms-g-jamgaon.firebaseapp.com",projectId:"govt-boys-ms-g-jamgaon",storageBucket:"govt-boys-ms-g-jamgaon.firebasestorage.app",messagingSenderId:"1076919620059",appId:"1:1076919620059:web:b1c1bfcdb1d9e260d8d7fe",measurementId:"G-7CCE542ZGG"};
   if(!firebase.apps.length)firebase.initializeApp(config);
   ctetDb=firebase.firestore();
-  firebase.auth().signInAnonymously().then(async credential=>{ctetUid=credential.user.uid;const snap=await ctetDb.collection("ctet_results").doc(ctetUid).collection("attempts").orderBy("date","desc").limit(30).get();cloudHistory=snap.docs.map(d=>d.data());renderHistory();const el=$("ctetCloudStatus");if(el)el.textContent="✓ निजी ऑनलाइन परिणाम सेवा जुड़ी हुई है।"}).catch(err=>{const el=$("ctetCloudStatus");if(el)el.textContent="क्लाउड कनेक्शन नहीं हुआ; इस मोबाइल में परिणाम सेव रहेंगे। "+(err.code||"")});
- }catch(err){const el=$("ctetCloudStatus");if(el)el.textContent="क्लाउड सेवा उपलब्ध नहीं; स्थानीय परिणाम चालू हैं।"}
+  const auth=firebase.auth();
+  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+  const login=$("ctetGoogleLogin"),logout=$("ctetGoogleLogout");
+  if(login)login.addEventListener("click",async()=>{
+   const provider=new firebase.auth.GoogleAuthProvider();
+   provider.setCustomParameters({prompt:"select_account"});
+   try{await auth.signInWithPopup(provider)}
+   catch(err){if(err.code==="auth/popup-blocked"||err.code==="auth/popup-closed-by-user"){try{await auth.signInWithRedirect(provider)}catch(e){const el=$("ctetCloudStatus");if(el)el.textContent="Google लॉगिन नहीं हो पाया: "+(e.code||e.message)}}else{const el=$("ctetCloudStatus");if(el)el.textContent="Google लॉगिन नहीं हो पाया: "+(err.code||err.message)}}
+  });
+  if(logout)logout.addEventListener("click",()=>auth.signOut());
+  auth.getRedirectResult().catch(err=>{const el=$("ctetCloudStatus");if(el)el.textContent="लॉगिन त्रुटि: "+(err.code||err.message)});
+  auth.onAuthStateChanged(async user=>{
+   ctetUid=user?user.uid:"";cloudHistory=[];
+   if(user){
+    try{const snap=await ctetDb.collection("ctet_results").doc(ctetUid).collection("attempts").orderBy("date","desc").limit(30).get();cloudHistory=snap.docs.map(d=>d.data());renderHistory();const el=$("ctetCloudStatus");if(el)el.textContent="✓ लॉगिन: "+(user.displayName||user.email||"Google खाता")+" · आपकी निजी अंकसूचियाँ ऑनलाइन उपलब्ध हैं।";if(login)login.classList.add("hidden");if(logout)logout.classList.remove("hidden");if(start)start.disabled=!buckets().every(b=>b.items.length>=b.count)||l1.value===l2.value;
+    }catch(err){const el=$("ctetCloudStatus");if(el)el.textContent="परिणाम लोड नहीं हुए: "+(err.code||err.message)}
+   }else{renderHistory();const el=$("ctetCloudStatus");if(el)el.textContent="अपनी पुरानी अंकसूची देखने और टेस्ट देने के लिए Google लॉगिन करें।";if(login)login.classList.remove("hidden");if(logout)logout.classList.add("hidden");if(start)start.disabled=true}
+  });
+ }catch(err){const el=$("ctetCloudStatus");if(el)el.textContent="Firebase सेवा उपलब्ध नहीं: "+(err.message||"")}
 }
 function renderHistory(){
  const box=$("ctetHistoryList");if(!box)return;
- let history=[];try{history=JSON.parse(localStorage.getItem("ss_ctet_attempts_v1")||"[]")}catch(e){}
- history=[...cloudHistory,...history].sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
- if(!history.length){box.textContent="अभी इस ब्राउज़र में कोई जमा किया हुआ परिणाम उपलब्ध नहीं है।";return}
+ let history=cloudHistory.slice().sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
+ if(!ctetUid){box.textContent="अपनी निजी ऑनलाइन अंकसूची देखने के लिए पहले Google लॉगिन करें।";return}if(!history.length){box.textContent="इस Google खाते से अभी कोई जमा किया हुआ परिणाम उपलब्ध नहीं है।";return}
  box.innerHTML="";
  history.slice(0,30).forEach((item,index)=>{
   const row=document.createElement("div");row.className="entry";
@@ -164,7 +181,6 @@ function finish(auto){if(finished)return;finished=true;if(tick)clearInterval(tic
  questions.forEach((q,i)=>{const d=document.createElement("div");d.className="entry";const chosen=answers[i];const isCorrect=chosen!==undefined&&q.options[chosen].correct;d.style.border="1px solid "+(isCorrect?"#b8e3c2": "#f0b5b5");d.style.borderLeft="6px solid "+(isCorrect?"#218838":"#dc3545");d.style.background=isCorrect?"#f0fff4":"#fff1f1";d.style.borderRadius="10px";d.style.padding="12px";d.style.margin="10px 0";const title=document.createElement("strong");title.style.color=isCorrect?"#176b36":"#b4232d";title.textContent=(i+1)+". "+q.q;const detail=document.createElement("p");detail.style.color=isCorrect?"#176b36":"#b4232d";detail.style.fontWeight="700";detail.textContent=(isCorrect?"✓ सही उत्तर":"✗ गलत उत्तर")+" · आपका उत्तर: "+(chosen===undefined?"नहीं दिया":q.options[chosen].v)+" | सही उत्तर: "+q.options.find(x=>x.correct).v;const ex=document.createElement("p");ex.className="muted";ex.textContent=q.explanation||"व्याख्या शीघ्र जोड़ी जाएगी।";d.append(title,detail,ex);r.appendChild(d)});
  const again=document.createElement("button");again.textContent="नया Mock Test";again.addEventListener("click",()=>{r.classList.add("hidden");start.disabled=false;refreshStatus()});r.prepend(again);
  const savedAttempt={date:new Date().toISOString(),studentName:activeStudentName,paper:paper.value,testNo:currentTestNo,group:group.value,language1:l1.value,language2:l2.value,score:correct,wrong,unanswered,percentage:Number(percentage.toFixed(2)),eligibility:eligible?"Eligible":"Not Eligible",sectionMarks};
- try{const history=JSON.parse(localStorage.getItem("ss_ctet_attempts_v1")||"[]");history.unshift(savedAttempt);localStorage.setItem("ss_ctet_attempts_v1",JSON.stringify(history.slice(0,30)))}catch(e){}
  if(ctetDb&&ctetUid){ctetDb.collection("ctet_results").doc(ctetUid).collection("attempts").add(savedAttempt).then(()=>{cloudHistory.unshift(savedAttempt);renderHistory();const sync=$("ctetCloudStatus");if(sync)sync.textContent="✓ आपकी अंकसूची सुरक्षित रूप से ऑनलाइन सेव हो गई है।"}).catch(err=>{const sync=$("ctetCloudStatus");if(sync)sync.textContent="ऑनलाइन सेव नहीं हो पाया; अंकसूची इस मोबाइल में सुरक्षित है। "+(err.code||"")})}
  renderHistory();
 }
