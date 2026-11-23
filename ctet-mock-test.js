@@ -14,25 +14,29 @@ languages.forEach((name,i)=>{const o1=new Option(name+" ("+langCodes[i]+")",name
 l1.value="हिंदी";l2.value="अंग्रेज़ी";
 paper.addEventListener("change",()=>{groupWrap.classList.toggle("hidden",paper.value!=="II");refreshStatus()});
 [group,l1,l2].forEach(x=>x.addEventListener("change",refreshStatus));
-function eligible(){
- const p=paper.value,g=group.value,a=bank();
- const sections=p==="I"?["cdp","language","maths","evs"]:["cdp","language",g==="maths"?"maths":"social"];
- return a.filter(x=>x.paper===p&&sections.includes(x.section)&&
-   (x.section!=="language"||x.language===l1.value||x.language===l2.value)&&
-   (p!=="II"||x.section!=="maths"&&x.section!=="social"||x.group===g));
+function buckets(){
+ const p=paper.value,g=group.value,a=bank().filter(x=>x.paper===p);
+ const specs=p==="I"
+  ? [["cdp",null,18],["language",l1.value,18],["language",l2.value,18],["maths",null,18],["evs",null,18]]
+  : g==="maths"
+   ? [["cdp",null,18],["language",l1.value,18],["language",l2.value,18],["maths","maths",18],["science","maths",18]]
+   : [["cdp",null,18],["language",l1.value,18],["language",l2.value,18],["social","social",36]];
+ return specs.map(([section,lang,count])=>({section,lang,count,items:a.filter(x=>x.section===section&&(section!=="language"||x.language===lang)&&(p!=="II"||!["maths","science","social"].includes(section)||x.group===g))}));
 }
 function refreshStatus(){
- const n=eligible().length;
- status.textContent=n>=90?"प्रश्न बैंक उपलब्ध: "+n+" · टेस्ट शुरू किया जा सकता है":"प्रश्न बैंक में अभी "+n+"/90 उपयुक्त प्रश्न हैं। 90 प्रश्न पूरे होने पर टेस्ट सक्रिय होगा।";
- start.disabled=n<90||l1.value===l2.value;
+ const bs=buckets(),ready=bs.every(b=>b.items.length>=b.count);
+ const summary=bs.map(b=>(b.section==="language"?b.lang:b.section)+": "+b.items.length+"/"+b.count).join(" · ");
+ status.textContent=(ready?"प्रश्न बैंक तैयार · ":"प्रश्न बैंक अधूरा · ")+summary;
+ start.disabled=!ready||l1.value===l2.value;
  if(l1.value===l2.value)status.textContent="Language-I और Language-II अलग-अलग चुनें।";
 }
 let questions=[],answers={},review={},pos=0,seconds=5400,tick=null,finished=false;
 function shuffle(a){const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
 function begin(){
  if(l1.value===l2.value){alert("Language-I और Language-II अलग चुनें।");return}
- const pool=eligible();if(pool.length<90){alert("अभी 90 अलग-अलग उपयुक्त प्रश्न उपलब्ध नहीं हैं। प्रश्न बैंक पूरा होने पर टेस्ट शुरू होगा।");return}
- questions=shuffle(pool).slice(0,90).map(q=>({...q,options:shuffle(q.options.map((v,i)=>({v,correct:i===q.answer}))) }));
+ const bs=buckets();if(!bs.every(b=>b.items.length>=b.count)){alert("चुने गए प्रत्येक खंड में निर्धारित प्रश्न पूरे नहीं हैं।");return}
+ const pool=bs.flatMap(b=>shuffle(b.items).slice(0,b.count));
+ questions=shuffle(pool).map(q=>({...q,options:shuffle(q.options.map((v,i)=>({v,correct:i===q.answer}))) }));
  answers={};review={};pos=0;seconds=5400;finished=false;
  $("ctetResult").classList.add("hidden");$("ctetExam").classList.remove("hidden");start.disabled=true;
  draw();tick=setInterval(()=>{seconds--;clock();if(seconds<=0)finish(true)},1000);
