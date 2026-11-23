@@ -550,7 +550,7 @@ if ("serviceWorker" in navigator && (location.protocol === "https:" || location.
     const dashboard=document.getElementById("app-dashboard");
     if(!dashboard || dashboard.dataset.singleScreenReady==="1") return;
     dashboard.dataset.singleScreenReady="1";
-    const persistent=new Set(["app-dashboard","publicTeachers","contact"]);
+    const persistent=new Set(["home","app-dashboard","notice","publicTeachers","contact"]);
     const views=[...document.querySelectorAll("main > section")];
     function hideAll(){
       views.forEach(el=>{
