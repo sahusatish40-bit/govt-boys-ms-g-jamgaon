@@ -28,6 +28,12 @@
 @media(max-width:760px){.app-launcher{grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}.app-tile{min-height:128px;padding:12px 6px;border-radius:17px}.app-icon{width:58px;height:58px;border-radius:17px;font-size:30px}.app-tile strong{font-size:12px}.app-tile small{font-size:10px}}
 @media(max-width:360px){.app-launcher{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
+
+<style id="school-app-single-screen-style">
+.app-hidden-view{display:none!important}
+.app-back-button{display:inline-flex;align-items:center;gap:8px;margin:0 0 22px;padding:11px 18px;border:0;border-radius:13px;background:#102b46;color:#fff;font-weight:700;cursor:pointer}
+.app-back-button:focus-visible,.app-tile:focus-visible{outline:3px solid #f0b429;outline-offset:3px}
+</style>
 </head>
 <body>
 
@@ -537,6 +543,74 @@ if ("serviceWorker" in navigator && (location.protocol === "https:" || location.
   window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(error => console.warn("School Sathi offline support could not start:", error)));
 }
 </script>
+
+<script id="school-app-single-screen-script">
+(function(){
+  function init(){
+    const dashboard=document.getElementById("app-dashboard");
+    if(!dashboard || dashboard.dataset.singleScreenReady==="1") return;
+    dashboard.dataset.singleScreenReady="1";
+    const persistent=new Set(["app-dashboard","publicTeachers","contact"]);
+    const views=[...document.querySelectorAll("main > section")];
+    function hideAll(){
+      views.forEach(el=>{
+        if(!persistent.has(el.id)) el.classList.add("app-hidden-view");
+      });
+    }
+    function showView(id){
+      const target=document.getElementById(id);
+      if(!target || !views.includes(target)) return;
+      hideAll();
+      target.classList.remove("app-hidden-view");
+      target.scrollIntoView({behavior:"smooth",block:"start"});
+    }
+    views.forEach(section=>{
+      if(persistent.has(section.id)) return;
+      if(!section.querySelector(".app-back-button")){
+        const back=document.createElement("button");
+        back.type="button";
+        back.className="app-back-button";
+        back.textContent="← सभी मॉड्यूल पर वापस जाएँ";
+        back.addEventListener("click",()=>{
+          hideAll();
+          dashboard.scrollIntoView({behavior:"smooth",block:"start"});
+        });
+        section.insertBefore(back,section.firstChild);
+      }
+    });
+    hideAll();
+    document.querySelectorAll(".app-tile[href^='#']").forEach(tile=>{
+      tile.addEventListener("click",function(event){
+        const id=this.getAttribute("href").slice(1);
+        if(document.getElementById(id) && views.includes(document.getElementById(id))){
+          event.preventDefault();
+          showView(id);
+          history.replaceState(null,"","#"+id);
+        }
+      });
+    });
+    document.querySelectorAll(".nav a[href^='#'],.cta[href^='#']").forEach(link=>{
+      link.addEventListener("click",function(event){
+        const id=this.getAttribute("href").slice(1);
+        const target=document.getElementById(id);
+        if(target && views.includes(target) && !persistent.has(id)){
+          event.preventDefault();
+          showView(id);
+          history.replaceState(null,"","#"+id);
+        }
+      });
+    });
+    window.addEventListener("hashchange",()=>{
+      const id=location.hash.slice(1);
+      const target=document.getElementById(id);
+      if(target && views.includes(target) && !persistent.has(id)) showView(id);
+    });
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",init);
+  else init();
+})();
+</script>
+
 </body></html>');
       w.document.close();
     });
