@@ -117,7 +117,7 @@
         <div class="report-card" style="background:#fff;color:#172554;border:3px double #24558a;padding:22px;margin:15px 0;border-radius:8px;font-family:Arial,sans-serif">
           
           <div style="text-align:center;border-bottom:2px solid #24558a;padding-bottom:12px">
-            <img src="https://sahusatish40-bit.github.io/govt-boys-ms-g-jamgaon/images/School_Mono.jpg" alt="विद्यालय का मूल मोनोग्राम एवं स्लोगन" onerror="this.onerror=null;this.src='https://raw.githubusercontent.com/sahusatish40-bit/govt-boys-ms-g-jamgaon/main/images/School_Mono.jpg';" style="display:block;width:92px;height:92px;object-fit:contain;margin:0 auto 8px">
+            <img src="https://raw.githubusercontent.com/sahusatish40-bit/govt-boys-ms-g-jamgaon/main/images/School_Mono.jpg?raw=1" alt="विद्यालय का मूल मोनोग्राम एवं स्लोगन" loading="eager" decoding="sync" onerror="this.onerror=null;this.src='https://sahusatish40-bit.github.io/govt-boys-ms-g-jamgaon/images/School_Mono.jpg?refresh=2';" style="display:block;width:92px;height:92px;object-fit:contain;margin:0 auto 8px">
             <h2 style="margin:5px 0;font-size:21px">शासकीय उच्चतर माध्यमिक विद्यालय</h2>
             <h2 style="margin:5px 0;font-size:21px">जी- जामगाँव (बालक माध्य.)</h2>
             <p style="margin:5px 0;font-size:13px">वि.ख. कुरुद, जिला धमतरी (छ.ग.)</p>
