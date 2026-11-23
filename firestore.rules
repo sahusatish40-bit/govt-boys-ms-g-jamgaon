@@ -170,5 +170,38 @@ service cloud.firestore {
         && schoolCode == '22130305808';
     }
 
+
+    // CTET Mock Test results: each anonymous browser session can access only its own private attempts.
+    match /ctet_results/{userId}/attempts/{attemptId} {
+      allow read: if request.auth != null
+        && request.auth.token.firebase.sign_in_provider == 'anonymous'
+        && request.auth.uid == userId;
+      allow create: if request.auth != null
+        && request.auth.token.firebase.sign_in_provider == 'anonymous'
+        && request.auth.uid == userId
+        && request.resource.data.keys().hasOnly([
+          'date', 'studentName', 'paper', 'testNo', 'group',
+          'language1', 'language2', 'score', 'wrong', 'unanswered',
+          'percentage', 'eligibility', 'sectionMarks'
+        ])
+        && request.resource.data.keys().hasAll([
+          'date', 'studentName', 'paper', 'testNo', 'score',
+          'wrong', 'unanswered', 'percentage', 'eligibility', 'sectionMarks'
+        ])
+        && request.resource.data.studentName is string
+        && request.resource.data.studentName.size() > 0
+        && request.resource.data.studentName.size() <= 80
+        && request.resource.data.paper in ['I', 'II']
+        && request.resource.data.score is int
+        && request.resource.data.score >= 0
+        && request.resource.data.score <= 90
+        && request.resource.data.wrong is int
+        && request.resource.data.unanswered is int
+        && request.resource.data.percentage is number
+        && request.resource.data.sectionMarks is list
+        && request.resource.data.sectionMarks.size() <= 5;
+      allow update, delete: if false;
+    }
+
   }
 }
