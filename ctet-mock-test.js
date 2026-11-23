@@ -11,7 +11,9 @@ const bank=()=>Array.isArray(window.CTET_QUESTION_BANK)?window.CTET_QUESTION_BAN
 const paper=$("ctetPaper"),group=$("ctetGroup"),groupWrap=$("ctetGroupWrap"),l1=$("ctetLang1"),l2=$("ctetLang2"),start=$("ctetStart"),status=$("ctetBankStatus"),candidateName=$("ctetCandidateName");
 if(!paper||!start)return;
 languages.forEach((name,i)=>{const o1=new Option(name+" ("+langCodes[i]+")",name),o2=new Option(name+" ("+langCodes[i]+")",name);l1.add(o1);l2.add(o2)});
-l1.value="हिंदी";l2.value="अंग्रेज़ी";\ntry{if(candidateName)candidateName.value=localStorage.getItem("ss_ctet_candidate_name")||""}catch(e){}\nif(candidateName)candidateName.addEventListener("change",()=>{try{localStorage.setItem("ss_ctet_candidate_name",candidateName.value.trim())}catch(e){}});
+l1.value="हिंदी";l2.value="अंग्रेज़ी";
+try{if(candidateName)candidateName.value=localStorage.getItem("ss_ctet_candidate_name")||""}catch(e){}
+if(candidateName)candidateName.addEventListener("change",()=>{try{localStorage.setItem("ss_ctet_candidate_name",candidateName.value.trim())}catch(e){}});
 paper.addEventListener("change",()=>{groupWrap.classList.toggle("hidden",paper.value!=="II");refreshStatus()});
 [group,l1,l2].forEach(x=>x.addEventListener("change",refreshStatus));
 function buckets(){
@@ -35,7 +37,10 @@ function shuffle(a){const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math
 function seriesKey(){return "ss_ctet_series_"+paper.value+"_"+(paper.value==="II"?group.value:"all")+"_"+l1.value+"_"+l2.value}
 function nextTestNo(){try{return (Number(localStorage.getItem(seriesKey())||"0")+1)}catch(e){return 1}}
 function begin(){
- const studentName=candidateName?candidateName.value.trim():"";\n if(!studentName){alert("कृपया विद्यार्थी का पूरा नाम लिखें।");if(candidateName)candidateName.focus();return}\n try{localStorage.setItem("ss_ctet_candidate_name",studentName)}catch(e){}\n if(l1.value===l2.value){alert("Language-I और Language-II अलग चुनें।");return}
+ const studentName=candidateName?candidateName.value.trim():"";
+ if(!studentName){alert("कृपया विद्यार्थी का पूरा नाम लिखें।");if(candidateName)candidateName.focus();return}
+ try{localStorage.setItem("ss_ctet_candidate_name",studentName)}catch(e){}
+ if(l1.value===l2.value){alert("Language-I और Language-II अलग चुनें।");return}
  const bs=buckets();if(!bs.every(b=>b.items.length>=b.count)){alert("चुने गए प्रत्येक खंड में निर्धारित प्रश्न पूरे नहीं हैं।");return}
  const usedKey=seriesKey()+"_used_questions";
  let used={};try{used=JSON.parse(localStorage.getItem(usedKey)||"{}");if(!used||typeof used!=="object"||Array.isArray(used))used={}}catch(e){used={}}
@@ -118,7 +123,9 @@ function finish(auto){if(finished)return;finished=true;if(tick)clearInterval(tic
  const eligible=percentage>=60;
  const sheet=document.createElement("div");sheet.className="item";sheet.style.cssText="border:2px solid #087e78;border-radius:16px;padding:18px;margin:12px 0;background:#fbfefd";
  const head=document.createElement("div");head.style.cssText="text-align:center;border-bottom:2px solid #d7e9e6;padding-bottom:10px;margin-bottom:12px";
- const logo=document.createElement("img");logo.src="images/School_Mono.jpg";logo.alt="विद्यालय का मोनोग्राम";logo.style.cssText="width:82px;height:82px;object-fit:contain;display:block;margin:0 auto 8px";head.appendChild(logo);\n const school=document.createElement("div");school.style.cssText="font-weight:900;color:#123d59;line-height:1.5";school.textContent="शासकीय उच्चतर माध्यमिक विद्यालय जी- जामगाँव (बालक माध्य.)";\n const location=document.createElement("div");location.style.cssText="font-size:13px;color:#526979";location.textContent="वि.ख.:- कुरुद, जिला:- धमतरी (छ.ग.)";
+ const logo=document.createElement("img");logo.src="images/School_Mono.jpg";logo.alt="विद्यालय का मोनोग्राम";logo.style.cssText="width:82px;height:82px;object-fit:contain;display:block;margin:0 auto 8px";head.appendChild(logo);
+ const school=document.createElement("div");school.style.cssText="font-weight:900;color:#123d59;line-height:1.5";school.textContent="शासकीय उच्चतर माध्यमिक विद्यालय जी- जामगाँव (बालक माध्य.)";
+ const location=document.createElement("div");location.style.cssText="font-size:13px;color:#526979";location.textContent="वि.ख.:- कुरुद, जिला:- धमतरी (छ.ग.)";
  const title=document.createElement("h2");title.style.margin="6px 0";title.textContent="अभ्यास परीक्षा अंकसूची";
  const sub=document.createElement("div");sub.className="muted";sub.textContent="Mock Test "+currentTestNo+" · "+(auto?"समय पूरा — स्वतः जमा":"सफलतापूर्वक जमा");
  head.append(school,location,title,sub);sheet.appendChild(head);
