@@ -74,7 +74,7 @@ function renderHistory(){
  let history=[];try{history=JSON.parse(localStorage.getItem("ss_ctet_attempts_v1")||"[]")}catch(e){}
  if(!history.length){box.textContent="अभी इस ब्राउज़र में कोई जमा किया हुआ परिणाम उपलब्ध नहीं है।";return}
  box.innerHTML="";
- history.slice(0,30).forEach(item=>{
+ history.slice(0,30).forEach((item,index)=>{
   const row=document.createElement("div");row.className="entry";
   const title=document.createElement("strong");
   const paperName=item.paper==="II"?"Paper-II":"Paper-I";
@@ -83,9 +83,35 @@ function renderHistory(){
   const date=item.date?new Date(item.date).toLocaleString("hi-IN"):"तिथि उपलब्ध नहीं";
   detail.textContent=date+" · अंक: "+item.score+"/90 · सही: "+item.score+" · गलत: "+item.wrong+" · अनुत्तरित: "+item.unanswered;
   const langs=document.createElement("small");langs.textContent="Language-I: "+(item.language1||"—")+" | Language-II: "+(item.language2||"—");
-  row.append(title,detail,langs);box.appendChild(row);
+  const view=document.createElement("button");view.type="button";view.className="secondary";view.textContent="अंकसूची देखें";
+  const sheet=document.createElement("div");sheet.className="history-sheet hidden";sheet.style.cssText="border:2px solid #087e78;border-radius:14px;padding:16px;margin-top:12px;background:#fff";
+  view.addEventListener("click",()=>{
+   const opening=sheet.classList.contains("hidden");
+   if(!opening){sheet.classList.add("hidden");view.textContent="अंकसूची देखें";return}
+   sheet.innerHTML="";
+   const head=document.createElement("div");head.style.cssText="text-align:center;border-bottom:2px solid #d7e9e6;padding-bottom:10px;margin-bottom:12px";
+   const logo=document.createElement("img");logo.src="images/School_Mono.jpg";logo.alt="विद्यालय का मोनोग्राम";logo.style.cssText="width:78px;height:78px;object-fit:contain;display:block;margin:0 auto 8px";
+   const school=document.createElement("div");school.style.cssText="font-weight:900;color:#123d59;line-height:1.5";school.textContent="शासकीय उच्चतर माध्यमिक विद्यालय जी- जामगाँव (बालक माध्य.)";
+   const location=document.createElement("div");location.style.cssText="font-size:13px;color:#526979";location.textContent="वि.ख.:- कुरुद, जिला:- धमतरी (छ.ग.)";
+   const heading=document.createElement("h3");heading.textContent="अभ्यास परीक्षा अंकसूची";heading.style.margin="6px 0";
+   const sub=document.createElement("div");sub.textContent="Mock Test "+(item.testNo||"—")+" · पूर्व परिणाम";sub.className="muted";
+   head.append(logo,school,location,heading,sub);sheet.appendChild(head);
+   const meta=document.createElement("div");meta.className="grid";
+   const fields=[["विद्यार्थी का नाम",item.studentName||"पूर्व परिणाम में नाम दर्ज नहीं"],["पेपर",paperName+(item.paper==="II"?" · "+(item.group==="social"?"सामाजिक अध्ययन":"गणित एवं विज्ञान"):"")],["Language-I / II",(item.language1||"—")+" / "+(item.language2||"—")],["दिनांक एवं समय",date]];
+   fields.forEach(([k,v])=>{const cell=document.createElement("div");cell.className="item";cell.style.padding="9px";const label=document.createElement("small");label.className="muted";label.textContent=k;const value=document.createElement("div");value.style.fontWeight="700";value.textContent=v;cell.append(label,value);meta.appendChild(cell)});sheet.appendChild(meta);
+   const score=Number(item.score)||0,wrong=Number(item.wrong)||0,unanswered=Number(item.unanswered)||0;
+   const pct=Number.isFinite(Number(item.percentage))?Number(item.percentage):(score/90*100),eligible=pct>=60;
+   const table=document.createElement("div");table.style.cssText="margin-top:14px;border:1px solid #dce8ee;border-radius:10px;overflow:hidden";
+   [["विवरण","प्राप्तांक / कुल"],["सही उत्तर",score+" / 90"],["गलत उत्तर",wrong],["अनुत्तरित प्रश्न",unanswered],["कुल प्राप्तांक",score+" / 90"],["प्रतिशत",pct.toFixed(2)+"%"]].forEach((pair,i)=>{const line=document.createElement("div");line.style.cssText="display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border-bottom:1px solid #e6eef1;background:"+(i===0?"#eaf5f3":"#fff");const a=document.createElement(i===0?"strong":"span"),b=document.createElement(i===0?"strong":"span");a.textContent=pair[0];b.textContent=pair[1];line.append(a,b);table.appendChild(line)});sheet.appendChild(table);
+   const verdict=document.createElement("div");verdict.style.cssText="margin-top:14px;padding:13px;border-radius:12px;text-align:center;font-size:20px;font-weight:900;background:"+(eligible?"#e5f7eb":"#fff0e8")+";color:"+(eligible?"#176b36":"#a33a24");verdict.textContent=eligible?"✓ ELIGIBLE":"✗ NOT ELIGIBLE";sheet.appendChild(verdict);
+   const note=document.createElement("p");note.className="muted";note.style.textAlign="center";note.textContent="पात्रता मानदंड: 60% (54/90 अंक)। यह केवल अभ्यास टेस्ट का परिणाम है, आधिकारिक CTET पात्रता प्रमाणपत्र नहीं। पुराने परिणाम में प्रश्नवार उत्तर-समीक्षा सुरक्षित नहीं थी; यह अंकसूची उपलब्ध सारांश के आधार पर बनाई गई है।";sheet.appendChild(note);
+   const print=document.createElement("button");print.type="button";print.textContent="प्रिंट / PDF सेव करें";print.addEventListener("click",()=>{document.body.classList.add("history-print");window.print()});sheet.appendChild(print);
+   sheet.classList.remove("hidden");view.textContent="अंकसूची बंद करें";
+  });
+  row.append(title,detail,langs,document.createElement("br"),view,sheet);box.appendChild(row);
  });
 }
+window.addEventListener("afterprint",()=>document.body.classList.remove("history-print"));
 function finish(auto){if(finished)return;finished=true;if(tick)clearInterval(tick);let correct=0;questions.forEach((q,i)=>{if(answers[i]!==undefined&&q.options[answers[i]].correct)correct++});const wrong=Object.keys(answers).length-correct,unanswered=90-Object.keys(answers).length;
  $("ctetExam").classList.add("hidden");const r=$("ctetResult");r.classList.remove("hidden");r.innerHTML="";
  const percentage=(correct/90)*100;
