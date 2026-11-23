@@ -117,6 +117,7 @@
         <div class="report-card" style="background:#fff;color:#172554;border:3px double #24558a;padding:22px;margin:15px 0;border-radius:8px;font-family:Arial,sans-serif">
           
           <div style="text-align:center;border-bottom:2px solid #24558a;padding-bottom:12px">
+            <img src="images/School_Mono.jpg" alt="विद्यालय का लोगो एवं स्लोगन" style="display:block;width:92px;height:92px;object-fit:contain;margin:0 auto 8px">
             <h2 style="margin:5px 0;font-size:21px">शासकीय उच्चतर माध्यमिक विद्यालय</h2>
             <h2 style="margin:5px 0;font-size:21px">जी- जामगाँव (बालक माध्य.)</h2>
             <p style="margin:5px 0;font-size:13px">वि.ख. कुरुद, जिला धमतरी (छ.ग.)</p>
