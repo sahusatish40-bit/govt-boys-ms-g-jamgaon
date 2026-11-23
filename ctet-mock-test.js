@@ -37,11 +37,25 @@ function nextTestNo(){try{return (Number(localStorage.getItem(seriesKey())||"0")
 function begin(){
  if(l1.value===l2.value){alert("Language-I और Language-II अलग चुनें।");return}
  const bs=buckets();if(!bs.every(b=>b.items.length>=b.count)){alert("चुने गए प्रत्येक खंड में निर्धारित प्रश्न पूरे नहीं हैं।");return}
- const pool=bs.flatMap(b=>shuffle(b.items).slice(0,b.count));
- questions=shuffle(pool).map(q=>({...q,options:shuffle(q.options.map((v,i)=>({v,correct:i===q.answer}))) }));
+ const usedKey=seriesKey()+"_used_questions";
+ let used={};try{used=JSON.parse(localStorage.getItem(usedKey)||"{}");if(!used||typeof used!=="object"||Array.isArray(used))used={}}catch(e){used={}}
+ const selected=[];
+ for(const b of bs){
+  const bucketKey=b.section+"_"+(b.lang||"all");
+  const available=b.items.filter(q=>!((used[bucketKey]||[]).includes(String(q.id||q.q))));
+  // If this section has fewer unused questions than one test needs, start a fresh cycle for this section.
+  if(available.length<b.count)used[bucketKey]=[];
+  const fresh=b.items.filter(q=>!((used[bucketKey]||[]).includes(String(q.id||q.q))));
+  if(fresh.length<b.count){alert("प्रश्न बैंक में इस खंड के लिए पर्याप्त अलग-अलग प्रश्न नहीं हैं।");return}
+  const chosen=shuffle(fresh).slice(0,b.count);
+  selected.push(...chosen);
+  used[bucketKey]=[...(used[bucketKey]||[]),...chosen.map(q=>String(q.id||q.q))];
+ }
+ questions=shuffle(selected).map(q=>({...q,options:shuffle(q.options.map((v,i)=>({v,correct:i===q.answer}))) }));
+ try{localStorage.setItem(usedKey,JSON.stringify(used))}catch(e){alert("इस ब्राउज़र में No-Repeat रिकॉर्ड सेव नहीं हो पाया। प्रश्न दोहराए जा सकते हैं।")}
  answers={};review={};pos=0;seconds=5400;finished=false;currentTestNo=nextTestNo();try{localStorage.setItem(seriesKey(),String(currentTestNo))}catch(e){}
  $("ctetResult").classList.add("hidden");$("ctetExam").classList.remove("hidden");start.disabled=true;
- const testLabel=$("ctetTestNumber");if(testLabel)testLabel.textContent="Mock Test "+currentTestNo+" · क्रमांक "+currentTestNo;
+ const testLabel=$("ctetTestNumber");if(testLabel)testLabel.textContent="Mock Test "+currentTestNo+" · क्रमांक "+currentTestNo+" · No-Repeat चक्र";
  draw();tick=setInterval(()=>{seconds--;clock();if(seconds<=0)finish(true)},1000);
 }
 function clock(){$("ctetTimer").textContent=String(Math.floor(seconds/60)).padStart(2,"0")+":"+String(seconds%60).padStart(2,"0")}
