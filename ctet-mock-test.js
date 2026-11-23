@@ -8,10 +8,10 @@ const $=id=>document.getElementById(id);
 const languages=["अंग्रेज़ी","हिंदी","असमिया","बंगाली","गारो","गुजराती","कन्नड़","खासी","मलयालम","मणिपुरी","मराठी","मिज़ो","नेपाली","ओड़िया","पंजाबी","संस्कृत","तमिल","तेलुगु","तिब्बती","उर्दू","बोडो","डोगरी","कश्मीरी","कोंकणी","मैथिली","संथाली","सिंधी"];
 const langCodes=["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27"];
 const bank=()=>Array.isArray(window.CTET_QUESTION_BANK)?window.CTET_QUESTION_BANK:[];
-const paper=$("ctetPaper"),group=$("ctetGroup"),groupWrap=$("ctetGroupWrap"),l1=$("ctetLang1"),l2=$("ctetLang2"),start=$("ctetStart"),status=$("ctetBankStatus");
+const paper=$("ctetPaper"),group=$("ctetGroup"),groupWrap=$("ctetGroupWrap"),l1=$("ctetLang1"),l2=$("ctetLang2"),start=$("ctetStart"),status=$("ctetBankStatus"),candidateName=$("ctetCandidateName");
 if(!paper||!start)return;
 languages.forEach((name,i)=>{const o1=new Option(name+" ("+langCodes[i]+")",name),o2=new Option(name+" ("+langCodes[i]+")",name);l1.add(o1);l2.add(o2)});
-l1.value="हिंदी";l2.value="अंग्रेज़ी";
+l1.value="हिंदी";l2.value="अंग्रेज़ी";\ntry{if(candidateName)candidateName.value=localStorage.getItem("ss_ctet_candidate_name")||""}catch(e){}\nif(candidateName)candidateName.addEventListener("change",()=>{try{localStorage.setItem("ss_ctet_candidate_name",candidateName.value.trim())}catch(e){}});
 paper.addEventListener("change",()=>{groupWrap.classList.toggle("hidden",paper.value!=="II");refreshStatus()});
 [group,l1,l2].forEach(x=>x.addEventListener("change",refreshStatus));
 function buckets(){
@@ -35,7 +35,7 @@ function shuffle(a){const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math
 function seriesKey(){return "ss_ctet_series_"+paper.value+"_"+(paper.value==="II"?group.value:"all")+"_"+l1.value+"_"+l2.value}
 function nextTestNo(){try{return (Number(localStorage.getItem(seriesKey())||"0")+1)}catch(e){return 1}}
 function begin(){
- if(l1.value===l2.value){alert("Language-I और Language-II अलग चुनें।");return}
+ const studentName=candidateName?candidateName.value.trim():"";\n if(!studentName){alert("कृपया विद्यार्थी का पूरा नाम लिखें।");if(candidateName)candidateName.focus();return}\n try{localStorage.setItem("ss_ctet_candidate_name",studentName)}catch(e){}\n if(l1.value===l2.value){alert("Language-I और Language-II अलग चुनें।");return}
  const bs=buckets();if(!bs.every(b=>b.items.length>=b.count)){alert("चुने गए प्रत्येक खंड में निर्धारित प्रश्न पूरे नहीं हैं।");return}
  const usedKey=seriesKey()+"_used_questions";
  let used={};try{used=JSON.parse(localStorage.getItem(usedKey)||"{}");if(!used||typeof used!=="object"||Array.isArray(used))used={}}catch(e){used={}}
@@ -78,7 +78,7 @@ function renderHistory(){
   const row=document.createElement("div");row.className="entry";
   const title=document.createElement("strong");
   const paperName=item.paper==="II"?"Paper-II":"Paper-I";
-  title.textContent="Mock Test "+(item.testNo||"—")+" · "+paperName+(item.paper==="II"?(item.group==="social"?" · सामाजिक अध्ययन":" · गणित एवं विज्ञान"):"");
+  title.textContent=(item.studentName?item.studentName+" · ":"")+"Mock Test "+(item.testNo||"—")+" · "+paperName+(item.paper==="II"?(item.group==="social"?" · सामाजिक अध्ययन":" · गणित एवं विज्ञान"):"");
   const detail=document.createElement("p");
   const date=item.date?new Date(item.date).toLocaleString("hi-IN"):"तिथि उपलब्ध नहीं";
   detail.textContent=date+" · अंक: "+item.score+"/90 · सही: "+item.score+" · गलत: "+item.wrong+" · अनुत्तरित: "+item.unanswered;
@@ -92,12 +92,12 @@ function finish(auto){if(finished)return;finished=true;if(tick)clearInterval(tic
  const eligible=percentage>=60;
  const sheet=document.createElement("div");sheet.className="item";sheet.style.cssText="border:2px solid #087e78;border-radius:16px;padding:18px;margin:12px 0;background:#fbfefd";
  const head=document.createElement("div");head.style.cssText="text-align:center;border-bottom:2px solid #d7e9e6;padding-bottom:10px;margin-bottom:12px";
- const school=document.createElement("div");school.style.cssText="font-weight:800;color:#087e78;letter-spacing:.4px";school.textContent="SCHOOL SATHI · CTET PRACTICE";
+ const logo=document.createElement("img");logo.src="images/School_Mono.jpg";logo.alt="विद्यालय का मोनोग्राम";logo.style.cssText="width:82px;height:82px;object-fit:contain;display:block;margin:0 auto 8px";head.appendChild(logo);\n const school=document.createElement("div");school.style.cssText="font-weight:900;color:#123d59;line-height:1.5";school.textContent="शासकीय उच्चतर माध्यमिक विद्यालय जी- जामगाँव (बालक माध्य.)";\n const location=document.createElement("div");location.style.cssText="font-size:13px;color:#526979";location.textContent="वि.ख.:- कुरुद, जिला:- धमतरी (छ.ग.)";
  const title=document.createElement("h2");title.style.margin="6px 0";title.textContent="अभ्यास परीक्षा अंकसूची";
  const sub=document.createElement("div");sub.className="muted";sub.textContent="Mock Test "+currentTestNo+" · "+(auto?"समय पूरा — स्वतः जमा":"सफलतापूर्वक जमा");
- head.append(school,title,sub);sheet.appendChild(head);
+ head.append(school,location,title,sub);sheet.appendChild(head);
  const meta=document.createElement("div");meta.className="grid";
- const metaItems=[["परीक्षा","CTET Mock Test"],["पेपर",paper.value==="II"?"Paper-II (कक्षा 6–8)":"Paper-I (कक्षा 1–5)"],["विषय समूह",paper.value==="II"?(group.value==="social"?"सामाजिक अध्ययन":"गणित एवं विज्ञान"):"—"],["Language-I / II",l1.value+" / "+l2.value],["दिनांक एवं समय",new Date().toLocaleString("hi-IN")]];
+ const metaItems=[["विद्यार्थी का नाम",studentName],["परीक्षा","CTET Mock Test"],["पेपर",paper.value==="II"?"Paper-II (कक्षा 6–8)":"Paper-I (कक्षा 1–5)"],["विषय समूह",paper.value==="II"?(group.value==="social"?"सामाजिक अध्ययन":"गणित एवं विज्ञान"):"—"],["Language-I / II",l1.value+" / "+l2.value],["दिनांक एवं समय",new Date().toLocaleString("hi-IN")]];
  metaItems.forEach(([k,v])=>{const cell=document.createElement("div");cell.className="item";cell.style.padding="9px";const label=document.createElement("small");label.className="muted";label.textContent=k;const value=document.createElement("div");value.style.fontWeight="700";value.textContent=v;cell.append(label,value);meta.appendChild(cell)});sheet.appendChild(meta);
  const table=document.createElement("div");table.style.cssText="margin-top:14px;border:1px solid #dce8ee;border-radius:10px;overflow:hidden";
  const rows=[["विवरण","प्राप्तांक / कुल"],["सही उत्तर",correct+" / 90"],["गलत उत्तर",wrong],["अनुत्तरित प्रश्न",unanswered],["कुल प्राप्तांक",correct+" / 90"],["प्रतिशत",percentage.toFixed(2)+"%"]];
@@ -109,7 +109,7 @@ function finish(auto){if(finished)return;finished=true;if(tick)clearInterval(tic
  const h=document.createElement("h3");h.textContent="प्रश्नों की उत्तर-समीक्षा";r.appendChild(h);
  questions.forEach((q,i)=>{const d=document.createElement("div");d.className="entry";const chosen=answers[i];const isCorrect=chosen!==undefined&&q.options[chosen].correct;d.style.border="1px solid "+(isCorrect?"#b8e3c2": "#f0b5b5");d.style.borderLeft="6px solid "+(isCorrect?"#218838":"#dc3545");d.style.background=isCorrect?"#f0fff4":"#fff1f1";d.style.borderRadius="10px";d.style.padding="12px";d.style.margin="10px 0";const title=document.createElement("strong");title.style.color=isCorrect?"#176b36":"#b4232d";title.textContent=(i+1)+". "+q.q;const detail=document.createElement("p");detail.style.color=isCorrect?"#176b36":"#b4232d";detail.style.fontWeight="700";detail.textContent=(isCorrect?"✓ सही उत्तर":"✗ गलत उत्तर")+" · आपका उत्तर: "+(chosen===undefined?"नहीं दिया":q.options[chosen].v)+" | सही उत्तर: "+q.options.find(x=>x.correct).v;const ex=document.createElement("p");ex.className="muted";ex.textContent=q.explanation||"व्याख्या शीघ्र जोड़ी जाएगी।";d.append(title,detail,ex);r.appendChild(d)});
  const again=document.createElement("button");again.textContent="नया Mock Test";again.addEventListener("click",()=>{r.classList.add("hidden");start.disabled=false;refreshStatus()});r.prepend(again);
- try{const history=JSON.parse(localStorage.getItem("ss_ctet_attempts_v1")||"[]");history.unshift({date:new Date().toISOString(),testNo:currentTestNo,paper:paper.value,group:group.value,language1:l1.value,language2:l2.value,score:correct,wrong,unanswered,percentage:Number(percentage.toFixed(2)),eligibility:eligible?"Eligible":"Not Eligible"});localStorage.setItem("ss_ctet_attempts_v1",JSON.stringify(history.slice(0,30)));renderHistory()}catch(e){}
+ try{const history=JSON.parse(localStorage.getItem("ss_ctet_attempts_v1")||"[]");history.unshift({date:new Date().toISOString(),studentName,paper:paper.value,testNo:currentTestNo,group:group.value,language1:l1.value,language2:l2.value,score:correct,wrong,unanswered,percentage:Number(percentage.toFixed(2)),eligibility:eligible?"Eligible":"Not Eligible"});localStorage.setItem("ss_ctet_attempts_v1",JSON.stringify(history.slice(0,30)));renderHistory()}catch(e){}
 }
 $("ctetPrev").addEventListener("click",()=>{if(pos>0){pos--;draw()}});
 $("ctetNext").addEventListener("click",()=>{if(pos<89){pos++;draw()}});
