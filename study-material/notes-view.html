@@ -22,7 +22,7 @@ small{color:#61758a}.back{display:inline-block;margin-top:8px;color:#fff}
 .study-tip{background:#fff8df;border-left:5px solid #f0b429;padding:12px 14px;border-radius:10px;margin:14px 0}
 @media(max-width:520px){.poster-points{grid-template-columns:1fr}.learning-poster{padding:18px}.learning-poster h2{font-size:22px}}
 @media print{body{background:#fff}.poster-tools,header a{display:none!important}main{padding:0}.learning-poster{box-shadow:none;break-inside:avoid;print-color-adjust:exact;-webkit-print-color-adjust:exact}.panel:not(.print-keep){display:none!important}}
-</style></head><body><header><div style="font-size:34px" id="icon">📚</div><h1 id="heading">महत्वपूर्ण नोट्स</h1><div class="meta" id="subheading"></div><a class="back" href="/govt-boys-ms-g-jamgaon/study-material/important-notes/">← विषय सूची पर वापस जाएँ</a></header>
+.visual-poster-wrap{margin:16px 0;background:#fff;border:1px solid #dce6ef;border-radius:18px;padding:10px;box-shadow:0 8px 24px #17324d12}.visual-poster-wrap img{display:block;width:100%;height:auto;border-radius:13px}.poster-caption{text-align:center;font-weight:700;color:#31516d;padding:9px 4px 3px;font-size:14px}</style></head><body><header><div style="font-size:34px" id="icon">📚</div><h1 id="heading">महत्वपूर्ण नोट्स</h1><div class="meta" id="subheading"></div><a class="back" href="/govt-boys-ms-g-jamgaon/study-material/important-notes/">← विषय सूची पर वापस जाएँ</a></header>
 <main><div class="panel"><strong>चुनिंदा महत्वपूर्ण नोट्स</strong><p>कम शब्दों में जरूरी बातें याद करें। पहले मुख्य बिंदु पढ़ें, फिर उदाहरण देखें और अंत में स्वयं जाँचें। यह पृष्ठ लंबे अध्यायों के बजाय त्वरित दोहराव के लिए है। कक्षा 6वीं में आधारभूत समझ, 7वीं में अवधारणा का उपयोग और 8वीं में थोड़ा गहरा अभ्यास ध्यान में रखें।</p></div>
 <div id="posterTools" class="poster-tools"><button onclick="window.print()">🖨️ पोस्टर प्रिंट करें</button></div><section id="visualPoster" class="learning-poster print-keep" aria-label="विषयवार शैक्षणिक पोस्टर"></section><div class="study-tip"><b>🌟 पढ़ने का आसान तरीका:</b> पहले पोस्टर देखें, फिर मुख्य बातें पढ़ें, उदाहरण समझें और अंत में स्वयं जाँचें।</div><section class="panel"><h2>📌 मुख्य बातें</h2><div id="notes"></div></section>
 <section class="panel"><h2>✏️ उदाहरण / याद रखने योग्य बातें</h2><div id="examples"></div></section>
@@ -130,7 +130,7 @@ sports:["स्वस्थ शरीर, मजबूत मन","सुरक�
 skill:["कौशल से समाधान","योजना बनाएँ • मिलकर करें • सुधारें",["समस्या","पहचानें","योजना","चरण तय करें","सहयोग","जिम्मेदारी बाँटें","समीक्षा","सीख और सुधार"]]
 };
 const poster=posterContent[activeKey]||posterContent.hindi;
-document.getElementById("visualPoster").innerHTML="<div class='poster-kicker'>SMART LEARNING • कक्षा "+activeGrade+"वीं</div><h2>"+poster[0]+"</h2><p class='poster-lead'>"+poster[1]+"</p><div class='poster-points'>"+[0,1,2,3].map(i=>"<div class='poster-point'><b>"+poster[2][i*2]+"</b>"+poster[2][i*2+1]+"</div>").join("")+"</div><div class='poster-footer'>शासकीय उच्चतर माध्यमिक विद्यालय जी- जामगाँव (बालक माध्य.) • सीखें और आगे बढ़ें!</div>";
+document.getElementById("visualPoster").innerHTML="<div class='visual-poster-wrap'><img src='/govt-boys-ms-g-jamgaon/study-material/important-notes/posters/"+activeKey+".svg' alt='"+poster[0]+" विषय का रंगीन शैक्षणिक पोस्टर' loading='lazy'><div class='poster-caption'>🌟 पोस्टर देखें, याद करें और सीखें!</div></div>";
 document.title=s[1]+" — कक्षा "+activeGrade+" महत्वपूर्ण नोट्स";
 document.getElementById("icon").textContent=s[0];
 document.getElementById("heading").textContent=s[1]+" — महत्वपूर्ण नोट्स";
