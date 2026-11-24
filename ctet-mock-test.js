@@ -159,12 +159,17 @@ function renderHistory(){
   row.append(title,detail,langs,document.createElement("br"),view,sheet);box.appendChild(row);
  });
 }
+window.printCTETMarksheet=function(){
+ const style=document.createElement("style");style.id="ctet-print-only-style";
+ style.textContent="@page{size:A4 portrait;margin:8mm}@media print{body *{visibility:hidden!important}.ctet-mark-sheet,.ctet-mark-sheet *{visibility:visible!important}.ctet-mark-sheet{position:absolute!important;left:0!important;top:0!important;width:100%!important;margin:0!important;padding:10px!important;box-sizing:border-box!important;break-inside:avoid!important}.ctet-mark-sheet img{width:58px!important;height:58px!important}.ctet-mark-sheet .grid{gap:5px!important}.ctet-mark-sheet .item{padding:5px!important}.ctet-mark-sheet table,.ctet-mark-sheet p,.ctet-mark-sheet h2,.ctet-mark-sheet h3{margin-top:4px!important;margin-bottom:4px!important}.ctet-mark-sheet .muted{font-size:10px!important}#ctetResult>button,#ctetResult>.entry,#ctetResult>h3{display:none!important}}";
+ document.head.appendChild(style);window.print();setTimeout(()=>style.remove(),1200);
+};
 window.addEventListener("afterprint",()=>document.body.classList.remove("history-print"));
 function finish(auto){if(finished)return;finished=true;if(tick)clearInterval(tick);let correct=0;questions.forEach((q,i)=>{if(answers[i]!==undefined&&q.options[answers[i]].correct)correct++});const wrong=Object.keys(answers).length-correct,unanswered=90-Object.keys(answers).length;
  $("ctetExam").classList.add("hidden");const r=$("ctetResult");r.classList.remove("hidden");r.innerHTML="";
  const percentage=(correct/90)*100;
  const eligible=percentage>=60;
- const sheet=document.createElement("div");sheet.className="item";sheet.style.cssText="border:2px solid #087e78;border-radius:16px;padding:18px;margin:12px 0;background:#fbfefd";
+ const sheet=document.createElement("div");sheet.className="item ctet-mark-sheet";sheet.style.cssText="border:2px solid #087e78;border-radius:16px;padding:18px;margin:12px 0;background:#fbfefd";
  const head=document.createElement("div");head.style.cssText="text-align:center;border-bottom:2px solid #d7e9e6;padding-bottom:10px;margin-bottom:12px";
  const logo=document.createElement("img");logo.src="images/School_Mono.jpg";logo.alt="विद्यालय का मोनोग्राम";logo.style.cssText="width:82px;height:82px;object-fit:contain;display:block;margin:0 auto 8px";head.appendChild(logo);
  const school=document.createElement("div");school.style.cssText="font-weight:900;color:#123d59;line-height:1.5";school.textContent="शासकीय उच्चतर माध्यमिक विद्यालय जी- जामगाँव (बालक माध्य.)";
@@ -187,7 +192,8 @@ function finish(auto){if(finished)return;finished=true;if(tick)clearInterval(tic
  verdict.textContent=eligible?"✓ ELIGIBLE":"✗ NOT ELIGIBLE";sheet.appendChild(verdict);
  const note=document.createElement("p");note.className="muted";note.style.textAlign="center";note.textContent="पात्रता मानदंड: 60% (54/90 अंक) · यह केवल अभ्यास टेस्ट का परिणाम है, आधिकारिक CTET पात्रता प्रमाणपत्र नहीं।";sheet.appendChild(note);
  r.appendChild(sheet);
- const h=document.createElement("h3");h.textContent="प्रश्नों की उत्तर-समीक्षा";r.appendChild(h);
+ const printMark=document.createElement("button");printMark.type="button";printMark.textContent="🖨️ केवल अंकसूची प्रिंट / PDF";printMark.style.margin="10px 0";printMark.addEventListener("click",()=>window.printCTETMarksheet());r.appendChild(printMark);
+ const h=document.createElement("h3");h.textContent="प्रश्नों की उत्तर-समीक्षा (स्क्रीन पर देखें; प्रिंट में शामिल नहीं)";r.appendChild(h);
  questions.forEach((q,i)=>{const d=document.createElement("div");d.className="entry";const chosen=answers[i];const isCorrect=chosen!==undefined&&q.options[chosen].correct;d.style.border="1px solid "+(isCorrect?"#b8e3c2": "#f0b5b5");d.style.borderLeft="6px solid "+(isCorrect?"#218838":"#dc3545");d.style.background=isCorrect?"#f0fff4":"#fff1f1";d.style.borderRadius="10px";d.style.padding="12px";d.style.margin="10px 0";const title=document.createElement("strong");title.style.color=isCorrect?"#176b36":"#b4232d";title.textContent=(i+1)+". "+q.q;const detail=document.createElement("p");detail.style.color=isCorrect?"#176b36":"#b4232d";detail.style.fontWeight="700";detail.textContent=(isCorrect?"✓ सही उत्तर":"✗ गलत उत्तर")+" · आपका उत्तर: "+(chosen===undefined?"नहीं दिया":q.options[chosen].v)+" | सही उत्तर: "+q.options.find(x=>x.correct).v;const ex=document.createElement("p");ex.className="muted";ex.textContent=q.explanation||"व्याख्या शीघ्र जोड़ी जाएगी।";d.append(title,detail,ex);r.appendChild(d)});
  const again=document.createElement("button");again.textContent="नया Mock Test";again.addEventListener("click",()=>{r.classList.add("hidden");start.disabled=false;refreshStatus()});r.prepend(again);
  const savedAttempt={date:new Date().toISOString(),studentName:activeStudentName,paper:paper.value,testNo:currentTestNo,group:group.value,language1:l1.value,language2:l2.value,score:correct,wrong,unanswered,percentage:Number(percentage.toFixed(2)),eligibility:eligible?"Eligible":"Not Eligible",sectionMarks};
