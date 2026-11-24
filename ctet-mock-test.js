@@ -165,6 +165,8 @@ function openCTETPrintWindow(sheet){
  if(!win){alert("प्रिंट विंडो नहीं खुल सकी। कृपया इस साइट के लिए pop-up अनुमति दें।");return;}
  const clone=sheet.cloneNode(true);
  clone.querySelectorAll("button").forEach(el=>el.remove());
+ let printed=false;
+ const doPrint=()=>{if(printed)return;printed=true;win.focus();win.print();};
  win.document.open();
  win.document.write(`<!doctype html><html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CTET अभ्यास अंकसूची</title><style>
  @page{size:A4 portrait;margin:8mm}*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -176,9 +178,10 @@ function openCTETPrintWindow(sheet){
  .grid{gap:5px!important}.item{padding:5px!important}
  p,h2,h3{margin-top:4px!important;margin-bottom:4px!important}
  .muted{font-size:10px!important}
- </style></head><body></body></html>`);
- win.document.body.appendChild(clone);win.document.close();
- win.onload=()=>{win.focus();setTimeout(()=>win.print(),350);};
+ </style></head><body>${clone.outerHTML}</body></html>`);
+ win.onload=doPrint;
+ win.document.close();
+ setTimeout(doPrint,1200);
 }
 window.printCTETHistoryMarksheet=function(sheet){openCTETPrintWindow(sheet);};
 window.printCTETMarksheet=function(){
