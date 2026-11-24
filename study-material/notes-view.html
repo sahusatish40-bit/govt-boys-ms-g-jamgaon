@@ -8,9 +8,23 @@ main{max-width:900px;margin:auto;padding:18px}.panel{background:white;border:1px
 h1{font-size:23px;margin:5px}h2{font-size:19px;margin:0 0 10px}.meta{opacity:.9}
 ul,ol{padding-left:24px}.question{background:#eef5fb;border-radius:10px;padding:12px;margin:10px 0}
 small{color:#61758a}.back{display:inline-block;margin-top:8px;color:#fff}
+.learning-poster{position:relative;overflow:hidden;border-radius:20px;padding:22px;margin:16px 0;color:#fff;background:linear-gradient(135deg,#164e63,#2563a6 58%,#6d4ab3);box-shadow:0 10px 25px #17324d20}
+.learning-poster:after{content:"✦";position:absolute;right:18px;top:0;font-size:92px;opacity:.13}
+.poster-kicker{font-size:12px;letter-spacing:1.5px;font-weight:bold;opacity:.9}
+.learning-poster h2{font-size:25px;margin:4px 0 12px;color:#fff}
+.poster-lead{font-size:15px;font-weight:600;margin:0 0 14px}
+.poster-points{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.poster-point{background:#ffffff20;border:1px solid #ffffff40;border-radius:12px;padding:11px;font-size:14px;line-height:1.5}
+.poster-point b{display:block;font-size:12px;color:#ffedaa;margin-bottom:3px}
+.poster-footer{margin-top:14px;font-size:12px;opacity:.9}
+.poster-tools{display:flex;justify-content:flex-end;margin:8px 0}
+.poster-tools button{border:0;border-radius:20px;padding:9px 15px;background:#173c63;color:#fff;font-weight:bold}
+.study-tip{background:#fff8df;border-left:5px solid #f0b429;padding:12px 14px;border-radius:10px;margin:14px 0}
+@media(max-width:520px){.poster-points{grid-template-columns:1fr}.learning-poster{padding:18px}.learning-poster h2{font-size:22px}}
+@media print{body{background:#fff}.poster-tools,header a{display:none!important}main{padding:0}.learning-poster{box-shadow:none;break-inside:avoid;print-color-adjust:exact;-webkit-print-color-adjust:exact}.panel:not(.print-keep){display:none!important}}
 </style></head><body><header><div style="font-size:34px" id="icon">📚</div><h1 id="heading">महत्वपूर्ण नोट्स</h1><div class="meta" id="subheading"></div><a class="back" href="/govt-boys-ms-g-jamgaon/study-material/important-notes/">← विषय सूची पर वापस जाएँ</a></header>
 <main><div class="panel"><strong>चुनिंदा महत्वपूर्ण नोट्स</strong><p>कम शब्दों में जरूरी बातें याद करें। पहले मुख्य बिंदु पढ़ें, फिर उदाहरण देखें और अंत में स्वयं जाँचें। यह पृष्ठ लंबे अध्यायों के बजाय त्वरित दोहराव के लिए है। कक्षा 6वीं में आधारभूत समझ, 7वीं में अवधारणा का उपयोग और 8वीं में थोड़ा गहरा अभ्यास ध्यान में रखें।</p></div>
-<section class="panel"><h2>📌 मुख्य बातें</h2><div id="notes"></div></section>
+<div id="posterTools" class="poster-tools"><button onclick="window.print()">🖨️ पोस्टर प्रिंट करें</button></div><section id="visualPoster" class="learning-poster print-keep" aria-label="विषयवार शैक्षणिक पोस्टर"></section><div class="study-tip"><b>🌟 पढ़ने का आसान तरीका:</b> पहले पोस्टर देखें, फिर मुख्य बातें पढ़ें, उदाहरण समझें और अंत में स्वयं जाँचें।</div><section class="panel"><h2>📌 मुख्य बातें</h2><div id="notes"></div></section>
 <section class="panel"><h2>✏️ उदाहरण / याद रखने योग्य बातें</h2><div id="examples"></div></section>
 <section class="panel"><h2>🧠 स्वयं जाँचें</h2><div id="quiz"></div></section>
 <p><small>विद्यालय: शासकीय उच्चतर माध्यमिक विद्यालय जी- जामगाँव (बालक माध्य.), वि.ख. कुरुद, जिला धमतरी (छ.ग.)</small></p>
@@ -104,6 +118,19 @@ const gradeQuestions={
 "8":{hindi:["उपसर्ग और प्रत्यय में अंतर लिखिए।","औपचारिक पत्र के दो आवश्यक भाग लिखिए।"],english:["Write one sentence in present perfect tense.","What are the parts of a good paragraph?"],sanskrit:["लट् लकार किस काल का बोध कराता है?","विभक्ति का क्या कार्य है?"],maths:["पाइथागोरस प्रमेय लिखिए।","n भुजाओं वाले बहुभुज के कोणों का योग सूत्र लिखिए।"],science:["बल के दो प्रभाव लिखिए।","कोशिका को जीवों की मूल इकाई क्यों कहते हैं?"],"social-science":["संविधान का एक प्रमुख कार्य लिखिए।","संसाधन किसे कहते हैं?"]}};
 const questions=(gradeQuestions[activeGrade]||gradeQuestions["6"])[activeKey]||s[3][2];
 s[3][2]=questions;
+const posterContent={
+hindi:["शब्दों से वाक्य तक","भाषा को समझें • सही लिखें • खुलकर बोलें",["संज्ञा","नाम बताने वाले शब्द","सर्वनाम","संज्ञा के स्थान पर","क्रिया","काम या अवस्था","विशेषण","गुण या विशेषता"]],
+english:["Build Your English","Read • Understand • Speak • Write",["Noun","Names a person/place/thing","Pronoun","Replaces a noun","Verb","Action or state","Adjective","Describes a noun"]],
+sanskrit:["संस्कृत भाषा की सीढ़ी","शब्द पहचानें • रूप समझें • वाक्य बनाएँ",["अहम्","मैं","त्वम्","तुम","पठति","पढ़ता/पढ़ती है","गच्छति","जाता/जाती है"]],
+maths:["गणित: समझें और हल करें","सोचें • तरीका चुनें • हल जाँचें",["जोड़ (+)","मात्राएँ मिलाएँ","घटाव (−)","अंतर ज्ञात करें","गुणा (×)","बार-बार जोड़","भाग (÷)","बराबर बाँटें"]],
+science:["विज्ञान: प्रश्न से खोज तक","देखें • प्रश्न पूछें • प्रयोग करें • निष्कर्ष निकालें",["अवलोकन","ध्यान से देखें","प्रश्न","क्या और क्यों?","प्रयोग","सुरक्षित जाँच","निष्कर्ष","प्रमाण के आधार पर"]],
+"social-science":["हमारा समाज और संसार","अतीत • पृथ्वी • शासन • नागरिक जीवन",["इतिहास","अतीत का अध्ययन","भूगोल","पृथ्वी और पर्यावरण","नागरिक शास्त्र","शासन और अधिकार","मानचित्र","दिशा और संकेत"]],
+arts:["कला के चार रंग","कल्पना को रचना में बदलें",["रेखा","आकृति बनाए","आकार","रूप दिखाए","रंग","भाव जगाए","बनावट","स्पर्श/दृश्य प्रभाव"]],
+sports:["स्वस्थ शरीर, मजबूत मन","सुरक्षा • अभ्यास • अनुशासन • खेल भावना",["वार्म-अप","शरीर तैयार करें","अभ्यास","नियमित रहें","जल","पर्याप्त पानी पिएँ","खेल भावना","नियम और सम्मान"]],
+skill:["कौशल से समाधान","योजना बनाएँ • मिलकर करें • सुधारें",["समस्या","पहचानें","योजना","चरण तय करें","सहयोग","जिम्मेदारी बाँटें","समीक्षा","सीख और सुधार"]]
+};
+const poster=posterContent[activeKey]||posterContent.hindi;
+document.getElementById("visualPoster").innerHTML="<div class='poster-kicker'>SMART LEARNING • कक्षा "+activeGrade+"वीं</div><h2>"+poster[0]+"</h2><p class='poster-lead'>"+poster[1]+"</p><div class='poster-points'>"+[0,1,2,3].map(i=>"<div class='poster-point'><b>"+poster[2][i*2]+"</b>"+poster[2][i*2+1]+"</div>").join("")+"</div><div class='poster-footer'>शासकीय उच्चतर माध्यमिक विद्यालय जी- जामगाँव (बालक माध्य.) • सीखें और आगे बढ़ें!</div>";
 document.title=s[1]+" — कक्षा "+activeGrade+" महत्वपूर्ण नोट्स";
 document.getElementById("icon").textContent=s[0];
 document.getElementById("heading").textContent=s[1]+" — महत्वपूर्ण नोट्स";
