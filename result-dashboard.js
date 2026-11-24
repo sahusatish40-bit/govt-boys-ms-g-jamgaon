@@ -240,12 +240,19 @@
 window.printStudentMarksheet = function () {
   const card = document.querySelector("#personalResultOutput .report-card");
   if (!card) { alert("पहले विद्यार्थी की अंकसूची खोलें।"); return; }
-  const printWindow = window.open("", "_blank");
-  if (!printWindow) { alert("प्रिंट विंडो नहीं खुल सकी। कृपया इस साइट के लिए pop-up अनुमति दें।"); return; }
   const clone = card.cloneNode(true);
   clone.querySelectorAll("button,.no-print").forEach(el => el.remove());
-  printWindow.document.open();
-  printWindow.document.write(`<!doctype html><html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>विद्यार्थी अंकसूची</title><style>
+  const win = window.open("", "_blank");
+  if (!win) { alert("प्रिंट विंडो नहीं खुल सकी। कृपया इस साइट के लिए pop-up अनुमति दें।"); return; }
+  let printed = false;
+  const doPrint = () => {
+    if (printed) return;
+    printed = true;
+    win.focus();
+    win.print();
+  };
+  win.document.open();
+  win.document.write(`<!doctype html><html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>विद्यार्थी अंकसूची</title><style>
     @page{size:A4 portrait;margin:7mm}
     *{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
     body{margin:0;padding:0;font-family:Arial,sans-serif;background:#fff;color:#172554}
@@ -262,10 +269,10 @@ window.printStudentMarksheet = function () {
     .report-card [style*="margin-top:18px"]{margin-top:5px!important;padding:5px!important;line-height:1.4!important}
     .report-card>div[style*="border:1px solid"]{display:none!important}
     .report-card p{margin:4px 0!important}
-  </style></head><body></body></html>`);
-  printWindow.document.body.appendChild(clone);
-  printWindow.document.close();
-  printWindow.onload = () => { printWindow.focus(); setTimeout(() => { printWindow.print(); }, 350); };
+  </style></head><body>${clone.outerHTML}</body></html>`);
+  win.onload = doPrint;
+  win.document.close();
+  setTimeout(doPrint, 1200);
 };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initResultDashboard);
   else initResultDashboard();
