@@ -90,14 +90,24 @@ science:["बल किसी वस्तु की गति या आका�
 "social-science":["संविधान शासन की मूल व्यवस्था, नागरिक अधिकारों और संस्थाओं का आधार है।","संसाधन वे वस्तुएँ/साधन हैं जिनका उपयोग मानव आवश्यकताओं की पूर्ति में होता है।","औपनिवेशिक शासन ने भारत की अर्थव्यवस्था और समाज में व्यापक परिवर्तन किए।"]
 }
 };
-const s=subjects[key]||subjects.hindi;
-const extra=(gradeNotes[grade]||gradeNotes[6])[key];
+const validGrades=["6","7","8"];
+const activeGrade=validGrades.includes(grade)?grade:"6";
+const validKeys=activeGrade==="8"?["hindi","english","sanskrit","maths","science","social-science"]:Object.keys(subjects);
+const activeKey=validKeys.includes(key)?key:"hindi";
+const s=subjects[activeKey];
+const gradePack=gradeNotes[activeGrade]||gradeNotes["6"];
+const extra=gradePack[activeKey];
 if(extra){s[3][0]=extra;}
-const s=subjects[key]||subjects.hindi;
-document.title=s[1]+" — कक्षा "+grade+" महत्वपूर्ण नोट्स";
+const gradeQuestions={
+"6":{hindi:["भाषा के चार कौशल कौन-कौन से हैं?","‘सीमा खेलती है’ वाक्य में संज्ञा और क्रिया पहचानिए।"],english:["Write one sentence using ‘is’.","Identify the noun in: ‘The child plays.’"],sanskrit:["‘अहम्’ और ‘त्वम्’ के अर्थ लिखिए।","‘गच्छति’ का अर्थ क्या है?"],maths:["भिन्न में अंश कहाँ लिखा जाता है?","समकोण कितने अंश का होता है?"],science:["पदार्थ की तीन अवस्थाएँ लिखिए।","पौधे का कौन-सा भाग जल सोखता है?"],"social-science":["ग्लोब किसका मॉडल है?","इतिहास के दो स्रोत लिखिए।"],arts:["चित्रकला के दो मूल तत्व लिखिए।","अपनी कृति के लिए एक विषय बताइए।"],sports:["वार्म-अप क्यों जरूरी है?","खेल में नियमों का पालन क्यों करें?"],skill:["योजना बनाते समय कौन-सी तीन बातें लिखेंगे?","समूह कार्य में जिम्मेदारी बाँटना क्यों जरूरी है?"]},
+"7":{hindi:["विशेषण किसे कहते हैं?","काल के तीन भेद लिखिए।"],english:["Write one sentence in simple present tense.","What does an adverb describe?"],sanskrit:["‘अस्ति’ और ‘सन्ति’ के अर्थ लिखिए।","द्विवचन का एक उदाहरण दीजिए।"],maths:["त्रिभुज के कोणों का योग कितना होता है?","अनुपात किसे कहते हैं?"],science:["प्रकाश-संश्लेषण क्या है?","भौतिक परिवर्तन का एक उदाहरण दीजिए।"],"social-science":["अक्षांश किसे कहते हैं?","लोकतंत्र में प्रतिनिधि कैसे चुने जाते हैं?"],arts:["सममिति से क्या समझते हैं?","कला-कृति में संदेश क्यों स्पष्ट होना चाहिए?"],sports:["शारीरिक क्षमता के दो घटक लिखिए।","खेल भावना का एक उदाहरण दीजिए।"],skill:["समस्या के कारण पहचानना क्यों जरूरी है?","कार्य-विभाजन से क्या लाभ है?"]},
+"8":{hindi:["उपसर्ग और प्रत्यय में अंतर लिखिए।","औपचारिक पत्र के दो आवश्यक भाग लिखिए।"],english:["Write one sentence in present perfect tense.","What are the parts of a good paragraph?"],sanskrit:["लट् लकार किस काल का बोध कराता है?","विभक्ति का क्या कार्य है?"],maths:["पाइथागोरस प्रमेय लिखिए।","n भुजाओं वाले बहुभुज के कोणों का योग सूत्र लिखिए।"],science:["बल के दो प्रभाव लिखिए।","कोशिका को जीवों की मूल इकाई क्यों कहते हैं?"],"social-science":["संविधान का एक प्रमुख कार्य लिखिए।","संसाधन किसे कहते हैं?"]}};
+const questions=(gradeQuestions[activeGrade]||gradeQuestions["6"])[activeKey]||s[3][2];
+s[3][2]=questions;
+document.title=s[1]+" — कक्षा "+activeGrade+" महत्वपूर्ण नोट्स";
 document.getElementById("icon").textContent=s[0];
 document.getElementById("heading").textContent=s[1]+" — महत्वपूर्ण नोट्स";
-document.getElementById("subheading").textContent="कक्षा "+grade+"वीं | "+s[2];
+document.getElementById("subheading").textContent="कक्षा "+activeGrade+"वीं | "+s[2];
 document.getElementById("notes").innerHTML="<ul>"+s[3][0].map(x=>"<li>"+x+"</li>").join("")+"</ul>";
 document.getElementById("examples").innerHTML="<ul>"+s[3][1].map(x=>"<li>"+x+"</li>").join("")+"</ul>";
 document.getElementById("quiz").innerHTML="<ol>"+s[3][2].map(x=>"<li>"+x+"</li>").join("")+"</ol>";
