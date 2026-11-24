@@ -1,43 +1,81 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200">
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="2000" viewBox="0 0 1600 2000">
 <defs>
- <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#092b67"/><stop offset=".52" stop-color="#087e9b"/><stop offset="1" stop-color="#16a085"/></linearGradient>
- <linearGradient id="sun"><stop stop-color="#fff7ad"/><stop offset="1" stop-color="#ffb703"/></linearGradient>
- <filter id="sh" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="8" stdDeviation="9" flood-color="#06294a" flood-opacity=".22"/></filter>
- <style>.h{font-family:'Noto Sans Devanagari',Arial,sans-serif;font-weight:700}.t{font-family:'Noto Sans Devanagari',Arial,sans-serif}.body{font-family:'Noto Sans Devanagari',Arial,sans-serif;font-size:25px;fill:#18324b}.small{font-family:'Noto Sans Devanagari',Arial,sans-serif;font-size:20px;fill:#29445b}</style>
+ <linearGradient id="head" x2="1" y2="1"><stop stop-color="#062b66"/><stop offset="1" stop-color="#0876a8"/></linearGradient>
+ <linearGradient id="gold" x2="1" y2="1"><stop stop-color="#fff36b"/><stop offset="1" stop-color="#ffbd32"/></linearGradient>
+ <filter id="shadow" x="-15%" y="-15%" width="130%" height="140%"><feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#26364a" flood-opacity=".22"/></filter>
+ <style>
+ .h{font-family:'Noto Sans Devanagari',sans-serif;font-weight:800}.t{font-family:'Noto Sans Devanagari',sans-serif}
+ .body{font-family:'Noto Sans Devanagari',sans-serif;font-size:25px;fill:#172b43}
+ .small{font-family:'Noto Sans Devanagari',sans-serif;font-size:21px;fill:#263b50}
+ .head{font-family:'Noto Sans Devanagari',sans-serif;font-weight:800;font-size:31px;fill:white}
+ </style>
 </defs>
-<rect width="1600" height="1200" fill="#e9f1f8"/><rect x="18" y="18" width="1564" height="1164" rx="34" fill="url(#bg)"/>
-<circle cx="1450" cy="100" r="170" fill="#fff" opacity=".07"/><circle cx="110" cy="1080" r="180" fill="#fff" opacity=".06"/>
-<text x="65" y="58" fill="#fff" font-size="25" class="h">शासकीय उच्चतर माध्यमिक विद्यालय जी-जामगाँव (बालक माध्य.)</text>
-<text x="65" y="91" fill="#d8f3ff" font-size="20" class="t">वि.ख. कुरुद • जिला धमतरी (छ.ग.)</text>
-<rect x="55" y="120" width="1490" height="150" rx="28" fill="url(#sun)" filter="url(#sh)"/>
-<text x="90" y="165" font-size="25" fill="#78350f" class="h">कक्षा 6वीं  |  हिंदी  |  NCERT – मल्हार  |  पाठ 1</text>
-<text x="90" y="235" font-size="66" fill="#102b50" class="h">मातृभूमि</text>
-<g transform="translate(1320 145)"><circle cx="75" cy="50" r="53" fill="#fff" opacity=".7"/><path d="M75 9 L87 38 L118 40 L94 59 L102 89 L75 72 L48 89 L56 59 L32 40 L63 38Z" fill="#f97316"/></g>
-<!-- Main illustration -->
-<rect x="55" y="300" width="1490" height="300" rx="25" fill="#f7fbff" filter="url(#sh)"/>
-<text x="85" y="345" font-size="29" fill="#075985" class="h">भारत की प्राकृतिक सुंदरता और सांस्कृतिक गौरव</text>
-<!-- mountains -->
-<path d="M100 520 L260 365 L390 520Z" fill="#9db9cb"/><path d="M220 520 L405 345 L575 520Z" fill="#6e91a8"/><path d="M355 520 L510 390 L655 520Z" fill="#aac4d2"/>
-<path d="M220 405 L260 365 L300 410 L272 400 L258 420 L244 400Z" fill="#fff"/><path d="M405 385 L405 345 L450 390 L423 380Z" fill="#fff"/>
-<path d="M80 540 Q280 495 470 540 T820 540" fill="none" stroke="#0ea5e9" stroke-width="17" stroke-linecap="round"/>
-<path d="M700 520 Q850 420 1000 520 T1300 520" fill="none" stroke="#16a34a" stroke-width="13"/>
-<circle cx="1190" cy="410" r="48" fill="#fbbf24"/><path d="M1090 520 Q1190 420 1290 520Z" fill="#15803d"/><rect x="1178" y="485" width="24" height="60" fill="#854d0e"/>
-<path d="M1360 520 L1410 435 L1460 520Z" fill="#c084fc"/><path d="M1400 450 L1410 435 L1420 452Z" fill="#fff"/>
-<text x="90" y="575" class="small">हिमालय</text><text x="490" y="575" class="small">नदियाँ</text><text x="875" y="575" class="small">हरियाली</text><text x="1330" y="575" class="small">प्रकृति</text>
-<!-- four learning panels -->
-<g filter="url(#sh)">
-<rect x="55" y="630" width="710" height="210" rx="22" fill="#fff"/>
-<rect x="790" y="630" width="755" height="210" rx="22" fill="#fff"/>
-<rect x="55" y="865" width="710" height="205" rx="22" fill="#fff"/>
-<rect x="790" y="865" width="755" height="205" rx="22" fill="#fff"/>
+<rect width="1600" height="2000" fill="#edf3fa"/><rect x="10" y="10" width="1580" height="1980" rx="30" fill="#fff" stroke="#153b77" stroke-width="10"/>
+<rect x="20" y="20" width="1560" height="165" rx="24" fill="url(#head)"/>
+<g transform="translate(55 45)"><circle cx="55" cy="55" r="48" fill="#facc15"/><path d="M55 13 L65 43 L97 43 L72 62 L81 94 L55 75 L29 94 L38 62 L13 43 L45 43Z" fill="#fff"/></g>
+<text x="800" y="82" text-anchor="middle" font-size="54" fill="#fff36b" class="h">GOVT. HSS G-JAMGAON (BOYS MS)</text>
+<text x="800" y="132" text-anchor="middle" font-size="29" fill="white" class="h">वि.ख. – कुरुद, जिला – धमतरी (छ.ग.)</text>
+<rect x="35" y="200" width="1530" height="112" rx="22" fill="url(#gold)" stroke="#f59e0b" stroke-width="4"/>
+<text x="75" y="245" font-size="30" fill="#172554" class="h">कक्षा 6वीं  |  हिंदी – मल्हार  |  पाठ 1 : मातृभूमि</text>
+<text x="75" y="288" font-size="25" fill="#7c2d12" class="t">कवि : सोहनलाल द्विवेदी  •  विधा : कविता</text>
+<!-- Hero illustration -->
+<rect x="35" y="330" width="1530" height="330" rx="24" fill="#e5f5ff" stroke="#0ea5e9" stroke-width="4" filter="url(#shadow)"/>
+<text x="75" y="380" font-size="32" fill="#075985" class="h">भारत की प्राकृतिक सुंदरता – कविता का चित्र</text>
+<circle cx="1360" cy="420" r="55" fill="#ffd34d"/>
+<path d="M80 600 L260 405 L420 600Z" fill="#8ba8bd"/><path d="M230 600 L455 380 L670 600Z" fill="#6688a4"/><path d="M410 600 L585 430 L760 600Z" fill="#a5bfce"/>
+<path d="M260 405 L295 443 L270 435 L250 455 L235 435Z" fill="#fff"/><path d="M455 380 L500 430 L466 416 L446 438Z" fill="#fff"/>
+<path d="M60 610 Q230 550 410 610 T760 610" fill="none" stroke="#0ea5e9" stroke-width="19"/>
+<path d="M790 610 Q920 535 1045 610 T1300 610" fill="none" stroke="#16a34a" stroke-width="20"/>
+<path d="M1090 610 Q1190 490 1290 610Z" fill="#15803d"/><rect x="1180" y="555" width="22" height="55" fill="#854d0e"/>
+<path d="M1320 610 L1400 500 L1480 610Z" fill="#c084fc"/><path d="M1375 535 L1400 500 L1425 535Z" fill="white"/>
+<g class="small"><text x="135" y="642">हिमालय</text><text x="480" y="642">गंगा-यमुना</text><text x="875" y="642">हरियाली</text><text x="1350" y="642">झरने-पहाड़ियाँ</text></g>
+<!-- top cards -->
+<g filter="url(#shadow)">
+<rect x="35" y="685" width="740" height="270" rx="22" fill="#fff4f4" stroke="#e11d48" stroke-width="3"/>
+<rect x="825" y="685" width="740" height="270" rx="22" fill="#eff6ff" stroke="#2563eb" stroke-width="3"/>
+<rect x="35" y="980" width="740" height="270" rx="22" fill="#f0fdf4" stroke="#16a34a" stroke-width="3"/>
+<rect x="825" y="980" width="740" height="270" rx="22" fill="#fff7ed" stroke="#ea580c" stroke-width="3"/>
+<rect x="35" y="1275" width="740" height="270" rx="22" fill="#faf5ff" stroke="#9333ea" stroke-width="3"/>
+<rect x="825" y="1275" width="740" height="270" rx="22" fill="#f0fdfa" stroke="#0d9488" stroke-width="3"/>
+<rect x="35" y="1570" width="1530" height="300" rx="22" fill="#fffbea" stroke="#ca8a04" stroke-width="3"/>
 </g>
-<rect x="55" y="630" width="710" height="48" rx="20" fill="#f97316"/><text x="82" y="663" fill="#fff" font-size="26" class="h">1. कविता का भाव</text>
-<text x="85" y="720" class="body">• मातृभूमि के प्रति प्रेम और सम्मान।</text><text x="85" y="765" class="body">• भारत की प्रकृति और सांस्कृतिक विरासत पर गर्व।</text><text x="85" y="810" class="body">• देश के प्रति अपनापन और कृतज्ञता।</text>
-<rect x="790" y="630" width="755" height="48" rx="20" fill="#7c3aed"/><text x="818" y="663" fill="#fff" font-size="26" class="h">2. कविता में आए संदर्भ</text>
-<g class="body"><text x="825" y="720">हिमालय – पर्वतों का गौरव</text><text x="825" y="765">गंगा-यमुना – जीवनदायिनी नदियाँ</text><text x="825" y="810">राम, सीता, कृष्ण, गौतम – सांस्कृतिक स्मृतियाँ</text></g>
-<rect x="55" y="865" width="710" height="48" rx="20" fill="#0d9488"/><text x="82" y="898" fill="#fff" font-size="26" class="h">3. शब्द और समझ</text>
-<text x="85" y="955" class="body">मातृभूमि = जन्मभूमि / अपना देश</text><text x="85" y="1000" class="body">गौरव = गर्व • विरासत = धरोहर</text><text x="85" y="1045" class="small">कविता को स्वर और भाव के साथ पढ़ें।</text>
-<rect x="790" y="865" width="755" height="48" rx="20" fill="#2563eb"/><text x="818" y="898" fill="#fff" font-size="26" class="h">4. स्वयं जाँचें</text>
-<text x="825" y="955" class="body">1. कविता में भारत की किन विशेषताओं का वर्णन है?</text><text x="825" y="1000" class="body">2. मातृभूमि के प्रति आपका क्या कर्तव्य है?</text><text x="825" y="1045" class="small">उत्तर पाठ की पंक्तियों के आधार पर लिखें।</text>
-<rect x="55" y="1090" width="1490" height="58" rx="18" fill="#06264b"/><text x="85" y="1128" fill="#fff" font-size="23" class="h">पढ़ें • समझें • चर्चा करें • अभ्यास करें</text><text x="1190" y="1128" fill="#ffe08a" font-size="23" class="h">BY:- Mr. S.K. Sahu</text>
+<!-- card headers -->
+<g><rect x="35" y="685" width="740" height="58" rx="18" fill="#e11d48"/><text x="70" y="725" class="head">1. कविता का केंद्रीय भाव</text>
+<text x="70" y="790" class="body">• कवि अपनी मातृभूमि भारत के प्रति प्रेम व्यक्त करते हैं।</text>
+<text x="70" y="838" class="body">• भारत की प्रकृति, संस्कृति और महान परंपरा का गौरव।</text>
+<text x="70" y="886" class="body">• देश हमारी जन्मभूमि, कर्मभूमि और धर्मभूमि है।</text>
+<text x="70" y="930" class="small">मुख्य संदेश : अपनी मातृभूमि से प्रेम और सम्मान।</text></g>
+<g><rect x="825" y="685" width="740" height="58" rx="18" fill="#2563eb"/><text x="860" y="725" class="head">2. प्रकृति के मनमोहक दृश्य</text>
+<text x="860" y="790" class="body">• ऊँचा हिमालय आकाश को छूता दिखाई देता है।</text>
+<text x="860" y="838" class="body">• सिंधु, गंगा, यमुना और त्रिवेणी का वर्णन।</text>
+<text x="860" y="886" class="body">• पहाड़ियों के झरने, चहकती चिड़ियाँ और अमराइयाँ।</text>
+<text x="860" y="930" class="small">मलय पवन तन-मन को सँवारती है।</text></g>
+<g><rect x="35" y="980" width="740" height="58" rx="18" fill="#16a34a"/><text x="70" y="1020" class="head">3. सांस्कृतिक और ऐतिहासिक गौरव</text>
+<text x="70" y="1085" class="body">• रघुपति (श्रीराम) और सीता की पावन स्मृतियाँ।</text>
+<text x="70" y="1133" class="body">• श्रीकृष्ण का गीता संदेश और बाँसुरी।</text>
+<text x="70" y="1181" class="body">• गौतम बुद्ध ने संसार को दया का संदेश दिया।</text>
+<text x="70" y="1225" class="small">भारत : पुण्यभूमि, कर्मभूमि और बुद्धभूमि।</text></g>
+<g><rect x="825" y="980" width="740" height="58" rx="18" fill="#ea580c"/><text x="860" y="1020" class="head">4. महत्वपूर्ण शब्दार्थ</text>
+<text x="860" y="1085" class="body">हिमालय – भारत की उत्तरी पर्वत-श्रेणी</text>
+<text x="860" y="1133" class="body">सिंधु – एक प्रमुख नदी / समुद्र के अर्थ में भी</text>
+<text x="860" y="1181" class="body">अमराई – आम के पेड़ों का समूह</text>
+<text x="860" y="1225" class="body">मलय पवन – सुगंधित, शीतल हवा</text></g>
+<g><rect x="35" y="1275" width="740" height="58" rx="18" fill="#9333ea"/><text x="70" y="1315" class="head">5. कविता की विशेषताएँ</text>
+<text x="70" y="1380" class="body">• देशभक्ति और प्रकृति-चित्रण का सुंदर मेल।</text>
+<text x="70" y="1428" class="body">• सरल, भावपूर्ण और लयात्मक भाषा।</text>
+<text x="70" y="1476" class="body">• बार-बार आने वाली पंक्तियाँ भाव को दृढ़ करती हैं।</text>
+<text x="70" y="1520" class="small">कवि : सोहनलाल द्विवेदी</text></g>
+<g><rect x="825" y="1275" width="740" height="58" rx="18" fill="#0d9488"/><text x="860" y="1315" class="head">6. पाठ से सीखें</text>
+<text x="860" y="1380" class="body">• देश की प्राकृतिक संपदा का सम्मान करें।</text>
+<text x="860" y="1428" class="body">• नदियों, पहाड़ों, पेड़-पौधों और जीवों की रक्षा करें।</text>
+<text x="860" y="1476" class="body">• भारत की विविध सांस्कृतिक विरासत को जानें।</text>
+<text x="860" y="1520" class="small">चर्चा : आप अपनी मातृभूमि के लिए क्या करेंगे?</text></g>
+<g><rect x="35" y="1570" width="1530" height="58" rx="18" fill="#ca8a04"/><text x="70" y="1610" class="head">7. अपनी समझ जाँचें – अभ्यास प्रश्न</text>
+<text x="80" y="1680" class="body">1. कविता के कवि कौन हैं?  2. हिमालय के बारे में कवि क्या कहते हैं?</text>
+<text x="80" y="1730" class="body">3. कविता में किन नदियों का उल्लेख है?  4. अमराई और मलय पवन का अर्थ लिखिए।</text>
+<text x="80" y="1780" class="body">5. श्रीकृष्ण और गौतम बुद्ध का उल्लेख किस संदर्भ में आया है?</text>
+<text x="80" y="1830" class="body">6. कविता में भारत को किन-किन नामों से पुकारा गया है?</text></g>
+<rect x="35" y="1890" width="1530" height="75" rx="18" fill="url(#head)"/>
+<text x="800" y="1938" text-anchor="middle" font-size="35" fill="#fff36b" class="h">पढ़ें • समझें • सोचें • अपनी मातृभूमि पर गर्व करें</text>
+<text x="1500" y="1980" text-anchor="end" font-size="24" fill="#123" class="h">BY:- Mr. S.K. Sahu</text>
 </svg>
