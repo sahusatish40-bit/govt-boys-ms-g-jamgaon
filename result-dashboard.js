@@ -114,7 +114,7 @@
       }).filter(item => item.progressMaximum > 0);
 
       personalOutput.innerHTML = `
-        <div class="report-card" style="background:#fff;color:#172554;border:3px double #24558a;padding:22px;margin:15px 0;border-radius:8px;font-family:Arial,sans-serif">
+        <div class="report-card" style="position:relative;overflow:hidden;background:#fff;color:#172554;border:3px double #24558a;padding:22px;margin:15px 0;border-radius:8px;font-family:Arial,sans-serif"><div aria-hidden="true" style="position:absolute;z-index:0;top:43%;left:50%;transform:translate(-50%,-50%) rotate(-28deg);font-size:27px;font-weight:900;white-space:nowrap;color:rgba(30,70,110,.07);pointer-events:none">Govt. H.S.S. G-JAMGAON (Boys MS)</div><div style="position:relative;z-index:1">
           
           <div style="text-align:center;border-bottom:2px solid #24558a;padding-bottom:12px">
             <img src="https://raw.githubusercontent.com/sahusatish40-bit/govt-boys-ms-g-jamgaon/main/images/School_Mono.jpg?raw=1" alt="विद्यालय का मूल मोनोग्राम एवं स्लोगन" loading="eager" decoding="sync" onerror="this.onerror=null;this.src='https://sahusatish40-bit.github.io/govt-boys-ms-g-jamgaon/images/School_Mono.jpg?refresh=2';" style="display:block;width:92px;height:92px;object-fit:contain;margin:0 auto 8px">
@@ -204,7 +204,7 @@
               मार्कशीट PDF डाउनलोड / प्रिंट करें
             </button>
           </div>
-        </div>`;
+        </div></div>`;
 
     }
 
@@ -262,6 +262,8 @@ window.printStudentMarksheet = function () {
         border-width:2px!important; border-radius:0!important; box-sizing:border-box!important;
         font-size:10px!important; break-inside:avoid!important;
       }
+      #personalResultOutput .report-card > div[aria-hidden="true"] { z-index:0!important; color:rgba(30,70,110,.07)!important; }
+      #personalResultOutput .report-card > div[style*="position:relative"] { position:relative!important;z-index:1!important; }
       #personalResultOutput .report-card img { width:52px!important;height:52px!important;margin-bottom:3px!important; }
       #personalResultOutput .report-card h2 { font-size:15px!important;margin:2px 0!important; }
       #personalResultOutput .report-card h3 { font-size:12px!important;margin:4px 0!important; }
