@@ -132,12 +132,12 @@ function renderHistory(){
    const opening=sheet.classList.contains("hidden");
    if(!opening){sheet.classList.add("hidden");view.textContent="अंकसूची देखें";return}
    sheet.innerHTML="";
-   const head=document.createElement("div");head.style.cssText="text-align:center;border-bottom:2px solid #d7e9e6;padding-bottom:10px;margin-bottom:12px";
-   const logo=document.createElement("img");logo.src="images/School_Mono.jpg";logo.alt="विद्यालय का मोनोग्राम";logo.style.cssText="width:78px;height:78px;object-fit:contain;display:block;margin:0 auto 8px";
+   const head=document.createElement("div");head.style.cssText="text-align:center;border-bottom:3px double #234f78;padding-bottom:12px;margin-bottom:14px";
+   const logo=document.createElement("img");logo.src="https://raw.githubusercontent.com/sahusatish40-bit/govt-boys-ms-g-jamgaon/main/images/School_Mono.jpg";logo.alt="विद्यालय का मोनोग्राम";logo.style.cssText="width:78px;height:78px;object-fit:contain;display:block;margin:0 auto 8px";
    const school=document.createElement("div");school.style.cssText="font-weight:900;color:#123d59;line-height:1.5";school.textContent="शासकीय उच्चतर माध्यमिक विद्यालय जी- जामगाँव (बालक माध्य.)";
    const location=document.createElement("div");location.style.cssText="font-size:13px;color:#526979";location.textContent="वि.ख.:- कुरुद, जिला:- धमतरी (छ.ग.)";
    const heading=document.createElement("h3");heading.textContent="अभ्यास परीक्षा अंकसूची";heading.style.margin="6px 0";
-   const mast=document.createElement("div");mast.textContent="CTET MOCK TEST";mast.style.cssText="font-size:20px;font-weight:900;letter-spacing:1px;color:#087e78";
+   const mast=document.createElement("div");mast.textContent="CTET MOCK TEST";mast.style.cssText="font-size:18px;font-weight:900;letter-spacing:1px;color:#234f78;border-top:2px solid #234f78;border-bottom:2px solid #234f78;display:inline-block;padding:5px 24px;margin-top:7px";
    const sub=document.createElement("div");sub.textContent="Mock Test "+(item.testNo||"—")+" · पूर्व परिणाम";sub.className="muted";
    head.append(logo,mast,school,location,heading,sub);sheet.appendChild(head);
    const meta=document.createElement("div");meta.className="grid";
@@ -145,7 +145,7 @@ function renderHistory(){
    fields.forEach(([k,v])=>{const cell=document.createElement("div");cell.className="item";cell.style.padding="9px";const label=document.createElement("small");label.className="muted";label.textContent=k;const value=document.createElement("div");value.style.fontWeight="700";value.textContent=v;cell.append(label,value);meta.appendChild(cell)});sheet.appendChild(meta);
    const score=Number(item.score)||0,wrong=Number(item.wrong)||0,unanswered=Number(item.unanswered)||0;
    const pct=Number.isFinite(Number(item.percentage))?Number(item.percentage):(score/90*100),eligible=pct>=60;
-   const table=document.createElement("div");table.style.cssText="margin-top:14px;border:1px solid #dce8ee;border-radius:10px;overflow:hidden";
+   const table=document.createElement("div");table.style.cssText="margin-top:14px;border:2px solid #234f78;border-radius:2px;overflow:hidden";
    const addRow=(aText,bText,header=false)=>{const line=document.createElement("div");line.style.cssText="display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border-bottom:1px solid #e6eef1;background:"+(header?"#eaf5f3":"#fff");const a=document.createElement(header?"strong":"span"),b=document.createElement(header?"strong":"span");a.textContent=aText;b.textContent=bText;line.append(a,b);table.appendChild(line)};
    addRow("विषय / खंड","प्राप्तांक / पूर्णांक",true);
    if(Array.isArray(item.sectionMarks)&&item.sectionMarks.length){item.sectionMarks.forEach(x=>addRow(x.label,(Number(x.marks)||0)+" / "+(Number(x.total)||0)))}else{addRow("विषयवार अंक","पुराने रिकॉर्ड में उपलब्ध नहीं")}
@@ -194,26 +194,26 @@ function finish(auto){if(finished)return;finished=true;if(tick)clearInterval(tic
  $("ctetExam").classList.add("hidden");const r=$("ctetResult");r.classList.remove("hidden");r.innerHTML="";
  const percentage=(correct/90)*100;
  const eligible=percentage>=60;
- const sheet=document.createElement("div");sheet.className="item ctet-mark-sheet";sheet.style.cssText="border:2px solid #087e78;border-radius:16px;padding:18px;margin:12px 0;background:#fbfefd";
+ const sheet=document.createElement("div");sheet.className="item ctet-mark-sheet";sheet.style.cssText="position:relative;overflow:hidden;border:5px double #234f78;border-radius:2px;padding:18px;margin:12px 0;background:#fff;color:#17324d;font-family:Arial,sans-serif";
  const head=document.createElement("div");head.style.cssText="text-align:center;border-bottom:2px solid #d7e9e6;padding-bottom:10px;margin-bottom:12px";
  const logo=document.createElement("img");logo.src="images/School_Mono.jpg";logo.alt="विद्यालय का मोनोग्राम";logo.style.cssText="width:82px;height:82px;object-fit:contain;display:block;margin:0 auto 8px";head.appendChild(logo);
  const school=document.createElement("div");school.style.cssText="font-weight:900;color:#123d59;line-height:1.5";school.textContent="शासकीय उच्चतर माध्यमिक विद्यालय जी- जामगाँव (बालक माध्य.)";
  const location=document.createElement("div");location.style.cssText="font-size:13px;color:#526979";location.textContent="वि.ख.:- कुरुद, जिला:- धमतरी (छ.ग.)";
  const mast=document.createElement("div");mast.textContent="CTET MOCK TEST";mast.style.cssText="font-size:20px;font-weight:900;letter-spacing:1px;color:#087e78";
- const title=document.createElement("h2");title.style.margin="6px 0";title.textContent="अभ्यास परीक्षा अंकसूची";
+ const title=document.createElement("h2");title.style.cssText="margin:7px 0;font-size:18px;color:#17324d";title.textContent="अभ्यास परीक्षा अंकसूची";
  const sub=document.createElement("div");sub.className="muted";sub.textContent="Mock Test "+currentTestNo+" · "+(auto?"समय पूरा — स्वतः जमा":"सफलतापूर्वक जमा");
  head.append(mast,school,location,title,sub);sheet.appendChild(head);
  const meta=document.createElement("div");meta.className="grid";
  const metaItems=[["विद्यार्थी का नाम",activeStudentName],["परीक्षा","CTET Mock Test"],["पेपर",paper.value==="II"?"Paper-II (कक्षा 6–8)":"Paper-I (कक्षा 1–5)"],["विषय समूह",paper.value==="II"?(group.value==="social"?"सामाजिक अध्ययन":"गणित एवं विज्ञान"):"—"],["Language-I / II",l1.value+" / "+l2.value],["दिनांक एवं समय",new Date().toLocaleString("hi-IN")]];
  metaItems.forEach(([k,v])=>{const cell=document.createElement("div");cell.className="item";cell.style.padding="9px";const label=document.createElement("small");label.className="muted";label.textContent=k;const value=document.createElement("div");value.style.fontWeight="700";value.textContent=v;cell.append(label,value);meta.appendChild(cell)});sheet.appendChild(meta);
  const table=document.createElement("div");table.style.cssText="margin-top:14px;border:1px solid #dce8ee;border-radius:10px;overflow:hidden";
- const addMarkRow=(label,value,header=false)=>{const row=document.createElement("div");row.style.cssText="display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border-bottom:1px solid #e6eef1;background:"+(header?"#eaf5f3":"#fff");const left=document.createElement(header?"strong":"span");left.textContent=label;const right=document.createElement(header?"strong":"span");right.style.fontWeight="700";right.textContent=value;row.append(left,right);table.appendChild(row)};
+ const addMarkRow=(label,value,header=false)=>{const row=document.createElement("div");row.style.cssText="display:flex;justify-content:space-between;gap:12px;padding:9px 12px;border-bottom:1px solid #c7d4df;background:"+(header?"#eaf1f7":"#fff");const left=document.createElement(header?"strong":"span");left.textContent=label;const right=document.createElement(header?"strong":"span");right.style.fontWeight="700";right.textContent=value;row.append(left,right);table.appendChild(row)};
  addMarkRow("विषय / खंड","प्राप्तांक / पूर्णांक",true);
  const sectionMarks=buckets().map(b=>{const qs=questions.filter(q=>q.section===b.section&&(b.section!=="language"||q.language===b.lang));const marks=qs.reduce((n,q)=>{const qi=questions.indexOf(q);return n+(answers[qi]!==undefined&&q.options[answers[qi]].correct?1:0)},0);const label=b.section==="cdp"?"CDP (बाल विकास एवं शिक्षाशास्त्र)":b.section==="language"?(b.lang===l1.value?"Language-I":"Language-II")+" ("+b.lang+")":b.section==="maths"?"Mathematics":b.section==="evs"?"EVS":b.section==="science"?"Science":"Social Studies";return {label,marks,total:b.count}});
  sectionMarks.forEach(x=>addMarkRow(x.label,x.marks+" / "+x.total));
  addMarkRow("GRAND TOTAL",correct+" / 90");addMarkRow("गलत उत्तर",String(wrong));addMarkRow("अनुत्तरित प्रश्न",String(unanswered));addMarkRow("कुल प्रतिशत",percentage.toFixed(2)+"%");
  sheet.appendChild(table);
- const verdict=document.createElement("div");verdict.style.cssText="margin-top:14px;padding:14px;border-radius:12px;text-align:center;font-size:20px;font-weight:900;background:"+(eligible?"#e5f7eb":"#fff0e8")+";color:"+(eligible?"#176b36":"#a33a24");
+ const verdict=document.createElement("div");verdict.style.cssText="margin-top:14px;padding:12px;border:1px solid #9bb2c9;border-radius:2px;text-align:center;font-size:18px;font-weight:900;background:"+(eligible?"#e5f7eb":"#fff0e8")+";color:"+(eligible?"#176b36":"#a33a24");
  verdict.textContent=eligible?"✓ ELIGIBLE":"✗ NOT ELIGIBLE";sheet.appendChild(verdict);
  const note=document.createElement("p");note.className="muted";note.style.textAlign="center";note.textContent="पात्रता मानदंड: 60% (54/90 अंक) · यह केवल अभ्यास टेस्ट का परिणाम है, आधिकारिक CTET पात्रता प्रमाणपत्र नहीं।";sheet.appendChild(note);
  const watermark=document.createElement("div");watermark.className="school-watermark";watermark.textContent="Govt. H.S.S. G-JAMGAON (Boys MS)";sheet.prepend(watermark);
