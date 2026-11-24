@@ -153,12 +153,17 @@ function renderHistory(){
    sheet.appendChild(table);
    const verdict=document.createElement("div");verdict.style.cssText="margin-top:14px;padding:13px;border-radius:12px;text-align:center;font-size:20px;font-weight:900;background:"+(eligible?"#e5f7eb":"#fff0e8")+";color:"+(eligible?"#176b36":"#a33a24");verdict.textContent=eligible?"✓ ELIGIBLE":"✗ NOT ELIGIBLE";sheet.appendChild(verdict);
    const note=document.createElement("p");note.className="muted";note.style.textAlign="center";note.textContent="पात्रता मानदंड: 60% (54/90 अंक)। यह केवल अभ्यास टेस्ट का परिणाम है, आधिकारिक CTET पात्रता प्रमाणपत्र नहीं। पुराने परिणाम में प्रश्नवार उत्तर-समीक्षा सुरक्षित नहीं थी; यह अंकसूची उपलब्ध सारांश के आधार पर बनाई गई है।";sheet.appendChild(note);
-   const print=document.createElement("button");print.type="button";print.textContent="प्रिंट / PDF सेव करें";print.addEventListener("click",()=>{document.body.classList.add("history-print");window.print()});sheet.appendChild(print);
+   const print=document.createElement("button");print.type="button";print.textContent="प्रिंट / PDF सेव करें";print.addEventListener("click",()=>window.printCTETHistoryMarksheet(sheet));sheet.appendChild(print);
    sheet.classList.remove("hidden");view.textContent="अंकसूची बंद करें";
   });
   row.append(title,detail,langs,document.createElement("br"),view,sheet);box.appendChild(row);
  });
 }
+window.printCTETHistoryMarksheet=function(sheet){
+ const style=document.createElement("style");style.id="ctet-history-print-style";
+ style.textContent="@page{size:A4 portrait;margin:8mm}@media print{body *{visibility:hidden!important}.history-sheet,.history-sheet *{visibility:visible!important}.history-sheet{position:absolute!important;left:0!important;top:0!important;width:100%!important;margin:0!important;padding:10px!important;box-sizing:border-box!important;break-inside:avoid!important}.history-sheet img{width:58px!important;height:58px!important}.history-sheet .grid{gap:5px!important}.history-sheet .item{padding:5px!important}.history-sheet p,.history-sheet h3{margin:4px 0!important}.history-sheet .muted{font-size:10px!important}.history-sheet button{display:none!important}}";
+ document.head.appendChild(style);window.print();setTimeout(()=>style.remove(),1200);
+};
 window.printCTETMarksheet=function(){
  const style=document.createElement("style");style.id="ctet-print-only-style";
  style.textContent="@page{size:A4 portrait;margin:8mm}@media print{body *{visibility:hidden!important}.ctet-mark-sheet,.ctet-mark-sheet *{visibility:visible!important}.ctet-mark-sheet{position:absolute!important;left:0!important;top:0!important;width:100%!important;margin:0!important;padding:10px!important;box-sizing:border-box!important;break-inside:avoid!important}.ctet-mark-sheet img{width:58px!important;height:58px!important}.ctet-mark-sheet .grid{gap:5px!important}.ctet-mark-sheet .item{padding:5px!important}.ctet-mark-sheet table,.ctet-mark-sheet p,.ctet-mark-sheet h2,.ctet-mark-sheet h3{margin-top:4px!important;margin-bottom:4px!important}.ctet-mark-sheet .muted{font-size:10px!important}#ctetResult>button,#ctetResult>.entry,#ctetResult>h3{display:none!important}}";
