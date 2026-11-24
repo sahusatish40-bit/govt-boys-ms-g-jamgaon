@@ -241,6 +241,7 @@ window.printStudentMarksheet = function () {
   const style = document.createElement("style");
   style.id = "printMarksheetStyle";
   style.innerHTML = `
+    @page { size: A4 portrait; margin: 7mm; }
     @media print {
       body * { visibility: hidden !important; }
       #personalResultOutput,
@@ -255,9 +256,22 @@ window.printStudentMarksheet = function () {
         padding: 15px;
         box-sizing: border-box;
       }
-      #personalResultOutput button {
-        display: none !important;
+      #personalResultOutput button { display: none !important; }
+      #personalResultOutput .report-card {
+        width:100%!important; margin:0!important; padding:8px!important;
+        border-width:2px!important; border-radius:0!important; box-sizing:border-box!important;
+        font-size:10px!important; break-inside:avoid!important;
       }
+      #personalResultOutput .report-card img { width:52px!important;height:52px!important;margin-bottom:3px!important; }
+      #personalResultOutput .report-card h2 { font-size:15px!important;margin:2px 0!important; }
+      #personalResultOutput .report-card h3 { font-size:12px!important;margin:4px 0!important; }
+      #personalResultOutput .report-card table { font-size:9px!important; }
+      #personalResultOutput .report-card th,#personalResultOutput .report-card td { padding:3px!important; }
+      #personalResultOutput .report-card [style*="margin-top:65px"] { margin-top:18px!important; }
+      #personalResultOutput .report-card [style*="margin:16px 0"] { margin:5px 0!important; line-height:1.45!important; }
+      #personalResultOutput .report-card [style*="margin-top:18px"] { margin-top:5px!important; padding:5px!important; line-height:1.4!important; }
+      #personalResultOutput .report-card > div[style*="border:1px solid"] { display:none!important; }
+      #personalResultOutput .report-card p { margin:4px 0!important; }
     }
   `;
   document.head.appendChild(style);
