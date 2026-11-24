@@ -30,20 +30,20 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 <div class="notice"><strong>अध्ययन सामग्री</strong><br>अपनी कक्षा चुनें और विषय के अनुसार नोट्स खोलें। कक्षा 6वीं एवं 7वीं के लिए NCERT तथा कक्षा 8वीं के लिए छत्तीसगढ़ SCERT पाठ्यक्रम को आधार बनाया जाएगा।</div>
 <div class="selector" role="group" aria-label="कक्षा चुनें">
 <button class="active" data-class="6" aria-pressed="true">कक्षा 6वीं</button>
-<button data-class="7" data-class="7" aria-pressed="false">कक्षा 7वीं</button>
+<button data-class="7" aria-pressed="false">कक्षा 7वीं</button>
 <button data-class="8" aria-pressed="false">कक्षा 8वीं</button>
 </div>
 <h2 id="classTitle">कक्षा 6वीं — विषयवार नोट्स</h2>
 <div class="grid" id="subjects">
-<a class="subject" href="class-6/hindi/"><span class="ico">📖</span><strong>हिंदी</strong><small>भाषा एवं साहित्य</small></a>
-<a class="subject" href="class-6/english/"><span class="ico">🔤</span><strong>English</strong><small>Language & Literature</small></a>
-<a class="subject" href="class-6/sanskrit/"><span class="ico">🕉️</span><strong>संस्कृत</strong><small>शब्द, व्याकरण एवं पाठ</small></a>
-<a class="subject" href="class-6/maths/"><span class="ico">📐</span><strong>गणित</strong><small>सूत्र एवं हल</small></a>
-<a class="subject" href="class-6/science/"><span class="ico">🔬</span><strong>विज्ञान</strong><small>अवधारणाएँ एवं प्रयोग</small></a>
-<a class="subject" href="class-6/social-science/"><span class="ico">🌍</span><strong>सामाजिक विज्ञान</strong><small>इतिहास, भूगोल, नागरिक जीवन</small></a>
-<a class="subject" href="class-6/arts/"><span class="ico">🎨</span><strong>कला एवं कृति</strong><small>रचनात्मक गतिविधियाँ</small></a>
-<a class="subject" href="class-6/sports/"><span class="ico">⚽</span><strong>खेल एवं योग</strong><small>खेल, स्वास्थ्य एवं योग</small></a>
-<a class="subject" href="class-6/skill/"><span class="ico">🛠️</span><strong>कौशल बोध</strong><small>जीवनोपयोगी कौशल</small></a>
+<a class="subject" href="../notes-view.html?class=6&subject=hindi"><span class="ico">📖</span><strong>हिंदी</strong><small>भाषा एवं साहित्य</small></a>
+<a class="subject" href="../notes-view.html?class=6&subject=english"><span class="ico">🔤</span><strong>English</strong><small>Language & Literature</small></a>
+<a class="subject" href="../notes-view.html?class=6&subject=sanskrit"><span class="ico">🕉️</span><strong>संस्कृत</strong><small>शब्द, व्याकरण एवं पाठ</small></a>
+<a class="subject" href="../notes-view.html?class=6&subject=maths"><span class="ico">📐</span><strong>गणित</strong><small>सूत्र एवं हल</small></a>
+<a class="subject" href="../notes-view.html?class=6&subject=science"><span class="ico">🔬</span><strong>विज्ञान</strong><small>अवधारणाएँ एवं प्रयोग</small></a>
+<a class="subject" href="../notes-view.html?class=6&subject=social-science"><span class="ico">🌍</span><strong>सामाजिक विज्ञान</strong><small>इतिहास, भूगोल, नागरिक जीवन</small></a>
+<a class="subject" href="../notes-view.html?class=6&subject=arts"><span class="ico">🎨</span><strong>कला एवं कृति</strong><small>रचनात्मक गतिविधियाँ</small></a>
+<a class="subject" href="../notes-view.html?class=6&subject=sports"><span class="ico">⚽</span><strong>खेल एवं योग</strong><small>खेल, स्वास्थ्य एवं योग</small></a>
+<a class="subject" href="../notes-view.html?class=6&subject=skill"><span class="ico">🛠️</span><strong>कौशल बोध</strong><small>जीवनोपयोगी कौशल</small></a>
 </div>
 <div class="info">📌 नोट्स को अध्यायवार और टॉपिकवार व्यवस्थित किया जाएगा। जहाँ कोई विषय/पुस्तक किसी कक्षा में अलग होगी, वहाँ उसी कक्षा की निर्धारित पुस्तक के अनुसार सामग्री दी जाएगी।</div>
 </main>
@@ -51,7 +51,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:22px}
 <script>
 const buttons=[...document.querySelectorAll("[data-class]")],grid=document.getElementById("subjects"),title=document.getElementById("classTitle");
 const subjects=[["📖","हिंदी","भाषा एवं साहित्य","hindi"],["🔤","English","Language & Literature","english"],["🕉️","संस्कृत","शब्द, व्याकरण एवं पाठ","sanskrit"],["📐","गणित","सूत्र एवं हल","maths"],["🔬","विज्ञान","अवधारणाएँ एवं प्रयोग","science"],["🌍","सामाजिक विज्ञान","इतिहास, भूगोल, नागरिक जीवन","social-science"],["🎨","कला एवं कृति","रचनात्मक गतिविधियाँ","arts"],["⚽","खेल एवं योग","खेल, स्वास्थ्य एवं योग","sports"],["🛠️","कौशल बोध","जीवनोपयोगी कौशल","skill"]];
-function choose(c){buttons.forEach(b=>{const on=b.dataset.class===c;b.classList.toggle("active",on);b.setAttribute("aria-pressed",String(on))});title.textContent="कक्षा "+c+"वीं — विषयवार नोट्स";grid.innerHTML=subjects.map(s=>'<a class="subject" href="class-'+c+'/'+s[3]+'/"><span class="ico">'+s[0]+'</span><strong>'+s[1]+'</strong><small>'+s[2]+'</small></a>').join("")}
+function choose(c){buttons.forEach(b=>{const on=b.dataset.class===c;b.classList.toggle("active",on);b.setAttribute("aria-pressed",String(on))});title.textContent="कक्षा "+c+"वीं — विषयवार नोट्स";grid.innerHTML=subjects.map(s=>'<a class="subject" href="../notes-view.html?class='+c+'&subject='+s[3]+'"><span class="ico">'+s[0]+'</span><strong>'+s[1]+'</strong><small>'+s[2]+'</small></a>').join("")}
 buttons.forEach(b=>b.addEventListener("click",()=>choose(b.dataset.class)));
 </script>
 </body></html>
