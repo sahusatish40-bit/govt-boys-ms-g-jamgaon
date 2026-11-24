@@ -5,8 +5,8 @@
 (function(){
 "use strict";
 const $=id=>document.getElementById(id);
-const languages=["अंग्रेज़ी","हिंदी"];
-const langCodes=["01","02"];
+const languages=["अंग्रेज़ी","हिंदी","संस्कृत"];
+const langCodes=["01","02","16"];
 const bank=()=>Array.isArray(window.CTET_QUESTION_BANK)?window.CTET_QUESTION_BANK:[];
 const paper=$("ctetPaper"),group=$("ctetGroup"),groupWrap=$("ctetGroupWrap"),l1=$("ctetLang1"),l2=$("ctetLang2"),start=$("ctetStart"),status=$("ctetBankStatus"),candidateName=$("ctetCandidateName");
 if(!paper||!start)return;
