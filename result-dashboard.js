@@ -114,14 +114,14 @@
       }).filter(item => item.progressMaximum > 0);
 
       personalOutput.innerHTML = `
-        <div class="report-card" style="position:relative;overflow:hidden;background:#fff;color:#172554;border:3px double #24558a;padding:22px;margin:15px 0;border-radius:8px;font-family:Arial,sans-serif"><div aria-hidden="true" style="position:absolute;z-index:0;top:43%;left:50%;transform:translate(-50%,-50%) rotate(-28deg);font-size:27px;font-weight:900;white-space:nowrap;color:rgba(30,70,110,.07);pointer-events:none">Govt. H.S.S. G-JAMGAON (Boys MS)</div><div style="position:relative;z-index:1">
+        <div class="report-card" style="position:relative;overflow:hidden;background:#fff;color:#172554;border:5px double #234f78;padding:18px;margin:15px 0;border-radius:2px;font-family:Arial,sans-serif"><div aria-hidden="true" style="position:absolute;z-index:0;top:43%;left:50%;transform:translate(-50%,-50%) rotate(-28deg);font-size:27px;font-weight:900;white-space:nowrap;color:rgba(30,70,110,.07);pointer-events:none">Govt. H.S.S. G-JAMGAON (Boys MS)</div><div style="position:relative;z-index:1">
           
           <div style="text-align:center;border-bottom:2px solid #24558a;padding-bottom:12px">
             <img src="https://raw.githubusercontent.com/sahusatish40-bit/govt-boys-ms-g-jamgaon/main/images/School_Mono.jpg?raw=1" alt="विद्यालय का मूल मोनोग्राम एवं स्लोगन" loading="eager" decoding="sync" onerror="this.onerror=null;this.src='https://sahusatish40-bit.github.io/govt-boys-ms-g-jamgaon/images/School_Mono.jpg?refresh=2';" style="display:block;width:92px;height:92px;object-fit:contain;margin:0 auto 8px">
             <h2 style="margin:5px 0;font-size:21px">शासकीय उच्चतर माध्यमिक विद्यालय</h2>
             <h2 style="margin:5px 0;font-size:21px">जी- जामगाँव (बालक माध्य.)</h2>
             <p style="margin:5px 0;font-size:13px">वि.ख. कुरुद, जिला धमतरी (छ.ग.)</p>
-            <h3 style="margin:12px 0 4px;color:#174a80">परीक्षा प्रगति पत्रक</h3>
+            <div style="display:inline-block;margin:12px auto 4px;padding:6px 26px;border-top:2px solid #234f78;border-bottom:2px solid #234f78;color:#174a80;font-weight:900;letter-spacing:.5px">विद्यार्थी अंकसूची / MARKSHEET</div>
             <b>सत्र 2026–27</b>
           </div>
 
@@ -132,8 +132,8 @@
             <b>परीक्षा:</b> ${exam}
           </div>
 
-          <table style="width:100%;border-collapse:collapse;font-size:12px">
-            <tr style="background:#e5efff">
+          <table style="width:100%;border-collapse:collapse;font-size:12px;border:2px solid #234f78">
+            <tr style="background:#e5efff;color:#123d59">
               <th style="border:1px solid #555;padding:8px">विषय</th>
               <th style="border:1px solid #555;padding:8px">लिखित</th>
               <th style="border:1px solid #555;padding:8px">प्रायोगिक</th>
@@ -151,7 +151,7 @@
             `).join("")}
           </table>
 
-          <div style="margin-top:18px;padding:12px;background:#eef5ff;line-height:2">
+          <div style="margin-top:14px;padding:12px;background:#f1f6fb;border:1px solid #9bb2c9;line-height:1.8">
             <b>कुल प्राप्तांक:</b> ${obtained} / ${maximum}<br>
             <b>प्राप्त प्रतिशत:</b> ${percent}%<br>
             <b>समग्र ग्रेड:</b> ${overallGrade}
