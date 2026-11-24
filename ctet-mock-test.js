@@ -160,15 +160,31 @@ function renderHistory(){
   row.append(title,detail,langs,document.createElement("br"),view,sheet);box.appendChild(row);
  });
 }
-window.printCTETHistoryMarksheet=function(sheet){
- const style=document.createElement("style");style.id="ctet-history-print-style";
- style.textContent="@page{size:A4 portrait;margin:8mm}@media print{body *{visibility:hidden!important}.history-sheet,.history-sheet *{visibility:visible!important}.history-sheet{position:relative!important;overflow:hidden!important}.history-sheet .school-watermark{position:absolute!important;z-index:0!important;top:42%!important;left:50%!important;transform:translate(-50%,-50%) rotate(-28deg)!important;font-size:25px!important;font-weight:900!important;white-space:nowrap!important;color:rgba(30,70,110,.07)!important;pointer-events:none!important}.history-sheet>*:not(.school-watermark){position:relative!important;z-index:1!important}.history-sheet{position:absolute!important;left:0!important;top:0!important;width:100%!important;margin:0!important;padding:10px!important;box-sizing:border-box!important;break-inside:avoid!important}.history-sheet img{width:58px!important;height:58px!important}.history-sheet .grid{gap:5px!important}.history-sheet .item{padding:5px!important}.history-sheet p,.history-sheet h3{margin:4px 0!important}.history-sheet .muted{font-size:10px!important}.history-sheet button{display:none!important}}";
- document.head.appendChild(style);window.print();setTimeout(()=>style.remove(),1200);
-};
+function openCTETPrintWindow(sheet){
+ const win=window.open("","_blank");
+ if(!win){alert("प्रिंट विंडो नहीं खुल सकी। कृपया इस साइट के लिए pop-up अनुमति दें।");return;}
+ const clone=sheet.cloneNode(true);
+ clone.querySelectorAll("button").forEach(el=>el.remove());
+ win.document.open();
+ win.document.write(`<!doctype html><html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CTET अभ्यास अंकसूची</title><style>
+ @page{size:A4 portrait;margin:8mm}*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ body{margin:0;padding:0;font-family:Arial,sans-serif;background:#fff;color:#17324d}
+ .ctet-mark-sheet,.history-sheet{position:relative!important;display:block!important;visibility:visible!important;overflow:hidden!important;width:100%!important;margin:0!important;padding:10px!important;border:2px solid #087e78!important;break-inside:avoid!important}
+ .school-watermark{position:absolute!important;z-index:0!important;top:42%!important;left:50%!important;transform:translate(-50%,-50%) rotate(-28deg)!important;font-size:25px!important;font-weight:900!important;white-space:nowrap!important;color:rgba(30,70,110,.07)!important;pointer-events:none!important}
+ .ctet-mark-sheet>*:not(.school-watermark),.history-sheet>*:not(.school-watermark){position:relative!important;z-index:1!important}
+ img{width:58px!important;height:58px!important;object-fit:contain}
+ .grid{gap:5px!important}.item{padding:5px!important}
+ p,h2,h3{margin-top:4px!important;margin-bottom:4px!important}
+ .muted{font-size:10px!important}
+ </style></head><body></body></html>`);
+ win.document.body.appendChild(clone);win.document.close();
+ win.onload=()=>{win.focus();setTimeout(()=>win.print(),350);};
+}
+window.printCTETHistoryMarksheet=function(sheet){openCTETPrintWindow(sheet);};
 window.printCTETMarksheet=function(){
- const style=document.createElement("style");style.id="ctet-print-only-style";
- style.textContent="@page{size:A4 portrait;margin:8mm}@media print{body *{visibility:hidden!important}.ctet-mark-sheet,.ctet-mark-sheet *{visibility:visible!important}.ctet-mark-sheet{position:relative!important;overflow:hidden!important}.ctet-mark-sheet .school-watermark{position:absolute!important;z-index:0!important;top:42%!important;left:50%!important;transform:translate(-50%,-50%) rotate(-28deg)!important;font-size:25px!important;font-weight:900!important;white-space:nowrap!important;color:rgba(30,70,110,.07)!important;pointer-events:none!important}.ctet-mark-sheet>*:not(.school-watermark){position:relative!important;z-index:1!important}.ctet-mark-sheet{position:absolute!important;left:0!important;top:0!important;width:100%!important;margin:0!important;padding:10px!important;box-sizing:border-box!important;break-inside:avoid!important}.ctet-mark-sheet img{width:58px!important;height:58px!important}.ctet-mark-sheet .grid{gap:5px!important}.ctet-mark-sheet .item{padding:5px!important}.ctet-mark-sheet table,.ctet-mark-sheet p,.ctet-mark-sheet h2,.ctet-mark-sheet h3{margin-top:4px!important;margin-bottom:4px!important}.ctet-mark-sheet .muted{font-size:10px!important}#ctetResult>button,#ctetResult>.entry,#ctetResult>h3{display:none!important}}";
- document.head.appendChild(style);window.print();setTimeout(()=>style.remove(),1200);
+ const sheet=document.querySelector("#ctetResult .ctet-mark-sheet");
+ if(!sheet){alert("पहले CTET अंकसूची तैयार करें।");return;}
+ openCTETPrintWindow(sheet);
 };
 window.addEventListener("afterprint",()=>document.body.classList.remove("history-print"));
 function finish(auto){if(finished)return;finished=true;if(tick)clearInterval(tick);let correct=0;questions.forEach((q,i)=>{if(answers[i]!==undefined&&q.options[answers[i]].correct)correct++});const wrong=Object.keys(answers).length-correct,unanswered=90-Object.keys(answers).length;
