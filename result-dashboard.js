@@ -238,47 +238,34 @@
     showResult();
   }
 window.printStudentMarksheet = function () {
-  const style = document.createElement("style");
-  style.id = "printMarksheetStyle";
-  style.innerHTML = `
-    @page { size: A4 portrait; margin: 7mm; }
-    @media print {
-      body * { visibility: hidden !important; }
-      #personalResultOutput,
-      #personalResultOutput * {
-        visibility: visible !important;
-      }
-      #personalResultOutput {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        padding: 15px;
-        box-sizing: border-box;
-      }
-      #personalResultOutput button { display: none !important; }
-      #personalResultOutput .report-card {
-        width:100%!important; margin:0!important; padding:8px!important;
-        border-width:2px!important; border-radius:0!important; box-sizing:border-box!important;
-        font-size:10px!important; break-inside:avoid!important;
-      }
-      #personalResultOutput .report-card > div[aria-hidden="true"] { z-index:0!important; color:rgba(30,70,110,.07)!important; }
-      #personalResultOutput .report-card > div[style*="position:relative"] { position:relative!important;z-index:1!important; }
-      #personalResultOutput .report-card img { width:52px!important;height:52px!important;margin-bottom:3px!important; }
-      #personalResultOutput .report-card h2 { font-size:15px!important;margin:2px 0!important; }
-      #personalResultOutput .report-card h3 { font-size:12px!important;margin:4px 0!important; }
-      #personalResultOutput .report-card table { font-size:9px!important; }
-      #personalResultOutput .report-card th,#personalResultOutput .report-card td { padding:3px!important; }
-      #personalResultOutput .report-card [style*="margin-top:65px"] { margin-top:18px!important; }
-      #personalResultOutput .report-card [style*="margin:16px 0"] { margin:5px 0!important; line-height:1.45!important; }
-      #personalResultOutput .report-card [style*="margin-top:18px"] { margin-top:5px!important; padding:5px!important; line-height:1.4!important; }
-      #personalResultOutput .report-card > div[style*="border:1px solid"] { display:none!important; }
-      #personalResultOutput .report-card p { margin:4px 0!important; }
-    }
-  `;
-  document.head.appendChild(style);
-  window.print();
-  setTimeout(() => style.remove(), 1000);
+  const card = document.querySelector("#personalResultOutput .report-card");
+  if (!card) { alert("पहले विद्यार्थी की अंकसूची खोलें।"); return; }
+  const printWindow = window.open("", "_blank");
+  if (!printWindow) { alert("प्रिंट विंडो नहीं खुल सकी। कृपया इस साइट के लिए pop-up अनुमति दें।"); return; }
+  const clone = card.cloneNode(true);
+  clone.querySelectorAll("button,.no-print").forEach(el => el.remove());
+  printWindow.document.open();
+  printWindow.document.write(`<!doctype html><html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>विद्यार्थी अंकसूची</title><style>
+    @page{size:A4 portrait;margin:7mm}
+    *{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    body{margin:0;padding:0;font-family:Arial,sans-serif;background:#fff;color:#172554}
+    .report-card{position:relative!important;overflow:hidden!important;width:100%!important;margin:0!important;padding:8px!important;border:2px double #24558a!important;border-radius:0!important;font-size:10px!important;break-inside:avoid}
+    .report-card>div[aria-hidden="true"]{z-index:0!important;color:rgba(30,70,110,.07)!important}
+    .report-card>div[style*="position:relative"]{position:relative!important;z-index:1!important}
+    .report-card img{width:52px!important;height:52px!important;margin-bottom:3px!important}
+    .report-card h2{font-size:15px!important;margin:2px 0!important}
+    .report-card h3{font-size:12px!important;margin:4px 0!important}
+    .report-card table{width:100%;font-size:9px!important;border-collapse:collapse}
+    .report-card th,.report-card td{padding:3px!important}
+    .report-card [style*="margin-top:65px"]{margin-top:18px!important}
+    .report-card [style*="margin:16px 0"]{margin:5px 0!important;line-height:1.45!important}
+    .report-card [style*="margin-top:18px"]{margin-top:5px!important;padding:5px!important;line-height:1.4!important}
+    .report-card>div[style*="border:1px solid"]{display:none!important}
+    .report-card p{margin:4px 0!important}
+  </style></head><body></body></html>`);
+  printWindow.document.body.appendChild(clone);
+  printWindow.document.close();
+  printWindow.onload = () => { printWindow.focus(); setTimeout(() => { printWindow.print(); }, 350); };
 };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initResultDashboard);
   else initResultDashboard();
