@@ -130,7 +130,7 @@ sports:["स्वस्थ शरीर, मजबूत मन","सुरक�
 skill:["कौशल से समाधान","योजना बनाएँ • मिलकर करें • सुधारें",["समस्या","पहचानें","योजना","चरण तय करें","सहयोग","जिम्मेदारी बाँटें","समीक्षा","सीख और सुधार"]]
 };
 const poster=posterContent[activeKey]||posterContent.hindi;
-const chapterPoster=(activeGrade==="6"&&activeKey==="science")?"class-6-science-magnets.svg":(activeGrade==="7"&&activeKey==="english")?"class-7-english-try-again.svg":(activeGrade==="8"&&activeKey==="social-science")?"class-8-history-company-rule.svg":activeKey+".svg";
+const chapterPoster=(activeGrade==="6"&&activeKey==="science")?"class-6-science-magnets.svg":(activeGrade==="6"&&activeKey==="maths")?"class-6-maths-patterns.svg":(activeGrade==="7"&&activeKey==="english")?"class-7-english-try-again.svg":(activeGrade==="7"&&activeKey==="maths")?"class-7-maths-large-numbers.svg":(activeGrade==="8"&&activeKey==="social-science")?"class-8-history-impact.svg":activeKey+".svg";
 document.getElementById("visualPoster").innerHTML="<div class='visual-poster-wrap'><img src='/govt-boys-ms-g-jamgaon/study-material/important-notes/posters/"+chapterPoster+"' alt='"+poster[0]+" विषय का रंगीन शैक्षणिक पोस्टर' loading='lazy'><div class='poster-caption'>🌟 पोस्टर देखें, याद करें और सीखें!</div></div>";
 document.title=s[1]+" — कक्षा "+activeGrade+" महत्वपूर्ण नोट्स";
 document.getElementById("icon").textContent=s[0];
