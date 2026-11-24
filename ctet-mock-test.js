@@ -54,8 +54,18 @@ function begin(){
   if(available.length<b.count)used[bucketKey]=[];
   const fresh=b.items.filter(q=>!((used[bucketKey]||[]).includes(String(q.id||q.q))));
   if(fresh.length<b.count){alert("प्रश्न बैंक में इस खंड के लिए पर्याप्त अलग-अलग प्रश्न नहीं हैं।");return}
-  const chosen=shuffle(fresh).slice(0,b.count);
-  selected.push(...chosen);
+  const chosen=[];
+  const take=(arr,n)=>{const picked=shuffle(arr).slice(0,n);chosen.push(...picked);};
+  take(fresh.filter(x=>x.difficulty==="आसान"),Math.ceil(b.count*0.20));
+  take(fresh.filter(x=>x.difficulty==="मध्यम"),Math.ceil(b.count*0.40));
+  take(fresh.filter(x=>["उच्च","कठिन"].includes(x.difficulty)),Math.ceil(b.count*0.25));
+  take(fresh.filter(x=>x.difficulty==="अत्यंत चुनौतीपूर्ण"),Math.ceil(b.count*0.15));
+  const pickedIds=new Set(chosen.map(x=>String(x.id||x.q)));
+  const remaining=shuffle(fresh.filter(x=>!pickedIds.has(String(x.id||x.q))));
+  if(chosen.length<b.count)chosen.push(...remaining.slice(0,b.count-chosen.length));
+  const finalChosen=shuffle(chosen).slice(0,b.count);
+  if(finalChosen.length<b.count){alert("इस खंड में पर्याप्त अलग-अलग प्रश्न उपलब्ध नहीं हैं।");return}
+  selected.push(...finalChosen);
   used[bucketKey]=[...(used[bucketKey]||[]),...chosen.map(q=>String(q.id||q.q))];
  }
  questions=shuffle(selected).map(q=>({...q,options:shuffle(q.options.map((v,i)=>({v,correct:i===q.answer}))) }));
