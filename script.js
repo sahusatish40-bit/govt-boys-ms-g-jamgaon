@@ -37,7 +37,28 @@ if (langBtn) {
 }
 
 
-async function compressPosterFile(file){if(!file)return "";if(!file.type.startsWith("image/"))throw Error("कृपया image file चुनें");const img=new Image();const url=URL.createObjectURL(file);try{await new Promise((r,j)=>{img.onload=r;img.onerror=()=>j(Error("Image पढ़ नहीं सकी"));img.src=url});const max=1200,scale=Math.min(1,max/Math.max(img.width,img.height));const canvas=document.createElement("canvas");canvas.width=Math.round(img.width*scale);canvas.height=Math.round(img.height*scale);canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);let q=.72,data=canvas.toDataURL("image/jpeg",q);while(data.length>650000&&q>.35){q-=.08;data=canvas.toDataURL("image/jpeg",q)}if(data.length>700000)throw Error("फोटो बहुत बड़ी है; छोटी फोटो चुनें");return data}finally{URL.revokeObjectURL(url)}}
+async function compressPosterFile(file){
+  if(!file)return "";
+  if(!file.type.startsWith("image/"))throw Error("कृपया JPG या PNG फोटो चुनें");
+  let source=null,cleanup=()=>{};
+  try{
+    if("createImageBitmap" in window){
+      try{source=await createImageBitmap(file);cleanup=()=>source&&source.close&&source.close()}catch(e){}
+    }
+    if(!source){
+      const img=new Image(),url=URL.createObjectURL(file);cleanup=()=>URL.revokeObjectURL(url);
+      await new Promise((resolve,reject)=>{img.onload=resolve;img.onerror=()=>reject(Error("फोटो नहीं खुली। कृपया PNG को JPG में बदलकर या दूसरी फोटो चुनकर प्रयास करें।"));img.src=url});
+      source=img;
+    }
+    const max=1200,scale=Math.min(1,max/Math.max(source.width,source.height));
+    const canvas=document.createElement("canvas");canvas.width=Math.max(1,Math.round(source.width*scale));canvas.height=Math.max(1,Math.round(source.height*scale));
+    const ctx=canvas.getContext("2d");if(!ctx)throw Error("फोटो तैयार नहीं हो सकी");
+    ctx.fillStyle="#fff";ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(source,0,0,canvas.width,canvas.height);
+    let q=.72,data=canvas.toDataURL("image/jpeg",q);while(data.length>650000&&q>.35){q-=.08;data=canvas.toDataURL("image/jpeg",q)}
+    if(data.length>700000)throw Error("फोटो बहुत बड़ी है; छोटी फोटो चुनें");
+    return data;
+  }catch(e){throw e}finally{cleanup()}
+}
 
 function loadFirebase(url) {
   return new Promise((resolve, reject) => {
