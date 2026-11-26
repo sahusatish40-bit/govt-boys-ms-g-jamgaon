@@ -3112,4 +3112,5 @@ async function loadAutoGallery() {
 }
 
 
+loadAutoGallery();
 startSchoolWebsite();
