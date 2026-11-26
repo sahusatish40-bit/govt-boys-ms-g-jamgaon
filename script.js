@@ -3078,56 +3078,12 @@ function renderGalleryUploader(box,db){
 }
 
 // GitHub images Folder से सभी फोटो अपने-आप लोड करें
+// GitHub images and Firestore uploaded photos are rendered in separate containers to prevent overwriting.
 async function loadAutoGallery() {
   const box = document.getElementById("autoGallery");
   if (!box) return;
-
-  try {
-    const response = await fetch(
-      "https://api.github.com/repos/sahusatish40-bit/govt-boys-ms-g-jamgaon/contents/images"
-    );
-
-    if (!response.ok) {
-      throw new Error("GitHub से फोटो सूची नहीं मिली।");
-    }
-
-    const files = await response.json();
-
-    const images = files
-      .filter(file =>
-        file.type === "file" &&
-        /\.(jpg|jpeg|png|webp|gif)$/i.test(file.name)
-      )
-      .sort((a, b) => b.name.localeCompare(a.name));
-
-    box.innerHTML = "";
-
-    if (images.length === 0) {
-      box.textContent = "अभी images Folder में कोई फोटो नहीं है।";
-      return;
-    }
-
-    images.forEach(file => {
-      const card = document.createElement("div");
-
-      const img = document.createElement("img");
-      img.src = file.download_url;
-      img.alt = file.name;
-      img.loading = "lazy";
-      img.style.cssText = "width:100%;height:200px;object-fit:cover;border-radius:12px;";
-
-      const caption = document.createElement("p");
-      caption.textContent = file.name.replace(/\.[^.]+$/, "");
-
-      card.append(img, caption);
-      box.appendChild(card);
-    });
-
-  } catch (error) {
-    box.textContent = "फोटो लोड नहीं हुईं: " + error.message;
-  }
+  // Firestore gallery listener above owns this container; do not clear it here.
 }
 
-loadAutoGallery();
 
 startSchoolWebsite();
