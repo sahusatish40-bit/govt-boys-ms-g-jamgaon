@@ -1144,7 +1144,7 @@ const studentSearch = el("studentSearch");
           : "नई सूचना";
 
         a.append(date, t);
-        if(d.posterDataUrl){a.classList.add("notice-with-poster");const im=document.createElement("img");im.className="notice-poster-image";im.src=d.posterDataUrl;im.alt="सूचना पोस्टर";im.loading="lazy";a.appendChild(im);}
+        if(d.posterDataUrl){a.classList.add("notice-with-poster");const im=document.createElement("img");im.className="notice-poster-image";im.src=d.posterDataUrl;im.alt="सूचना पोस्टर";im.loading="lazy";a.appendChild(im);const actions=document.createElement("div");actions.className="poster-actions";const dl=document.createElement("a");dl.className="poster-download";dl.href=d.posterDataUrl;dl.download="school-notice-poster.jpg";dl.textContent="📥 पोस्टर डाउनलोड करें";const view=document.createElement("a");view.className="poster-view";view.href=d.posterDataUrl;view.target="_blank";view.rel="noopener";view.textContent="🔍 बड़ा देखें";actions.append(dl,view);a.appendChild(actions);}
 
         if (auth.currentUser?.uid === ADMIN_UID) {
           const b = document.createElement("button");
@@ -1229,7 +1229,7 @@ if (eventCalendar) {
         description.textContent = event.description || "";
 
         card.append(date, type, title, description);
-        if(event.posterDataUrl){const im=document.createElement("img");im.src=event.posterDataUrl;im.alt=event.title+" पोस्टर";im.loading="lazy";im.style.cssText="width:100%;max-height:520px;object-fit:contain;border-radius:12px;margin-top:10px";card.appendChild(im);}
+        if(event.posterDataUrl){card.classList.add("event-with-poster");const im=document.createElement("img");im.className="notice-poster-image";im.src=event.posterDataUrl;im.alt=event.title+" पोस्टर";im.loading="lazy";card.appendChild(im);const actions=document.createElement("div");actions.className="poster-actions";const dl=document.createElement("a");dl.className="poster-download";dl.href=event.posterDataUrl;dl.download="school-event-poster.jpg";dl.textContent="📥 पोस्टर डाउनलोड करें";const view=document.createElement("a");view.className="poster-view";view.href=event.posterDataUrl;view.target="_blank";view.rel="noopener";view.textContent="🔍 बड़ा देखें";actions.append(dl,view);card.appendChild(actions);}
         eventCalendar.appendChild(card);
       });
     }, error => {
