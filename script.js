@@ -106,21 +106,29 @@ await loadFirebase(
       let galleryDocs=[],activeAlbum="सभी";
       const albums=["सभी","योग","No Bag Day","विद्यालय कार्यक्रम","विज्ञान गतिविधि","खेल","अन्य"];
       const renderAlbum=()=>{
-        if(galleryFilters){galleryFilters.innerHTML="";albums.forEach(album=>{const btn=document.createElement("button");btn.textContent=album;btn.className="album-filter"+(album===activeAlbum?" active":"");btn.onclick=()=>{activeAlbum=album;renderAlbum()};galleryFilters.appendChild(btn)});}
-        galleryBox.innerHTML="";
-        const shown=galleryDocs.filter(d=>activeAlbum==="सभी"||d.data.category===activeAlbum);
-        if(!shown.length){galleryBox.textContent=activeAlbum==="सभी"?"अभी कोई फोटो उपलब्ध नहीं है।":"इस Album में अभी फोटो नहीं हैं।";return;}
-        shown.forEach(({id,data})=>{
-          const card=document.createElement("article");card.className="gallery-photo-card";
-          const im=document.createElement("img");im.src=data.photoDataUrl;im.alt=data.caption||"विद्यालय गतिविधि";im.loading="lazy";
-          im.onclick=()=>{const overlay=document.createElement("div");overlay.className="gallery-lightbox";const large=document.createElement("img");large.src=data.photoDataUrl;const close=document.createElement("button");close.textContent="✕ बंद करें";close.onclick=()=>overlay.remove();overlay.append(large,close);overlay.onclick=e=>{if(e.target===overlay)overlay.remove()};document.body.appendChild(overlay)};
-          const cap=document.createElement("p");cap.textContent=(data.category||"अन्य")+" • "+(data.caption||"विद्यालय गतिविधि");
-          const dl=document.createElement("a");dl.href=data.photoDataUrl;dl.download="school-activity.jpg";dl.textContent="📥 फोटो डाउनलोड करें";dl.className="poster-download";card.append(im,cap,dl);
-          if(auth.currentUser?.uid===ADMIN_UID){const del=document.createElement("button");del.textContent="🗑️ हटाएँ";del.onclick=async()=>{if(confirm("फोटो हटाएँ?"))await db.collection("school_gallery").doc(id).delete()};card.appendChild(del);}
-          galleryBox.appendChild(card);
-        });
+        try{
+          if(galleryFilters){galleryFilters.innerHTML="";albums.forEach(album=>{const btn=document.createElement("button");btn.textContent=album;btn.className="album-filter"+(album===activeAlbum?" active":"");btn.onclick=()=>{activeAlbum=album;renderAlbum()};galleryFilters.appendChild(btn)});}
+          galleryBox.innerHTML="";
+          const shown=galleryDocs.filter(d=>activeAlbum==="सभी"||(d.data.category||"अन्य")===activeAlbum);
+          if(!shown.length){galleryBox.textContent=activeAlbum==="सभी"?"अभी कोई फोटो उपलब्ध नहीं है।":"इस Album में अभी फोटो नहीं हैं.";return;}
+          shown.forEach(({id,data})=>{
+            if(!data.photoDataUrl)return;
+            const card=document.createElement("article");card.className="gallery-photo-card";
+            const im=document.createElement("img");im.src=data.photoDataUrl;im.alt=data.caption||"विद्यालय गतिविधि";im.loading="lazy";
+            im.onclick=()=>{const overlay=document.createElement("div");overlay.className="gallery-lightbox";const large=document.createElement("img");large.src=data.photoDataUrl;const close=document.createElement("button");close.textContent="✕ बंद करें";close.onclick=()=>overlay.remove();overlay.append(large,close);overlay.onclick=e=>{if(e.target===overlay)overlay.remove()};document.body.appendChild(overlay)};
+            const cap=document.createElement("p");cap.textContent=(data.category||"अन्य")+" • "+(data.caption||"विद्यालय गतिविधि");
+            const dl=document.createElement("a");dl.href=data.photoDataUrl;dl.download="school-activity.jpg";dl.textContent="📥 फोटो डाउनलोड करें";dl.className="poster-download";card.append(im,cap,dl);
+            if(auth.currentUser?.uid===ADMIN_UID){const del=document.createElement("button");del.textContent="🗑️ हटाएँ";del.onclick=async()=>{if(confirm("फोटो हटाएँ?"))await db.collection("school_gallery").doc(id).delete()};card.appendChild(del);}
+            galleryBox.appendChild(card);
+          });
+          if(!galleryBox.children.length)galleryBox.textContent="इस Album में अभी फोटो नहीं हैं।";
+        }catch(renderError){console.error("Gallery render error",renderError);galleryBox.textContent="Gallery दिखाने में समस्या हुई: "+renderError.message;}
       };
-      db.collection("school_gallery").orderBy("createdAt","desc").onSnapshot(snap=>{galleryDocs=snap.docs.map(doc=>({id:doc.id,data:doc.data()}));renderAlbum();},err=>{galleryBox.textContent="Gallery लोड नहीं हुई: "+err.message;});
+      galleryBox.textContent="Gallery से फोटो प्राप्त हो रही हैं…";
+      db.collection("school_gallery").onSnapshot(snap=>{
+        galleryDocs=snap.docs.map(doc=>({id:doc.id,data:doc.data()})).sort((a,b)=>{const av=a.data.createdAt?.toMillis?.()||0,bv=b.data.createdAt?.toMillis?.()||0;return bv-av;});
+        renderAlbum();
+      },err=>{console.error("Gallery Firebase error",err);galleryBox.textContent="Gallery लोड नहीं हुई: "+(err.code||err.message||"अज्ञात त्रुटि");});
     }
     const galleryAdmin=document.getElementById("galleryUploadAdmin");
     if(galleryAdmin&&auth.currentUser?.uid===ADMIN_UID)renderGalleryUploader(galleryAdmin,db);
