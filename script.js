@@ -100,7 +100,7 @@ await loadFirebase(
     const auth = firebase.auth();
     const db = firebase.firestore();
     // Firestore-based public activity photo gallery (no Firebase Storage)
-    const galleryBox=document.getElementById("autoGallery");
+    const galleryBox=document.getElementById("liveGallery");
     if(galleryBox){
       db.collection("school_gallery").orderBy("createdAt","desc").onSnapshot(snap=>{
         galleryBox.innerHTML="";
