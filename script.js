@@ -94,9 +94,7 @@ async function startSchoolWebsite() {
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
-await loadFirebase(
-  "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"
-);
+// XLSX library loading deferred so it cannot block the public gallery.
     const auth = firebase.auth();
     const db = firebase.firestore();
     // Firestore-based public activity photo gallery (no Firebase Storage)
