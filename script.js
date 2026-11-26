@@ -78,6 +78,28 @@ await loadFirebase(
 );
     const auth = firebase.auth();
     const db = firebase.firestore();
+    // Firestore-based public activity photo gallery (no Firebase Storage)
+    const galleryBox=document.getElementById("autoGallery");
+    if(galleryBox){
+      db.collection("school_gallery").orderBy("createdAt","desc").onSnapshot(snap=>{
+        galleryBox.innerHTML="";
+        if(snap.empty){galleryBox.textContent="अभी कोई फोटो उपलब्ध नहीं है।";return;}
+        snap.forEach(doc=>{
+          const d=doc.data(),card=document.createElement("article");
+          card.className="gallery-photo-card";
+          const im=document.createElement("img");im.src=d.photoDataUrl;im.alt=d.caption||"विद्यालय गतिविधि";im.loading="lazy";
+          const cap=document.createElement("p");cap.textContent=d.caption||"विद्यालय गतिविधि";
+          const dl=document.createElement("a");dl.href=d.photoDataUrl;dl.download="school-activity.jpg";dl.textContent="📥 फोटो डाउनलोड करें";dl.className="poster-download";
+          card.append(im,cap,dl);
+          if(auth.currentUser?.uid===ADMIN_UID){const del=document.createElement("button");del.textContent="🗑️ हटाएँ";del.onclick=async()=>{if(confirm("फोटो हटाएँ?"))await db.collection("school_gallery").doc(doc.id).delete()};card.appendChild(del)}
+          galleryBox.appendChild(card);
+        });
+      });
+    }
+    const galleryAdmin=document.getElementById("galleryUploadAdmin");
+    if(galleryAdmin&&auth.currentUser?.uid===ADMIN_UID)renderGalleryUploader(galleryAdmin,db);
+    auth.onAuthStateChanged(user=>{if(galleryAdmin){if(user?.uid===ADMIN_UID)renderGalleryUploader(galleryAdmin,db);else galleryAdmin.innerHTML="";}});
+
 
     // सभी लोगों के लिए सार्वजनिक शिक्षक सूची
     const publicTeacherBox = document.getElementById("publicTeacherList");
@@ -3025,6 +3047,14 @@ if (stopCreativityAdmin) { stopCreativityAdmin(); stopCreativityAdmin = null; }
   }
 }
 
+
+
+function renderGalleryUploader(box,db){
+  if(box.dataset.ready==="1")return;box.dataset.ready="1";
+  box.innerHTML="<h3>📤 Admin: गतिविधि फोटो अपलोड</h3><input id='activityPhotoInput' type='file' accept='image/*'><input id='activityPhotoCaption' type='text' placeholder='फोटो का शीर्षक / गतिविधि'><button id='activityPhotoUpload'>📤 फोटो अपलोड करें</button><p id='activityUploadMessage'></p>";
+  const btn=box.querySelector("#activityPhotoUpload"),input=box.querySelector("#activityPhotoInput"),caption=box.querySelector("#activityPhotoCaption"),msg=box.querySelector("#activityUploadMessage");
+  btn.onclick=async()=>{try{if(!input.files[0])throw Error("पहले फोटो चुनें");btn.disabled=true;msg.textContent="फोटो तैयार हो रही है...";const data=await compressPosterFile(input.files[0]);await db.collection("school_gallery").add({photoDataUrl:data,caption:caption.value.trim()||"विद्यालय गतिविधि",createdAt:firebase.firestore.FieldValue.serverTimestamp()});msg.textContent="✓ फोटो अपलोड हो गई!";input.value="";caption.value="";}catch(e){msg.textContent=e.message}finally{btn.disabled=false}};
+}
 
 // GitHub images Folder से सभी फोटो अपने-आप लोड करें
 async function loadAutoGallery() {
