@@ -36,6 +36,9 @@ if (langBtn) {
   });
 }
 
+
+async function compressPosterFile(file){if(!file)return "";if(!file.type.startsWith("image/"))throw Error("कृपया image file चुनें");const img=new Image();const url=URL.createObjectURL(file);try{await new Promise((r,j)=>{img.onload=r;img.onerror=()=>j(Error("Image पढ़ नहीं सकी"));img.src=url});const max=1200,scale=Math.min(1,max/Math.max(img.width,img.height));const canvas=document.createElement("canvas");canvas.width=Math.round(img.width*scale);canvas.height=Math.round(img.height*scale);canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);let q=.72,data=canvas.toDataURL("image/jpeg",q);while(data.length>650000&&q>.35){q-=.08;data=canvas.toDataURL("image/jpeg",q)}if(data.length>700000)throw Error("फोटो बहुत बड़ी है; छोटी फोटो चुनें");return data}finally{URL.revokeObjectURL(url)}}
+
 function loadFirebase(url) {
   return new Promise((resolve, reject) => {
     const s = document.createElement("script");
@@ -189,6 +192,7 @@ await loadFirebase(
 <hr>
           <h3 id="adminNoticeManagement">नई विद्यालयीन सूचना</h3>
           <input id="noticeInput" maxlength="180" placeholder="सूचना लिखें">
+          <label>पोस्टर (वैकल्पिक, JPEG में संकुचित होगा)</label><input id="noticePoster" type="file" accept="image/*">
           <button id="addNotice" type="button">Publish Notice</button>
           <p id="adminMessage"></p>
           
@@ -216,6 +220,7 @@ await loadFirebase(
 <textarea id="eventDescription" rows="3"
   maxlength="300"
   placeholder="कार्यक्रम की जानकारी लिखें"></textarea>
+<label>कार्यक्रम पोस्टर (वैकल्पिक)</label><input id="eventPoster" type="file" accept="image/*">
 
 <button id="addEvent" type="button">
   📅 कार्यक्रम प्रकाशित करें
@@ -1139,6 +1144,7 @@ const studentSearch = el("studentSearch");
           : "नई सूचना";
 
         a.append(date, t);
+        if(d.posterDataUrl){const im=document.createElement("img");im.src=d.posterDataUrl;im.alt="सूचना पोस्टर";im.loading="lazy";im.style.cssText="width:100%;max-height:520px;object-fit:contain;border-radius:12px;margin-top:10px";a.appendChild(im);}
 
         if (auth.currentUser?.uid === ADMIN_UID) {
           const b = document.createElement("button");
@@ -1223,6 +1229,7 @@ if (eventCalendar) {
         description.textContent = event.description || "";
 
         card.append(date, type, title, description);
+        if(event.posterDataUrl){const im=document.createElement("img");im.src=event.posterDataUrl;im.alt=event.title+" पोस्टर";im.loading="lazy";im.style.cssText="width:100%;max-height:520px;object-fit:contain;border-radius:12px;margin-top:10px";card.appendChild(im);}
         eventCalendar.appendChild(card);
       });
     }, error => {
@@ -2878,6 +2885,8 @@ const topper = results.find(r => r.attendance === "P");
 
     el("addNotice").onclick = async () => {
       const text = el("noticeInput").value.trim();
+      let posterDataUrl="";
+      try{posterDataUrl=await compressPosterFile(el("noticePoster")?.files?.[0]);}catch(e){return show(adminMessage,e.message);}
 
       if (!text) {
         return show(adminMessage, "सूचना लिखें।");
@@ -2885,12 +2894,12 @@ const topper = results.find(r => r.attendance === "P");
 
       try {
         await db.collection("notices").add({
-          text,
+          text, posterDataUrl,
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           createdBy: auth.currentUser.uid
         });
 
-        el("noticeInput").value = "";
+        el("noticeInput").value = ""; if(el("noticePoster"))el("noticePoster").value="";
         show(adminMessage, "सूचना प्रकाशित हो गई।");
 
       } catch (e) {
@@ -2902,6 +2911,7 @@ el("addEvent").onclick = async () => {
   const eventDate = el("eventDate").value;
   const type = el("eventType").value;
   const description = el("eventDescription").value.trim();
+  let posterDataUrl="";try{posterDataUrl=await compressPosterFile(el("eventPoster")?.files?.[0]);}catch(e){return show(adminMessage,e.message);}
 
   if (!title || !eventDate) {
     return show(adminMessage, "कार्यक्रम का नाम और तारीख आवश्यक हैं।");
@@ -2912,14 +2922,14 @@ el("addEvent").onclick = async () => {
       title,
       eventDate,
       type,
-      description,
+      description, posterDataUrl,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       createdBy: auth.currentUser.uid
     });
 
     el("eventTitle").value = "";
     el("eventDate").value = "";
-    el("eventDescription").value = "";
+    el("eventDescription").value = ""; if(el("eventPoster"))el("eventPoster").value="";
 
     show(adminMessage, "कार्यक्रम सफलतापूर्वक प्रकाशित हो गया।");
 
