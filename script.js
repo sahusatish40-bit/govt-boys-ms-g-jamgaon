@@ -3106,7 +3106,9 @@ function renderGalleryUploader(box,db){
 async function loadAutoGallery() {
   const box = document.getElementById("autoGallery");
   if (!box) return;
-  // Firestore gallery listener above owns this container; do not clear it here.
+  // The static Campus Life gallery is separate from the Firestore live album.
+  // Do not leave a perpetual loading message when no static image source is configured.
+  box.innerHTML = "<div class='gallery-empty'><p>📸 विद्यालय की गतिविधियों की तस्वीरें यहाँ प्रदर्शित होंगी।</p><p>नई तस्वीरें देखने के लिए <strong>विद्यालय गतिविधि फोटो</strong> Album खोलें।</p></div>";
 }
 
 
