@@ -118,7 +118,11 @@ async function startSchoolWebsite() {
             const dl=document.createElement("a");dl.href=data.photoDataUrl;dl.download="school-activity.jpg";dl.textContent="📥 फोटो डाउनलोड करें";dl.className="poster-download";card.append(im,cap,dl);
             if(auth.currentUser?.uid===ADMIN_UID){const del=document.createElement("button");del.textContent="🗑️ हटाएँ";del.onclick=async()=>{if(confirm("फोटो हटाएँ?"))await db.collection("school_gallery").doc(id).delete()};card.appendChild(del);}
             galleryBox.appendChild(card);
+            const autoBox=document.getElementById("autoGallery");
+            if(autoBox){const copy=card.cloneNode(true);copy.querySelectorAll("button").forEach(b=>b.remove());autoBox.appendChild(copy);}
           });
+          const autoBox=document.getElementById("autoGallery");
+          if(autoBox&&!autoBox.children.length)autoBox.textContent="इस Album में अभी फोटो नहीं हैं।";
           if(!galleryBox.children.length)galleryBox.textContent="इस Album में अभी फोटो नहीं हैं।";
         }catch(renderError){console.error("Gallery render error",renderError);galleryBox.textContent="Gallery दिखाने में समस्या हुई: "+renderError.message;}
       };
