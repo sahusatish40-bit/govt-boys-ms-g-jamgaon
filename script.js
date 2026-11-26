@@ -125,10 +125,24 @@ await loadFirebase(
         }catch(renderError){console.error("Gallery render error",renderError);galleryBox.textContent="Gallery दिखाने में समस्या हुई: "+renderError.message;}
       };
       galleryBox.textContent="Gallery से फोटो प्राप्त हो रही हैं…";
-      db.collection("school_gallery").onSnapshot(snap=>{
+      const galleryCollection=db.collection("school_gallery");
+      let galleryReceived=false;
+      const galleryTimer=setTimeout(()=>{
+        if(!galleryReceived){
+          galleryBox.innerHTML="<p>Gallery से प्रतिक्रिया नहीं मिली।</p><button type='button' id='galleryRetry'>↻ दोबारा प्रयास करें</button>";
+          const retry=document.getElementById("galleryRetry");
+          if(retry)retry.onclick=async()=>{
+            galleryBox.textContent="Gallery दोबारा लोड हो रही है…";
+            try{const fresh=await galleryCollection.get();galleryDocs=fresh.docs.map(doc=>({id:doc.id,data:doc.data()}));renderAlbum();}
+            catch(e){galleryBox.textContent="Gallery त्रुटि: "+(e.code||e.message||"अज्ञात त्रुटि");}
+          };
+        }
+      },8000);
+      galleryCollection.onSnapshot(snap=>{
+        galleryReceived=true;clearTimeout(galleryTimer);
         galleryDocs=snap.docs.map(doc=>({id:doc.id,data:doc.data()})).sort((a,b)=>{const av=a.data.createdAt?.toMillis?.()||0,bv=b.data.createdAt?.toMillis?.()||0;return bv-av;});
         renderAlbum();
-      },err=>{console.error("Gallery Firebase error",err);galleryBox.textContent="Gallery लोड नहीं हुई: "+(err.code||err.message||"अज्ञात त्रुटि");});
+      },err=>{galleryReceived=true;clearTimeout(galleryTimer);console.error("Gallery Firebase error",err);galleryBox.textContent="Gallery लोड नहीं हुई: "+(err.code||err.message||"अज्ञात त्रुटि");});
     }
     const galleryAdmin=document.getElementById("galleryUploadAdmin");
     if(galleryAdmin&&auth.currentUser?.uid===ADMIN_UID)renderGalleryUploader(galleryAdmin,db);
