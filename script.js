@@ -1144,7 +1144,7 @@ const studentSearch = el("studentSearch");
           : "नई सूचना";
 
         a.append(date, t);
-        if(d.posterDataUrl){const im=document.createElement("img");im.src=d.posterDataUrl;im.alt="सूचना पोस्टर";im.loading="lazy";im.style.cssText="width:100%;max-height:520px;object-fit:contain;border-radius:12px;margin-top:10px";a.appendChild(im);}
+        if(d.posterDataUrl){a.classList.add("notice-with-poster");const im=document.createElement("img");im.className="notice-poster-image";im.src=d.posterDataUrl;im.alt="सूचना पोस्टर";im.loading="lazy";a.appendChild(im);}
 
         if (auth.currentUser?.uid === ADMIN_UID) {
           const b = document.createElement("button");
