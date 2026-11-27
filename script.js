@@ -163,8 +163,9 @@ async function startSchoolWebsite() {
     const publicTeacherBox = document.getElementById("publicTeacherList");
 
     if (publicTeacherBox) {
+      let teacherReceived=false; const teacherTimer=setTimeout(()=>{if(!teacherReceived && publicTeacherBox.textContent.includes("लोड")) publicTeacherBox.textContent="शिक्षक डेटा प्रतिक्रिया नहीं दे रहा (timeout)। Firebase/Firestore कनेक्शन जाँच आवश्यक है।";},10000);
       db.collection("teachers_public").onSnapshot(
-        snap => {
+        snap => { teacherReceived=true; clearTimeout(teacherTimer);
           publicTeacherBox.innerHTML = "";
 
           if (snap.empty) {
@@ -204,9 +205,9 @@ async function startSchoolWebsite() {
               publicTeacherBox.appendChild(card);
             });
         },
-        error => {
+        error => { teacherReceived=true; clearTimeout(teacherTimer);
           publicTeacherBox.textContent =
-            "शिक्षक सूची लोड नहीं हुई: " + error.message;
+            "शिक्षक सूची लोड नहीं हुई: " + (error.code||error.message);
         }
       );
     }
@@ -1253,10 +1254,10 @@ const studentSearch = el("studentSearch");
       .onSnapshot(
         
         renderNotices,
-        e => {
+        e => { noticesReceived=true;clearTimeout(noticeTimer);
           console.error(e);
           if (noticeList) {
-            noticeList.textContent = "सूचनाएँ लोड नहीं हो सकीं।";
+            noticeList.textContent = "सूचनाएँ लोड नहीं हो सकीं: "+(e.code||e.message);
           }
         }
       );
