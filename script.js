@@ -3134,5 +3134,37 @@ async function loadAutoGallery() {
 }
 
 
+// Public-section diagnostic watchdog: surface startup/runtime errors instead of endless loading.
+(function schoolSathiWatchdog(){
+  const targets=["publicTeacherList","noticeList","liveGallery"];
+  const setDiagnostic=(msg)=>{
+    targets.forEach(id=>{
+      const box=document.getElementById(id);
+      if(box && /लोड हो रही है|लोड हो रहा है|Loading|प्राप्त हो रही हैं/.test(box.textContent||"")){
+        box.innerHTML="<p style='color:#b42318;font-weight:bold'>"+msg+"</p>";
+      }
+    });
+  };
+  window.addEventListener("error",e=>{
+    setDiagnostic("JavaScript त्रुटि: "+(e.message||"अज्ञात त्रुटि")+" ("+(e.filename||"")+" : "+(e.lineno||"")+")");
+  });
+  window.addEventListener("unhandledrejection",e=>{
+    const reason=e.reason;
+    setDiagnostic("अनपेक्षित त्रुटि: "+(reason?.message||reason||"अज्ञात त्रुटि"));
+  });
+  setTimeout(()=>{
+    const stuck=targets.filter(id=>{
+      const box=document.getElementById(id);
+      return box && /लोड हो रही है|लोड हो रहा है|Loading|प्राप्त हो रही हैं/.test(box.textContent||"");
+    });
+    if(stuck.length){
+      const detail="लोडिंग अटकी है ("+stuck.join(", ")+"). Firebase="+(window.firebase?"SDK उपलब्ध":"SDK अनुपलब्ध")+". इंटरनेट/Firestore कनेक्शन या JavaScript त्रुटि की जाँच आवश्यक है।";
+      stuck.forEach(id=>{
+        const box=document.getElementById(id);
+        if(box)box.innerHTML="<p style='color:#b42318;font-weight:bold'>"+detail+"</p>";
+      });
+    }
+  },12000);
+})();
 loadAutoGallery();
 startSchoolWebsite();
