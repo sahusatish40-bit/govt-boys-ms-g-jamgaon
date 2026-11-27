@@ -37,7 +37,7 @@ if (langBtn) {
 }
 
 
-async function compressPosterFile(file){
+async async function compressPosterFile(file){
   if(!file)return "";
   if(!file.type.startsWith("image/"))throw Error("कृपया JPG या PNG फोटो चुनें");
   let source=null,cleanup=()=>{};
