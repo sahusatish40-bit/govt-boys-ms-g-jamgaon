@@ -62,17 +62,19 @@ async function compressPosterFile(file){
 
 function loadFirebase(url) {
   return new Promise((resolve, reject) => {
-    if (url.includes("firebase-app-compat") && window.firebase?.initializeApp) return resolve();
-    if (url.includes("firebase-auth-compat") && window.firebase?.auth) return resolve();
-    if (url.includes("firebase-firestore-compat") && window.firebase?.firestore) return resolve();
-    const existing = [...document.scripts].find(s => s.src && s.src.split("?")[0] === url);
-    if (existing && existing.dataset.firebaseLoaded === "1") return resolve();
-    const s = existing || document.createElement("script");
+    const ready = () => url.includes("firebase-app-compat") ? !!window.firebase?.initializeApp :
+      url.includes("firebase-auth-compat") ? !!window.firebase?.auth :
+      url.includes("firebase-firestore-compat") ? !!window.firebase?.firestore : false;
+    if (ready()) return resolve();
+    let s = [...document.scripts].find(x => x.src && x.src.split("?")[0] === url);
+    if (!s) { s = document.createElement("script"); s.src = url; s.async = true; document.head.appendChild(s); }
     let settled = false;
-    const timer = setTimeout(() => { if(!settled){settled=true;reject(Error("Firebase SDK timeout: "+url));}},12000);
-    s.onload=()=>{if(!settled){settled=true;clearTimeout(timer);s.dataset.firebaseLoaded="1";resolve();}};
-    s.onerror=()=>{if(!settled){settled=true;clearTimeout(timer);reject(Error("Firebase SDK load failed: "+url));}};
-    if(!existing){s.src=url;s.async=true;document.head.appendChild(s);}
+    const finish = () => { if (!settled && ready()) { settled=true; clearTimeout(timer); clearInterval(check); s.dataset.firebaseLoaded="1"; resolve(); } };
+    s.addEventListener("load", finish);
+    s.addEventListener("error", () => { if(!settled){settled=true;clearTimeout(timer);clearInterval(check);reject(Error("Firebase SDK load failed: "+url));} }, {once:true});
+    const check=setInterval(finish,200);
+    const timer=setTimeout(()=>{if(!settled){settled=true;clearInterval(check);reject(Error("Firebase SDK timeout: "+url));}},15000);
+    finish();
   });
 }
 
