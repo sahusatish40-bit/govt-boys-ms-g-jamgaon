@@ -62,25 +62,17 @@ async function compressPosterFile(file){
 
 function loadFirebase(url) {
   return new Promise((resolve, reject) => {
-    // Avoid duplicate SDK requests and fail visibly instead of leaving all sections stuck.
-    const existing = document.querySelector('script[src="' + url + '"]');
-    if (existing && existing.dataset.firebaseLoaded === "1") { resolve(); return; }
+    if (url.includes("firebase-app-compat") && window.firebase?.initializeApp) return resolve();
+    if (url.includes("firebase-auth-compat") && window.firebase?.auth) return resolve();
+    if (url.includes("firebase-firestore-compat") && window.firebase?.firestore) return resolve();
+    const existing = [...document.scripts].find(s => s.src && s.src.split("?")[0] === url);
+    if (existing && existing.dataset.firebaseLoaded === "1") return resolve();
     const s = existing || document.createElement("script");
     let settled = false;
-    const timer = setTimeout(() => {
-      if (settled) return;
-      settled = true;
-      reject(Error("Firebase SDK समय पर लोड नहीं हुआ (नेटवर्क/ब्राउज़र अवरोध)।"));
-    }, 15000);
-    s.onload = () => {
-      if (settled) return;
-      settled = true; clearTimeout(timer); s.dataset.firebaseLoaded = "1"; resolve();
-    };
-    s.onerror = () => {
-      if (settled) return;
-      settled = true; clearTimeout(timer); reject(Error("Firebase SDK लोड नहीं हुआ: " + url));
-    };
-    if (!existing) { s.src = url; document.head.appendChild(s); }
+    const timer = setTimeout(() => { if(!settled){settled=true;reject(Error("Firebase SDK timeout: "+url));}},12000);
+    s.onload=()=>{if(!settled){settled=true;clearTimeout(timer);s.dataset.firebaseLoaded="1";resolve();}};
+    s.onerror=()=>{if(!settled){settled=true;clearTimeout(timer);reject(Error("Firebase SDK load failed: "+url));}};
+    if(!existing){s.src=url;s.async=true;document.head.appendChild(s);}
   });
 }
 
