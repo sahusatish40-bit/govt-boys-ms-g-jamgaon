@@ -3150,7 +3150,7 @@ async function loadAutoGallery() {
       return box && /लोड हो रही है|लोड हो रहा है|Loading|प्राप्त हो रही हैं/.test(box.textContent||"");
     });
     if(stuck.length){
-      const detail="लोडिंग अटकी है ("+stuck.join(", ")+"). Firebase="+(window.firebase?"SDK उपलब्ध":"SDK अनुपलब्ध")+". इंटरनेट/Firestore कनेक्शन या JavaScript त्रुटि की जाँच आवश्यक है।";
+      const detail="लोडिंग अटकी है ("+stuck.join(", ")+"). Firebase SDK="+(window.firebase?"उपलब्ध":"अनुपलब्ध")+"; वेबसाइट का डेटा कनेक्शन शुरू नहीं हुआ।";
       stuck.forEach(id=>{
         const box=document.getElementById(id);
         if(box)box.innerHTML="<p style='color:#b42318;font-weight:bold'>"+detail+"</p>";
