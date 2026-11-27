@@ -37,7 +37,7 @@ if (langBtn) {
 }
 
 
-async async function compressPosterFile(file){
+async function compressPosterFile(file){
   if(!file)return "";
   if(!file.type.startsWith("image/"))throw Error("कृपया JPG या PNG फोटो चुनें");
   let source=null,cleanup=()=>{};
@@ -107,8 +107,9 @@ async function startSchoolWebsite() {
         try{
           if(galleryFilters){galleryFilters.innerHTML="";albums.forEach(album=>{const btn=document.createElement("button");btn.textContent=album;btn.className="album-filter"+(album===activeAlbum?" active":"");btn.onclick=()=>{activeAlbum=album;renderAlbum()};galleryFilters.appendChild(btn)});}
           galleryBox.innerHTML="";
+          const autoBox=document.getElementById("autoGallery");if(autoBox)autoBox.innerHTML="";
           const shown=galleryDocs.filter(d=>activeAlbum==="सभी"||(d.data.category||"अन्य")===activeAlbum);
-          if(!shown.length){galleryBox.textContent=activeAlbum==="सभी"?"अभी कोई फोटो उपलब्ध नहीं है।":"इस Album में अभी फोटो नहीं हैं.";return;}
+          if(!shown.length){galleryBox.textContent=activeAlbum==="सभी"?"अभी कोई फोटो उपलब्ध नहीं है।":"इस Album में अभी फोटो नहीं हैं.";if(autoBox)autoBox.textContent=galleryBox.textContent;return;}
           shown.forEach(({id,data})=>{
             if(!data.photoDataUrl)return;
             const card=document.createElement("article");card.className="gallery-photo-card";
