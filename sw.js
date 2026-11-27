@@ -1,4 +1,4 @@
-const CACHE_NAME = "school-sathi-shell-v13";
+const CACHE_NAME = "school-sathi-shell-v14";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -71,7 +71,7 @@ self.addEventListener("fetch", event => {
 
   event.respondWith((async () => {
     const cached = await caches.match(request);
-    if (cached && !/\\.js(\\?|$)/.test(request.url)) return cached;
+    if (cached && request.destination !== "script") return cached;
     try {
       const response = await fetch(request);
       if (response && response.ok && response.type === "basic") {
