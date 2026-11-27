@@ -62,11 +62,25 @@ async function compressPosterFile(file){
 
 function loadFirebase(url) {
   return new Promise((resolve, reject) => {
-    const s = document.createElement("script");
-    s.src = url;
-    s.onload = resolve;
-    s.onerror = () => reject(Error("Firebase SDK लोड नहीं हुआ"));
-    document.head.appendChild(s);
+    // Avoid duplicate SDK requests and fail visibly instead of leaving all sections stuck.
+    const existing = document.querySelector('script[src="' + url + '"]');
+    if (existing && existing.dataset.firebaseLoaded === "1") { resolve(); return; }
+    const s = existing || document.createElement("script");
+    let settled = false;
+    const timer = setTimeout(() => {
+      if (settled) return;
+      settled = true;
+      reject(Error("Firebase SDK समय पर लोड नहीं हुआ (नेटवर्क/ब्राउज़र अवरोध)।"));
+    }, 15000);
+    s.onload = () => {
+      if (settled) return;
+      settled = true; clearTimeout(timer); s.dataset.firebaseLoaded = "1"; resolve();
+    };
+    s.onerror = () => {
+      if (settled) return;
+      settled = true; clearTimeout(timer); reject(Error("Firebase SDK लोड नहीं हुआ: " + url));
+    };
+    if (!existing) { s.src = url; document.head.appendChild(s); }
   });
 }
 
@@ -3088,12 +3102,14 @@ if (stopCreativityAdmin) { stopCreativityAdmin(); stopCreativityAdmin = null; }
   } catch (e) {
     console.error("School Website Error:", e);
 
-    if (adminBox) {
-      adminBox.innerHTML =
-        "<p style='color:red'>लोडिंग में त्रुटि: " +
-        e.message +
-        "</p>";
-    }
+    const message = "विद्यालय डेटा लोड नहीं हो पाया: " + (e.message || "अज्ञात त्रुटि");
+    if (adminBox) adminBox.innerHTML = "<p style='color:red'>" + message + "</p>";
+    const teacherBox = document.getElementById("publicTeacherList");
+    const noticeBox = document.getElementById("noticeList");
+    const galleryBox = document.getElementById("liveGallery");
+    if (teacherBox) teacherBox.textContent = message;
+    if (noticeBox) noticeBox.textContent = message;
+    if (galleryBox) galleryBox.textContent = message;
   }
 }
 
